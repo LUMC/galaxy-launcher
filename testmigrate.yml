@@ -1,0 +1,16 @@
+--- # Sets up a test docker instance on the remote machine.
+# make sure to edit testmigrate.config so your running galaxy instance is not overwritten 
+
+- hosts: "{{var_hosts}}"
+  become: yes
+  become_method: sudo
+  user: "{{var_remote_user}}"
+  connection: "{{var_connection}}"
+  gather_facts: yes
+  vars_files:
+    - hosts.config
+    - testmigrate.config
+  roles:
+    - migrate
+    - galaxyfirewall
+    - rundockergalaxy

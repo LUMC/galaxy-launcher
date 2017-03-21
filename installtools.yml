@@ -1,0 +1,14 @@
+--- # Installs tools on the host using the master API key 
+
+- hosts: "{{var_hosts}}"
+  become: yes
+  become_method: sudo
+  user: "{{var_remote_user}}"
+  connection: "{{var_connection}}"
+  gather_facts: yes
+  vars_files:
+  - hosts.config
+  - galaxydocker.config
+  vars:
+  roles:
+    - installtools

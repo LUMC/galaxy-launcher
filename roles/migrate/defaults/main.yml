@@ -1,0 +1,23 @@
+test: False
+overwrite_config_files: False #Overwrites old config files with new distribution_config files
+
+no_overwrite: "-n" # No overwrite parameter for cp shell command.
+
+##
+#Files to be migrated for testing
+##
+
+#root folder is the export folder
+# dest: "" therefore equals copying directly into the root folder.
+migrated_files:
+  - src: "galaxy-central/config"
+    dest: "galaxy-central"
+  - src: "postgresql"
+    dest: ""
+
+##
+#Files to be copied from .distribution_config to new config
+##
+new_config_files:
+  - src: ".distribution_config/."
+    dest: "galaxy-central/config"

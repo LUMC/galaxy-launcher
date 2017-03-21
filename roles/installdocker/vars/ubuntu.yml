@@ -1,0 +1,15 @@
+prerequisites:
+  - linux-image-extra-virtual
+  - "linux-image-extra-{{ansible_kernel}}"
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - software-properties-common
+  - python-pip
+pip_packages:
+  - docker-py
+key: "https://apt.dockerproject.org/gpg"
+repo: "deb https://apt.dockerproject.org/repo/ {{ansible_distribution | lower}}-{{ansible_distribution_release}} main"
+packages:
+  - docker-engine
+

@@ -1,0 +1,15 @@
+--- # Migrates the current galaxy instance to a new version, upgrading the database.
+# Make sure to update the image in galaxydocker.config
+- hosts: "{{var_hosts}}"
+  become: yes
+  become_method: sudo
+  user: "{{var_remote_user}}"
+  connection: "{{var_connection}}"
+  gather_facts: yes
+  vars_files:
+  - hosts.config
+  - galaxydocker.config
+  roles:
+    - migrate
+    - galaxyfirewall
+    - rundockergalaxy     

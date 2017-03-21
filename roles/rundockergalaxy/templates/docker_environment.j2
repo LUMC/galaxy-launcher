@@ -1,0 +1,21 @@
+# Galaxy docker environment file. WARNING: NEWLINES NOT ALLOWED
+# This is due to a dysfunctional python parser
+# Create newlines using hashes
+#
+### Obligatory section. No defaults used. Specifiy in galaxysettings.config
+GALAXY_CONFIG_ADMIN_USERS={{galaxy_admin_user}}
+GALAXY_CONFIG_MASTER_API_KEY={{galaxy_master_api_key}}
+GALAXY_CONFIG_BRAND={{galaxy_brand}}
+#
+###
+{% if sge_root is defined %}
+SGE_ROOT={{sge_root}}
+{% endif %}
+
+{% if galaxy_conda_auto_init is defined %}
+GALAXY_CONFIG_CONDA_AUTO_INIT={{galaxy_conda_auto_init}}
+{% endif %}
+
+{% if galaxy_conda_auto_start is defined %}
+GALAXY_CONFIG_CONDA_AUTO_START={{galaxy_conda_auto_start}}
+{% endif %}

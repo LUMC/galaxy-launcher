@@ -1,0 +1,21 @@
+# Galaxy docker environment file. WARNING: NEWLINES NOT ALLOWED
+# This is due to a dysfunctional python parser
+# Create newlines using hashes
+#
+#####
+### Obligatory section. 
+### No defaults used. Specifiy in galaxysettings.config
+#####
+#
+GALAXY_CONFIG_ADMIN_USERS={{galaxy_admin_user}}
+GALAXY_CONFIG_MASTER_API_KEY={{galaxy_master_api_key}}
+GALAXY_CONFIG_BRAND={{galaxy_brand}}
+#
+#####
+###Optional Section.
+#####
+{%if optional_environment_settings is defined %}
+{% for env_var, env_setting in optional_environment_settings.iteritems() %}
+{{env_var}}={{env_setting}}
+{% endfor %}
+{% endif %}

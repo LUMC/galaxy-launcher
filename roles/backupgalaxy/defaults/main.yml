@@ -1,0 +1,14 @@
+method: rsync
+
+backup_name: "docker_galaxy_backup"
+prefix: ""
+suffix: ""
+
+datetime: "{{ansible_date_time.iso8601_basic_short}}"
+
+rsync_delete: False
+rsync_compression_level: 0 
+# 0 is no compression. 1-3 uses a fast algorithm. 4-9 gives better compression
+
+compression_format: "gz"
+remote_backup: False

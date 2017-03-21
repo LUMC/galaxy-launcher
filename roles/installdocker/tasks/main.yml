@@ -1,0 +1,43 @@
+
+- name: Install Docker prerequisites on Ubuntu
+  apt:
+    update_cache: yes
+    pkg: "{{ prerequisites }}"
+    state: latest
+  when: "ansible_distribution == 'Ubuntu'"
+
+- name: Install required PIP packages
+  pip:
+    name: "{{ pip_packages }}"
+    state: latest
+
+- name: Install Docker key on Ubuntu
+  apt_key:
+    url: "{{ key }}"
+  when: "ansible_distribution == 'Ubuntu'"
+
+- name: Install Docker repository on Ubuntu
+  apt_repository:
+    repo: "{{ repo }}"
+  when: "ansible_distribution == 'Ubuntu'"
+  register: repo_output
+
+- name: Create docker default location
+  file:
+    state: directory
+    path: "{{ docker_default_location }}"
+
+- name: Set symbolic link for default location
+  file:
+    state: link
+    path: /var/lib/docker
+    src: "{{ docker_default_location }}" 
+  when: "not docker_default_location=='/var/lib/docker'"  
+
+- name: Install Docker packages on Ubuntu
+  apt:
+    pkg: "{{ packages }}"
+    state: latest
+    update_cache: yes
+  when: "ansible_distribution == 'Ubuntu'"
+

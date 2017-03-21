@@ -1,0 +1,18 @@
+
+- name: Copy profile to ufw firewall
+  template:
+    dest: "/etc/ufw/applications.d/{{ufw_profile}}"
+    force: yes
+    src: ufwgalaxyprofile.j2
+
+# Apparently sshrules are removed if OpenSSH rule is not enabled    
+- name: set the firewall open for ssh
+  ufw:
+    rule: allow
+    name: OpenSSH
+   
+- name: set the firewall open for Galaxy
+  ufw:
+    name: "{{ufw_profile}}"
+    rule: allow
+    state: enabled

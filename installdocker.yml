@@ -1,0 +1,13 @@
+--- # Installs latest docker version from repository on a remote machine 
+
+- hosts: testgalaxy
+  become: yes
+  user: ruben
+  connection: ssh
+  gather_facts: yes
+  vars_files:
+    - hosts.config
+    - galaxydocker.config
+  roles:
+    - installdocker
+     
