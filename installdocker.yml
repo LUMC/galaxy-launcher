@@ -6,8 +6,8 @@
   connection: ssh
   gather_facts: yes
   vars_files:
-    - hosts.config
-    - galaxydocker.config
+    - config/hosts.config
+    - config/galaxydocker.config
   roles:
     - installdocker
      

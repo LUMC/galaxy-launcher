@@ -11,7 +11,7 @@ ubuntu server.
 5. Document 3 and 4 in hosts.config.
 
 ## Configuring your installation.
-There are numerous settings in galaxydocker.config that need to be set in order to get a working installation:
+There are numerous settings in galaxydocker.config that need to be set in order to get a working installation. First copy galaxydocker.config.sample to galaxydocker.config and specify your variables:
 
 Variable | Function
 ---|---
