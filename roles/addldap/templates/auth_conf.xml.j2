@@ -102,9 +102,19 @@
     <authenticator>
         <type>ldap_ad</type>
         <options>
-            <server>{{ldap.server}}</server>   
+            <allow-password-change>{{ldap.allow_password_change|default('False')}}</allow-password-change>
+            <allow-register>{{ldap.allow_register | default('True')}}</allow-register>
+            <auto-register>{{ldap.auto_register|default('False')}}</auto-register> 
+            <continue-on-failure>{{ldap.continue_on_failure | default('False')}}</continue-on-failure>
+
+            <server>{{ldap.server}}</server>
+            {% if ldap.options is defined %}   
+            <ldap-options>{{ldap.options}}</ldap-options>
+            {% endif %}
+
             <search-fields>sAMAccountName,mail</search-fields>
-            <search-base>dc=dc1,dc=example,dc=com</search-base>
+            <search-base>{{ldap.search_base}}</search-base>
+            <login-use-username>{{ldap.login_use_username| default('False')}}</login-use-username>
             {% if ldap.login_use_username %}
             <search-filter>(&amp;(objectClass=user)(mail={email}))</search-filter>
             {% else %}
@@ -114,9 +124,7 @@
             <bind-password>{password}</bind-password>
             <auto-register-username>{sAMAccountName}</auto-register-username>
             <auto-register-email>{mail}</auto-register-email>
-            <allow-password-change>{{ldap.allow_password_change|default('False')}}</allow-password-change>
-            <allow-register>{{ldap.allow_register | default('True')}}</allow-register>
-            <auto-register>{{ldap.auto_register|default('False')}}</auto-register> 
+o
         </options>
     </authenticator>
 </auth>

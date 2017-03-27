@@ -1,2 +1,3 @@
 ---
 # vars file for addldap
+ldap: {{ ldap_defaults | combine(ldap_settings) }}

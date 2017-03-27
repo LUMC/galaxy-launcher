@@ -1,2 +1,9 @@
 ---
 # tasks file for addldap
+
+- name: Create auth_conf.xml file in config folder
+  template: 
+    dest: {{docker_export_location}}/galaxy-central/config/auth_conf.xml
+    force: yes
+    src: auth_conf.xml.j2
+
