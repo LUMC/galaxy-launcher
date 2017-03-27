@@ -86,6 +86,7 @@ For backing up your export folder use 'ansible-playbook backupgalaxy.yml'
 This role is not very extensive and may need extension based upon your needs.
 
 Settings are in the galaxydocker.config file
+
 Variable | Function
 ---|---
 method | Can be set to rsync or archive. Rsync is useful for hourly or daily backups. Archive stores an archive but does not allow incremental backups
