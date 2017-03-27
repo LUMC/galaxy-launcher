@@ -93,14 +93,14 @@ backup_location | Absolute path to the location. If a remote location is chosen 
 prefix, backup_name, postfix | set the filename
 remote_backup | set to True if a remote location is chosen
 rsync_compression_level | Compression level to limit the bandwith used when a backup is made on a remote location
-compression_format| Can be 'gz,' 'zip' or 'bz2'. Only when method=archive
+compression_format | Can be 'gz,' 'zip' or 'bz2'. Only when method=archive
 
 The archive method is only functional as of ansible 2.3. Therefore the archive function is still commented out in the tasks/main.yml file.
 It can be enabled when ansible 2.3 is released as stable.
 
 ## Removing the galaxy docker instance.
 `ansible-playbook deletegalaxy.yml` deletes your galaxy instance. It can also be used
-to delete the testmigration instance. To do so, edit 'deletegalaxy.yml' and change
-galaxydocker.config in testmigrate.config.
+to delete the testmigration instance. To do so, edit `deletegalaxy.yml` and change
+galaxydocker.config in testmigrate.config in the vars_files section.
 
 
