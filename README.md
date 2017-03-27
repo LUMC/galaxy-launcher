@@ -7,15 +7,15 @@ ubuntu server.
 1. Clone the repository to your local computer.
 2. [Set up ansible](http://docs.ansible.com/ansible/intro_installation.html)
   * Ansible version 2.2 is tested and required.
-3. Configure your galaxy host in /etc/ansible/hosts (inventory file to be added)
-4. Set up a passwordless sudo user on the remote host and set up an ssh key pair.
-5. Configure hosts.config based on settings applied in step 3 and 4.
+3. Set up a passwordless sudo user on the remote host and set up an ssh key pair.
+4. Set up your hosts by copying `config/hosts.sample` to 'config/hosts' and specifying your host and remote user.
 
 ## Configuring your installation.
 There are numerous settings in galaxydocker.config that need to be set in order to get a working installation. First copy galaxydocker.config.sample to galaxydocker.config and specify your variables:
 
 Variable | Function
 ---|---
+var_hosts | you can specify "galaxy", "testgalaxy" or another server defined in 'config/hosts'
 docker_default_location | Where docker stores the images and containers. Use a volume with ample disk space.
 docker_image | The docker image. Defaults to "bgruening/galaxy-stable:latest" but it's better to tag it with a version number. (i.e. 17.01)
 docker_user | a user that will be created without sudo rights on the remote machine.
