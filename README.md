@@ -104,4 +104,3 @@ It can be enabled when ansible 2.3 is released as stable.
 to delete the testmigration instance. To do so, edit `deletegalaxy.yml` and change
 galaxydocker.config in testmigrate.config in the vars_files section.
 
-
