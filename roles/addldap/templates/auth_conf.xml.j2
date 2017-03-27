@@ -105,9 +105,18 @@
             <server>{{ldap.server}}</server>   
             <search-fields>sAMAccountName,mail</search-fields>
             <search-base>dc=dc1,dc=example,dc=com</search-base>
+            {% if ldap.login_use_username %}
+            <search-filter>(&amp;(objectClass=user)(mail={email}))</search-filter>
+            {% else %}
+            <search-filter>(&amp;(objectClass=user)(mail={email}))</search-filter>
+            {% endif %}
+            <bind-user>{sAMAccountName}@dc1.example.com</bind-user>
+            <bind-password>{password}</bind-password>
+            <auto-register-username>{sAMAccountName}</auto-register-username>
+            <auto-register-email>{mail}</auto-register-email>
             <allow-password-change>{{ldap.allow_password_change|default('False')}}</allow-password-change>
-            <allow-register>{{ldap.allow_regoster | default('True')}}</allow-register>
-            <auto-register>{{ldap.auto_register|default('False')}}</auto-register>  
+            <allow-register>{{ldap.allow_register | default('True')}}</allow-register>
+            <auto-register>{{ldap.auto_register|default('False')}}</auto-register> 
         </options>
     </authenticator>
 </auth>
