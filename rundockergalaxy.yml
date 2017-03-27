@@ -7,8 +7,8 @@
   connection: "{{var_connection}}"
   gather_facts: yes
   vars_files:
-  - hosts.config
-  - galaxydocker.config
+  - config/hosts.config
+  - config/galaxydocker.config
   vars:
   roles:
     - galaxyfirewall

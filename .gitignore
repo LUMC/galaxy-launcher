@@ -1,2 +1,4 @@
 *.retry
 *.save*
+config/*.config
+*.swp
