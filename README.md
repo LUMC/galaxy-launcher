@@ -6,9 +6,10 @@ ubuntu server.
 ## Getting started
 1. Clone the repository to your local computer.
 2. [Set up ansible](http://docs.ansible.com/ansible/intro_installation.html)
-3. Configure your galaxy host in /etc/ansible/hosts
+ * Ansible version x.x is tested. 
+3. Configure your galaxy host in /etc/ansible/hosts ??
 4. Set up a passwordless sudo user on the remote host and set up an ssh key pair.
-5. Document 3 and 4 in hosts.config.
+5. Configure hosts.config based on settings applied in step 3 and 4.
 
 ## Configuring your installation.
 There are numerous settings in galaxydocker.config that need to be set in order to get a working installation. First copy galaxydocker.config.sample to galaxydocker.config and specify your variables:
@@ -85,6 +86,7 @@ For backing up your export folder use 'ansible-playbook backupgalaxy.yml'
 This role is not very extensive and may need extension based upon your needs.
 
 Settings are in the galaxydocker.config file
+
 Variable | Function
 ---|---
 method | Can be set to rsync or archive. Rsync is useful for hourly or daily backups. Archive stores an archive but does not allow incremental backups
