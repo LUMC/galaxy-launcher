@@ -1,12 +1,9 @@
 --- # Installs latest docker version from repository on a remote machine 
 
-- hosts: testgalaxy
+- hosts: "{{ var_hosts }}"
   become: yes
-  user: ruben
-  connection: ssh
   gather_facts: yes
   vars_files:
-    - config/hosts.config
     - config/galaxydocker.config
   roles:
     - installdocker

@@ -2,3 +2,4 @@
 *.save*
 config/*.config
 *.swp
+config/hosts
