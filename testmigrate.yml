@@ -4,11 +4,8 @@
 - hosts: "{{var_hosts}}"
   become: yes
   become_method: sudo
-  user: "{{var_remote_user}}"
-  connection: "{{var_connection}}"
   gather_facts: yes
   vars_files:
-    - config/hosts.config
     - config/testmigrate.config
   roles:
     - migrate

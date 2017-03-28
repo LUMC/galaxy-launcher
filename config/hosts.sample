@@ -1,0 +1,13 @@
+[local]
+localhost
+
+[galaxy]
+my_galaxy.my_domain.org
+
+[testgalaxy]
+my_test_server.my_domain.org
+
+[all:vars]
+ansible_user=my_remote_user
+ansible_ssh_pipelining=True
+ansible_connection=ssh
