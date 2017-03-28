@@ -1,9 +1,23 @@
 ---
 # tasks file for addldap
 
+
+- name: create default galaxy folders
+  docker_container:
+    volumes: "{{docker_export_location}}:/export/"
+    image: "{{docker_image}}"
+    name: "{{docker_container_name}}"
+    state: started
+    command: "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
+
+#- name: Create config folder
+#  file:
+#    path: "{{docker_export_location}}/galaxy-central/config"
+#    state: directory 
+
 - name: Create auth_conf.xml file in config folder
   template: 
-    dest: {{docker_export_location}}/galaxy-central/config/auth_conf.xml
+    dest: "{{docker_export_location}}/galaxy-central/config/auth_conf.xml"
     force: yes
     src: auth_conf.xml.j2
 
