@@ -1,0 +1,10 @@
+[galaxy]
+my_galaxy.my_domain.org
+
+[testgalaxy]
+testgalaxy.sombrerogalaxy-nbic.surf-hosted.nl
+
+[all:vars]
+ansible_user=ruben
+ansible_ssh_pipelining=yes
+ansible_connection=ssh
