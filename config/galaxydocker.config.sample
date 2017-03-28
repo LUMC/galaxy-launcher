@@ -4,6 +4,7 @@
 # HOST SETTINGS
 ##
 
+var_hosts: galaxy
 docker_default_location: "/data/docker" #Where the docker images are stored
 
 ##
@@ -22,7 +23,7 @@ galaxy_ftp_port: 8021
 galaxy_sftp_port: 8022
 
 #Directory with yaml tool lists to install on the galaxy instance
-tool_list_dir: "/home/ruben/testgalaxy/tool_lists/"
+tool_list_dir: "/home/galaxy/tool_lists/"
 
 ##
 # GALAXY CONFIG
