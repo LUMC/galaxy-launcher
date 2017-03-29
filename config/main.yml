@@ -1,0 +1,4 @@
+installdocker: True
+galaxyfirewall: True
+rundockergalaxy: True
+installtools: True

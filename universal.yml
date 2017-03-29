@@ -5,10 +5,10 @@
   become_method: sudo
   gather_facts: yes
   roles:
-    - { role: backupgalaxy, when: "{{ backupgalaxy | default('False')}}" }
-    - { role: deletegalaxy, when: "{{ deletegalaxy | default('False')}}" }
-    - { role: galaxyfirewall, when: "{{ galaxyfirewall | default('False')}}" }
     - { role: installdocker, when: "{{ installdocker | default('False')}}" }
-    - { role: installtools, when: "{{ installtools | default('False')}}" }
+    - { role: galaxyfirewall, when: "{{ galaxyfirewall | default('False')}}" }
     - { role: migrate, when: "{{ migrate | default('False')}}" }
     - { role: rundockergalaxy, when: "{{ rundockergalaxy | default('False')}}" }    
+    - { role: installtools, when: "{{ installtools | default('False')}}" }
+    - { role: backupgalaxy, when: "{{ backupgalaxy | default('False')}}" }
+    - { role: deletegalaxy, when: "{{ deletegalaxy | default('False')}}" }
