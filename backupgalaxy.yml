@@ -1,11 +1,8 @@
 --- # Backups the export folder to a remote location. 
 
-- hosts: "{{var_hosts}}"
+- hosts: "{{hosts}}"
   become: yes
   become_method: sudo
   gather_facts: yes
-  vars_files:
-  - config/galaxydocker.config
-  vars:
   roles:
     - backupgalaxy

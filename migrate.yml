@@ -4,8 +4,6 @@
   become: yes
   become_method: sudo
   gather_facts: yes
-  vars_files:
-  - config/galaxydocker.config
   roles:
     - migrate
     - galaxyfirewall
