@@ -3,3 +3,8 @@
 config/*.config
 *.swp
 config/hosts
+hosts
+
+!host_vars/
+host_vars/*
+!host_vars/example_host
