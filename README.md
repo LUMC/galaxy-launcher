@@ -28,7 +28,7 @@ docker_container_name | What name the container gets for easy access using docke
 Variable | Function
 ---|---
 galaxy_admin_user | e-mail address of the admin user. This variable is obligatory
-galaxy_master_api_key | The master api key. Always set this valueto something unique.
+galaxy_master_api_key | The master api key. Always set this value to something unique.
 galaxy_brand | The galaxy brand name
 optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bjgruening/galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
 
@@ -90,13 +90,13 @@ Existing files are not replaced. To check for any new features you can diff `/ex
 ## Upgrade the running instance to a new image
 1. Make sure there are no jobs running on your instance. As an admin you can hold all new jobs so they will wait until the image is upgraded.
 2. Update the version tag of docker_image in `host_vars\HOSTNAME\docker.settings`
-3. run `ansible-playbook main.yml -e "hosts=HOSTNAME run=upgrade`
+3. run `ansible-playbook main.yml -e "hosts=HOSTNAME run=upgrade"`
 
 There is a setting overwrite_config_files in migrate.settings. Default is False. 
 If set to True this will overwrite all your config files with the .distribution_config files.
 
 ## Backing up your export folder
-For backing up your export folder use 'ansible-playbook main.yml -e "hosts=HOSTNAME run=backupgalaxy'
+For backing up your export folder use `ansible-playbook main.yml -e "hosts=HOSTNAME run=backupgalaxy`
 This role is not very extensive and may need extension based upon your needs.
 
 Settings are in the `host_vars/HOSTNAME/backup.settings` file
