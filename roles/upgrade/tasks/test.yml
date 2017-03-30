@@ -9,7 +9,7 @@
 
 - name: Create empty test location directory
   file:
-    path: "{{docker_export_location}}"
+    path: "{{test_upgrade.docker_export_location}}"
     state: "{{item}}"
   with_items:
     - absent
@@ -18,15 +18,24 @@
 - name: create subfolders
   file: 
     state: directory
-    path: "{{docker_export_location}}/{{item.dest}}"
+    path: "{{test_upgrade.docker_export_location}}/{{item.dest}}"
   with_items: "{{migrated_files}}"
 
 
 - name: Copy running instance files to test location
   command: "cp -p -R {{src}} {{dest}}"
   vars:
-    src: "{{old_docker_export_location}}/{{item.src}}"
-    dest: "{{docker_export_location}}/{{item.dest}}"
+    src: "{{docker_export_location}}/{{item.src}}"
+    dest: "{{test_upgrade.docker_export_location}}/{{item.dest}}"
   with_items:
     - "{{migrated_files}}"
+
+- name: Set test upgrade parameters for the docker container
+  set_fact: 
+    "{{item.key}}" : "{{item.value}}"
+  with_dict: "{{test_upgrade}}"
+
+- debug:
+    var: galaxy_brand
+
 

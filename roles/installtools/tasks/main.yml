@@ -12,14 +12,13 @@
   find:
     paths: "{{work_dir}}"
     patterns:
-      - "*.yml"
-      - "*.yaml"
-      - "shed_install.py"
+      - "*"
   register: work_dir_files
 
 - name: show work_dir_files
   debug:
     msg: "{{work_dir_files.matched}}"
+    verbosity: 1
 
 - name: Fail if directory is not empty
   fail:
@@ -52,6 +51,11 @@
 #    line: "api_key{{':'}} {{galaxy_master_api_key}}"
   with_items: "{{tool_list_files}}"
 
+- name: Show tool_list_files
+  debug:
+    var: tool_list_files
+    verbosity: 1
+
 - name: delete galaxy_instance from tool list files
   lineinfile:
     destfile: "{{item}}"
@@ -65,6 +69,11 @@
     src: shed_install.py
     dest: "{{work_dir}}/shed_install.py"
 
+- name: check if ephemeris tool installer is properly copied
+  wait_for:
+    path: "{{work_dir}}/shed_install.py"
+    timeout: 5
+
 - name: Use ephemeris shed install to install tools 
   command: "python {{work_dir}}/shed_install.py -g localhost:{{galaxy_web_port}} -a {{galaxy_master_api_key}} -t {{item}}"
   with_items: "{{tool_list_files}}"
@@ -72,8 +81,5 @@
 
 - name: remove added files
   file:
-    path: "{{item}}"
+    path: "{{work_dir}}"
     state: absent
-  with_items: 
-  - "{{tool_list_files}}" 
-  - "{{work_dir}}/shed_install.py"

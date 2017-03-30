@@ -1,14 +1,20 @@
---- # Set up a remote machine with docker, pulls the galaxy docker image and installs tools using the API key. 
+--- # Playbook that contains all roles. 
 
-- hosts: "{{var_hosts}}"
+- hosts: "{{ hosts }}"
   become: yes
   become_method: sudo
   gather_facts: yes
-  vars_files:
-  - config/galaxydocker.config
-  vars:
+  pre_tasks:
+  - include_vars:
+      file: "run/{{item}}"
+    with_items:
+      - "{{run | default('[]')}}"    
+
   roles:
-    - installdocker
-    - galaxyfirewall
-    - rundockergalaxy     
-    - installtools
+    - { role: installdocker, when: "{{ installdocker | default('False')}}" }
+    - { role: upgrade, when: "{{ upgrade | default('False')}}" }
+    - { role: galaxyfirewall, when: "{{ galaxyfirewall | default('False')}}" }
+    - { role: rundockergalaxy, when: "{{ rundockergalaxy | default('False')}}" }    
+    - { role: installtools, when: "{{ installtools | default('False')}}" }
+    - { role: backupgalaxy, when: "{{ backupgalaxy | default('False')}}" }
+    - { role: deletegalaxy, when: "{{ deletegalaxy | default('False')}}" }
