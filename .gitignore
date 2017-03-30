@@ -1,7 +1,9 @@
 *.retry
 *.save*
-config/*.config
+*.config
 *.swp
+*.pyc
+
 config/hosts
 hosts
 
