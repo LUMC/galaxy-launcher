@@ -20,6 +20,7 @@
 - name: show work_dir_files
   debug:
     msg: "{{work_dir_files.matched}}"
+    verbosity: 1
 
 - name: Fail if directory is not empty
   fail:
