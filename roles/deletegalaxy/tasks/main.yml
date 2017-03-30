@@ -1,3 +1,9 @@
+- name: Set parameters for deleting the test upgrade container
+  set_fact:
+    "{{item.key}}" : "{{item.value}}"
+  with_dict: "{{test_upgrade}}"
+  when: delete_test_upgrade
+
 - name: Remove docker container
   docker_container:
     name: "{{docker_container_name}}"
