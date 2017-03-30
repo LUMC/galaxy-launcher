@@ -90,6 +90,8 @@ Existing files are not replaced. To check for any new features you can diff `/ex
 To remove the upgrade test instance run:
 ```bash
 ansible-playbook main.yml -e "hosts=HOSTNAME run=deletetestupgrade"
+```
+
 ## Upgrade the running instance to a new image
 1. Make sure there are no jobs running on your instance. As an admin you can hold all new jobs so they will wait until the image is upgraded.
 2. Update the version tag of docker_image in `host_vars\HOSTNAME\docker.settings`
