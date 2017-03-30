@@ -50,7 +50,7 @@ If no files are present, this step will be automatically skipped.
 To install docker, fetch the image, run it and install all the tools run:
 
 ```bash
-ansible-playbook main.yml
+ansible-playbook main.yml -e "hosts=HOSTNAME run=install"   
 ```
 
 If you did not set up passwordless sudo you can add the -K parameter and type in the sudo password.
@@ -60,47 +60,46 @@ Alternatively you can set up your machine step by step.
 
 ### Install docker on the remote machine
 ```bash
-ansible-playbook installdocker.yml
+ansible-playbook main.yml -e "hosts=HOSTNAME run=installdocker"   
 ```
 
 ### Run the galaxy docker image
 ```bash 
-ansible-playbook rundockergalaxy.yml
+ansible-playbook main.yml -e "hosts=HOSTNAME run=rundockergalaxy"   
 ```
 
 ### Install tool lists on the galaxy instance
 ```bash
-ansible-playbook installtools.yml
+ansible-playbook main.yml -e "hosts=HOSTNAME run=installtools"   
 ```
 
-The tool lists need to be in the directory specified in tool_list_dir in galaxydocker.config.
+oThe tool lists need to be in the directory specified in tool_list_dir in galaxydocker.config.
 Example tool lists can be found at [the galaxy project's github](https://github.com/galaxyproject/ansible-galaxy-tools/blob/master/files/tool_list.yaml.sample)
 
 ## Testing a new version of the image.
 
 If bjgruening updates the docker image to a newer version than this can be tested as follows:
-1. Update testmigrate.config to the newest image version.
-2. Make sure the port mappings don't overlap with the running instance.
-3. Run `ansible-playbook testmigrate.yml`
+1. Open the `host_vars/HOSTNAME/upgrade.settings` file
+2. Set the settings for the test instance in the test_upgrade dictionary. Make sure the port mappings don't overlap with the running instance. Additional settings can be added to the dictionary.
+3. Run `ansible-playbook main.yml -e "hosts=HOSTNAME run=testupgrade"
 4. Check if the galaxy instance is running properly and if history is kept.
 (Tools won't run and data will not be included)
-5. Settings are stored in /export/galaxy-central/config, any new config files are automatically copied to this directory if these do not yet exist.
-Existing files are not replaced. To check for any new features you can diff /export/.distribution_config and /export/galaxy-central/config
+5. Settings are stored in `/export/galaxy-central/config`, any new config files are automatically copied to this directory if these do not yet exist.
+Existing files are not replaced. To check for any new features you can diff `/export/.distribution_config` and `/export/galaxy-central/config`
 
-## Migrating the running instance to a new image
+## Upgrade the running instance to a new image
 1. Make sure there are no jobs running on your instance. As an admin you can hold all new jobs so they will wait until the image is upgraded.
-2. Update the version tag of docker_image in galaxydocker.config
-3. run `ansible-playbook migrate.yml`
-4. If there are changes in the distribution config that you like incorporate them and restart the image by running 'ansible-playbook rundockergalaxy.yml'
+2. Update the version tag of docker_image in `host_vars\HOSTNAME\docker.settings`
+3. run `ansible-playbook main.yml -e "hosts=HOSTNAME run=upgrade`
 
-There is a setting overwrite_config_files in galaxydocker.config. Default is False. 
+There is a setting overwrite_config_files in migrate.settings. Default is False. 
 If set to True this will overwrite all your config files with the .distribution_config files.
 
 ## Backing up your export folder
-For backing up your export folder use 'ansible-playbook backupgalaxy.yml'
+For backing up your export folder use 'ansible-playbook main.yml -e "hosts=HOSTNAME run=backupgalaxy'
 This role is not very extensive and may need extension based upon your needs.
 
-Settings are in the galaxydocker.config file
+Settings are in the `host_vars/HOSTNAME/backup.settings` file
 
 Variable | Function
 ---|---
@@ -118,4 +117,5 @@ It can be enabled when ansible 2.3 is released as stable.
 `ansible-playbook deletegalaxy.yml` deletes your galaxy instance. It can also be used
 to delete the testmigration instance. To do so, edit `deletegalaxy.yml` and change
 galaxydocker.config in testmigrate.config in the vars_files section.
+
 
