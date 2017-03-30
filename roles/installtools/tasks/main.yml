@@ -12,9 +12,7 @@
   find:
     paths: "{{work_dir}}"
     patterns:
-      - "*.yml"
-      - "*.yaml"
-      - "shed_install.py"
+      - "*"
   register: work_dir_files
 
 - name: show work_dir_files
@@ -53,6 +51,11 @@
 #    line: "api_key{{':'}} {{galaxy_master_api_key}}"
   with_items: "{{tool_list_files}}"
 
+- name: Show tool_list_files
+  debug:
+    var: tool_list_files
+    verbosity: 1
+
 - name: delete galaxy_instance from tool list files
   lineinfile:
     destfile: "{{item}}"
@@ -73,8 +76,5 @@
 
 - name: remove added files
   file:
-    path: "{{item}}"
+    path: "{{work_dir}}"
     state: absent
-  with_items: 
-  - "{{tool_list_files}}" 
-  - "{{work_dir}}/shed_install.py"

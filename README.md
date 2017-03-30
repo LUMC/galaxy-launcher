@@ -9,10 +9,12 @@ ubuntu server.
   * Ansible version 2.2 is tested and required.
 3. Set up a passwordless sudo user on the remote host and set up an ssh key pair.
 4. Make a new hosts file by copying `hosts.sample` to `hosts` and setup your galaxy host.
-5. Create a new configuration direction by copying `host_vars/example_host` to `host_vars/HOSTNAME`. Hostname should be equal to that specified in `hosts`
+5. Create a new configuration directory by copying `host_vars/example_host` to `host_vars/HOSTNAME`. Hostname should be equal to that specified in `hosts`
+6. Create a new files directory by copying `files/example_host` to `files/HOSTNAME`
  
 ## Configuring your installation.
 Settings files are located in `host_vars/HOSTNAME`. `docker.settings`, `galaxy.settings` and `port.settings` should be checked and if necessary changed.
+Also tool lists can be added to install a set of tools.
 
 ### docker.settings
 Variable | Function
@@ -39,7 +41,9 @@ galaxy_sftp_port | default 8022
 ufw_profile | Firewall access is managed by a ufw profile to prevent the firewall to clog up with orphaned rules. Default ufw_profile name is "galaxy"
 
 ### Tools
-
+Tool lists can be added to 'files/HOSTNAME/tools'. 
+An example tool list can be found in `files/example_host/tools'.
+If no files are present, this step will be automatically skipped.
 
 ## Starting a galaxy instance on a remote machine.
 
