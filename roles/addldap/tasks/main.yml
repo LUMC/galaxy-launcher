@@ -1,14 +1,21 @@
 ---
 # tasks file for addldap
 
+- name: Show ldap variables
+  debug:
+    var: ldap
 
-- name: create default galaxy folders
+- name: create default galaxy folders and install ldap
   docker_container:
     volumes: "{{docker_export_location}}:/export/"
     image: "{{docker_image}}"
     name: "{{docker_container_name}}"
     state: started
-    command: "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
+    command: "{{item}}"
+  with_items:
+      - "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
+      - "pip install ldap"
+
 
 #- name: Create config folder
 #  file:
@@ -20,4 +27,4 @@
     dest: "{{docker_export_location}}/galaxy-central/config/auth_conf.xml"
     force: yes
     src: auth_conf.xml.j2
-
+#    trim_blocks: True #Ansible 2.3 required
