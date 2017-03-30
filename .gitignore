@@ -8,3 +8,7 @@ hosts
 !host_vars/
 host_vars/*
 !host_vars/example_host
+
+!files/
+files/*
+!files/example_host
