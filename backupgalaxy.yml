@@ -1,8 +1,0 @@
---- # Backups the export folder to a remote location. 
-
-- hosts: "{{hosts}}"
-  become: yes
-  become_method: sudo
-  gather_facts: yes
-  roles:
-    - backupgalaxy

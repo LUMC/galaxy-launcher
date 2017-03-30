@@ -1,8 +1,0 @@
---- # Deletes a galaxy instance based on the galaxydocker.config file 
-
-- hosts: "{{var_hosts}}"
-  become: yes
-  become_method: sudo
-  gather_facts: yes
-  roles:
-  - deletegalaxy

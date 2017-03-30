@@ -1,9 +1,0 @@
---- # On a machine with docker installed, it runs the docker image. 
-
-- hosts: "{{hosts}}"
-  become: yes
-  become_method: sudo
-  gather_facts: yes
-  roles:
-    - galaxyfirewall
-    - rundockergalaxy     

@@ -1,8 +1,0 @@
---- # Installs latest docker version from repository on a remote machine 
-
-- hosts: "{{ hosts }}"
-  become: yes
-  gather_facts: yes
-  roles:
-    - installdocker
-     

@@ -1,8 +1,0 @@
---- # Installs tools on the host using the master API key 
-
-- hosts: "{{var_hosts}}"
-  become: yes
-  become_method: sudo
-  gather_facts: yes
-  roles:
-    - installtools
