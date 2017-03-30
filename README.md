@@ -41,8 +41,8 @@ galaxy_sftp_port | default 8022
 ufw_profile | Firewall access is managed by a ufw profile to prevent the firewall to clog up with orphaned rules. Default ufw_profile name is "galaxy"
 
 ### Tools
-Tool lists can be added to 'files/HOSTNAME/tools'. 
-An example tool list can be found in `files/example_host/tools'.
+Tool lists can be added to `files/HOSTNAME/tools`. 
+An example tool list can be found in `files/example_host/tools`.
 If no files are present, this step will be automatically skipped.
 
 ## Starting a galaxy instance on a remote machine.
@@ -81,7 +81,7 @@ Example tool lists can be found at [the galaxy project's github](https://github.
 If bjgruening updates the docker image to a newer version than this can be tested as follows:
 1. Open the `host_vars/HOSTNAME/upgrade.settings` file
 2. Set the settings for the test instance in the test_upgrade dictionary. Make sure the port mappings don't overlap with the running instance. Additional settings can be added to the dictionary.
-3. Run `ansible-playbook main.yml -e "hosts=HOSTNAME run=testupgrade"
+3. Run `ansible-playbook main.yml -e "hosts=HOSTNAME run=testupgrade"`
 4. Check if the galaxy instance is running properly and if history is kept.
 (Tools won't run and data will not be included)
 5. Settings are stored in `/export/galaxy-central/config`, any new config files are automatically copied to this directory if these do not yet exist.
@@ -114,8 +114,10 @@ The archive method is only functional as of ansible 2.3. Therefore the archive f
 It can be enabled when ansible 2.3 is released as stable.
 
 ## Removing the galaxy docker instance.
-`ansible-playbook deletegalaxy.yml` deletes your galaxy instance. It can also be used
-to delete the testmigration instance. To do so, edit `deletegalaxy.yml` and change
-galaxydocker.config in testmigrate.config in the vars_files section.
+`ansible-playbook main.yml -e "hosts=HOSTNAME run=deletegalaxy` does the following things:
+- deletes the container
+- removes the firewall exception and removes the profile
+
+If `delete_files=True` is added then it will also delete the export folder 
 
 

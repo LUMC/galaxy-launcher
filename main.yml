@@ -12,7 +12,6 @@
 
   roles:
     - { role: installdocker, when: "{{ installdocker | default('False')}}" }
-    - { role: migrate, when: "{{ migrate | default('False')}}" }
     - { role: upgrade, when: "{{ upgrade | default('False')}}" }
     - { role: galaxyfirewall, when: "{{ galaxyfirewall | default('False')}}" }
     - { role: rundockergalaxy, when: "{{ rundockergalaxy | default('False')}}" }    
