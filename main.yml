@@ -14,6 +14,7 @@
     - { role: installdocker, when: "{{ installdocker | default('False')}}" }
     - { role: upgrade, when: "{{ upgrade | default('False')}}" }
     - { role: galaxyfirewall, when: "{{ galaxyfirewall | default('False')}}" }
+    - { role: addldap, when: "{{ addldap | default('False')}}" }    
     - { role: rundockergalaxy, when: "{{ rundockergalaxy | default('False')}}" }    
     - { role: installtools, when: "{{ installtools | default('False')}}" }
     - { role: backupgalaxy, when: "{{ backupgalaxy | default('False')}}" }

@@ -1,0 +1,7 @@
+ldap_settings:
+  server: "dc1.example.com"
+  options: ""
+  email_suffix: "@example.com"
+  search_base: "dc=dc1,dc=example,dc=com"
+  search_user: "cn=jsmith,ou=People,dc=domain,dc=com"
+  search_password: "secret"
