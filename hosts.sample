@@ -1,7 +1,7 @@
-[galaxy]
+[example_group]
 example_host ansible_host=example_host.example_domain.tld ansible_user=remote_user
 
-[galaxy:vars]
+[example_group:vars]o
 
 [all:vars]
 ansible_ssh_pipelining=yes
