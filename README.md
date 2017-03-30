@@ -8,27 +8,38 @@ ubuntu server.
 2. [Set up ansible](http://docs.ansible.com/ansible/intro_installation.html)
   * Ansible version 2.2 is tested and required.
 3. Set up a passwordless sudo user on the remote host and set up an ssh key pair.
-4. Set up your hosts by copying `config/hosts.sample` to 'config/hosts' and specifying your host and remote user.
-
+4. Make a new hosts file by copying `hosts.sample` to `hosts` and setup your galaxy host.
+5. Create a new configuration direction by copying `host_vars/example_host` to `host_vars/HOSTNAME`. Hostname should be equal to that specified in `hosts`
+ 
 ## Configuring your installation.
-There are numerous settings in galaxydocker.config that need to be set in order to get a working installation. First copy galaxydocker.config.sample to galaxydocker.config and specify your variables:
+Settings files are located in `host_vars/HOSTNAME`. `docker.settings`, `galaxy.settings` and `port.settings` should be checked and if necessary changed.
 
+### docker.settings
 Variable | Function
 ---|---
-var_hosts | you can specify "galaxy", "testgalaxy" or another server defined in 'config/hosts'
 docker_default_location | Where docker stores the images and containers. Use a volume with ample disk space.
 docker_image | The docker image. Defaults to "bgruening/galaxy-stable:latest" but it's better to tag it with a version number. (i.e. 17.01)
 docker_user | a user that will be created without sudo rights on the remote machine.
 docker_container_name | What name the container gets for easy access using docker commands. Default is "galaxy".
-ufw_profile | Firewall access is managed by a ufw profile to prevent the firewall to clog up with orphaned rules. Default ufw_profile name is "galaxy"
-galaxy_web_port | default 80
-galaxy_ftp_port | default 8021
-galaxy_sftp_port | default 8022
-tool_list_dir | A directory containing YAML tool lists to be used by the ephemeris installer
+
+### galaxy.settings
+Variable | Function
+---|---
 galaxy_admin_user | e-mail address of the admin user. This variable is obligatory
 galaxy_master_api_key | The master api key. Always set this valueto something unique.
 galaxy_brand | The galaxy brand name
 optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bjgruening/galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
+
+### port.settings
+Variable | Function
+---|---
+galaxy_web_port | default 80
+galaxy_ftp_port | default 8021
+galaxy_sftp_port | default 8022
+ufw_profile | Firewall access is managed by a ufw profile to prevent the firewall to clog up with orphaned rules. Default ufw_profile name is "galaxy"
+
+### Tools
+
 
 ## Starting a galaxy instance on a remote machine.
 

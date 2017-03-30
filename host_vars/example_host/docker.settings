@@ -1,7 +1,6 @@
 docker_default_location: "/data/docker" #Where the docker images are stored
 docker_image: "bgruening/galaxy-stable:17.01"
-docker_user: "galaxy"                                           # The user that runs docker$
-docker_export_location: "/data/{{docker_user}}/galaxy_storage"  # Location to export the ga$
-docker_container_name: "galaxy"                                 # Name of the running conta$
-ufw_profile: "galaxy"                                           # Name of the ufw profile t$
+docker_user: "galaxy"                                           
+docker_export_location: "/data/{{docker_user}}/galaxy_storage"  
+docker_container_name: "galaxy"                                 
 
