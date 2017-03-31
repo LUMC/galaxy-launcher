@@ -1,2 +1,36 @@
 ---
 # tasks file for extractdb
+
+- name: Make sure the docker container is started
+  docker_container:
+    name: "{{docker_container_name}}"
+    volumes: "{{docker_export_location}}:/export/"
+    image:"{{docker_image}}"
+    state: started
+
+- name: Create empty dump file on server
+  file:
+    path: "{{docker_export_location}}/{{exported_db_file}}"
+    mode: 0600
+    owner: "{{container_postgres_user}}"
+    state: "{{item}}"
+  with_items:
+    - absent
+    - touch
+
+- name: Check if postgres is online
+  command: "docker exec {{docker_container_name}} service postgresql status"
+  register: result
+  until: '"online" in result.stdout'
+  retries: 20
+
+- name: Dump database in export folder
+  command: "docker exec -u {{user}} {{name}} {{command}}"
+  vars:
+    name: "{{docker_container_name}}"
+    command: "pg_dump {{container_database_name}} >> {{exported_db_file}}"
+    user: "{{container_postgres_user}}"
+  register: output
+
+- name: Copy exported db to ansible host
+  fetch:
