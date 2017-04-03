@@ -3,6 +3,6 @@
 
 container_postgres_user: "1550"
 container_database_name: "galaxy"
-import_db: "{{playbook_dir}}/files/{{inventory_hostname}}/database_import/"
-import_db_location: "postgresql/database_import/"
+import_db: "{{inventory_hostname}}/database_import/"
+import_db_location: "postgresql/database_import"
 

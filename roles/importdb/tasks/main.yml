@@ -1,76 +1,27 @@
 ---
 # tasks file for importdb
 
-- name: Make sure the docker container is started
-  docker_container:
-    name: "{{docker_container_name}}"
-    volumes: "{{docker_export_location}}:/export/"
-    image: "{{docker_image}}"
-    state: started
-
-- name: Create empty import folder
-  file:
-    path: "{{docker_export_location}}/{{import_db_location}}"
-    state: "{{item}}"
-    mode: 0600
-    owner: "{{container_postgres_user}}"
-    group: "{{container_postgres_user}}" 
-  with_items:
-    - absent
-    - directory
-
-- name: Copy from directory
-  debug:
-    var: import_db
-
-- name: copy database files
-  file:
-    dest: "{{docker_export_location}}/{{import_db_location}}"
-    src: "{{import_db}}"
-    remote_src: False
-#    mode: 0600
-#    owner: "{{container_postgres_user}}"
-#    group: "{{container_postgres_user}}" 
-  register: debug_copy
-
-- debug:
-    var: debug_copy
-
-- name: find dump file
+- name: Register the files that are copied
   find:
-    paths: "{{docker_export_location}}/{{import_db_location}}"
+    paths: "{{playbook_dir}}/files/{{import_db}}"
     patterns: "*"
   register: dump_file_list
+  delegate_to: 127.0.0.1
 
 - name: show dump_file_list
   debug:
     var: dump_file_list
 
-- name: register dump_file
-  set_fact:
-    imported_db: dump_file_list[0].path
+- name: Fail when multiple files are found
+  fail: 
+    msg: "Multiple files in files/{{import_db}}"
+  when: "dump_file_list.matched > 1"
 
+- name: Display when no files are found
+  debug:
+    msg: "No files in files/{{import_db}}. Skipping importdb role"
+  when: "dump_file_list.matched < 1"
 
-- name: Check if postgres is online
-  command: "docker exec {{docker_container_name}} service postgresql status"
-  register: result
-  until: '"online" in result.stdout'
-  retries: 20
-
-
-#- name: Delete database in galaxy folder
-#  command: "docker exec -u {{user}} {{name}} {{command}}"
-#  vars:
-#    name: "{{docker_container_name}}"
-#    command: "pg_dump {{container_database_name}} -f /export/{{exported_db_file}}"
-#    user: "{{container_postgres_user}}"
-#  register: output
-#  ignore_errors: true
-
-#- name: Copy exported db to ansible host
-    
-#- name: Delete dump file on server
-#  file:
-#    path: "{{docker_export_location}}/{{import_db_location}}"
-#    state: absent
+- include: import.yml 
+  when: "dump_file_list.matched == 1"
 

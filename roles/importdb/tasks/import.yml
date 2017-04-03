@@ -1,0 +1,97 @@
+- name: register dump_file
+  set_fact:
+    imported_db: "{{dump_file_list.files[0].path | basename }}"
+
+- name: show database name
+  debug:
+    var: imported_db
+    verbosity: 1
+
+- name: Make sure the docker container is started
+  docker_container:
+    name: "{{docker_container_name}}"
+    volumes: "{{docker_export_location}}:/export/"
+    image: "{{docker_image}}"
+    state: started
+    command: /usr/bin/startup
+
+- name: Check if postgres is online
+  command: "docker exec {{docker_container_name}} service postgresql status"
+  register: result
+  until: '"online" in result.stdout'
+  retries: 20
+
+- name: Create empty import folder
+  file:
+    path: "{{docker_export_location}}/{{import_db_location}}"
+    state: "{{item}}"
+    mode: 0600
+    owner: "{{container_postgres_user}}"
+    group: "{{container_postgres_user}}" 
+  with_items:
+    - absent
+    - directory
+
+- name: copy database files
+  copy:
+    dest: "{{docker_export_location}}/{{import_db_location}}/{{imported_db}}"
+    src: "{{import_db}}/{{imported_db}}"
+    remote_src: False
+    mode: 0600
+    owner: "{{container_postgres_user}}"
+    group: "{{container_postgres_user}}" 
+  register: debug_copy
+
+- name: stop galaxy service in container
+  command: "docker exec {{name}} {{command}}"
+  vars:
+    name: "{{docker_container_name}}"
+    command: "supervisorctl stop galaxy"
+
+- name: remove connections from database
+  command: "docker exec -u {{user}} {{name}} {{command}}"
+  vars:
+    name: "{{docker_container_name}}"
+    command: "psql -d {{container_database_name}} -c {{psql_command}}"
+    psql_command: !unsafe "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'TARGET_DB'AND pid <> pg_backend_pid();"
+    user: "{{container_postgres_user}}"
+  register: connections_severed  
+
+
+- name: Check if database is stopped
+  debug:
+    var: connections_severed
+   
+
+
+- name: Delete database in galaxy container
+  command: "docker exec -u {{user}} {{name}} {{command}}"
+  vars:
+    name: "{{docker_container_name}}"
+    command: "dropdb {{container_database_name}}"
+    user: "{{container_postgres_user}}"
+
+- name: Import new database in galaxy container
+  command: "docker exec -u {{user}} {{name}} {{command}}"
+  vars:
+    name: "{{docker_container_name}}"
+    command: "psql -d {{container_database_name}} -f /export/{{import_db_location}}/{{imported_db}}"
+    user: "{{container_postgres_user}}"
+ 
+- name: Delete dump file on server
+  file:
+    path: "{{docker_export_location}}/{{import_db_location}}"
+    state: absent
+
+- name: stop container
+  docker_container:
+    name: "{{docker_container_name}}"
+    state: stopped
+
+- name: Make sure to upgrade the database
+  set_fact:
+    upgrade: True
+
+- name: MSG make sure to upgrade the database
+  debug:
+    msg: Make sure to upgrade the database before running the container
