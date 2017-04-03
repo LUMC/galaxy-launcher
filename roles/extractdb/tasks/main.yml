@@ -5,7 +5,7 @@
   docker_container:
     name: "{{docker_container_name}}"
     volumes: "{{docker_export_location}}:/export/"
-    image:"{{docker_image}}"
+    image: "{{docker_image}}"
     state: started
 
 - name: Create empty dump file on server
@@ -13,6 +13,7 @@
     path: "{{docker_export_location}}/{{exported_db_file}}"
     mode: 0600
     owner: "{{container_postgres_user}}"
+    group: "{{container_postgres_user}}" 
     state: "{{item}}"
   with_items:
     - absent
@@ -28,9 +29,19 @@
   command: "docker exec -u {{user}} {{name}} {{command}}"
   vars:
     name: "{{docker_container_name}}"
-    command: "pg_dump {{container_database_name}} >> {{exported_db_file}}"
+    command: "pg_dump {{container_database_name}} -f /export/{{exported_db_file}}"
     user: "{{container_postgres_user}}"
   register: output
+  ignore_errors: true
 
 - name: Copy exported db to ansible host
   fetch:
+    dest: "{{fetch_location}}"
+    flat: True
+    src: "{{docker_export_location}}/{{exported_db_file}}"
+    
+- name: Delete dump file on server
+  file:
+    path: "{{docker_export_location}}/{{exported_db_file}}"
+    state: absent
+

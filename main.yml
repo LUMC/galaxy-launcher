@@ -17,4 +17,5 @@
     - { role: rundockergalaxy, when: "{{ rundockergalaxy | default('False')}}" }    
     - { role: installtools, when: "{{ installtools | default('False')}}" }
     - { role: backupgalaxy, when: "{{ backupgalaxy | default('False')}}" }
+    - { role: extractdb, when: "{{ extractdb | default('False')}}" }
     - { role: deletegalaxy, when: "{{ deletegalaxy | default('False')}}" }
