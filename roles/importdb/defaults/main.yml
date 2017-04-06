@@ -3,6 +3,8 @@
 
 container_postgres_user: "1550"
 container_database_name: "galaxy"
+container_database_username: "galaxy"
+galaxy_uid: "1450"
 import_db: "{{inventory_hostname}}/database_import/"
-import_db_location: "postgresql/database_import"
+import_db_location: "database_import"
 
