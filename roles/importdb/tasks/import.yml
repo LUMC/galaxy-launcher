@@ -28,9 +28,6 @@
     mode: 0700
     owner: "{{galaxy_uid}}"
     group: "{{galaxy_uid}}" 
-  with_items:
-    - absent
-    - directory
 
 - name: copy database files
   copy:
@@ -48,27 +45,25 @@
     name: "{{docker_container_name}}"
     command: "supervisorctl stop galaxy"
 
-- name: Create script to remove database connections and delete the database
+- name: Create script to delete old database and create new empty database
   template:
-    src: disconnect.j2
-    dest: "{{docker_export_location}}/disconnect"
+    src: new_empty_db.j2
+    dest: "{{docker_export_location}}/new_empty_db"
     mode: 0600
     owner: "{{container_postgres_user}}"
     group: "{{container_postgres_user}}" 
 
-- name: remove connections from database and delete it
+- name: Delete old database and create new_empty one
   command: "docker exec -u {{user}} {{name}} {{command}}"
   vars:
     name: "{{docker_container_name}}"
-    command: "psql -f {{psql_command_file}}"
-    psql_command_file: "/export/disconnect"
+    command: "psql -f /export/new_empty_db"
     user: "{{container_postgres_user}}"
-  register: connections_severed  
+  register: database_created  
 
-
-- name: Check if database is stopped
+- name: Database deletion and creation results
   debug:
-    var: connections_severed
+    var: database_created.stdout
  
 - name: Import new database in galaxy container
   command: "docker exec -u {{user}} {{name}} {{command}}"
@@ -83,7 +78,8 @@
     state: absent
   with_items:
     - "{{docker_export_location}}/{{import_db_location}}"
-    - "{{docker_export_location}}/disconnect"
+    - "{{docker_export_location}}/new_empty_db"
+
 - name: stop container
   docker_container:
     name: "{{docker_container_name}}"

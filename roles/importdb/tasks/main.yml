@@ -11,6 +11,7 @@
 - name: show dump_file_list
   debug:
     var: dump_file_list
+    verbosity: 1
 
 - name: Fail when multiple files are found
   fail: 
