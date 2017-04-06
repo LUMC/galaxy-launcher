@@ -4,6 +4,8 @@
 *.swp
 *.pyc
 
+*.travis.yml
+
 config/hosts
 hosts
 
