@@ -60,7 +60,7 @@
   command: "docker exec -u {{user}} {{name}} {{command}}"
   vars:
     name: "{{docker_container_name}}"
-    command: "psql -d {{container_database_name}} -f {{psql_command_file}}"
+    command: "psql -f {{psql_command_file}}"
     psql_command_file: "/export/disconnect"
     user: "{{container_postgres_user}}"
   register: connections_severed  

@@ -2,8 +2,6 @@ SELECT pg_terminate_backend(pg_stat_activity.pid)
 FROM pg_stat_activity
 WHERE pg_stat_activity.datname = '{{container_database_name}}'
   AND pid <> pg_backend_pid(); 
-{# ALTER DATABASE {{container_database_name}} CONNECTION LIMIT -1; #} 
-UPDATE pg_database SET datallowconn = 'false' WHERE datname = '{{container_database_name}}';
 DROP DATABASE {{container_database_name}} ;
 CREATE DATABASE {{container_database_name}} WITH OWNER {{container_database_username}} ;
-UPDATE pg_database SET datallowconn = 'true' WHERE datname = '{{container_database_name}}';
+
