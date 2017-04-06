@@ -1,2 +1,4 @@
 
-tool_list_dir: "{{ inventory_hostname}}/tools/"
+tool_list_dir: "{{ inventory_hostname }}/tools/"
+backup_db_dir: "{{ inventory_hostname }}/backup_db"
+insert_db_dir: "{{ inventory_hostname }}/insert_db"

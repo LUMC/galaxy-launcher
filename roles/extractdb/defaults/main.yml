@@ -1,7 +1,8 @@
 ---
 # defaults file for extractdb
 
-exported_db_file: "postgresql/galaxy_database.{{ansible_date_time.iso8601}}.dump"
+backup_db_filename: "galaxy_database.{{ansible_date_time.iso8601}}.dump"
+exported_db_file: "postgresql/{{backup_db_file_name}}"
 container_postgres_user: "1550"
 container_database_name: "galaxy"
 fetch_location: "files/{{inventory_hostname}}/database_extract/"

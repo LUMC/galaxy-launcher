@@ -41,9 +41,14 @@ galaxy_sftp_port | default 8022
 ufw_profile | Firewall access is managed by a ufw profile to prevent the firewall to clog up with orphaned rules. Default ufw_profile name is "galaxy"
 
 ### Tools
-Tool lists can be added to `files/HOSTNAME/tools`. 
+Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `tool_list_dir` in `files.settings`
 An example tool list can be found in `files/example_host/tools`.
-If no files are present, this step will be automatically skipped.
+If no tool lists are present, this step will be automatically skipped.
+
+### Database
+If you wish to use a postgresql database of another galaxy instance, make a dump of the instance.
+Put the dump file in `files/HOSTNAME/insert_db`. Alternatively you can specify the location by changing `insert_db_dir` in `files.settings`
+If no database is found, a new empty DB will be created.
 
 ## Starting a galaxy instance on a remote machine.
 
@@ -73,9 +78,6 @@ ansible-playbook main.yml -e "hosts=HOSTNAME run=rundockergalaxy"
 ansible-playbook main.yml -e "hosts=HOSTNAME run=installtools"   
 ```
 
-oThe tool lists need to be in the directory specified in tool_list_dir in galaxydocker.config.
-Example tool lists can be found at [the galaxy project's github](https://github.com/galaxyproject/ansible-galaxy-tools/blob/master/files/tool_list.yaml.sample)
-
 ## Testing a new version of the image.
 
 If bjgruening updates the docker image to a newer version than this can be tested as follows:
@@ -99,6 +101,17 @@ ansible-playbook main.yml -e "hosts=HOSTNAME run=deletetestupgrade"
 
 There is a setting overwrite_config_files in migrate.settings. Default is False. 
 If set to True this will overwrite all your config files with the .distribution_config files.
+
+## Backing up the database
+This extracts the database of the running instance to `files/HOSTNAME/backupdb`. 
+This path can be changed in `files.settings`. If you want to change the filename of the backup you can add 
+`backup_db_filename: yourprefferedfilename` to `files.settings`
+
+To backup the database run:
+
+```
+ansible-playbook main.yml -e "hosts=HOSTNAME run=extractdb"
+```
 
 ## Backing up your export folder
 For backing up your export folder use `ansible-playbook main.yml -e "hosts=HOSTNAME run=backupgalaxy`
