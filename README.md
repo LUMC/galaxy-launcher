@@ -8,6 +8,7 @@ ubuntu server.
 2. [Set up ansible](http://docs.ansible.com/ansible/intro_installation.html)
   * Ansible version 2.2 is tested and required.
 3. Set up a passwordless sudo user on the remote host and set up an ssh key pair.
+  * NOTE: a passwordless sudo user is required on the remote host to perform the database operations with ansible
 4. Make a new hosts file by copying `hosts.sample` to `hosts` and setup your galaxy host.
 5. Create a new configuration directory by copying `host_vars/example_host` to `host_vars/HOSTNAME`. Hostname should be equal to that specified in `hosts`
 6. Create a new files directory by copying `files/example_host` to `files/HOSTNAME`
@@ -48,18 +49,15 @@ If no tool lists are present, this step will be automatically skipped.
 ### Database
 If you wish to use a postgresql database of another galaxy instance, make a dump of the instance.
 Put the dump file in `files/HOSTNAME/insert_db`. Alternatively you can specify the location by changing `insert_db_dir` in `files.settings`
-If no database is found, a new empty DB will be created.
+If no database is added, a new empty DB will be created.
 
 ## Starting a galaxy instance on a remote machine.
 
-To install docker, fetch the image, run it and install all the tools run:
+To install docker, fetch the image, run it, add the database and install all the tools run:
 
 ```bash
 ansible-playbook main.yml -e "hosts=HOSTNAME run=install"   
 ```
-
-If you did not set up passwordless sudo you can add the -K parameter and type in the sudo password.
-
 
 Alternatively you can set up your machine step by step.
 

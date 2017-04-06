@@ -1,1 +1,2 @@
 delete_files: False
+delete_test_upgrade: False

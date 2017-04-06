@@ -29,14 +29,33 @@
     owner: "{{galaxy_uid}}"
     group: "{{galaxy_uid}}" 
 
-- name: copy database files
-  copy:
+#- name: copy database files
+#  copy:
+#    dest: "{{docker_export_location}}/{{import_db_location}}/{{imported_db}}"
+#    src: "{{import_db}}/{{imported_db}}"
+#    remote_src: False
+#    mode: 0600
+#    owner: "{{galaxy_uid}}"
+#    group: "{{galaxy_uid}}" 
+#  register: debug_copy
+
+- name: copy database files using rsync
+  synchronize:
+    mode: push
     dest: "{{docker_export_location}}/{{import_db_location}}/{{imported_db}}"
     src: "{{import_db}}/{{imported_db}}"
-    remote_src: False
+    perms: yes
+    compress: yes
+  vars:
+    ansible_ssh_pipelining: False #otherwise synchronize does not work
+
+- name: Set file ownership
+  file:
+    path: "{{docker_export_location}}/{{import_db_location}}/{{imported_db}}"
     mode: 0600
     owner: "{{galaxy_uid}}"
-    group: "{{galaxy_uid}}" 
+    group: "{{galaxy_uid}}"
+    state: file 
   register: debug_copy
 
 - name: stop galaxy service in container

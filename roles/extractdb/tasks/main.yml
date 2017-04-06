@@ -34,11 +34,22 @@
   register: output
   ignore_errors: true
 
-- name: Copy exported db to ansible host
-  fetch:
+
+#- name: Copy exported db to ansible host
+#  fetch:
+#    dest: "{{fetch_location}}"
+#    flat: True
+#    src: "{{docker_export_location}}/{{exported_db_file}}"
+
+- name: rsync exported db to ansible host
+  synchronize:
+    perms: yes #file should not be world readable
+    compress: yes
     dest: "{{fetch_location}}"
-    flat: True
     src: "{{docker_export_location}}/{{exported_db_file}}"
+    mode: pull
+  vars:
+    ansible_ssh_pipelining: False
     
 - name: Delete dump file on server
   file:
