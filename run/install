@@ -1,3 +1,4 @@
+importdb: True
 installdocker: True
 galaxyfirewall: True
 rundockergalaxy: True
