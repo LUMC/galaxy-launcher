@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -eu -o pipefail
+
+
+echo "{{timestamp}} Dump the database from within the container using the postgres user"
+docker exec -u {{container_postgres_user}} {{docker_container_name}} \
+  pg_dump {{container_database_name}} -f /export/{{db_export_location}}/{{backup_db_file}}
+
+echo "{{timestamp}} Move the dumped database to the backup_db_location"
+mv {{docker_export_location}}/{{db_export_location}}/{{backup_db_file}} \
+  {{backup_db_location}}\{{backup_db_file}}
+
+echo "Archive the database"
+{{zip_command}} <{{backup_db_location}}/{{backup_db_file}} > \
+  {{backup_db_location}}/{{backup_archive}}
+rm -f "{{backup_db_location}}/{{backup_db_file}}"
+
+old_files=$(ls -tp | grep -v '/$' | tail -n + $(({{max_number_of_files}} + 1)) )
+echo "Start removing old files"
+for file in old_files
+  echo -n "Removing $file ... "
+  rm -f $file
+  echo "done!"

@@ -1,0 +1,10 @@
+---
+# defaults file for cronbackupdb
+
+container_postgres_user: 1550
+container_database_name: galaxy
+db_export_location: postgresql
+backup_db_file: galaxydb_backup
+zip_command: "pigz -{{compression_level}} 
+compression_level: 6
+
