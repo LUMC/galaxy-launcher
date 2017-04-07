@@ -15,6 +15,7 @@
     - { role: upgrade, when: "{{ upgrade | default('False')}}" }
     - { role: galaxyfirewall, when: "{{ galaxyfirewall | default('False')}}" }
     - { role: rundockergalaxy, when: "{{ rundockergalaxy | default('False')}}" }    
+    - { role: cronbackupdb, when: "{{ cronbackupdb | default('False')}}" }    
     - { role: installtools, when: "{{ installtools | default('False')}}" }
     - { role: backupgalaxy, when: "{{ backupgalaxy | default('False')}}" }
     - { role: deletegalaxy, when: "{{ deletegalaxy | default('False')}}" }

@@ -2,11 +2,49 @@
 # tasks file for cronbackupdb
 
 - name: create backup folder with logs and scripts subfolders
-
+  file:
+    path: "{{item}}"
+    state: directory
+  with_items:
+    - "{{backup_location}}"
+    - "{{backup_location}}/logs"
+    - "{{backup_location}}/scripts"
+    
 - name: create folder for each job within the backup folder
+  file:
+    path: "{{backup_location}}/{{item.key}}"
+    state: directory
+  with_dict:"{{ backupdb_cron_jobs }}"
 
 - name: Create backup scripts for each job
-
+  template:
+    src: "backupscript.sh.j2"
+    dest: "{{backup_location}}/scripts/{{item.key-backupscript.sh}}"
+    mode: 0722
+  vars:
+    backup_archive: "{{item.filename}}$(TZ='UTZ' date +'{{item.timestamp}}').gz"
+    backup_db_location: "{{backup_location}}/{{item.key}}"
+    files_to_keep: "{{item.files_to_keep}}"
+    compression_level: "{{item.compression_level | default(omit)}}"
+    compression_threads: "{{item.compression_threads | default(omit)}}"
+  with_dict: "{{ backupdb_cron_jobs }}"
+ 
 - name: set jobs in cron
+  cron:
+    job: "sh {{backup_location}}/scripts/{{item.key-backupscript.sh}}"
+    state: present
+    user: root
+    backup: yes
+    name: "{{item.description}}"
+    month: "{{item.cron.month | default(omit)}}"
+    day: "{{item.cron.day | default(omit)}}"
+    weekday: "{{item.cron.weekday | default(omit)}"
+    hour: "{{item.cron.hour | default(omit)}}"
+    minute: "{{item.cron.minute | default(omit)}}"
+    special_time: "{{item.cron.special_time | default(omit)}}"    
+    
+  with_dict: "{{ backupdb_cron_jobs }}"
 
 - name: Set job in cron to rsync backups to a remote location
+  debug:
+    msg: work in progress

@@ -1,22 +1,25 @@
 #!/bin/bash
-
 set -eu -o pipefail
 
-container_postgres_user={{container_postgres_user}}
-docker_container_name={{docker_container_name}}
-container_database_name={{container_database_name}}
-db_export_location={{db_export_location}}
-backup_db_file={{backup_db_file}}
-docker_export_location={{docker_export_location}}
-db_export_location={{db_export_location}}
-backup_db_file={{backup_db_file}}
-backup_db_location={{backup_db_location}}
-timestamp={{cronbackupdb_timestamp}}
-zip_command={{zip_command}}
-max_number_of_files={{max_number_of_files}}
 timestamp()={
 {{cronbackupdb_log_timestamp}}
 }
+
+echo "$(timestamp) Start backup script"
+
+container_postgres_user="{{container_postgres_user}}"
+docker_container_name="{{docker_container_name}}"
+container_database_name="{{container_database_name}}"
+db_export_location="{{db_export_location}}"
+backup_db_file="{{backup_db_file}}"
+docker_export_location="{{docker_export_location}}"
+db_export_location="{{db_export_location}}"
+backup_db_file="{{backup_db_file}}"
+backup_db_location="{{backup_db_location}}"
+backup_archive="{{backup_archive}}"
+timestamp="{{cronbackupdb_timestamp}}"
+zip_command="{{zip_command}}"
+files_to_keep="{{files_to_keep}}"
 
 echo -n "$(timestamp) Dump the database from within the container using the postgres user ... "
 docker exec -u $container_postgres_user $docker_container_name \
@@ -34,9 +37,11 @@ echo "done"
   $backup_db_location/$backup_archive
 rm -f "$backup_db_location/$backup_db_file"
 
-old_files=$(ls -tp | grep -v '/$' | tail -n + $(($max_number_of_files + 1)) )
+old_files=$(ls -tp | grep -v '/$' | tail -n + $(($files_to_keep + 1)) )
 echo "$(timestamp) Start removing old files"
 for file in old_files
   echo -n "$(timestamp) Removing $file ... "
   rm -f $file
   echo "done"
+
+echo "$(timestamp) backup completed successfully"
