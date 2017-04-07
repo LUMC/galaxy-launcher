@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail
 
-timestamp()={
+timestamp(){
 {{cronbackupdb_log_timestamp}}
 }
 
@@ -17,7 +17,6 @@ db_export_location="{{db_export_location}}"
 backup_db_file="{{backup_db_file}}"
 backup_db_location="{{backup_db_location}}"
 backup_archive="{{backup_archive}}"
-timestamp="{{cronbackupdb_timestamp}}"
 zip_command="{{zip_command}}"
 files_to_keep="{{files_to_keep}}"
 
@@ -26,22 +25,35 @@ docker exec -u $container_postgres_user $docker_container_name \
   pg_dump $container_database_name -f /export/$db_export_location/$backup_db_file
 echo "done"
 
-echo -n "$(timestamp) Move the dumped database to $backup_db_location"
+echo -n "$(timestamp) Move the dumped database to $backup_db_location ... "
 mv $docker_export_location/$db_export_location/$backup_db_file \
-  $backup_db_location\$backup_db_file
-
-echo -n "$(timestamp) Archive the database to $backup_location/$backup_archive ... "
-$zip_command < $backup_db_location/$backup_db_file > \
+  $backup_db_location/$backup_db_file
 echo "done"
 
+echo -n "$(timestamp) Archive the database to $backup_db_location/$backup_archive ... "
+$zip_command < $backup_db_location/$backup_db_file > \
   $backup_db_location/$backup_archive
-rm -f "$backup_db_location/$backup_db_file"
+echo "done"
 
-old_files=$(ls -tp | grep -v '/$' | tail -n + $(($files_to_keep + 1)) )
-echo "$(timestamp) Start removing old files"
-for file in old_files
-  echo -n "$(timestamp) Removing $file ... "
-  rm -f $file
-  echo "done"
+echo -n "$backup_archive created. Removing source file ... "
+rm -f "$backup_db_location/$backup_db_file"
+echo "done"
 
 echo "$(timestamp) backup completed successfully"
+
+old_files="$(ls -tp | grep -v '/$' | tail -n +$(($files_to_keep + 1)) )"
+
+echo "$old_files"
+if [ "$(echo \"$old_files\" | wc -l)" -gt "0" ] 
+  then
+    echo "$(timestamp) More than $files_to_keep files found. Start removing files."
+    for file in $old_files
+      do
+        echo -n "$(timestamp) Removing $file ... "
+        rm -f $file
+        echo "done"
+      done
+  else
+    echo "$(timestamp) Not more than $files_to_keep found. Skip cleanup."
+fi
+
