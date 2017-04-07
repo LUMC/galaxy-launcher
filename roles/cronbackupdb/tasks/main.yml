@@ -1,2 +1,12 @@
 ---
 # tasks file for cronbackupdb
+
+- name: create backup folder with logs and scripts subfolders
+
+- name: create folder for each job within the backup folder
+
+- name: Create backup scripts for each job
+
+- name: set jobs in cron
+
+- name: Set job in cron to rsync backups to a remote location

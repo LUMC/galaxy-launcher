@@ -7,4 +7,4 @@ db_export_location: postgresql
 backup_db_file: galaxydb_backup
 zip_command: "pigz -{{compression_level}} 
 compression_level: 6
-
+cronbackupdb_log_timestamp="TZ='UTZ' date +'%Z %F %T' >"
