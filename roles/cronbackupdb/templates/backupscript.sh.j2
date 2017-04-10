@@ -51,7 +51,6 @@ echo "$(timestamp) A maximum of $files_to_keep files will be kept in $backup_db_
 old_files="$(ls -Atp $backup_db_location | grep -v '/$' | tail -n +$(($files_to_keep + 1)) )"
 number_of_files="$(ls -Atp $backup_db_location | grep -v '/$' | wc -l )"
 
-echo "$number_of_files - $files_to_keep = $(($number_of_files - $files_to_keep))"
 # The below line tests if  the list of redundant backups is empty. 
 #If empty old_files will be "". Echo -n does not add a trailing new line.
 #The character count is therefore 0 when no files are found and higher when files are found.
@@ -68,4 +67,3 @@ if [ "$(($number_of_files -$files_to_keep))" -gt "0" ]
   else
     echo "$(timestamp) Not more than $files_to_keep files found. Skip cleanup."
 fi
-

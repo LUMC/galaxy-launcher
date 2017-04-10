@@ -7,3 +7,4 @@ container_database_name: galaxy
 db_export_location: postgresql
 backup_db_file: "galaxydb_backup-$(TZ='UTC' date +'%Z%Y%m%dT%H%M%S')"
 cronbackupdb_log_timestamp: "TZ='UTZ' date +'%Z %F %T >'"
+backup_user: galaxy_backup

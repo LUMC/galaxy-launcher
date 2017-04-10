@@ -6,10 +6,22 @@
     name: pigz
     state: latest
 
+- name: Create backup user that has  access to the postgres database inside the container
+  user:
+    name: "{{backup_user}}"
+    createhome: no
+    generate_ssh_key: yes
+    uid: "{{container_postgres_user}}"
+    state: present
+    non_unique: yes #The UID should be set to that of the postgres container user, regardless of other UID's
+
 - name: create backup folder with logs and scripts subfolders
   file:
     path: "{{item}}"
     state: directory
+    owner: "{{backup_user}}"
+    group: "{{backup_user}}"
+    mode: 0700
   with_items:
     - "{{backup_location}}"
     - "{{backup_location}}/logs"
@@ -19,13 +31,18 @@
   file:
     path: "{{backup_location}}/{{item.key}}"
     state: directory
+    owner: "{{backup_user}}"
+    group: "{{backup_user}}"
+    mode: 0700
   with_dict: "{{ backupdb_cron_jobs }}"
 
 - name: Create backup scripts for each job
   template:
     src: "backupscript.sh.j2"
     dest: "{{backup_location}}/scripts/{{item.key}}-backupscript.sh"
-    mode: 0744
+    owner: "{{backup_user}}"
+    group: "{{backup_user}}"
+    mode: 0700
   vars:
     backup_archive: "{{item.value.filename}}$(TZ='UTZ' date +'{{item.value.timestamp}}').gz"
     backup_db_location: "{{backup_location}}/{{item.key}}"
@@ -38,7 +55,7 @@
   cron:
     job: "bash {{backup_location}}/scripts/{{item.key}}-backupscript.sh >> {{log_file}} 2>&1"
     state: present
-    user: root
+    user: "{{backup_user}}"
     backup: yes
     name: "{{item.value.description}}"
     month: "{{item.value.cron.month | default(omit)}}"
