@@ -5,7 +5,7 @@ timestamp(){
 {{cronbackupdb_log_timestamp}}
 }
 
-echo "$(timestamp) Start backup script"
+echo "$(timestamp) === START BACKUP OF GALAXY ==="
 
 container_postgres_user="{{container_postgres_user}}"
 docker_container_name="{{docker_container_name}}"
@@ -19,7 +19,7 @@ backup_archive="{{backup_archive}}"
 zip_command="{{zip_command}}"
 files_to_keep="{{files_to_keep}}"
 
-echo -n "$(timestamp) Dump the database from within the container using the postgres user ... "
+echo -n "$(timestamp) Dump the databse to $docker_export_location/$db_export_location/$backup_db_file ... "
 touch $docker_export_location/$db_export_location/$backup_db_file
 chmod 0600 $docker_export_location/$db_export_location/$backup_db_file
 docker exec -u $container_postgres_user $docker_container_name \
@@ -33,14 +33,11 @@ $zip_command -c < $docker_export_location/$db_export_location/$backup_db_file >>
   $backup_db_location/$backup_archive
 echo "done"
 
-echo -n "$(timestamp) $backup_archive created. Removing source file ... "
+echo -n "$(timestamp) Removing dump file $docker_export_location/$db_export_location/$backup_db_file ... "
 rm -f "$docker_export_location/$db_export_location/$backup_db_file"
 echo "done"
 
-echo "$(timestamp) backup completed successfully"
-
 echo "$(timestamp) A maximum of $files_to_keep files will be kept in $backup_db_location. Looking for redundant files."
-
 
 old_files="$(ls -Atp $backup_db_location | grep -v '/$' | tail -n +$(($files_to_keep + 1)) )"
 number_of_files="$(ls -Atp $backup_db_location | grep -v '/$' | wc -l )"
@@ -57,3 +54,5 @@ if [ "$(($number_of_files - $files_to_keep))" -gt "0" ]
   else
     echo "$(timestamp) Not more than $files_to_keep files found. Skip cleanup."
 fi
+
+echo "$(timestamp) === BACKUP COMPLETED SUCCESSFULLY ==="
