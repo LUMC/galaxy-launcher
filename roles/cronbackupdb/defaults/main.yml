@@ -1,3 +1,4 @@
+
 ---
 # defaults file for cronbackupdb
 
@@ -5,7 +6,4 @@ container_postgres_user: 1550
 container_database_name: galaxy
 db_export_location: postgresql
 backup_db_file: "galaxydb_backup-$(TZ='UTC' date +'%Z%Y%m%dT%H%M%S')"
-zip_command: "pigz -{{compression_level}} -p {{compression_threads}}"
-compression_level: 6
-compression_threads: 4
 cronbackupdb_log_timestamp: "TZ='UTZ' date +'%Z %F %T >'"

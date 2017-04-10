@@ -1,2 +1,3 @@
 ---
 # vars file for cronbackupdb
+zip_command: "pigz -{{compression_level}} -p {{compression_threads}}"
