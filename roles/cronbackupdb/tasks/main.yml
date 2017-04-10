@@ -9,9 +9,9 @@
 - name: Create backup user that has  access to the postgres database inside the container
   user:
     name: "{{backup_user}}"
-    createhome: no
     generate_ssh_key: yes
     uid: "{{container_postgres_user}}"
+    groups: docker
     state: present
     non_unique: yes #The UID should be set to that of the postgres container user, regardless of other UID's
 

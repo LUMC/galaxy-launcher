@@ -22,25 +22,19 @@ files_to_keep="{{files_to_keep}}"
 echo -n "$(timestamp) Dump the database from within the container using the postgres user ... "
 touch $docker_export_location/$db_export_location/$backup_db_file
 chmod 0600 $docker_export_location/$db_export_location/$backup_db_file
-chown $container_postgres_user $docker_export_location/$db_export_location/$backup_db_file
 docker exec -u $container_postgres_user $docker_container_name \
   bash -c "pg_dump $container_database_name >> /export/$db_export_location/$backup_db_file"
 echo "done"
 
-echo -n "$(timestamp) Move the dumped database to $backup_db_location ... "
-mv $docker_export_location/$db_export_location/$backup_db_file \
-  $backup_db_location/$backup_db_file
-echo "done"
- 
 echo -n "$(timestamp) Archive the database to $backup_db_location/$backup_archive ... "
 touch $backup_db_location/$backup_archive
 chmod 0600 $backup_db_location/$backup_archive
-$zip_command -c < $backup_db_location/$backup_db_file >> \
+$zip_command -c < $docker_export_location/$db_export_location/$backup_db_file >> \
   $backup_db_location/$backup_archive
 echo "done"
 
-echo -n "$backup_archive created. Removing source file ... "
-rm -f "$backup_db_location/$backup_db_file"
+echo -n "$(timestamp) $backup_archive created. Removing source file ... "
+rm -f "$docker_export_location/$db_export_location/$backup_db_file"
 echo "done"
 
 echo "$(timestamp) backup completed successfully"
@@ -51,11 +45,7 @@ echo "$(timestamp) A maximum of $files_to_keep files will be kept in $backup_db_
 old_files="$(ls -Atp $backup_db_location | grep -v '/$' | tail -n +$(($files_to_keep + 1)) )"
 number_of_files="$(ls -Atp $backup_db_location | grep -v '/$' | wc -l )"
 
-# The below line tests if  the list of redundant backups is empty. 
-#If empty old_files will be "". Echo -n does not add a trailing new line.
-#The character count is therefore 0 when no files are found and higher when files are found.
-
-if [ "$(($number_of_files -$files_to_keep))" -gt "0" ] 
+if [ "$(($number_of_files - $files_to_keep))" -gt "0" ] 
   then
     echo "$(timestamp) More than $files_to_keep files found. Oldest files will be removed."
     for file in $old_files
