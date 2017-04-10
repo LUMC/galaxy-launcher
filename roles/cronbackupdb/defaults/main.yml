@@ -8,3 +8,11 @@ db_export_location: postgresql
 backup_db_file: "galaxydb_backup-$(TZ='UTC' date +'%Z%Y%m%dT%H%M%S')"
 cronbackupdb_log_timestamp: "TZ='UTC' date +'%Z %F %T >'"
 backup_user: galaxy_backup
+backup_ssh_key_file: ".ssh/id_rsa"
+default_rsync_settings:
+  delete: True
+  compression_level: 0
+  cron:
+    special_time: "hourly"
+    
+backup_rsync_settings: {}

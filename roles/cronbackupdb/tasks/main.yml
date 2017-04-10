@@ -14,6 +14,14 @@
     groups: docker
     state: present
     non_unique: yes #The UID should be set to that of the postgres container user, regardless of other UID's
+    ssh_key_file: "{{backup_ssh_key_file}}"
+
+- name: copy public key of backup user to ansible host
+  fetch:
+    dest: "files/{{inventory_hostname}}/{{backup_user}}_public-key/id_rsa.pub"
+    flat: yes
+    src: "/home/{{backup_user}}/{{backup_ssh_key_file}}.pub"
+    validate_checksum: yes
 
 - name: create backup folder with logs and scripts subfolders
   file:
@@ -69,5 +77,25 @@
   with_dict: "{{ backupdb_cron_jobs }}"
 
 - name: Set job in cron to rsync backups to a remote location
-  debug:
-    msg: work in progress
+  cron:
+    job: "stdbuf -oL {{rsync_command | replace('\n', '')}} | {{read_stdout}} &>> {{rsync_log}} "
+    state: present
+    user: "{{backup_user}}"
+    backup: yes
+    name: "Rsync to the backup host"
+    month: "{{item.cron.month | default(omit) }}"
+    day: "{{item.cron.day | default(omit) }}"
+    weekday: "{{item.cron.weekday | default(omit)}}"
+    hour: "{{item.cron.hour | default(omit)}}"
+    minute: "{{item.cron.minute | default(omit)}}"
+    special_time: "{{item.cron.special_time | default(omit)}}"
+  
+  vars:
+    rsync_command: > 
+      rsync -a {{ (item.delete == True ) | ternary ('--delete','') }}
+      --compress-level={{item.compression_level}}
+      {{backup_location}} {{item.dest}}
+    rsync_log: "{{backup_location}}/logs/rsync.log"
+    read_stdout: 'while IFS= read -r line; do echo "$({{cronbackupdb_log_timestamp}}) $line" ; done'
+  with_items:
+    - "{{backup_galaxy_rsync_settings}}"
