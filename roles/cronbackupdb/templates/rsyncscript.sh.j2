@@ -12,7 +12,7 @@ host={{host}}
 user={{user | default("")}}
 dest={{dest}}
 dest_string={{user | default("")}}{{ '@' if user != '' else '' }}{{host}}:{{dest}}
-flags="-a --compress-level={{compression_level | default('0')}} {{ '--delete' if delete else ''}}" 
+flags="-v -a --compress-level={{compression_level | default('0')}} {{ '--delete' if delete else ''}}" 
 command="rsync $flags $src $dest_string"
 
 echo "$(timestamp) Source       = $src"

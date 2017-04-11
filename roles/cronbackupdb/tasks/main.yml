@@ -52,11 +52,13 @@
     group: "{{backup_user}}"
     mode: 0700
   vars:
-    backup_archive: "{{item.value.filename}}$(TZ='UTZ' date +'{{item.value.timestamp}}').gz"
+    backup_archive: "{{item.value.filename}}$(TZ='UTC' date +'{{item.value.timestamp}}').gz"
     backup_db_location: "{{backup_location}}/{{item.key}}"
+    backup_db_file: "galaxy-{{item.key}}-backup$(TZ='UTC' date +'%s.%N')"
     files_to_keep: "{{item.value.files_to_keep}}"
     compression_level: "{{item.value.compression_level | default(6)}}"
     compression_threads: "{{item.value.compression_threads | default(4)}}"
+    name: "{{item.key}}"
   with_dict: "{{ backupdb_cron_jobs }}"
  
 - name: set backup jobs in cron
@@ -94,6 +96,12 @@
   with_items:
     - "{{backup_galaxy_rsync_settings}}"
 
+- name: Add remote backup server to the known_hosts file
+  known_hosts:
+    name: "{{backup_galaxy_rsync_settings.host}}"
+    state: present
+  become_user: "{{backup_user}}"
+
 - name: Set job in cron to rsync backups to a remote location
   cron:
     job: "bash {{backup_location}}/scripts/rsyncscript.sh >> {{backup_location}}/logs/rsync.log 2>&1" 
@@ -109,3 +117,4 @@
     special_time: "{{item.cron.special_time | default(omit)}}"
   with_items:
     - "{{backup_galaxy_rsync_settings}}"
+

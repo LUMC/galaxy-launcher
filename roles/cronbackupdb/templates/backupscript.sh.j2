@@ -5,7 +5,7 @@ timestamp(){
 {{cronbackupdb_log_timestamp}}
 }
 
-echo "$(timestamp) === START BACKUP OF GALAXY ==="
+echo "$(timestamp) === START {{name.upper()}} BACKUP OF GALAXY ==="
 
 container_postgres_user="{{container_postgres_user}}"
 docker_container_name="{{docker_container_name}}"
