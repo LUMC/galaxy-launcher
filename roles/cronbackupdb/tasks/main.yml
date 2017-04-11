@@ -59,7 +59,7 @@
     compression_threads: "{{item.value.compression_threads | default(4)}}"
   with_dict: "{{ backupdb_cron_jobs }}"
  
-- name: set jobs in cron
+- name: set backup jobs in cron
   cron:
     job: "bash {{backup_location}}/scripts/{{item.key}}-backupscript.sh >> {{log_file}} 2>&1"
     state: present
@@ -76,9 +76,27 @@
     log_file: "{{backup_location}}/logs/{{item.key}}.log"   
   with_dict: "{{ backupdb_cron_jobs }}"
 
+
+- name: create rsync script
+  template: 
+    src: "rsyncscript.sh.j2"
+    dest: "{{backup_location}}/scripts/rsyncscript.sh"
+    owner: "{{backup_user}}"
+    group: "{{backup_user}}"
+    mode: 0700
+  vars:
+    src: "{{backup_location}}"
+    host: "{{item.host}}"
+    dest: "{{item.dest}}"
+    user: "{{item.user |default('')}}"
+    compression_level: "{{item.compression_level}}"
+    delete: "{{item.delete}}"
+  with_items:
+    - "{{backup_galaxy_rsync_settings}}"
+
 - name: Set job in cron to rsync backups to a remote location
   cron:
-    job: "stdbuf -oL {{rsync_command | replace('\n', '')}} | {{read_stdout}} &>> {{rsync_log}} "
+    job: "bash {{backup_location}}/scripts/rsyncscript.sh >> {{backup_location}}/logs/rsync.log 2>&1" 
     state: present
     user: "{{backup_user}}"
     backup: yes
@@ -89,13 +107,5 @@
     hour: "{{item.cron.hour | default(omit)}}"
     minute: "{{item.cron.minute | default(omit)}}"
     special_time: "{{item.cron.special_time | default(omit)}}"
-  
-  vars:
-    rsync_command: > 
-      rsync -a {{ (item.delete == True ) | ternary ('--delete','') }}
-      --compress-level={{item.compression_level}}
-      {{backup_location}} {{item.dest}}
-    rsync_log: "{{backup_location}}/logs/rsync.log"
-    read_stdout: 'while IFS= read -r line; do echo "$({{cronbackupdb_log_timestamp}}) $line" ; done'
   with_items:
     - "{{backup_galaxy_rsync_settings}}"
