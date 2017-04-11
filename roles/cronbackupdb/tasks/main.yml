@@ -18,7 +18,7 @@
 
 - name: copy public key of backup user to ansible host
   fetch:
-    dest: "files/{{inventory_hostname}}/{{backup_user}}_public-key/id_rsa.pub"
+    dest: "{{ssh_dir}}/{{backup_user}}_public-key/id_rsa.pub"
     flat: yes
     src: "/home/{{backup_user}}/{{backup_ssh_key_file}}.pub"
     validate_checksum: yes
@@ -100,7 +100,8 @@
   known_hosts:
     name: "{{backup_galaxy_rsync_settings.host}}"
     state: present
-  become_user: "{{backup_user}}"
+    key: "{{lookup('file','{{ssh_dir}}/{{backup_galaxy_rsync_settings.host}}/ssh_host_rsa_key.pub')}}"
+    path: "/home/{{backup_user}}/.ssh/known_hosts"
 
 - name: Set job in cron to rsync backups to a remote location
   cron:
