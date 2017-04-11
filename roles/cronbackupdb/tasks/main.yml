@@ -102,6 +102,7 @@
     state: present
     key: "{{lookup('file','{{ssh_dir}}/{{backup_galaxy_rsync_settings.host}}/ssh_host_rsa_key.pub')}}"
     path: "/home/{{backup_user}}/.ssh/known_hosts"
+#    hash_host: True
 
 - name: Set job in cron to rsync backups to a remote location
   cron:
