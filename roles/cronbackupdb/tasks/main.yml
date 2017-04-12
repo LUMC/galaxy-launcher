@@ -34,7 +34,7 @@
     - "{{backup_location}}"
     - "{{backup_location}}/logs"
     - "{{backup_location}}/scripts"
-    
+
 - name: create folder for each job within the backup folder
   file:
     path: "{{backup_location}}/{{item.key}}"
@@ -60,7 +60,7 @@
     compression_threads: "{{item.value.compression_threads | default(4)}}"
     name: "{{item.key}}"
   with_dict: "{{ backupdb_cron_jobs }}"
- 
+
 - name: set backup jobs in cron
   cron:
     job: "bash {{backup_location}}/scripts/{{item.key}}-backupscript.sh >> {{log_file}} 2>&1"
@@ -73,14 +73,14 @@
     weekday: "{{item.value.cron.weekday | default(omit)}}"
     hour: "{{item.value.cron.hour | default(omit)}}"
     minute: "{{item.value.cron.minute | default(omit)}}"
-    special_time: "{{item.value.cron.special_time | default(omit)}}" 
+    special_time: "{{item.value.cron.special_time | default(omit)}}"
   vars:
-    log_file: "{{backup_location}}/logs/{{item.key}}.log"   
+    log_file: "{{backup_location}}/logs/{{item.key}}.log"
   with_dict: "{{ backupdb_cron_jobs }}"
 
 
 - name: create rsync script
-  template: 
+  template:
     src: "rsyncscript.sh.j2"
     dest: "{{backup_location}}/scripts/rsyncscript.sh"
     owner: "{{backup_user}}"
@@ -96,13 +96,27 @@
   with_items:
     - "{{backup_galaxy_rsync_settings}}"
 
+# This module can be used from ansible 2.3 onwards with hash_host
 - name: Add remote backup server to the known_hosts file
   known_hosts:
     name: "{{backup_galaxy_rsync_settings.host}}"
     state: present
-    key: "{{lookup('file','{{ssh_dir}}/{{backup_galaxy_rsync_settings.host}}/ssh_host_rsa_key.pub')}}"
-    path: "/home/{{backup_user}}/.ssh/known_hosts"
+    key: "{{lookup('file','{{ssh_dir}}/{{backup_galaxy_rsync_settings.host}}/public_key')}}"
 #    hash_host: True
+  become_user: "{{backup_user}}"
+
+- name: Hash known_hosts file.
+  become_user: "{{backup_user}}"
+  command: "ssh-keygen -Hf {{known_hosts}}"
+  vars:
+    known_hosts: "~/.ssh/known_hosts"
+
+- name: Delete known_hosts.old file
+  become_user: "{{backup_user}}"
+  file:
+    path: "~/.ssh/known_hosts.old"
+    state: absent
+
 
 - name: Set job in cron to rsync backups to a remote location
   cron:
