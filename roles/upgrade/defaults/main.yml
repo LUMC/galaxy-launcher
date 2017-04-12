@@ -9,18 +9,26 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-prerequisites:
-  - linux-image-extra-virtual
-  - "linux-image-extra-{{ansible_kernel}}"
-  - apt-transport-https
-  - ca-certificates
-  - curl
-  - software-properties-common
-  - python-pip
-pip_packages:
-  - docker-py
-key: "https://apt.dockerproject.org/gpg"
-repo: "deb https://apt.dockerproject.org/repo/ {{ansible_distribution | lower}}-{{ansible_distribution_release}} main"
-packages:
-  - docker-engine
+test: False
+overwrite_config_files: False #Overwrites old config files with new distribution_config files
 
+no_overwrite: "-n" # No overwrite parameter for cp shell command.
+
+##
+#Files to be migrated for testing
+##
+
+#root folder is the export folder
+# dest: "" therefore equals copying directly into the root folder.
+migrated_files:
+  - src: "galaxy-central/config"
+    dest: "galaxy-central"
+  - src: "postgresql"
+    dest: ""
+
+##
+#Files to be copied from .distribution_config to new config
+##
+new_config_files:
+  - src: ".distribution_config/."
+    dest: "galaxy-central/config"
