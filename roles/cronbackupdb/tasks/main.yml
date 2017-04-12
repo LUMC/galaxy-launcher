@@ -1,7 +1,7 @@
 ---
 # tasks file for cronbackupdb
 
-- name: make sure pigz is installed
+- name: make sure pigz is  installed
   package:
     name: pigz
     state: latest
@@ -15,13 +15,6 @@
     state: present
     non_unique: yes #The UID should be set to that of the postgres container user, regardless of other UID's
     ssh_key_file: "{{backup_ssh_key_file}}"
-
-- name: copy public key of backup user to ansible host
-  fetch:
-    dest: "{{ssh_dir}}/{{backup_user}}_public-key/id_rsa.pub"
-    flat: yes
-    src: "/home/{{backup_user}}/{{backup_ssh_key_file}}.pub"
-    validate_checksum: yes
 
 - name: create backup folder with logs and scripts subfolders
   file:
@@ -79,58 +72,4 @@
   with_dict: "{{ backupdb_cron_jobs }}"
 
 
-- name: create rsync script
-  template:
-    src: "rsyncscript.sh.j2"
-    dest: "{{backup_location}}/scripts/rsyncscript.sh"
-    owner: "{{backup_user}}"
-    group: "{{backup_user}}"
-    mode: 0700
-  vars:
-    src: "{{backup_location}}"
-    host: "{{item.host}}"
-    dest: "{{item.dest}}"
-    user: "{{item.user |default('')}}"
-    compression_level: "{{item.compression_level}}"
-    delete: "{{item.delete}}"
-  with_items:
-    - "{{backup_galaxy_rsync_settings}}"
-
-# This module can be used from ansible 2.3 onwards with hash_host
-- name: Add remote backup server to the known_hosts file
-  known_hosts:
-    name: "{{backup_galaxy_rsync_settings.host}}"
-    state: present
-    key: "{{lookup('file','{{ssh_dir}}/{{backup_galaxy_rsync_settings.host}}/public_key')}}"
-#    hash_host: True
-  become_user: "{{backup_user}}"
-
-- name: Hash known_hosts file.
-  become_user: "{{backup_user}}"
-  command: "ssh-keygen -Hf {{known_hosts}}"
-  vars:
-    known_hosts: "~/.ssh/known_hosts"
-
-- name: Delete known_hosts.old file
-  become_user: "{{backup_user}}"
-  file:
-    path: "~/.ssh/known_hosts.old"
-    state: absent
-
-
-- name: Set job in cron to rsync backups to a remote location
-  cron:
-    job: "bash {{backup_location}}/scripts/rsyncscript.sh >> {{backup_location}}/logs/rsync.log 2>&1" 
-    state: present
-    user: "{{backup_user}}"
-    backup: yes
-    name: "Rsync to the backup host"
-    month: "{{item.cron.month | default(omit) }}"
-    day: "{{item.cron.day | default(omit) }}"
-    weekday: "{{item.cron.weekday | default(omit)}}"
-    hour: "{{item.cron.hour | default(omit)}}"
-    minute: "{{item.cron.minute | default(omit)}}"
-    special_time: "{{item.cron.special_time | default(omit)}}"
-  with_items:
-    - "{{backup_galaxy_rsync_settings}}"
-
+- include: rsync.yml
