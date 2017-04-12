@@ -9,6 +9,10 @@
 config/hosts
 hosts
 
+licenses/license_header
+
+deprecated/
+
 !host_vars/
 host_vars/*
 !host_vars/example_host
