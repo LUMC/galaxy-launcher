@@ -10,5 +10,6 @@
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # vars file for cronbackupdb
+
 zip_command: "pigz -{{compression_level}} -p {{compression_threads}}"
 backup_galaxy_rsync_settings: "{{ default_rsync_settings | combine(backup_rsync_settings)  }}"
