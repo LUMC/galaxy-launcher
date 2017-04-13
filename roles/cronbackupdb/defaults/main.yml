@@ -25,3 +25,4 @@ default_rsync_settings:
     special_time: "hourly"
     
 backup_rsync_settings: {}
+backup_rsync_remote_host: False

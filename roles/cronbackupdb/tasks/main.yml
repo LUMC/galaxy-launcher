@@ -11,32 +11,7 @@
 
 # tasks file for cronbackupdb
 
-- name: make sure pigz is  installed
-  package:
-    name: pigz
-    state: latest
-
-- name: Create backup user that has  access to the postgres database inside the container
-  user:
-    name: "{{backup_user}}"
-    generate_ssh_key: yes
-    uid: "{{container_postgres_user}}"
-    groups: docker
-    state: present
-    non_unique: yes #The UID should be set to that of the postgres container user, regardless of other UID's
-    ssh_key_file: "{{backup_ssh_key_file}}"
-
-- name: create backup folder with logs and scripts subfolders
-  file:
-    path: "{{item}}"
-    state: directory
-    owner: "{{backup_user}}"
-    group: "{{backup_user}}"
-    mode: 0700
-  with_items:
-    - "{{backup_location}}"
-    - "{{backup_location}}/logs"
-    - "{{backup_location}}/scripts"
+- include: setup.yml
 
 - name: create folder for each job within the backup folder
   file:
@@ -83,3 +58,4 @@
 
 
 - include: rsync.yml
+  when: backup_rsync_remote_host

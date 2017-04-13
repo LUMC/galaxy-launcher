@@ -1,9 +1,11 @@
 
 backup_location: "/data/galaxy/backup"
+backup_user: "galaxy_backup"
+backup_rsync_remote_host: True
 
 backupdb_cron_jobs:
   hourly:
-    description: "Hourly backup of the Galaxy database"
+    description: "Hourly backup of the testgalaxy database"
     timestamp: "-%Z%Y%m%dT%H%M%S" 
     filename: "galaxy-hourly-backup"
     files_to_keep: 24
@@ -12,7 +14,7 @@ backupdb_cron_jobs:
     cron:
       special_time: "hourly"
   daily: 
-    description: "Daily backup of the Galaxy database"
+    description: "Daily backup of the testgalaxy database"
     timestamp: "-%Z%Y%m%dT%H%M"
     filename: "galaxy-daily-backup"
     files_to_keep: 7 
@@ -22,11 +24,10 @@ backupdb_cron_jobs:
       special_time: daily
  
 #Rsync settings
-
 backup_rsync_settings:
-  dest: /data/galaxy_remote_backups
-  host: backuphost.domain.com
-  user: remotebackup
+  dest: /big_volume/galaxy_remote_backups
+  host: example.backups.org
+  user: remotebackupuser
   delete: True
   compression_level: 0
   cron:

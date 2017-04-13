@@ -12,4 +12,5 @@
 installdocker: True
 galaxyfirewall: True
 rundockergalaxy: True
+cronbackupdb: True
 installtools: True
