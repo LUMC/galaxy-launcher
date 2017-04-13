@@ -5,7 +5,7 @@ backup_rsync_remote_host: True
 
 backupdb_cron_jobs:
   hourly:
-    description: "Hourly backup of the testgalaxy database"
+    description: "Hourly backup of the galaxy database"
     timestamp: "-%Z%Y%m%dT%H%M%S" 
     filename: "galaxy-hourly-backup"
     files_to_keep: 24
@@ -14,7 +14,7 @@ backupdb_cron_jobs:
     cron:
       special_time: "hourly"
   daily: 
-    description: "Daily backup of the testgalaxy database"
+    description: "Daily backup of the galaxy database"
     timestamp: "-%Z%Y%m%dT%H%M"
     filename: "galaxy-daily-backup"
     files_to_keep: 7 
