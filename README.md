@@ -76,8 +76,8 @@ rsync_settings:
   user: "user" # The user that is connected to. This key can be ommited 
   delete: True # Remove backups on the remote server if they are removed on the galaxy server. True is recommended.
   compression_level: 0 # Can range from 0-9. Rsync compresses the data before transmission to save bandwith* 
-  cron: 
-    special_time: hourly # How often the rsync to the remote host should be performed. Hourly is recommended.
+  cron:  How often the rsync to the remote host should be performed. Hourly is recommended.
+    special_time: hourly #
 
  #* 0 is recommended because the archives are already compressed
 
