@@ -46,6 +46,7 @@ backup_user: "galaxy_backup_user"
 backup_rsync_remote_host: True          # Enables or disables rsyncing all the backups to a remote host.
 
 ```YAML
+
 backupdb_cron_jobs:  
   daily: # The key is the "name" of the cron job  
     description: "Description of the cron job"  
@@ -54,7 +55,7 @@ backupdb_cron_jobs:
     files_to_keep: 7 # How many backups of this job should be kept. Since this jobs runs daily, one week of backups is kept  
     compression_level: 6 # Compression uses pigz. 6 is the default level.Level should be 1-9  
     compression_threads: 4 # The number of threads pigz should use to compress the data  
-    cron: # This is a dictionary that uses the same values as the [ansible cron module](http://docs.ansible.com/ansible/cron_module.html)   
+    cron: # This is a dictionary that uses the same values as the ansible cron module(http://docs.ansible.com/ansible/cron_module.html)   
       special_time: "daily"  
   two_weekly_example:  
     description: "Two-weekly backup of the galaxy database"  
@@ -63,19 +64,23 @@ backupdb_cron_jobs:
     files_to_keep: 6  
     compression_level: 6  
     compression_threads: 4  
-    cron:  
-      month: *  
-      day: 1,15  
-      hour: 3  
-
+    cron: 
+      month: * 
+      day: 1,15 
+      hour: 3 
+```
+```YAML
 rsync_settings:  
-  dest: /destination/path/on/remote/host  
-  host: example.host.org  
-  user: user  # The user that is connected to. This key can be ommited  
-  delete: True  # Remove backups on the remote server. True is recommended unless you wish to keep more files on the backup server than on the galaxy server  
-  compression_level: 0 # The compression level can range from 0-9 and compresses the date before it is sent to save bandwith. Recommended is 0 because the archives are already compressed  
-  cron: # How often the rsync to the remote host should be performed. Hourly is recommended. (Rsync does not transmit if new backups have not been created)  
-    special_time: hourly  
+  dest: "/destination/path/on/remote/host"   
+  host: "example.host.org" 
+  user: "user" # The user that is connected to. This key can be ommited 
+  delete: True # Remove backups on the remote server if they are removed on the galaxy server. True is recommended.
+  compression_level: 0 # Can range from 0-9. Rsync compresses the data before transmission to save bandwith* 
+  cron: 
+    special_time: hourly # How often the rsync to the remote host should be performed. Hourly is recommended.
+
+ #* 0 is recommended because the archives are already compressed
+
 ```
 ### Tools
 Tool lists can be added to `files/HOSTNAME/tools`.  
@@ -158,9 +163,10 @@ It can be enabled when ansible 2.3 is released as stable.
 
 ## Removing the galaxy docker instance.
 `ansible-playbook main.yml -e "hosts=HOSTNAME run=deletegalaxy` does the following things:
-- deletes the container
-- removes the firewall exception and removes the profile
++ deletes the container
++ removes the firewall exception and removes the profile
++ removes the cron jobs 
 
 If `delete_files=True` is added then it will also delete the export folder 
-
+If `delete_backup_files=True` is added then it will also delete the backup folder.
 
