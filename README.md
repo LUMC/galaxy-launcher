@@ -43,8 +43,9 @@ ufw_profile | Firewall access is managed by a ufw profile to prevent the firewal
 ### backup.settings
 backup_location: "backup/location/path"
 backup_user: "galaxy_backup_user"
-backup_rsync_remote_host: True          #
+backup_rsync_remote_host: True          # Enables or disables rsyncing all the backups to a remote host.
 
+```YAML
 backupdb_cron_jobs:  
   daily: # The key is the "name" of the cron job  
     description: "Description of the cron job"  
@@ -75,7 +76,7 @@ rsync_settings:
   compression_level: 0 # The compression level can range from 0-9 and compresses the date before it is sent to save bandwith. Recommended is 0 because the archives are already compressed  
   cron: # How often the rsync to the remote host should be performed. Hourly is recommended. (Rsync does not transmit if new backups have not been created)  
     special_time: hourly  
-
+```
 ### Tools
 Tool lists can be added to `files/HOSTNAME/tools`.  
 An example tool list can be found in `files/example_host/tools`.  
