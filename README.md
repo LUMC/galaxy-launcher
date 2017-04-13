@@ -45,41 +45,41 @@ backup_location: "backup/location/path"
 backup_user: "galaxy_backup_user"
 backup_rsync_remote_host: True          #
 
-backupdb_cron_jobs:
-  daily: # The key is the "name" of the cron job
-    description: "Description of the cron job"
-    timestamp: "-%Z%Y%m%dT%H%M%S" # Timestamp uses the "date" function. Check date --help on how to use the timestamp
-    filename: "galaxy-hourly-backup" # Archives are stored as filename.timestamp.gz
-    files_to_keep: 7 # How many backups of this job should be kept. Since this jobs runs daily, one week of backups is kept
-    compression_level: 6 # Compression uses pigz. 6 is the default level.Level should be 1-9 
-    compression_threads: 4 # The number of threads pigz should use to compress the data
-    cron: # This is a dictionary that uses the same values as the [ansible cron module](http://docs.ansible.com/ansible/cron_module.html) 
-      special_time: "daily"
-  two_weekly_example:
-    description: "Two-weekly backup of the galaxy database"
-    timestamp: "-%Z%Y%m%dT%H%M"
-    filename: "galaxy-fortnight-backup"
-    files_to_keep: 6
-    compression_level: 6
-    compression_threads: 4
-    cron:
-      month: *
-      day: 1,15
-      hour: 3
+backupdb_cron_jobs:  
+  daily: # The key is the "name" of the cron job  
+    description: "Description of the cron job"  
+    timestamp: "-%Z%Y%m%dT%H%M%S" # Timestamp uses the "date" function. Check date --help on how to use the timestamp  
+    filename: "galaxy-hourly-backup" # Archives are stored as filename.timestamp.gz  
+    files_to_keep: 7 # How many backups of this job should be kept. Since this jobs runs daily, one week of backups is kept  
+    compression_level: 6 # Compression uses pigz. 6 is the default level.Level should be 1-9  
+    compression_threads: 4 # The number of threads pigz should use to compress the data  
+    cron: # This is a dictionary that uses the same values as the [ansible cron module](http://docs.ansible.com/ansible/cron_module.html)   
+      special_time: "daily"  
+  two_weekly_example:  
+    description: "Two-weekly backup of the galaxy database"  
+    timestamp: "-%Z%Y%m%dT%H%M"  
+    filename: "galaxy-fortnight-backup"  
+    files_to_keep: 6  
+    compression_level: 6  
+    compression_threads: 4  
+    cron:  
+      month: *  
+      day: 1,15  
+      hour: 3  
 
-rsync_settings:
-  dest: /destination/path/on/remote/host
-  host: example.host.org
-  user: user  # The user that is connected to. This key can be ommited
-  delete: True  # Remove backups on the remote server. True is recommended unless you wish to keep more files on the backup server than on the galaxy server
-  compression_level: 0 # The compression level can range from 0-9 and compresses the date before it is sent to save bandwith. Recommended is 0 because the archives are already compressed
-  cron: # How often the rsync to the remote host should be performed. Hourly is recommended. (Rsync does not transmit if new backups have not been created)
-    special_time: hourly
+rsync_settings:  
+  dest: /destination/path/on/remote/host  
+  host: example.host.org  
+  user: user  # The user that is connected to. This key can be ommited  
+  delete: True  # Remove backups on the remote server. True is recommended unless you wish to keep more files on the backup server than on the galaxy server  
+  compression_level: 0 # The compression level can range from 0-9 and compresses the date before it is sent to save bandwith. Recommended is 0 because the archives are already compressed  
+  cron: # How often the rsync to the remote host should be performed. Hourly is recommended. (Rsync does not transmit if new backups have not been created)  
+    special_time: hourly  
 
 ### Tools
-Tool lists can be added to `files/HOSTNAME/tools`. 
-An example tool list can be found in `files/example_host/tools`.
-If no files are present, this step will be automatically skipped.
+Tool lists can be added to `files/HOSTNAME/tools`.  
+An example tool list can be found in `files/example_host/tools`.  
+If no files are present, this step will be automatically skipped.  
 
 
 ## Starting a galaxy instance on a remote machine.
