@@ -1,2 +1,0 @@
-
-tool_list_dir: "{{ inventory_hostname}}/tools/"

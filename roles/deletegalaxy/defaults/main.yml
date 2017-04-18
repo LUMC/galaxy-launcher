@@ -10,3 +10,7 @@
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 delete_files: False
+delete_test_upgrade: False
+delete_backup_files: False
+delete_test_upgrade: False
+backup_rsync_remote_host: False

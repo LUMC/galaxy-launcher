@@ -9,9 +9,12 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-installdocker: True
-galaxyfirewall: True
-rundockergalaxy: True
-importdb: True
-cronbackupdb: True
-installtools: True
+# defaults file for importdb
+
+container_postgres_user: "1550"
+container_database_name: "galaxy"
+container_database_username: "galaxy"
+galaxy_uid: "1450"
+import_db: "{{inventory_hostname}}/database_import/"
+import_db_location: "database_import"
+
