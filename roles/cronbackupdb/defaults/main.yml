@@ -1,4 +1,5 @@
 
+---
 # Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
 # Contact us at: sasc@lumc.nl
 #
@@ -9,17 +10,19 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-method: rsync
+# defaults file for cronbackupdb
 
-backup_name: "docker_galaxy_backup"
-prefix: ""
-suffix: ""
-
-datetime: "{{ansible_date_time.iso8601_basic_short}}"
-
-rsync_delete: False
-rsync_compression_level: 0 
-# 0 is no compression. 1-3 uses a fast algorithm. 4-9 gives better compression
-
-compression_format: "gz"
-remote_backup: False
+container_postgres_user: 1550
+container_database_name: galaxy
+db_export_location: postgresql
+cronbackupdb_log_timestamp: "TZ='UTC' date +'%Z %F %T >'"
+backup_user: galaxy_backup
+backup_ssh_key_file: ".ssh/id_rsa"
+default_rsync_settings:
+  delete: True
+  compression_level: 0
+  cron:
+    special_time: "hourly"
+    
+backup_rsync_settings: {}
+backup_rsync_remote_host: False
