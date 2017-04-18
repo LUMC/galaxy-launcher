@@ -23,9 +23,11 @@
 
   roles:
     - { role: installdocker, when: "{{ installdocker | default('False')}}" }
+    - { role: importdb, when: "{{ importdb | default('False')}}" }    
     - { role: upgrade, when: "{{ upgrade | default('False')}}" }
     - { role: galaxyfirewall, when: "{{ galaxyfirewall | default('False')}}" }
     - { role: rundockergalaxy, when: "{{ rundockergalaxy | default('False')}}" }
     - { role: cronbackupdb, when: "{{ cronbackupdb | default('False')}}" }
     - { role: installtools, when: "{{ installtools | default('False')}}" }
+    - { role: extractdb, when: "{{ extractdb | default('False')}}" }
     - { role: deletegalaxy, when: "{{ deletegalaxy | default('False')}}" }

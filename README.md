@@ -8,6 +8,7 @@ ubuntu server.
 2. [Set up ansible](http://docs.ansible.com/ansible/intro_installation.html)
   * Ansible version 2.2 is tested and required.
 3. Set up a passwordless sudo user on the remote host and set up an ssh key pair.
+  * NOTE: a passwordless sudo user is required on the remote host to perform the database operations with ansible
 4. Make a new hosts file by copying `hosts.sample` to `hosts` and setup your galaxy host.
 5. Create a new configuration directory by copying `host_vars/example_host` to `host_vars/HOSTNAME`. Hostname should be equal to that specified in `hosts`
 6. Create a new files directory by copying `files/example_host` to `files/HOSTNAME`
@@ -83,21 +84,22 @@ rsync_settings:
 
 ```
 ### Tools
-Tool lists can be added to `files/HOSTNAME/tools`.  
-An example tool list can be found in `files/example_host/tools`.  
-If no files are present, this step will be automatically skipped.  
+Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `tool_list_dir` in `files.settings`
+An example tool list can be found in `files/example_host/tools`.
+If no tool lists are present, this step will be automatically skipped.
 
+### Database
+If you wish to use a postgresql database of another galaxy instance, make a dump of the instance.
+Put the dump file in `files/HOSTNAME/insert_db`. Alternatively you can specify the location by changing `insert_db_dir` in `files.settings`
+If no database is added, a new empty DB will be created.
 
 ## Starting a galaxy instance on a remote machine.
 
-To install docker, fetch the image, run it and install all the tools run:
+To install docker, fetch the image, run it, add the database and install all the tools run:
 
 ```bash
 ansible-playbook main.yml -e "hosts=HOSTNAME run=install"   
 ```
-
-If you did not set up passwordless sudo you can add the -K parameter and type in the sudo password.
-
 
 Alternatively you can set up your machine step by step.
 
@@ -115,9 +117,6 @@ ansible-playbook main.yml -e "hosts=HOSTNAME run=rundockergalaxy"
 ```bash
 ansible-playbook main.yml -e "hosts=HOSTNAME run=installtools"   
 ```
-
-oThe tool lists need to be in the directory specified in tool_list_dir in galaxydocker.config.
-Example tool lists can be found at [the galaxy project's github](https://github.com/galaxyproject/ansible-galaxy-tools/blob/master/files/tool_list.yaml.sample)
 
 ## Testing a new version of the image.
 
@@ -142,6 +141,17 @@ ansible-playbook main.yml -e "hosts=HOSTNAME run=deletetestupgrade"
 
 There is a setting overwrite_config_files in migrate.settings. Default is False. 
 If set to True this will overwrite all your config files with the .distribution_config files.
+
+## Backing up the database
+This extracts the database of the running instance to `files/HOSTNAME/backupdb`. 
+This path can be changed in `files.settings`. If you want to change the filename of the backup you can add 
+`backup_db_filename: yourprefferedfilename` to `files.settings`
+
+To backup the database run:
+
+```
+ansible-playbook main.yml -e "hosts=HOSTNAME run=extractdb"
+```
 
 ## Backing up your export folder
 For backing up your export folder use `ansible-playbook main.yml -e "hosts=HOSTNAME run=backupgalaxy`

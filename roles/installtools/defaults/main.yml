@@ -11,3 +11,4 @@
 
 work_dir: "/tmp/galaxy_tool_lists"
 galaxy_web_port: 80
+tool_list_dir: "{{inventory_hostname/tools/}}"
