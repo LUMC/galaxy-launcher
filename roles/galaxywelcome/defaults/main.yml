@@ -11,4 +11,4 @@
 
 # defaults file for galaxywelcome
 
-welcome_dir= "{{inventory_hostname}}/welcome/"
+welcome_dir: "{{inventory_hostname}}/welcome/"

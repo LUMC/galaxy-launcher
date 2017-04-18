@@ -9,21 +9,5 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# tasks file for galaxywelcome
-
-
-
-- name: Make sure export folder exists
-  file: 
-    path: "{{docker_export_location}}"
-    state: directory
-
-
-- name: Copy welcome files
-  copy: 
-    mode: 0644
-    owner: 1450
-    dest: "{{docker_export_location}}"
-    src: "{{welcome_dir}}"
-
-
+galaxywelcome: True
+rundockergalaxy: True
