@@ -40,16 +40,6 @@
     owner: "{{galaxy_uid}}"
     group: "{{galaxy_uid}}" 
 
-#- name: copy database files
-#  copy:
-#    dest: "{{docker_export_location}}/{{import_db_location}}/{{imported_db}}"
-#    src: "{{import_db}}/{{imported_db}}"
-#    remote_src: False
-#    mode: 0600
-#    owner: "{{galaxy_uid}}"
-#    group: "{{galaxy_uid}}" 
-#  register: debug_copy
-
 - name: copy database files using rsync
   synchronize:
     mode: push
