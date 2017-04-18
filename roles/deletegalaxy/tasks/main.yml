@@ -21,7 +21,7 @@
     state: absent
 
 - name: Remove docker export volumes
-  file: 
+  file:
     path: "{{docker_export_location}}"
     state: absent
   when: delete_files
@@ -36,3 +36,23 @@
   file:
     path: "/etc/ufw/applications.d/{{ufw_profile}}"
     state: absent
+
+- name: remove cron jobs for backup scripts
+  cron:
+    state: absent
+    name: "{{item.value.description}}"
+    user: "{{backup_user}}"
+  with_dict: "{{ backupdb_cron_jobs }}"
+
+- name: remove cron jobs for rsync script
+  cron:
+    state: absent
+    name: "Rsync to the backup host"
+    user: "{{backup_user}}"
+  when:  backup_rsync_remote_host
+
+- name: delete backup files
+  file:
+    path: "{{backup_location}}"
+    state: absent
+  when: delete_backup_files
