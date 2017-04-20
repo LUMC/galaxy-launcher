@@ -18,7 +18,41 @@
     path: "{{docker_export_location}}"
     state: directory
 
+- name: Search old "welcome" files in the export folder
+  find: 
+    paths: "{{docker_export_location}}"
+    patterns: "(?i)welcome.*"
+    use_regex: True
+    hidden: True
+    recurse: no
+  register: old_welcome_files
 
+- name: Show which welcome files will be deleted.
+  debug: 
+    var: old_welcome_files
+    verbosity: 1
+
+- name: Delete old "welcome" files in the export folder
+  file: 
+    path: item.path
+    state: absent
+  with_items:
+    -   old_welcome_files.files
+
+- name: Search new "welcome" files in the welcome folder
+  find: 
+    paths: "{{welcome_dir}}"
+    patterns: "(?i)welcome.*"
+    use_regex: True
+    hidden: True
+    recurse: yes
+  register: old_welcome_files
+  delegate_to: 127.0.0.1
+  become: no
+
+- name: Show which welcome files will be copied:
+  debug: 
+    var:
 - name: Copy welcome files
   copy: 
     mode: 0644
