@@ -34,10 +34,10 @@
 
 - name: Delete old "welcome" files in the export folder
   file: 
-    path: item.path
+    path: "{{item.path}}"
     state: absent
   with_items:
-    -   old_welcome_files.files
+    -   "{{old_welcome_files.files}}"
 
 - name: Search new "welcome" files in the welcome folder
   find: 
@@ -46,18 +46,22 @@
     use_regex: True
     hidden: True
     recurse: yes
-  register: old_welcome_files
   delegate_to: 127.0.0.1
   become: no
+  register: new_welcome_files
 
-- name: Show which welcome files will be copied:
+- name: Show which welcome files will be copied
   debug: 
-    var:
+    var: new_welcome_files
+    verbosity: 1
+
 - name: Copy welcome files
   copy: 
     mode: 0644
-    owner: 1450
-    dest: "{{docker_export_location}}"
-    src: "{{welcome_dir}}"
+    owner: "{{galaxy_user_in_container}}"
+    dest: "{{docker_export_location}}/{{item.path | basename | lower}}"
+    src: "{{item.path}}"
+  with_items:
+    - "{{new_welcome_files.files}}"
 
 

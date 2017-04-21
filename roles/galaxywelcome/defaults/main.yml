@@ -11,4 +11,6 @@
 
 # defaults file for galaxywelcome
 
-welcome_dir: "{{inventory_hostname}}/welcome/"
+welcome_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/welcome/"
+galaxy_user_in_container: 1450
+
