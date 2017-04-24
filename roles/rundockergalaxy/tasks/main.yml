@@ -21,7 +21,7 @@
     dest: "{{docker_environment_file_location}}"
     group: "{{docker_user}}"
     owner: "{{docker_user}}"
-    mode: 0755
+    mode: 0600
 
 - name: Restart the docker container
   docker_container:
@@ -35,5 +35,10 @@
   become_user: "{{docker_user}}"
   become: yes
   notify: check if galaxy has started
+
+- name: remove docker environment file
+  file:
+    state: absent
+    path: "{{docker_environment_file_location}}"
 
 - meta: flush_handlers
