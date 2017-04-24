@@ -9,10 +9,5 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-installdocker: True
-galaxyfirewall: True
 galaxywelcome: True
 rundockergalaxy: True
-importdb: True
-cronbackupdb: True
-installtools: True

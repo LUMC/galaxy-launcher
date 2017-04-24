@@ -9,10 +9,8 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-installdocker: True
-galaxyfirewall: True
-galaxywelcome: True
-rundockergalaxy: True
-importdb: True
-cronbackupdb: True
-installtools: True
+# defaults file for galaxywelcome
+
+welcome_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/welcome/"
+galaxy_user_in_container: 1450
+
