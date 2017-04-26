@@ -9,20 +9,42 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- name: Copy profile to ufw firewall
-  template:
-    dest: "/etc/ufw/applications.d/{{ufw_profile}}"
-    force: yes
-    src: ufwgalaxyprofile.j2
+#- name: Flush all rules from the galaxy chain in iptables
+#    chain: "GALAXY"
+#    flush: yes
+
+#- name: Set iptables to forward ftp and sftp ports
+#  iptables: 
+#    chain: "GALAXY"
+#    action: append
+#    comment: "{{item.comment}}"
+#    destination: 127.0.0.1
+#    destination_port: "{item.{dest_port}}"
+#    source: 0.0.0.0
+#    source_port: "{{item.source_port}}"
+#    state: present
+#  with_items:
+#    - comment: Galaxy FTP
+#      source_port: "{{public_galaxy_ftp_port}}"
+#      dest_port: "{{galaxy_ftp_port}}"
+#    - comment: Galaxy SFTP
+#      source_port: "{{public_galaxy_sftp_port}}"
+#      dest_port: "{{galaxy_ftp_port}}"
+
+#- name: Copy profile to ufw firewall
+#  template:
+#    dest: "/etc/ufw/applications.d/{{ufw_profile}}"
+#    force: yes
+#    src: ufwgalaxyprofile.j2
 
 # Apparently sshrules are removed if OpenSSH rule is not enabled    
-- name: set the firewall open for ssh
-  ufw:
-    rule: allow
-    name: OpenSSH
+#- name: set the firewall open for ssh
+#  ufw:
+#    rule: allow
+#    name: OpenSSH
    
-- name: set the firewall open for Galaxy
-  ufw:
-    name: "{{ufw_profile}}"
-    rule: allow
-    state: enabled
+#- name: set the firewall open for Galaxy
+#  ufw:
+#    name: "{{ufw_profile}}"
+#    rule: allow
+#    state: enabled
