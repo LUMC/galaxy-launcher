@@ -11,12 +11,24 @@
 
 # tasks file for extractdb
 
+- name: register whether the container is running
+  command: "docker inspect -f {{inspect}} {{docker_container_name}}"
+  vars:
+    inspect: !unsafe '{{.State.Running}}'
+  register: docker_running
+
+- name: Show docker inspection results
+  debug: 
+    var: docker_running
+    verbosity: 1
+
 - name: Make sure the docker container is started
   docker_container:
     name: "{{docker_container_name}}"
     volumes: "{{docker_export_location}}:/export/"
     image: "{{docker_image}}"
     state: started
+  when: "not {{docker_running.stdout}}"
 
 - name: Create empty dump file on server
   file:

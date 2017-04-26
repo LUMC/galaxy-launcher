@@ -63,7 +63,7 @@
   command: "docker exec {{name}} {{command}}"
   vars:
     name: "{{docker_container_name}}"
-    command: "supervisorctl stop galaxy"
+    command: "supervisorctl stop galaxy:*"
 
 - name: Create script to delete old database and create new empty database
   template:
