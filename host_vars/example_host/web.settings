@@ -1,0 +1,44 @@
+# Web urls
+galaxy_web_urls: 
+  - example_host.org
+  - www.example_host.org
+
+# remote listening ports
+public_galaxy_web_port: 80
+galaxy_ftp_port: 8021
+galaxy_sftp_port: 8022
+
+# Local listening ports
+galaxy_web_port: 8080
+
+# File settings
+max_upload_size: "50g"
+
+# NGINX settings
+nginx_sites:
+  galaxy:
+    - "listen {{ public_galaxy_web_port }}"
+    - "server_name {{ galaxy_web_urls | join(' ') }}"
+    - "location / { proxy_pass http://galaxy; }"
+    - "client_max_body_size {{max_upload_size}}"
+
+nginx_configs:
+  upstream:
+    - "upstream galaxy { server 127.0.0.1:{{galaxy_web_port}}; }"
+
+nginx_http_params:
+#  - "include       mime.types"
+#  - "default_type  application/octet-stream"
+  - "sendfile      on"
+  - "keepalive_timeout 12"
+  - "types_hash_max_size 2048"
+  - "gzip on"
+  - "gzip_vary on"
+  - "gzip_proxied any"
+  - "gzip_comp_level 6"
+  - "gzip_buffers 16 8k"
+  - "gzip_http_version 1.1"
+  - "gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript"
+  - "uwsgi_read_timeout 300"
+
+
