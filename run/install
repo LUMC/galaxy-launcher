@@ -11,6 +11,7 @@
 
 installdocker: True
 ansible_role_nginx: True
+galaxyfirewall: True
 galaxywelcome: True
 rundockergalaxy: True
 importdb: True
