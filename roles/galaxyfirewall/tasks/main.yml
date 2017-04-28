@@ -15,7 +15,7 @@
     force: yes
     src: ufwgalaxyprofile.j2
 
- Apparently sshrules are removed if OpenSSH rule is not enabled    
+# Apparently sshrules are removed if OpenSSH rule is not enabled    
 - name: set the firewall open for ssh
   ufw:
     rule: allow
