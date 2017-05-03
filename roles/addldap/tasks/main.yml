@@ -6,7 +6,14 @@
     var: ldap
 
 - name: register whether the config folder is already present
-
+  stat:
+    path: "{{docker_export_location}}/galaxy-central/config"
+  register: config_folder
+  
+- name: Show config folder presence
+  debug:
+    var: config_folder
+ 
 
 - name: create default galaxy folders
   docker_container:
@@ -15,7 +22,7 @@
     name: "{{docker_container_name}}"
     state: started
     command: "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
-  when: not {{galaxy_config_folder_present}} 
+  when: not True # {{galaxy_config_folder_present}} 
 
 
 - name: Create auth_conf.xml file in config folder
@@ -23,4 +30,4 @@
     dest: "{{docker_export_location}}/galaxy-central/config/auth_conf.xml"
     force: yes
     src: auth_conf.xml.j2
-#    trim_blocks: True #Ansible 2.3 required
+    trim_blocks: True #Ansible 2.3 required
