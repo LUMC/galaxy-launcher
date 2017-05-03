@@ -1,5 +1,0 @@
-galaxy_web_port: 80
-galaxy_ftp_port: 8021
-galaxy_sftp_port: 8022
-
-ufw_profile: "galaxy"
