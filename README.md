@@ -31,7 +31,7 @@ Variable | Function
 galaxy_admin_user | e-mail address of the admin user. This variable is obligatory
 galaxy_master_api_key | The master api key. Always set this value to something unique.
 galaxy_brand | The galaxy brand name
-optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bjgruening/galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
+optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bjgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
 
 ### port.settings
 Variable | Function
@@ -41,10 +41,18 @@ galaxy_ftp_port | default 8021
 galaxy_sftp_port | default 8022
 ufw_profile | Firewall access is managed by a ufw profile to prevent the firewall to clog up with orphaned rules. Default ufw_profile name is "galaxy"
 
+### Personalization
+See [bjgruening/docker-galaxy-stable documentation](https://github.com/bgruening/docker-galaxy-stable#Personalize-your-Galaxy).
+
+Welcome files can be placed in `files\HOSTNAME\welcome`. This path can be changed in `files.settings`.
+
+
 ### backup.settings
 backup_location: "backup/location/path"
 backup_user: "galaxy_backup_user"
 backup_rsync_remote_host: True          # Enables or disables rsyncing all the backups to a remote host.
+
+
 
 ```YAML
 

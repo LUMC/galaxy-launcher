@@ -9,6 +9,11 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+- name: Install rsync
+  package:
+    name: rsync
+    state: latest
+
 - name: register dump_file
   set_fact:
     imported_db: "{{dump_file_list.files[0].path | basename }}"
@@ -17,6 +22,11 @@
   debug:
     var: imported_db
     verbosity: 1
+
+- name: Make sure the export location is present
+  file:
+    path: "{{docker_export_location}}"
+    state: directory
 
 - name: Make sure the docker container is started
   docker_container:
@@ -63,7 +73,7 @@
   command: "docker exec {{name}} {{command}}"
   vars:
     name: "{{docker_container_name}}"
-    command: "supervisorctl stop galaxy"
+    command: "supervisorctl stop galaxy:*"
 
 - name: Create script to delete old database and create new empty database
   template:

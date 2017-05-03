@@ -5,22 +5,18 @@
   debug:
     var: ldap
 
-- name: create default galaxy folders and install ldap
+- name: register whether the config folder is already present
+
+
+- name: create default galaxy folders
   docker_container:
     volumes: "{{docker_export_location}}:/export/"
     image: "{{docker_image}}"
     name: "{{docker_container_name}}"
     state: started
-    command: "{{item}}"
-  with_items:
-      - "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
-      - "pip install ldap"
+    command: "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
+  when: not {{galaxy_config_folder_present}} 
 
-
-#- name: Create config folder
-#  file:
-#    path: "{{docker_export_location}}/galaxy-central/config"
-#    state: directory 
 
 - name: Create auth_conf.xml file in config folder
   template: 
