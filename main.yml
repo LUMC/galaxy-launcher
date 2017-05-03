@@ -27,6 +27,7 @@
     - { role: upgrade, when: "{{ upgrade | default('False')}}" }
     - { role: addldap, when: "{{ addldap | default('False')}}" }
     - { role: galaxywelcome, when: "{{ galaxywelcome | default('False')}}" }
+    - { role: ansible-role-nginx, when: "{{ ansible_role_nginx | default('False')}}" }
     - { role: galaxyfirewall, when: "{{ galaxyfirewall | default('False')}}" }
     - { role: rundockergalaxy, when: "{{ rundockergalaxy | default('False')}}" }
     - { role: cronbackupdb, when: "{{ cronbackupdb | default('False')}}" }

@@ -1,0 +1,52 @@
+max_upload_size: "50g"
+
+galaxy_web_urls:
+  - example_host.org
+  - galaxy.example_host.org
+  - www.example_galaxy.org
+
+# remote listening ports
+public_galaxy_web_port: 80
+galaxy_ftp_port: 8021
+galaxy_sftp_port: 8022
+
+# Local listening ports
+galaxy_web_port: 8080
+
+
+# NGINX settings
+# These settings depend on above settings and should not be changed
+# unless you are familiar with ansible-nginx-role configuration
+nginx_sites:
+  galaxy:
+    - "listen {{ public_galaxy_web_port }}"
+    - "server_name {{ galaxy_web_urls | join(' ') }}"
+    - "location / { proxy_pass http://galaxy; }"
+    - "client_max_body_size {{max_upload_size}}"
+
+nginx_configs:
+  upstream:
+    - "upstream galaxy { server localhost:{{galaxy_web_port}}; }"
+  proxy:
+    - "proxy_set_header X-Real-IP $remote_addr"
+    - "proxy_set_header X-Forwarded-Host $host"
+    - "proxy_set_header X-Forwarded-Server $host"
+    - "proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for"
+    - "proxy_set_header Host $http_host"
+    
+nginx_http_params:
+#  - "include       mime.types"
+#  - "default_type  application/octet-stream"
+  - "sendfile      on"
+  - "keepalive_timeout 12"
+  - "types_hash_max_size 2048"
+  - "gzip on"
+  - "gzip_vary on"
+  - "gzip_proxied any"
+  - "gzip_comp_level 6"
+  - "gzip_buffers 16 8k"
+  - "gzip_http_version 1.1"
+  - "gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript"
+  - "uwsgi_read_timeout 300"
+
+

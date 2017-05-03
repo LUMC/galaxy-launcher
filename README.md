@@ -33,13 +33,17 @@ galaxy_master_api_key | The master api key. Always set this value to something u
 galaxy_brand | The galaxy brand name
 optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bjgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
 
-### port.settings
+### web.settings
 Variable | Function
 ---|---
-galaxy_web_port | default 80
-galaxy_ftp_port | default 8021
-galaxy_sftp_port | default 8022
-ufw_profile | Firewall access is managed by a ufw profile to prevent the firewall to clog up with orphaned rules. Default ufw_profile name is "galaxy"
+galaxy_web_urls | Nginx reroutes traffic coming from these urls to the galaxy server. You should put the registered domain name here.
+max_upload_size | The maximum sizes of files that can be uploaded.
+public_galaxy_web_port | default 80. The web port for the nginx server.
+galaxy_web_port | default 8080. This port is only exposed to localhost and not accessible from the web.
+galaxy_ftp_port | default 8021. This port is only exposed to localhost and not accessible from the web.
+galaxy_sftp_port | default 8022. This port is only exposed to localhost and not accessible from the web.
+
+It is not recommended to touch the nginx settings unless you are familiar with configuring [ansible-role-nginx](https://github.com/jdauphant/ansible-role-nginx).
 
 ### Personalization
 See [bjgruening/docker-galaxy-stable documentation](https://github.com/bgruening/docker-galaxy-stable#Personalize-your-Galaxy).
