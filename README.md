@@ -6,7 +6,7 @@ ubuntu server.
 ## Getting started
 1. Clone the repository to your local computer.
 2. [Set up ansible](http://docs.ansible.com/ansible/intro_installation.html)
-  * Ansible version 2.2 is tested and required.
+  * Ansible version 2.3 is tested and required.
 3. Set up a passwordless sudo user on the remote host and set up an ssh key pair.
   * NOTE: a passwordless sudo user is required on the remote host to perform the database operations with ansible
 4. Make a new hosts file by copying `hosts.sample` to `hosts` and setup your galaxy host.
