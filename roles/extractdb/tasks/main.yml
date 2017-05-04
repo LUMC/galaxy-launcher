@@ -28,7 +28,7 @@
     volumes: "{{docker_export_location}}:/export/"
     image: "{{docker_image}}"
     state: started
-  when: "not {{docker_running.stdout}}"
+  when: not docker_running.stdout
 
 - name: Create empty dump file on server
   file:

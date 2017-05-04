@@ -1,4 +1,4 @@
-# galaxy-docker-ansible
+﻿# galaxy-docker-ansible
 
 This project contains the roles needed to install bjgruening/galaxy-docker-stable image on an 
 ubuntu server.
@@ -110,24 +110,24 @@ If no database is added, a new empty DB will be created.
 To install docker, fetch the image, run it, add the database and install all the tools run:
 
 ```bash
-ansible-playbook main.yml -e "hosts=HOSTNAME run=install"   
+ansible-playbook main.yml -e "host=HOSTNAME run=install"   
 ```
 
 Alternatively you can set up your machine step by step.
 
 ### Install docker on the remote machine
 ```bash
-ansible-playbook main.yml -e "hosts=HOSTNAME run=installdocker"   
+ansible-playbook main.yml -e "host=HOSTNAME run=installdocker"   
 ```
 
 ### Run the galaxy docker image
 ```bash 
-ansible-playbook main.yml -e "hosts=HOSTNAME run=rundockergalaxy"   
+ansible-playbook main.yml -e "host=HOSTNAME run=rundockergalaxy"   
 ```
 
 ### Install tool lists on the galaxy instance
 ```bash
-ansible-playbook main.yml -e "hosts=HOSTNAME run=installtools"   
+ansible-playbook main.yml -e "host=HOSTNAME run=installtools"   
 ```
 
 ## Testing a new version of the image.
@@ -135,7 +135,7 @@ ansible-playbook main.yml -e "hosts=HOSTNAME run=installtools"
 If bjgruening updates the docker image to a newer version than this can be tested as follows:
 1. Open the `host_vars/HOSTNAME/upgrade.settings` file
 2. Set the settings for the test instance in the test_upgrade dictionary. Make sure the port mappings don't overlap with the running instance. Additional settings can be added to the dictionary.
-3. Run `ansible-playbook main.yml -e "hosts=HOSTNAME run=testupgrade"`
+3. Run `ansible-playbook main.yml -e "host=HOSTNAME run=testupgrade"`
 4. Check if the galaxy instance is running properly and if history is kept.
 (Tools won't run and data will not be included)
 5. Settings are stored in `/export/galaxy-central/config`, any new config files are automatically copied to this directory if these do not yet exist.
@@ -143,13 +143,13 @@ Existing files are not replaced. To check for any new features you can diff `/ex
 
 To remove the upgrade test instance run:
 ```bash
-ansible-playbook main.yml -e "hosts=HOSTNAME run=deletetestupgrade"
+ansible-playbook main.yml -e "host=HOSTNAME run=deletetestupgrade"
 ```
 
 ## Upgrade the running instance to a new image
 1. Make sure there are no jobs running on your instance. As an admin you can hold all new jobs so they will wait until the image is upgraded.
 2. Update the version tag of docker_image in `host_vars\HOSTNAME\docker.settings`
-3. run `ansible-playbook main.yml -e "hosts=HOSTNAME run=upgrade"`
+3. run `ansible-playbook main.yml -e "host=HOSTNAME run=upgrade"`
 
 There is a setting overwrite_config_files in migrate.settings. Default is False. 
 If set to True this will overwrite all your config files with the .distribution_config files.
@@ -162,11 +162,11 @@ This path can be changed in `files.settings`. If you want to change the filename
 To backup the database run:
 
 ```
-ansible-playbook main.yml -e "hosts=HOSTNAME run=extractdb"
+ansible-playbook main.yml -e "host=HOSTNAME run=extractdb"
 ```
 
 ## Backing up your export folder
-For backing up your export folder use `ansible-playbook main.yml -e "hosts=HOSTNAME run=backupgalaxy`
+For backing up your export folder use `ansible-playbook main.yml -e "host=HOSTNAME run=backupgalaxy`
 This role is not very extensive and may need extension based upon your needs.
 
 Settings are in the `host_vars/HOSTNAME/backup.settings` file
@@ -184,7 +184,7 @@ The archive method is only functional as of ansible 2.3. Therefore the archive f
 It can be enabled when ansible 2.3 is released as stable.
 
 ## Removing the galaxy docker instance.
-`ansible-playbook main.yml -e "hosts=HOSTNAME run=deletegalaxy` does the following things:
+`ansible-playbook main.yml -e "host=HOSTNAME run=deletegalaxy` does the following things:
 + deletes the container
 + removes the firewall exception and removes the profile
 + removes the cron jobs 
