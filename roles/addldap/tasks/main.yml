@@ -24,15 +24,15 @@
     name: "{{docker_container_name}}"
     state: started
     command: "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
+  when: not config_folder.stat.exists 
 
 - name: register whether the config folder is already present
   stat:
     path: "{{docker_export_location}}/galaxy-central/config"
   register: default_config_folder
-  when: not config_folder.stat.exists 
   until: default_config_folder.stat.exists
   retries: 10
-  delay: 5
+  delay: 15
 
 - name: Create auth_conf.xml file in config folder
   template:

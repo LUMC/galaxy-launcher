@@ -1,4 +1,3 @@
-
 #jinja2: trim_blocks:False
 <?xml version="1.0"?>
 <auth>
@@ -21,7 +20,7 @@
             <search-base>{{ldap.search_base}}</search-base>
 
             {% if ldap.login_use_username %}
-            <search-filter>(&amp;(objectClass=user)(sAMAccountName={username}))</search-filter>            
+            <search-filter>(&amp;(objectClass=user)(sAMAccountName={username}))</search-filter>
             {% else %}
             <search-filter>(&amp;(objectClass=user)(mail={email}))</search-filter>
             {% endif %}
