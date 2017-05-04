@@ -11,7 +11,7 @@
 
 # Playbook that contains all roles.
 
-- hosts: "{{ hosts }}"
+- hosts: "{{ host }}"
   become: yes
   become_method: sudo
   gather_facts: yes
