@@ -14,6 +14,6 @@
     url: "http://localhost:{{galaxy_web_port}}"
     return_content: yes
   register: result
-  until: '"{{galaxy_brand}}" in result.content'
+  until: 'galaxy_brand in result.content'  
   retries: 20 
   delay: 10
