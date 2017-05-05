@@ -20,6 +20,7 @@
     importdb: False
     upgrade: False
     galaxywelcome: False
+    nginxsettings: False
     ansible_role_nginx: False
     galaxyfirewall: False
     rundockergalaxy: False
@@ -38,6 +39,7 @@
     - { role: importdb, when: importdb }
     - { role: upgrade, when: upgrade }
     - { role: galaxywelcome, when: galaxywelcome }
+    - { role: nginxsettings, when: nginxsettings }
     - { role: ansible-role-nginx, when: ansible_role_nginx  }
     - { role: galaxyfirewall, when: galaxyfirewall }
     - { role: rundockergalaxy, when: rundockergalaxy  }

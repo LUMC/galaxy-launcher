@@ -1,0 +1,5 @@
+---
+# defaults file for nginxsettings
+
+public_galaxy_web_port: 80
+galaxy_web_port: 8080
