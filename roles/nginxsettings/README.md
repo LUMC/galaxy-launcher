@@ -1,38 +1,44 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+This role sets the settings for the ansible-nginx-role by jdauphant
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role only does a set_fact task.
+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+variable | function
+--- | ---
+galaxy_web_port | The internally exposed web port. Default: 8080
+galaxy_public_web_port | The externally exposed web port. Default: 80
+max_upload_size | specifies the maximum upload size. Default: 50g
+galaxy_web_urls | a list of web urls  (server aliases)
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+-
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
+-
 License
 -------
 
-BSD
+A dual licensing mode is applied.
+The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+
+You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Sequencing Analysis Support Core - Leiden University Medical Center
+Contact us at: sasc@lumc.nl
