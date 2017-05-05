@@ -6,25 +6,42 @@
     var: ldap
     verbosity: 1
 
-- name: register whether the config folder is already present
-  stat:
-    path: "{{docker_export_location}}/galaxy-central/config"
-  register: config_folder
-  
-- name: Show config folder presence
-  debug:
-    var: config_folder
-    verbosity: 1
- 
+- name: register whether the container is running
+  command: "docker inspect -f {{inspect}} {{docker_container_name}}"
+  vars:
+    inspect: !unsafe '{{.State.Running}}'
+  register: docker_running
 
-- name: create default galaxy folders
+- name: Show docker inspection results
+  debug:
+    var: docker_running
+    verbosity: 1
+
+- name: Make sure the docker container is started
   docker_container:
+    name: "{{docker_container_name}}"
     volumes: "{{docker_export_location}}:/export/"
     image: "{{docker_image}}"
-    name: "{{docker_container_name}}"
     state: started
-    command: "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
-  when: not config_folder.stat.exists 
+  when: not docker_running.stdout
+
+
+- name:  Create script to include python-ldap
+  template: 
+    dest: "{{docker_export_location}}/install_python_ldap.sh"
+    mode: 700
+    src: install_python_ldap.sh.j2
+
+- name: install python_ldap in docker container
+  command: "docker exec {{name}} {{command}}"
+  vars:
+    name: "{{docker_container_name}}"
+    command: /export/activate_python_ldap.sh
+  register: ldap_python_install
+
+- name: show installationresults
+  debug:
+    var: ldap_python_install.stdout
 
 - name: register whether the config folder is already present
   stat:
@@ -32,10 +49,11 @@
   register: default_config_folder
   until: default_config_folder.stat.exists
   retries: 10
-  delay: 15
-
+  delay: 3
+  
 - name: Create auth_conf.xml file in config folder
   template:
     dest: "{{docker_export_location}}/galaxy-central/config/auth_conf.xml"
     force: yes
     src: auth_conf.xml.j2
+
