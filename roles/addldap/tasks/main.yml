@@ -11,6 +11,7 @@
   vars:
     inspect: !unsafe '{{.State.Running}}'
   register: docker_running
+  ignore_errors: True
 
 - name: Show docker inspection results
   debug:
@@ -23,7 +24,7 @@
     volumes: "{{docker_export_location}}:/export/"
     image: "{{docker_image}}"
     state: started
-  when: not docker_running.stdout
+  when: not docker_running.stdout | bool
 
 
 - name:  Create script to include python-ldap
@@ -36,7 +37,7 @@
   command: "docker exec {{name}} {{command}}"
   vars:
     name: "{{docker_container_name}}"
-    command: /export/activate_python_ldap.sh
+    command: /export/install_python_ldap.sh
   register: ldap_python_install
 
 - name: show installationresults
