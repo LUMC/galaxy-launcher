@@ -46,6 +46,7 @@
 - name: show variables
   debug:
     var: "{{item}}"
+    verbosity: 1
   with_items:
     - nginx_sites
     - nginx_configs
