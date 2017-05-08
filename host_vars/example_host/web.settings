@@ -7,12 +7,11 @@ galaxy_web_urls:
 
 # remote listening ports
 public_galaxy_web_port: 80
-galaxy_ftp_port: 8021
-galaxy_sftp_port: 8022
 
 # Local listening ports
 galaxy_web_port: 8080
-
+#galaxy_ftp_port: 8021
+#galaxy_sftp_port: 8022
 
 # NGINX settings
 # These settings depend on above settings and should not be changed
