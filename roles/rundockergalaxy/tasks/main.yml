@@ -52,12 +52,10 @@
     - "{{docker_published_ftp_port | default('[]')}}"
     - "{{docker_published_sftp_port | default('[]')}}"
 
-- name: Omit port publication if no ports are defined
-  set_fact:
-    docker_published_ports: "{{docker_published_ports == '[]' |ternary(omit,docker_published_ports}}}"
-
-- debug:
+- name: Show docker published ports
+  debug:
     var: docker_published_ports
+    verbosity: 0
 
 - name: Restart the docker container
   docker_container:
