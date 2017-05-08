@@ -17,6 +17,8 @@ docker_environment_file_location: "/home/{{docker_user}}/galaxydocker.env"
 docker_export_location: "/home/{{docker_user}}/"
 docker_container_name: galaxy
 galaxy_web_port: 8080
+galaxy_ftp_port: ""
+galaxy_sftp_port: ""
 
 #Galaxy defaults
 sge_root: ""

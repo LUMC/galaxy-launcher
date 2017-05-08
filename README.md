@@ -40,8 +40,8 @@ galaxy_web_urls | Nginx reroutes traffic coming from these urls to the galaxy se
 max_upload_size | The maximum sizes of files that can be uploaded.
 public_galaxy_web_port | default 80. The web port for the nginx server.
 galaxy_web_port | default 8080. This port is only exposed to localhost and not accessible from the web.
-galaxy_ftp_port | default 8021. This port is only exposed to localhost and not accessible from the web.
-galaxy_sftp_port | default 8022. This port is only exposed to localhost and not accessible from the web.
+galaxy_ftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
+galaxy_sftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
 
 It is not recommended to touch the nginx settings unless you are familiar with configuring [ansible-role-nginx](https://github.com/jdauphant/ansible-role-nginx).
 
