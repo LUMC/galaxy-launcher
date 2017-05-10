@@ -2,9 +2,8 @@
 # defaults file for addldap
 
 ldap_defaults:
-  login_use_username: False
-  allow_password_change: False
-  allow_register: True
-  auto-register: False
-  continue_on_failure: False
-  
+  login_use_username: "False"
+  allow_password_change: "False"
+  allow_register: "True"
+  auto_register: "True"
+  continue_on_failure: "False"  
