@@ -23,6 +23,14 @@
     state: started
   when: not docker_running.stdout | bool
 
+- name: Register whether config folder is already created
+  stat:
+    path: "{{docker_export_location}}/galaxy-central/config"
+  register: default_config_folder
+  until: default_config_folder.stat.exists
+  retries: 10
+  delay: 10
+
 - name: Create auth_conf.xml file in config folder
   template:
     dest: "{{docker_export_location}}/galaxy-central/config/auth_conf.xml"
