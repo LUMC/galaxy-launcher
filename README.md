@@ -1,7 +1,6 @@
-﻿# galaxy-docker-ansible
+# galaxy-docker-ansible
 
-This project contains the roles needed to install bjgruening/galaxy-docker-stable image on an 
-ubuntu server.
+This project contains the roles needed to install bjgruening/galaxy-docker-stable image on an ubuntu server.
 
 ## Getting started
 1. Clone the repository to your local computer.
@@ -45,18 +44,21 @@ galaxy_sftp_port | default 8022. This port is only exposed to localhost and not 
 
 It is not recommended to touch the nginx settings unless you are familiar with configuring [ansible-role-nginx](https://github.com/jdauphant/ansible-role-nginx).
 
-### Personalization
+### Personalization (optional)
 See [bjgruening/docker-galaxy-stable documentation](https://github.com/bgruening/docker-galaxy-stable#Personalize-your-Galaxy).
 
 Welcome files can be placed in `files\HOSTNAME\welcome`. This path can be changed in `files.settings`.
+
+### Extra tools (optional) 
+Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `tool_list_dir` in `files.settings`
+An example tool list can be found in `files/example_host/tools`.
+If no tool lists are present, this step will be automatically skipped.
 
 
 ### backup.settings
 backup_location: "backup/location/path"
 backup_user: "galaxy_backup_user"
 backup_rsync_remote_host: True          # Enables or disables rsyncing all the backups to a remote host.
-
-
 
 ```YAML
 
@@ -93,14 +95,50 @@ rsync_settings:
     special_time: hourly #
 
  #* 0 is recommended because the archives are already compressed
-
 ```
-### Tools
-Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `tool_list_dir` in `files.settings`
-An example tool list can be found in `files/example_host/tools`.
-If no tool lists are present, this step will be automatically skipped.
 
-### Database
+### Configuring LDAP (optional)
+
+Add a  GALAXY_CONFIG_AUTH_CONFIG_FILE key to `optional_environment_settings` in `host_vars/HOSTNAME/galaxy.settings` :
+```
+optional_environment_settings:
+  GALAXY_CONFIG_AUTH_CONFIG_FILE: "config/auth_conf.xml"
+```
+
+In `host_vars/HOSTNAME/ldap.settings`
+set the following keys in ldap_settings:
+#### Keys required
+Key | Function 
+---|---|---
+server | The ldap server. (ldap://ad.example.com)
+search_base | example: dc=ad,dc=example,dc=com
+search_user | example: ldapsearch
+search_password | ldapsearch's password
+
+#### Default keys (can optionally be changed)
+
+Key | Function | Default
+---|---|---
+login_use_username | Whether username is used. If `False` e-mail is used | True
+allow_password_change | Whether users can change their password | False
+allow_register | Whether users can register their own accounts. This bypasses ldap authentication. | False
+auto_register | Users are automatically registered at first succesfull authentication to the LDAP server | True
+continue_on_failure |  login despite authentication module failures | False
+email_suffix | The e-mail - suffix  (@example.com). All users with such an address will be passed to the ldap server. If "" all users will be passed to the ldap server | ""
+
+#### Example
+```
+ldap_settings:
+  server: "ldap://dc1.example.com"
+  search_base: "dc=dc1,dc=example,dc=com"
+  search_user: "ldapsearch"
+  search_password: "supersecret" #ldapsearch's password
+  login_use_username: False
+  email_suffix: "@example.com"
+
+
+
+### Database (optional)
 If you wish to use a postgresql database of another galaxy instance, make a dump of the instance.
 Put the dump file in `files/HOSTNAME/insert_db`. Alternatively you can specify the location by changing `insert_db_dir` in `files.settings`
 If no database is added, a new empty DB will be created.
@@ -112,7 +150,10 @@ To install docker, fetch the image, run it, add the database and install all the
 ```bash
 ansible-playbook main.yml -e "host=HOSTNAME run=install"   
 ```
-
+If you also want to activate ldap:
+```bash
+ansible-playbook main.yml -e "host=HOSTNAME run=install addldap=True"   
+```
 Alternatively you can set up your machine step by step.
 
 ### Install docker on the remote machine
@@ -130,6 +171,12 @@ ansible-playbook main.yml -e "host=HOSTNAME run=rundockergalaxy"
 ansible-playbook main.yml -e "host=HOSTNAME run=installtools"   
 ```
 
+```bash
+ansible-playbook main.yml -e "host=HOSTNAME run=addldap"   
+```
+!WARNING! This will restart the galaxy instance within the container
+
+### Add LDAP authentication
 ## Testing a new version of the image.
 
 If bjgruening updates the docker image to a newer version than this can be tested as follows:

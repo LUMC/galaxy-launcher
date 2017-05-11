@@ -2,7 +2,7 @@
 # defaults file for addldap
 
 ldap_defaults:
-  login_use_username: False
+  login_use_username: True
   allow_password_change: False
   allow_register: False
   auto_register: True
