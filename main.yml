@@ -39,10 +39,10 @@
     - { role: importdb, when: importdb }
     - { role: upgrade, when: upgrade }
     - { role: galaxywelcome, when: galaxywelcome }
-    - { role: addldap, when: addldap }
     - { role: ansible-role-nginx, when: ansible_role_nginx  }
     - { role: galaxyfirewall, when: galaxyfirewall }
     - { role: rundockergalaxy, when: rundockergalaxy  }
+    - { role: addldap, when: addldap }
     - { role: cronbackupdb, when: cronbackupdb  }
     - { role: installtools, when: installtools  }
     - { role: extractdb, when: extractdb  }

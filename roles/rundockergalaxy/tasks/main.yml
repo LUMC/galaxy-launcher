@@ -41,4 +41,3 @@
     state: absent
     path: "{{docker_environment_file_location}}"
 
-- meta: flush_handlers
