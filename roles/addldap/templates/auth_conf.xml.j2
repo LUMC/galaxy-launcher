@@ -3,7 +3,7 @@
 <auth>
     <authenticator>
         <type>ldap</type>
-        <filter>'{email}'.endswith('{{ ldap.email_suffix }}')</filter>
+        <filter>'{email}'.endswith('{{ ldap.email_suffix | default('')}}')</filter>
         <options>
             <allow-register>{{ldap.allow_register | default('True')}}</allow-register>
             <auto-register>{{ldap.auto_register|default('False')}}</auto-register> 
