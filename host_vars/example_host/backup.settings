@@ -1,6 +1,6 @@
 backup_location: "/data/galaxy/backup"
 backup_user: "galaxy_backup"
-backup_rsync_remote_host: True
+backup_rsync_remote_host: False
 
 backupdb_cron_jobs:
   hourly:

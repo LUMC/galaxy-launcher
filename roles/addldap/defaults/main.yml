@@ -1,0 +1,11 @@
+---
+# defaults file for addldap
+
+ldap_defaults:
+  login_use_username: True
+  allow_password_change: False
+  allow_register: False
+  auto_register: True
+  continue_on_failure: False
+  email_suffix: ""
+#  options: ""

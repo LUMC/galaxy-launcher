@@ -20,6 +20,7 @@
     importdb: False
     upgrade: False
     galaxywelcome: False
+    addldap: False
     nginxsettings: False
     ansible_role_nginx: False
     galaxyfirewall: False
@@ -43,6 +44,7 @@
     - { role: ansible-role-nginx, when: ansible_role_nginx  }
     - { role: galaxyfirewall, when: galaxyfirewall }
     - { role: rundockergalaxy, when: rundockergalaxy  }
+    - { role: addldap, when: addldap }
     - { role: cronbackupdb, when: cronbackupdb  }
     - { role: installtools, when: installtools  }
     - { role: extractdb, when: extractdb  }
