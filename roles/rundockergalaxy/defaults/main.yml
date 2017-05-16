@@ -15,10 +15,10 @@ user_groups: docker
 docker_image: bgruening/galaxy-stable
 docker_environment_file_location: "/home/{{docker_user}}/galaxydocker.env"
 docker_export_location: "/home/{{docker_user}}/"
-galaxy_web_port: 8080
-galaxy_ftp_port: 8021
-galaxy_sftp_port: 8022 
 docker_container_name: galaxy
+galaxy_web_port: 8080
+galaxy_ftp_port: ""
+galaxy_sftp_port: ""
 
 #Galaxy defaults
 sge_root: ""

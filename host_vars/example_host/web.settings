@@ -10,5 +10,5 @@ public_galaxy_web_port: 80
 
 # Local listening ports
 galaxy_web_port: 8080
-galaxy_ftp_port: 8021
-galaxy_sftp_port: 8022
+#galaxy_ftp_port: 8021
+#galaxy_sftp_port: 8022
