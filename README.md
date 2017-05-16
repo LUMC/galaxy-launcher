@@ -112,7 +112,7 @@ In `host_vars/HOSTNAME/ldap.settings`
 set the following keys in ldap_settings:
 #### Keys required
 Key | Function 
----|---|---
+---|---
 server | The ldap server. (ldap://ad.example.com)
 search_base | example: dc=ad,dc=example,dc=com
 search_user | example: ldapsearch
@@ -130,7 +130,7 @@ continue_on_failure |  login despite authentication module failures | False
 email_suffix | The e-mail - suffix  (@example.com). All users with such an address will be passed to the ldap server. If "" all users will be passed to the ldap server | ""
 
 #### Example
-```
+```YAML
 ldap_settings:
   server: "ldap://dc1.example.com"
   search_base: "dc=dc1,dc=example,dc=com"
