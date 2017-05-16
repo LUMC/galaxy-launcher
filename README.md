@@ -1,6 +1,8 @@
 Role Name
 =========
 
+A role that installs a galaxy instance using a container.
+
 A brief description of the role goes here.
 
 Requirements
