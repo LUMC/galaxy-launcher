@@ -1,3 +1,6 @@
 [submodule "roles/ansible-role-nginx"]
 	path = roles/ansible-role-nginx
 	url = git@github.com:jdauphant/ansible-role-nginx.git
+[submodule "roles/ansible-role-galaxy_docker"]
+	path = roles/ansible-role-galaxy_docker
+	url = git@github.com:LUMC/ansible-role-galaxy_docker.git
