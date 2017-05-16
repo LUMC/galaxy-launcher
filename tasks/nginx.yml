@@ -51,3 +51,7 @@
     - nginx_sites
     - nginx_configs
     - nginx_http_params
+
+- include_role:
+    name: jdauphant.nginx
+  
