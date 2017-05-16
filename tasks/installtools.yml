@@ -1,0 +1,97 @@
+---
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+- meta: flush_handlers
+
+- name: Install required bioblend package
+  pip:
+    name: "{{ bioblend_packages }}"
+    state: latest
+
+- name: Create new empty tool list directory on the server
+  file:
+    path: "{{work_dir}}"
+    state: "{{item}}"
+  with_items:
+    - absent
+    - directory
+
+- name: Find yml files in tool list directory
+  find:
+    paths: "{{tool_list_dir}}"
+    patterns:
+      - "*.yml"
+      - "*.yaml"
+  register: tools
+  delegate_to: 127.0.0.1
+  become: no
+
+- name: Show which yamls will be transferred
+  debug: 
+    var: tools
+    verbosity: 1
+
+- name: delete api key from tool list files
+  lineinfile:
+    destfile: "{{item.path}}"
+    regexp: "api_key:.*"
+    state: absent
+  with_items: 
+    - "{{tools.files}}"
+  become: no
+  delegate_to: 127.0.0.1
+
+- name: delete galaxy_instance from tool list files
+  lineinfile:
+    destfile: "{{item.path}}"
+    regexp: "galaxy_instance:.*"
+    state: absent     
+  with_items: 
+    - "{{tools.files}}"
+  become: no
+  delegate_to: 127.0.0.1
+
+- name: Move tools to galaxy server
+  copy:
+    dest: "{{work_dir}}/{{item.path | basename}}"
+    src: "{{item.path}}"
+    force: yes
+    mode: 0600
+  with_items:
+    - "{{tools.files}}"
+
+- name: Create a file list from the directory
+  find: 
+    paths: "{{work_dir}}"
+    patterns: 
+      - "*.yml"
+      - "*.yaml"
+  register: tools
+
+- name: copy ephemeris tool installer to server
+  copy:
+    src: shed_install.py
+    dest: "{{work_dir}}/shed_install.py"
+
+- name: check if ephemeris tool installer is properly copied
+  wait_for:
+    path: "{{work_dir}}/shed_install.py"
+    timeout: 5
+
+- name: Use ephemeris shed install to install tools 
+  command: "python {{work_dir}}/shed_install.py -g localhost:{{galaxy_web_port}} -a {{galaxy_master_api_key}} -t {{item.path}}"
+  with_items: "{{tools.files}}"
+  ignore_errors: yes
+
+- name: remove added files
+  file:
+    path: "{{work_dir}}"
+    state: absent

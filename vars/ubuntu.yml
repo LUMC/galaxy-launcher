@@ -9,13 +9,20 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# handlers file for galaxy_docker
+prerequisites:
+  - linux-image-extra-virtual
+  - "linux-image-extra-{{ansible_kernel}}"
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - software-properties-common
+  - python-pip
+  - python-pkg-resources
+  - python-setuptools
+pip_packages:
+  - docker-py
+key: "https://apt.dockerproject.org/gpg"
+repo: "deb https://apt.dockerproject.org/repo/ {{ansible_distribution | lower}}-{{ansible_distribution_release}} main"
+packages:
+  - docker-engine
 
-- name: check if galaxy has started
-  uri:
-    url: "http://localhost:{{galaxy_web_port}}"
-    return_content: yes
-  register: result
-  until: 'galaxy_brand in result.content'  
-  retries: 20 
-  delay: 10
