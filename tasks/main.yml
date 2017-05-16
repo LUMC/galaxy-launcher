@@ -9,19 +9,38 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- name: 
-  vars: # These are defaults. Overwritten by extra_vars and include_vars. See: http://docs.ansible.com/ansible/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable
-    installdocker: False
-    importdb: False
-    upgrade: False
-    galaxywelcome: False
-    addldap: False
-    nginxsettings: False
-    ansible_role_nginx: False
-    galaxyfirewall: False
-    rundockergalaxy: False
-    cronbackupdb: False
-    installtools: False
-    extractdb: False
-    deletegalaxy: False
+- include: installdocker.yml
+  when: installdocker
 
+- include: importdb.yml
+  when: importdb
+  
+- include: upgrade.yml
+  when: upgrade
+
+- include: galaxywelcome.yml
+  when: galaxywelcome
+
+- include: nginx.yml
+  when: galaxynginx
+
+- include: galaxyfirewall.yml
+  when: galaxyfirewall
+
+- include: run.yml
+  when: rundockergalaxy
+
+- include: addldap.yml
+  when: addldap
+
+- include: cronbackupdb.yml
+  when: cronbackupdb
+
+- include: installtools.yml
+  when: installtools
+
+- include: extractdb.yml
+  when: extractdb
+
+- include: deletegalaxy.yml
+  when: deletegalaxy

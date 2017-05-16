@@ -1,4 +1,4 @@
----
+o---
 # Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
 # Contact us at: sasc@lumc.nl
 #
@@ -104,3 +104,17 @@ migrated_files:
 new_config_files:
   - src: ".distribution_config/."
     dest: "galaxy-central/config"
+
+# Run
+installdocker: False
+importdb: False
+upgrade: False
+galaxywelcome: False
+addldap: False
+galaxynginx: False
+galaxyfirewall: False
+rundockergalaxy: False
+cronbackupdb: False
+installtools: False
+extractdb: False
+deletegalaxy: False
