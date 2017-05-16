@@ -15,20 +15,6 @@
   become: yes
   become_method: sudo
   gather_facts: yes
-  vars: # These are defaults. Overwritten by extra_vars and include_vars. See: http://docs.ansible.com/ansible/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable
-    installdocker: False
-    importdb: False
-    upgrade: False
-    galaxywelcome: False
-    addldap: False
-    nginxsettings: False
-    ansible_role_nginx: False
-    galaxyfirewall: False
-    rundockergalaxy: False
-    cronbackupdb: False
-    installtools: False
-    extractdb: False
-    deletegalaxy: False
   pre_tasks:
   - include_vars:
       file: "run/{{item}}"
@@ -36,16 +22,4 @@
       - "{{run | default('[]')}}"
 
   roles:
-    - { role: installdocker, when: installdocker }
-    - { role: importdb, when: importdb }
-    - { role: upgrade, when: upgrade }
-    - { role: galaxywelcome, when: galaxywelcome }
-    - { role: nginxsettings, when: nginxsettings }
-    - { role: ansible-role-nginx, when: ansible_role_nginx  }
-    - { role: galaxyfirewall, when: galaxyfirewall }
-    - { role: rundockergalaxy, when: rundockergalaxy  }
-    - { role: addldap, when: addldap }
-    - { role: cronbackupdb, when: cronbackupdb  }
-    - { role: installtools, when: installtools  }
-    - { role: extractdb, when: extractdb  }
-    - { role: deletegalaxy, when: deletegalaxy }
+    - role: ansible-role-galaxy_docker

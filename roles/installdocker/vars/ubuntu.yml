@@ -17,6 +17,8 @@ prerequisites:
   - curl
   - software-properties-common
   - python-pip
+  - python-pkg-resources
+  - python-setuptools
 pip_packages:
   - docker-py
 key: "https://apt.dockerproject.org/gpg"
