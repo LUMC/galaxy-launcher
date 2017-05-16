@@ -21,8 +21,12 @@
 - include: galaxywelcome.yml
   when: galaxywelcome
 
-- include: nginx.yml
-  when: galaxynginx
+- include: nginxsettings.yml
+  when: nginxsettings
+
+- include_role:
+    name: jdauphant.nginx
+  when: ansible_role_nginx 
 
 - include: galaxyfirewall.yml
   when: galaxyfirewall

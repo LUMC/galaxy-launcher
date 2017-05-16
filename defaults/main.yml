@@ -1,4 +1,4 @@
-o---
+---
 # Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
 # Contact us at: sasc@lumc.nl
 #
@@ -11,7 +11,7 @@ o---
 
 # defaults file for galaxy_docker
 
-# docker defaults:
+# docker defaults
 docker_user: galaxy
 user_groups: docker
 docker_image: bgruening/galaxy-stable
@@ -111,7 +111,8 @@ importdb: False
 upgrade: False
 galaxywelcome: False
 addldap: False
-galaxynginx: False
+nginxsettings: False
+ansible_role_nginx: False
 galaxyfirewall: False
 rundockergalaxy: False
 cronbackupdb: False

@@ -18,8 +18,23 @@ ldap: "{{ ldap_defaults | combine(ldap_settings) }}"
 zip_command: "pigz -{{compression_level}} -p {{compression_threads}}"
 backup_galaxy_rsync_settings: "{{ default_rsync_settings | combine(backup_rsync_settings)  }}"
 
-# cars for installdocker
-- include: ubuntu.yml
+# vars for installdocker
+prerequisites:
+  - linux-image-extra-virtual
+  - "linux-image-extra-{{ansible_kernel}}"
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - software-properties-common
+  - python-pip
+  - python-pkg-resources
+  - python-setuptools
+pip_packages:
+  - docker-py
+key: "https://apt.dockerproject.org/gpg"
+repo: "deb https://apt.dockerproject.org/repo/ {{ansible_distribution | lower}}-{{ansible_distribution_release}} main"
+packages:
+  - docker-engine
 
 # vars for installtools:
 bioblend_packages:
