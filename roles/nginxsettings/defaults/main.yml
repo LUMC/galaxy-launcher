@@ -9,4 +9,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-cronbackupdb: True
+# defaults file for nginxsettings
+
+public_galaxy_web_port: 80
+galaxy_web_port: 8080

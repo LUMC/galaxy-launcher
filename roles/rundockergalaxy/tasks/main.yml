@@ -67,6 +67,28 @@
     var: docker_published_ports.split()
     verbosity: 1
 
+- name: Make sure export location exists
+  file:
+    path: "{{docker_export_location}}"
+    state: directory
+
+- fail:
+    msg: "galaxy_report_user and galaxy_report_password should be defined!"
+  when: (galaxy_report_password is not defined) or (galaxy_report_user is not defined)
+
+- name: install required passlib module
+  pip:
+    name: "passlib"
+    state: latest
+
+- name: Add report_htpasswd file for Report Webapp
+  htpasswd:
+    create: yes
+    crypt_scheme: sha512_crypt #Other secure choices: https://passlib.readthedocs.io/en/stable/narr/quickstart.html#recommended-hashes
+    name: "{{galaxy_report_user}}"
+    password: "{{galaxy_report_password}}"
+    path: "{{docker_export_location}}/reports_htpasswd" 
+
 - name: Restart the docker container
   docker_container:
     env_file: "{{docker_environment_file_location}}"
