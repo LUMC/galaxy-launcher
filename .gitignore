@@ -24,3 +24,5 @@ group_vars/*
 !files/
 files/*
 !files/example_host
+
+roles/jdauphant.nginx
