@@ -11,5 +11,7 @@
 
 test: True
 upgrade: True
+nginxsettings: True
 galaxyfirewall: True
+ansible_role_nginx: True
 rundockergalaxy: True

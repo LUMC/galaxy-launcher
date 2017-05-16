@@ -37,9 +37,6 @@
     path: "/etc/ufw/applications.d/{{ufw_profile}}"
     state: absent
 
-- debug: 
-    var: nginx_sites
-
 - name: remove nginx profiles
   file:
     path: "/etc/nginx/sites-available/{{item.key}}.conf"
