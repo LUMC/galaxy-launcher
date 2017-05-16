@@ -1,11 +1,12 @@
 # galaxy-docker-ansible
 
-This project contains the roles needed to install bjgruening/galaxy-docker-stable image on an ubuntu server.
+This project contains the roles needed to install [bjgruening/galaxy-docker-stable](https://github.com/bgruening/docker-galaxy-stable)
+image on an ubuntu server.
 
 ## Getting started
 1. Clone the repository to your local computer.
 2. [Set up ansible](http://docs.ansible.com/ansible/intro_installation.html)
-  * Ansible version 2.2 is tested and required.
+  * Ansible version 2.3 is tested and required.
 3. Set up a passwordless sudo user on the remote host and set up an ssh key pair.
   * NOTE: a passwordless sudo user is required on the remote host to perform the database operations with ansible
 4. Make a new hosts file by copying `hosts.sample` to `hosts` and setup your galaxy host.
@@ -30,6 +31,8 @@ Variable | Function
 galaxy_admin_user | e-mail address of the admin user. This variable is obligatory
 galaxy_master_api_key | The master api key. Always set this value to something unique.
 galaxy_brand | The galaxy brand name
+galaxy_report_user | The user to access the reports section.
+galaxy_report_password | The password to access the reports section. 
 optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bjgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
 
 ### web.settings
@@ -39,8 +42,8 @@ galaxy_web_urls | Nginx reroutes traffic coming from these urls to the galaxy se
 max_upload_size | The maximum sizes of files that can be uploaded.
 public_galaxy_web_port | default 80. The web port for the nginx server.
 galaxy_web_port | default 8080. This port is only exposed to localhost and not accessible from the web.
-galaxy_ftp_port | default 8021. This port is only exposed to localhost and not accessible from the web.
-galaxy_sftp_port | default 8022. This port is only exposed to localhost and not accessible from the web.
+galaxy_ftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
+galaxy_sftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
 
 It is not recommended to touch the nginx settings unless you are familiar with configuring [ansible-role-nginx](https://github.com/jdauphant/ansible-role-nginx).
 
@@ -135,7 +138,7 @@ ldap_settings:
   search_password: "supersecret" #ldapsearch's password
   login_use_username: False
   email_suffix: "@example.com"
-
+```
 
 
 ### Database (optional)

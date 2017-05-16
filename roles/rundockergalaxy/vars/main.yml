@@ -9,7 +9,4 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-docker_published_ports:
-  - "127.0.0.1:{{galaxy_web_port}}:80"
-  - "127.0.0.1:{{galaxy_ftp_port}}:8021"
-  - "127.0.0.1:{{galaxy_sftp_port}}:8022"
+docker_published_ports: ""
