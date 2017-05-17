@@ -76,6 +76,21 @@
       - "*.yaml"
   register: tools
 
+- name:  Create script to include ephemeris installer.
+  template:
+    dest: "{{docker_export_location}}/install_ephemeris.sh"
+    mode: 700
+    src: install_ephemeris.sh.j2
+
+- name: install ephemeris in docker container
+  command: "docker exec {{name}} {{command}}"
+  vars:
+    name: "{{docker_container_name}}"
+    command: /export/install_ephemeris.sh
+  register: ldap_python_install
+
+
+
 - name: Download ephemeris tool installer to server
   get_url:
     url: "https://raw.githubusercontent.com/galaxyproject/ephemeris/46c722d5747166145f8db9236aefc519521d7f27/ephemeris/shed_install.py"
