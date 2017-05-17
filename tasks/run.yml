@@ -16,14 +16,6 @@
     name: "{{docker_user}}"
     groups: "{{user_groups}}"
 
-- name: Update docker environment file
-  template:
-    src: docker_environment_dict.j2
-    dest: "{{docker_environment_file_location}}"
-    group: "{{docker_user}}"
-    owner: "{{docker_user}}"
-    mode: 0600
-
 - name: Set docker published web port
   set_fact:
     docker_published_web_port: "127.0.0.1:{{galaxy_web_port}}:80"
@@ -88,6 +80,14 @@
     name: "{{galaxy_report_user}}"
     password: "{{galaxy_report_password}}"
     path: "{{docker_export_location}}/reports_htpasswd" 
+
+- name: Update docker environment file
+  template:
+    src: docker_environment_dict.j2
+    dest: "{{docker_environment_file_location}}"
+    group: "{{docker_user}}"
+    owner: "{{docker_user}}"
+    mode: 0600
 
 - name: Restart the docker container
   docker_container:
