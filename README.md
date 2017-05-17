@@ -1,13 +1,33 @@
-Role Name
+galaxy_docker
 =========
 
-A role that installs a galaxy instance using a container.
+This role sets up an ubuntu server to host [bgruening's galaxy-stable image](https://github.com/bgruening/docker-galaxy-stable). This role is created as part of [galaxy-docker-ansible](https://github.com/LUMC/galaxy-docker-ansible). More information on the configuration and use of the role, including example files, can be found [over there](https://github.com/LUMC/galaxy-docker-ansible). 
+
+This readme will go into the technical details of the role. If you want to use the role for deployment of  [bgruening's galaxy-stable image](https://github.com/bgruening/docker-galaxy-stable), please go to  [galaxy-docker-ansible](https://github.com/LUMC/galaxy-docker-ansible).
+
+Structure
+------------------
+This role consists of several task files each of which can be included by setting the specific task to True. Example: `ansible-playbook main.yml -e "addldap=true"` will run the addldap task within the role.
+
+### Tasks
+Click on the task to get more information
+
+- [Install docker](docs/installdocker.md). (installdocker=true)
+- [Import an existing database](docs/importdb.md). (importdb=true)
+- [Set galaxy's welcome page](docs/galaxywelcome.md). (galaxywelcome=true)
+- [Set the required nginx settings](docs/nginxsettings.md). (nginxsettings=true)
+- Run jdpauphant.nginx role when (ansible_role_nginx=true)
+- [Start up a galaxy instance](docs/rundockergalaxy.md). (rundockergalaxy=true)
+- [Add ldap authentication](docs/addldap.md). (addldap=true)
+- [create automated backup on the server](docs/cronbackupdb). (cronbackupdb=true)
+- [Install tools from the toolshed](docs/installtools.md). (installtools=true)
+- [Extract the database from the current instance](docs/extractdb.md). (extractdb=true)
+- [Delete the galaxy instance](docs/deletegalaxy.md). (deletegalaxy=true)
 
 Requirements
 ------------
 
-The jdauphant.nginx role is required. Please use `ansible-galaxy install jdauphant.nginx` to install this role.
-
+The jdauphant.nginx role is required. Use `ansible-galaxy install jdauphant.nginx` to install this role.
 
 Role Variables
 --------------
@@ -21,7 +41,7 @@ container_database_name | The name of the database in the container | galaxy
 docker_image |The docker image that is used | bgruening/galaxy-stable.
 docker_user | The user without sudo rights that runs the container. | galaxy
 db_export_location | the folder within the /export/ location where the db is dumped to | postgresql 
-docker_environment_file_location | where the environment file is stored on the host
+docker_environment_file_location | where the environment file is stored on the host | home/{{docker_user}}/galaxydocker.env
 docker_container_name | The name of the running container | galaxy
 backup_db_file | The name of the dump file. This is a temporary file | "galaxydb_backup-$(TZ='UTC' date + '%Z%Y%m%dT%H%M%S')"
 cronbackupdb_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"
@@ -117,7 +137,6 @@ jdauphant.nginx should be installed before running this role. It is not a role d
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
 ```YAML
 - hosts: servers
@@ -132,6 +151,12 @@ License
 
 Copyright 2017 Sequence Analysis Support Core - Leiden University Medical Center
 
+This file is part of galaxy-docker-ansible. 
+A dual licensing mode is applied. 
+The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+
+You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 Author Information
 ------------------
