@@ -1,0 +1,61 @@
+---
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# tasks file for cronbackupdb
+
+- include: setup.yml
+
+- name: create folder for each job within the backup folder
+  file:
+    path: "{{backup_location}}/{{item.key}}"
+    state: directory
+    owner: "{{backup_user}}"
+    group: "{{backup_user}}"
+    mode: 0700
+  with_dict: "{{ backupdb_cron_jobs }}"
+
+- name: Create backup scripts for each job
+  template:
+    src: "backupscript.sh.j2"
+    dest: "{{backup_location}}/scripts/{{item.key}}-backupscript.sh"
+    owner: "{{backup_user}}"
+    group: "{{backup_user}}"
+    mode: 0700
+  vars:
+    backup_archive: "{{item.value.filename}}$(TZ='UTC' date +'{{item.value.timestamp}}').gz"
+    backup_db_location: "{{backup_location}}/{{item.key}}"
+    backup_db_file: "galaxy-{{item.key}}-backup$(TZ='UTC' date +'%s.%N')"
+    files_to_keep: "{{item.value.files_to_keep}}"
+    compression_level: "{{item.value.compression_level | default(6)}}"
+    compression_threads: "{{item.value.compression_threads | default(4)}}"
+    name: "{{item.key}}"
+  with_dict: "{{ backupdb_cron_jobs }}"
+
+- name: set backup jobs in cron
+  cron:
+    job: "bash {{backup_location}}/scripts/{{item.key}}-backupscript.sh >> {{log_file}} 2>&1"
+    state: present
+    user: "{{backup_user}}"
+    backup: yes
+    name: "{{item.value.description}}"
+    month: "{{item.value.cron.month | default(omit)}}"
+    day: "{{item.value.cron.day | default(omit)}}"
+    weekday: "{{item.value.cron.weekday | default(omit)}}"
+    hour: "{{item.value.cron.hour | default(omit)}}"
+    minute: "{{item.value.cron.minute | default(omit)}}"
+    special_time: "{{item.value.cron.special_time | default(omit)}}"
+  vars:
+    log_file: "{{backup_location}}/logs/{{item.key}}.log"
+  with_dict: "{{ backupdb_cron_jobs }}"
+
+
+- include: rsync.yml
+  when: backup_rsync_remote_host

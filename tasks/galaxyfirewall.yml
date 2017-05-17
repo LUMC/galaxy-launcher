@@ -9,13 +9,20 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# handlers file for galaxy_docker
+- name: Copy profile to ufw firewall
+  template:
+    dest: "/etc/ufw/applications.d/{{ufw_profile}}"
+    force: yes
+    src: ufwgalaxyprofile.j2
 
-- name: check if galaxy has started
-  uri:
-    url: "http://localhost:{{galaxy_web_port}}"
-    return_content: yes
-  register: result
-  until: 'galaxy_brand in result.content'  
-  retries: 20 
-  delay: 10
+# Apparently sshrules are removed if OpenSSH rule is not enabled    
+- name: set the firewall open for ssh
+  ufw:
+    rule: allow
+    name: OpenSSH
+   
+- name: set the firewall open for Galaxy
+  ufw:
+    name: "{{ufw_profile}}"
+    rule: allow
+    state: enabled
