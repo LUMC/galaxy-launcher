@@ -37,7 +37,7 @@ packages:
   - docker-engine
 
 # vars for installtools:
-ephemeris_packages:
+ephemeris_package:
   - ephemeris
 
 # vars for rundockergalaxy

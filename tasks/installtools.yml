@@ -13,7 +13,7 @@
 
 - name: Install required ephemeris package
   pip:
-    name: "{{ ephemeris_package.name }}"
+    name: "{{ ephemeris_package }}"
     state: latest
 
 - name: Make sure work directories are empty
@@ -34,23 +34,25 @@
 
 - name: Find yml files in tool list directory
   find:
-    paths: "{{tool_list_dir}}"
+    paths: "{{item}}"
     patterns:
       - "*.yml"
       - "*.yaml"
-  register: "{{item.register}}"
+  register: yamls
   delegate_to: 127.0.0.1
   become: no
   with_items:
-    - path: "{{tool_list_dir}}"
-      register: tools
-    - path: "{{dbkeys_list_dir}}"
-      register: dbkeys
+    - "{{tool_list_dir}}"
+    - "{{dbkeys_list_dir}}"
+
+- set_fact:
+    tools: "{{yamls.results[0]}}"
+    dbkeys: "{{yamls.results[1]}}"
 
 - name: Show which yamls will be transferred
   debug: 
     var: "{{item}}"
-    verbosity: 0
+    verbosity: 1
   with_items:
     - tools
     - dbkeys
@@ -97,16 +99,18 @@
 
 - name: Create a file list from the directory
   find: 
-    paths: "{{item.path}}"
+    paths: "{{item}}"
     patterns: 
       - "*.yml"
       - "*.yaml"
-  register: "{{item.register}}"
+  register: yamls
   with_items:
-    - path: "{{galaxy_docker_tool_dir}}"
-      register: tools
-    - path: "{{galaxy_docker_dbkeys_dir}}"
-      register: dbkeys
+    - "{{galaxy_docker_tool_dir}}"
+    - "{{galaxy_docker_dbkeys_dir}}"
+
+- set_fact:
+    tools: "{{yamls.results[0]}}"
+    dbkeys: "{{yamls.results[1]}}"
 
 - name: Use ephemeris shed install to install tools 
   command: "shed-install -g localhost:{{galaxy_web_port}} -a {{galaxy_master_api_key}} -t {{item.path}}"
@@ -117,7 +121,6 @@
   command: "shed-install -g localhost:{{galaxy_web_port}} -a {{galaxy_master_api_key}} -d {{item.path}}"
   with_items: "{{dbkeys.files}}"
   ignore_errors: yes
-
 
 - name: remove added files
   file:
