@@ -35,6 +35,7 @@ galaxy_uid: "1450"
 welcome_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/welcome/"
 import_db: "{{inventory_hostname}}/database_import/"
 tool_list_dir: "{{inventory_hostname/tools/}}"
+dbkeys_list_dir: "{{inventory_hostname/dbkeys/}}"
 
 # defaults for addldap
 ldap_defaults:
@@ -78,7 +79,8 @@ import_db_location: "database_import"
 docker_default_location: "/var/lib/docker"
 
 # defaults for installtools
-work_dir: "/tmp/galaxy_tool_lists"
+galaxy_docker_tool_dir: "/tmp/galaxy_tool_lists"
+galaxy_docker_dbkeys_dir: "/tmp/galaxy_dkeys_lists"
 
 #defaults for upgrade
 test: False

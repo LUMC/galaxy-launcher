@@ -11,18 +11,26 @@
 
 - meta: flush_handlers
 
-- name: Install required bioblend package
+- name: Install required ephemeris package
   pip:
-    name: "{{ bioblend_packages }}"
+    name: "{{ ephemeris_package.name }}"
     state: latest
 
-- name: Create new empty tool list directory on the server
+- name: Make sure work directories are empty
   file:
-    path: "{{work_dir}}"
-    state: "{{item}}"
+    path: "{{item}}"
+    state: absent
   with_items:
-    - absent
-    - directory
+    - "{{galaxy_docker_tool_dir}}"
+    - "{{galaxy_docker_dbkeys_dir}}"
+
+- name: Make sure work directories are created
+  file:
+    path: "{{item}}"
+    state: directory
+  with_items:
+    - "{{galaxy_docker_tool_dir}}"
+    - "{{galaxy_docker_dbkeys_dir}}"
 
 - name: Find yml files in tool list directory
   find:
@@ -30,83 +38,91 @@
     patterns:
       - "*.yml"
       - "*.yaml"
-  register: tools
+  register: "{{item.register}}"
   delegate_to: 127.0.0.1
   become: no
+  with_items:
+    - path: "{{tool_list_dir}}"
+      register: tools
+    - path: "{{dbkeys_list_dir}}"
+      register: dbkeys
 
 - name: Show which yamls will be transferred
   debug: 
-    var: tools
-    verbosity: 1
+    var: "{{item}}"
+    verbosity: 0
+  with_items:
+    - tools
+    - dbkeys
 
-- name: delete api key from tool list files
+- name: delete api key from files
   lineinfile:
     destfile: "{{item.path}}"
     regexp: "api_key:.*"
     state: absent
   with_items: 
     - "{{tools.files}}"
+    - "{{dbkeys.files}}"
   become: no
   delegate_to: 127.0.0.1
 
-- name: delete galaxy_instance from tool list files
+- name: delete galaxy_instance from files
   lineinfile:
     destfile: "{{item.path}}"
     regexp: "galaxy_instance:.*"
     state: absent     
   with_items: 
     - "{{tools.files}}"
+    - "{{dbkeys.files}}"
   become: no
   delegate_to: 127.0.0.1
 
 - name: Move tools to galaxy server
   copy:
-    dest: "{{work_dir}}/{{item.path | basename}}"
+    dest: "{{galaxy_docker_tool_dir}}/{{item.path | basename}}"
     src: "{{item.path}}"
     force: yes
     mode: 0600
   with_items:
     - "{{tools.files}}"
 
+- name: Move dbkeys to galaxy server
+  copy:
+    dest: "{{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
+    src: "{{item.path}}"
+    force: yes
+    mode: 0600
+  with_items:
+    - "{{dbkeys.files}}"
+
 - name: Create a file list from the directory
   find: 
-    paths: "{{work_dir}}"
+    paths: "{{item.path}}"
     patterns: 
       - "*.yml"
       - "*.yaml"
-  register: tools
-
-- name:  Create script to include ephemeris installer.
-  template:
-    dest: "{{docker_export_location}}/install_ephemeris.sh"
-    mode: 700
-    src: install_ephemeris.sh.j2
-
-- name: install ephemeris in docker container
-  command: "docker exec {{name}} {{command}}"
-  vars:
-    name: "{{docker_container_name}}"
-    command: /export/install_ephemeris.sh
-  register: ldap_python_install
-
-
-
-- name: Download ephemeris tool installer to server
-  get_url:
-    url: "https://raw.githubusercontent.com/galaxyproject/ephemeris/46c722d5747166145f8db9236aefc519521d7f27/ephemeris/shed_install.py"
-    dest: "{{work_dir}}/shed_install.py"
-
-- name: check if ephemeris tool installer is properly copied
-  wait_for:
-    path: "{{work_dir}}/shed_install.py"
-    timeout: 5
+  register: "{{item.register}}"
+  with_items:
+    - path: "{{galaxy_docker_tool_dir}}"
+      register: tools
+    - path: "{{galaxy_docker_dbkeys_dir}}"
+      register: dbkeys
 
 - name: Use ephemeris shed install to install tools 
-  command: "python {{work_dir}}/shed_install.py -g localhost:{{galaxy_web_port}} -a {{galaxy_master_api_key}} -t {{item.path}}"
+  command: "shed-install -g localhost:{{galaxy_web_port}} -a {{galaxy_master_api_key}} -t {{item.path}}"
   with_items: "{{tools.files}}"
   ignore_errors: yes
 
+- name: Use ephemeris shed install to install reference genomes
+  command: "shed-install -g localhost:{{galaxy_web_port}} -a {{galaxy_master_api_key}} -d {{item.path}}"
+  with_items: "{{dbkeys.files}}"
+  ignore_errors: yes
+
+
 - name: remove added files
   file:
-    path: "{{work_dir}}"
+    path: "{{item}}"
     state: absent
+  with_items:
+    - "{{galaxy_docker_tool_dir}}"
+    - "{{galaxy_docker_dbkeys_dir}}"
