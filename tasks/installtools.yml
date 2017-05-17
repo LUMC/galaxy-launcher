@@ -76,9 +76,9 @@
       - "*.yaml"
   register: tools
 
-- name: copy ephemeris tool installer to server
-  copy:
-    src: shed_install.py
+- name: Download ephemeris tool installer to server
+  get_url:
+    url: "https://raw.githubusercontent.com/galaxyproject/ephemeris/7594583290600727ceb3233447c4cc533c8ed3d5/ephemeris/shed_install.py"
     dest: "{{work_dir}}/shed_install.py"
 
 - name: check if ephemeris tool installer is properly copied

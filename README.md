@@ -58,6 +58,12 @@ public_galaxy_web_port | The port on which galaxy will be hosted. |80
 Variable | Function | Default
 ---|---|---
 zip_command | The command used to zip files. | "pigz -{{compression_level}} -p {{compression_threads}}"
+prerequisites | Contains the packages that are prerequisite for docker | 
+pip-packages | Contains the prerequisite python packages |  docker-engine
+key | contains the docker repository key
+repo | the docker repo
+bioblend_packages | packages needed to install tools | bioblend
+docker_published_ports | published ports are appended in the tasks file | ""
 
 ### User defined vars
 These variables should be defined by the user.
