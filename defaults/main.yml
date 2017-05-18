@@ -34,8 +34,8 @@ galaxy_uid: "1450"
 # File locations:
 welcome_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/welcome/"
 import_db: "{{inventory_hostname}}/database_import/"
-tool_list_dir: "{{inventory_hostname}}/tools"
-dbkeys_list_dir: "{{inventory_hostname}}/dbkeys"
+tool_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/tools"
+dbkeys_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/dbkeys"
 
 # defaults for addldap
 ldap_defaults:

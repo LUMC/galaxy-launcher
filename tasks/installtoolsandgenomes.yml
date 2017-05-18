@@ -16,23 +16,38 @@
     name: "{{ ephemeris_package }}"
     state: latest
 
-- name: Create empty work directory
+- name: Make sure work directories are empty
   file:
-    path: "{{galaxy_docker_tool_dir}}"
-    state: "{{item}}"
+    path: "{{item}}"
+    state: absent
   with_items:
-    - absent
-    - directory
+    - "{{galaxy_docker_tool_dir}}"
+    - "{{galaxy_docker_dbkeys_dir}}"
+
+- name: Make sure work directories are created
+  file:
+    path: "{{item}}"
+    state: directory
+  with_items:
+    - "{{galaxy_docker_tool_dir}}"
+    - "{{galaxy_docker_dbkeys_dir}}"
 
 - name: Find yml files in tool list directory
   find:
-    paths: "{{tool_list_dir}}"
+    paths: "{{item}}"
     patterns:
       - "*.yml"
       - "*.yaml"
-  register: tools
+  register: yamls
   delegate_to: 127.0.0.1
   become: no
+  with_items:
+    - "{{tool_list_dir}}"
+    - "{{dbkeys_list_dir}}"
+
+- set_fact:
+    tools: "{{yamls.results[0]}}"
+    dbkeys: "{{yamls.results[1]}}"
 
 - name: Show which yamls will be transferred
   debug: 
@@ -46,6 +61,7 @@
     state: absent
   with_items: 
     - "{{tools.files}}"
+    - "{{dbkeys.files}}"
   become: no
   delegate_to: 127.0.0.1
 
@@ -56,6 +72,7 @@
     state: absent     
   with_items: 
     - "{{tools.files}}"
+    - "{{dbkeys.files}}"
   become: no
   delegate_to: 127.0.0.1
 
@@ -68,20 +85,44 @@
   with_items:
     - "{{tools.files}}"
 
+- name: Move dbkeys to galaxy server
+  copy:
+    dest: "{{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
+    src: "{{item.path}}"
+    force: yes
+    mode: 0600
+  with_items:
+    - "{{dbkeys.files}}"
+
 - name: Create a file list from the directory
   find: 
-    paths: "{{galaxy_docker_tool_dir}}"
+    paths: "{{item}}"
     patterns: 
       - "*.yml"
       - "*.yaml"
-  register: tools
+  register: yamls
+  with_items:
+    - "{{galaxy_docker_tool_dir}}"
+    - "{{galaxy_docker_dbkeys_dir}}"
+
+- set_fact:
+    tools: "{{yamls.results[0]}}"
+    dbkeys: "{{yamls.results[1]}}"
 
 - name: Use ephemeris shed install to install tools 
   command: "shed-install -g localhost:{{galaxy_web_port}} -a {{galaxy_master_api_key}} -t {{item.path}}"
   with_items: "{{tools.files}}"
   ignore_errors: yes
 
+- name: Use ephemeris shed install to install reference genomes
+  command: "shed-install -g localhost:{{galaxy_web_port}} -a {{galaxy_master_api_key}} -d {{item.path}}"
+  with_items: "{{dbkeys.files}}"
+  ignore_errors: yes
+
 - name: remove added files
   file:
-    path: "{{galaxy_docker_tool_dir}}"
+    path: "{{item}}"
     state: absent
+  with_items:
+    - "{{galaxy_docker_tool_dir}}"
+    - "{{galaxy_docker_dbkeys_dir}}"
