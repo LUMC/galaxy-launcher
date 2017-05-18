@@ -121,3 +121,4 @@ cronbackupdb: False
 installtools: False
 extractdb: False
 deletegalaxy: False
+installgenomes: False

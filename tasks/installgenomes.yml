@@ -21,8 +21,8 @@
     path: "{{galaxy_docker_dbkeys_dir}}"
     state: "{{item}}"
   with_items: 
-    - present
     - absent
+    - directory
 
 - name: Find yml files in tool list directory
   find:
@@ -70,20 +70,14 @@
 
 - name: Create a file list from the directory
   find: 
-    paths: "{{item}}"
+    paths: "{{galaxy_docker_dbkeys_dir}}"
     patterns: 
       - "*.yml"
       - "*.yaml"
-  register: yamls
-  with_items:
-    - "{{galaxy_docker_dbkeys_dir}}"
-
-- set_fact:
-    tools: "{{yamls.results[0]}}"
-    dbkeys: "{{yamls.results[1]}}"
+  register: dbkeys
 
 - name: Use ephemeris shed install to run data managers
-  command: "shed-install -g localhost:{{galaxy_web_port}} -a {{galaxy_master_api_key}} -d {{item.path}}"
+  command: "shed-install -g localhost:{{galaxy_web_port}} -a {{galaxy_docker_admin_api_key}} -d {{item.path}}"
   with_items: "{{dbkeys.files}}"
   ignore_errors: yes
 

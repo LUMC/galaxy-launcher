@@ -43,6 +43,9 @@
 - include: installtools.yml
   when: installtools
 
+- include: installgenomes.yml
+  when: installgenomes
+
 - include: extractdb.yml
   when: extractdb
 
