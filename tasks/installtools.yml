@@ -16,13 +16,10 @@
     name: "{{ ephemeris_package }}"
     state: latest
 
-- name: Create empty work directory
+- name: Make sure tool directory exists
   file:
     path: "{{galaxy_docker_tool_dir}}"
-    state: "{{item}}"
-  with_items:
-    - absent
-    - directory
+    state: directory
 
 - name: Find yml files in tool list directory
   find:
@@ -68,20 +65,15 @@
   with_items:
     - "{{tools.files}}"
 
-- name: Create a file list from the directory
-  find: 
-    paths: "{{galaxy_docker_tool_dir}}"
-    patterns: 
-      - "*.yml"
-      - "*.yaml"
-  register: tools
-
 - name: Use ephemeris shed install to install tools 
-  command: "shed-install -g localhost:{{galaxy_web_port}} -a {{galaxy_master_api_key}} -t {{item.path}}"
+  command: "shed-install -g localhost:{{galaxy_web_port}} -a {{galaxy_master_api_key}} -t {{galaxy_docker_tool_dir}}/{{item.path | basename}}"
   with_items: "{{tools.files}}"
   ignore_errors: yes
 
 - name: remove added files
   file:
-    path: "{{galaxy_docker_tool_dir}}"
+    path: "{{galaxy_docker_tool_dir}}/{{item.path | basename}}"
     state: absent
+  with_items:
+    - "{{tools.files}}"
+
