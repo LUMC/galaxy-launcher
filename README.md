@@ -1,7 +1,37 @@
 # galaxy-docker-ansible
 
-This project contains the roles needed to install [bjgruening/galaxy-docker-stable](https://github.com/bgruening/docker-galaxy-stable)
+This project contains the roles needed to install [bgruening/galaxy-docker-stable](https://github.com/bgruening/docker-galaxy-stable)
 image on an ubuntu server.
+
+
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [galaxy-docker-ansible](#galaxy-docker-ansible)
+	- [Getting started](#getting-started)
+	- [Configuring your installation.](#configuring-your-installation)
+		- [docker.settings](#dockersettings)
+		- [galaxy.settings](#galaxysettings)
+		- [web.settings](#websettings)
+		- [Personalization (optional)](#personalization-optional)
+		- [Extra tools (optional)](#extra-tools-optional)
+		- [backup.settings](#backupsettings)
+		- [Configuring LDAP (optional)](#configuring-ldap-optional)
+			- [Keys required](#keys-required)
+			- [Default keys (can optionally be changed)](#default-keys-can-optionally-be-changed)
+			- [Example](#example)
+		- [Database (optional)](#database-optional)
+	- [Starting a galaxy instance on a remote machine.](#starting-a-galaxy-instance-on-a-remote-machine)
+		- [Install docker on the remote machine](#install-docker-on-the-remote-machine)
+		- [Run the galaxy docker image](#run-the-galaxy-docker-image)
+		- [Install tool lists on the galaxy instance](#install-tool-lists-on-the-galaxy-instance)
+		- [Install LDAP](#install-ldap)
+	- [Testing a new version of the image.](#testing-a-new-version-of-the-image)
+	- [Upgrade the running instance to a new image](#upgrade-the-running-instance-to-a-new-image)
+	- [Backing up the database](#backing-up-the-database)
+	- [Backing up your export folder](#backing-up-your-export-folder)
+	- [Removing the galaxy docker instance.](#removing-the-galaxy-docker-instance)
+
+<!-- /TOC -->
 
 ## Getting started
 1. Clone the repository to your local computer.
@@ -12,7 +42,7 @@ image on an ubuntu server.
 4. Make a new hosts file by copying `hosts.sample` to `hosts` and setup your galaxy host.
 5. Create a new configuration directory by copying `host_vars/example_host` to `host_vars/HOSTNAME`. Hostname should be equal to that specified in `hosts`
 6. Create a new files directory by copying `files/example_host` to `files/HOSTNAME`
- 
+
 ## Configuring your installation.
 Settings files are located in `host_vars/HOSTNAME`. `docker.settings`, `galaxy.settings` and `port.settings` should be checked and if necessary changed.
 Also tool lists can be added to install a set of tools.
@@ -32,7 +62,7 @@ galaxy_admin_user | e-mail address of the admin user. This variable is obligator
 galaxy_master_api_key | The master api key. Always set this value to something unique.
 galaxy_brand | The galaxy brand name
 galaxy_report_user | The user to access the reports section.
-galaxy_report_password | The password to access the reports section. 
+galaxy_report_password | The password to access the reports section.
 optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bjgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
 
 ### web.settings
@@ -52,7 +82,7 @@ See [bjgruening/docker-galaxy-stable documentation](https://github.com/bgruening
 
 Welcome files can be placed in `files\HOSTNAME\welcome`. This path can be changed in `files.settings`.
 
-### Extra tools (optional) 
+### Extra tools (optional)
 Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `tool_list_dir` in `files.settings`
 An example tool list can be found in `files/example_host/tools`.
 If no tool lists are present, this step will be automatically skipped.
@@ -82,18 +112,18 @@ backupdb_cron_jobs:
     files_to_keep: 6  
     compression_level: 6  
     compression_threads: 4  
-    cron: 
-      month: * 
-      day: 1,15 
-      hour: 3 
+    cron:
+      month: *
+      day: 1,15
+      hour: 3
 ```
 ```YAML
 rsync_settings:  
   dest: "/destination/path/on/remote/host"   
-  host: "example.host.org" 
-  user: "user" # The user that is connected to. This key can be ommited 
+  host: "example.host.org"
+  user: "user" # The user that is connected to. This key can be ommited
   delete: True # Remove backups on the remote server if they are removed on the galaxy server. True is recommended.
-  compression_level: 0 # Can range from 0-9. Rsync compresses the data before transmission to save bandwith* 
+  compression_level: 0 # Can range from 0-9. Rsync compresses the data before transmission to save bandwith*
   cron:  How often the rsync to the remote host should be performed. Hourly is recommended.
     special_time: hourly #
 
@@ -111,7 +141,7 @@ optional_environment_settings:
 In `host_vars/HOSTNAME/ldap.settings`
 set the following keys in ldap_settings:
 #### Keys required
-Key | Function 
+Key | Function
 ---|---
 server | The ldap server. (ldap://ad.example.com)
 search_base | example: dc=ad,dc=example,dc=com
@@ -165,7 +195,7 @@ ansible-playbook main.yml -e "host=HOSTNAME run=installdocker"
 ```
 
 ### Run the galaxy docker image
-```bash 
+```bash
 ansible-playbook main.yml -e "host=HOSTNAME run=rundockergalaxy"   
 ```
 
@@ -174,12 +204,12 @@ ansible-playbook main.yml -e "host=HOSTNAME run=rundockergalaxy"
 ansible-playbook main.yml -e "host=HOSTNAME run=installtools"   
 ```
 
+### Install LDAP
 ```bash
 ansible-playbook main.yml -e "host=HOSTNAME run=addldap"   
 ```
 !WARNING! This will restart the galaxy instance within the container
 
-### Add LDAP authentication
 ## Testing a new version of the image.
 
 If bjgruening updates the docker image to a newer version than this can be tested as follows:
@@ -201,12 +231,12 @@ ansible-playbook main.yml -e "host=HOSTNAME run=deletetestupgrade"
 2. Update the version tag of docker_image in `host_vars\HOSTNAME\docker.settings`
 3. run `ansible-playbook main.yml -e "host=HOSTNAME run=upgrade"`
 
-There is a setting overwrite_config_files in migrate.settings. Default is False. 
+There is a setting overwrite_config_files in migrate.settings. Default is False.
 If set to True this will overwrite all your config files with the .distribution_config files.
 
 ## Backing up the database
-This extracts the database of the running instance to `files/HOSTNAME/backupdb`. 
-This path can be changed in `files.settings`. If you want to change the filename of the backup you can add 
+This extracts the database of the running instance to `files/HOSTNAME/backupdb`.
+This path can be changed in `files.settings`. If you want to change the filename of the backup you can add
 `backup_db_filename: yourprefferedfilename` to `files.settings`
 
 To backup the database run:
@@ -237,8 +267,7 @@ It can be enabled when ansible 2.3 is released as stable.
 `ansible-playbook main.yml -e "host=HOSTNAME run=deletegalaxy` does the following things:
 + deletes the container
 + removes the firewall exception and removes the profile
-+ removes the cron jobs 
++ removes the cron jobs
 
-If `delete_files=True` is added then it will also delete the export folder 
+If `delete_files=True` is added then it will also delete the export folder
 If `delete_backup_files=True` is added then it will also delete the backup folder.
-
