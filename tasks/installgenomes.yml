@@ -65,6 +65,28 @@
   with_items:
     - "{{dbkeys.files}}"
 
+- name: Create genomes directory in export folder
+  file:
+    path: "{{docker_export_location}}/genomes"
+    state: directory
+
+- name: Make sure rsync is installed
+  package:
+    name: rsync
+    state: present
+
+- name: Move genomes to the server using rsync
+  synchronize:
+    compress: yes
+    copy_links: "{{galaxy_docker_genome_copy_links}}"
+    delete: no
+    dest: "{{docker_export_location}}/genomes"
+    src: "{{genomes_dir}}"
+    archive: no
+    recursive: yes
+  vars:
+    ansible_ssh_pipelining: False
+
 - name: Use ephemeris shed install to run data managers
   command: "shed-install -g localhost:{{galaxy_web_port}} -a {{galaxy_docker_admin_api_key}} -d {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
   with_items: "{{dbkeys.files}}"
