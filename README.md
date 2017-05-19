@@ -11,9 +11,10 @@ image on an ubuntu server.
 	- [docker.settings](#dockersettings)
 	- [galaxy.settings](#galaxysettings)
 	- [web.settings](#websettings)
+	- [backup.settings](#backupsettings)
 	- [Personalization (optional)](#personalization-optional)
 	- [Extra tools (optional)](#extra-tools-optional)
-	- [backup.settings](#backupsettings)
+	- [Adding reference genomes (optional)](#adding-reference-genomes-optional)
 	- [Configuring LDAP (optional)](#configuring-ldap-optional)
 		- [Keys required](#keys-required)
 		- [Default keys (can optionally be changed)](#default-keys-can-optionally-be-changed)
@@ -86,21 +87,6 @@ galaxy_sftp_port | By default this variable is not set and port is unaccessible.
 
 It is not recommended to touch the nginx settings unless you are familiar with configuring [ansible-role-nginx](https://github.com/jdauphant/ansible-role-nginx).
 
-### Personalization (optional)
-<a href="#top">Back to top</a>
-
-See [bgruening/docker-galaxy-stable documentation](https://github.com/bgruening/docker-galaxy-stable#Personalize-your-Galaxy).
-
-Welcome files can be placed in `files\HOSTNAME\welcome`. This path can be changed in `files.settings`.
-
-### Extra tools (optional)
-<a href="#top">Back to top</a>
-
-Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `tool_list_dir` in `files.settings`
-An example tool list can be found in `files/example_host/tools`.
-If no tool lists are present, this step will be automatically skipped.
-
-
 ### backup.settings
 <a href="#top">Back to top</a>
 
@@ -144,6 +130,23 @@ rsync_settings:
 
  #* 0 is recommended because the archives are already compressed
 ```
+### Personalization (optional)
+<a href="#top">Back to top</a>
+
+See [bgruening/docker-galaxy-stable documentation](https://github.com/bgruening/docker-galaxy-stable#Personalize-your-Galaxy).
+
+Welcome files can be placed in `files\HOSTNAME\welcome`. This path can be changed in `files.settings`.
+
+### Extra tools (optional)
+<a href="#top">Back to top</a>
+
+Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `tool_list_dir` in `files.settings`
+An example tool list can be found in `files/example_host/tools`.
+If no tool lists are present, this step will be automatically skipped.
+
+### Adding reference genomes (optional)
+Reference genomes can be added to `files/HOSTNAME/genomes`. To change this directory change `genome_dir` in `files.settings`.
+The genomes are copied to the server using rsyn
 
 ### Configuring LDAP (optional)
 <a href="#top">Back to top</a>
