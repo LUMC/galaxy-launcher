@@ -25,6 +25,7 @@ image on an ubuntu server.
 	- [Install docker on the remote machine](#install-docker-on-the-remote-machine)
 	- [Run the galaxy docker image](#run-the-galaxy-docker-image)
 	- [Install tool lists on the galaxy instance](#install-tool-lists-on-the-galaxy-instance)
+	- [Install genomes on the galaxy instance](#install-genomes-on-the-galaxy-instance)
 	- [Install LDAP](#install-ldap)
 - [Testing a new version of the image.](#testing-a-new-version-of-the-image)
 - [Upgrade the running instance to a new image](#upgrade-the-running-instance-to-a-new-image)
@@ -142,11 +143,21 @@ Welcome files can be placed in `files\HOSTNAME\welcome`. This path can be change
 
 Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `tool_list_dir` in `files.settings`
 An example tool list can be found in `files/example_host/tools`.
-If no tool lists are present, this step will be automatically skipped.
+If no tool lists are present, this step will be automatically skipped. Only .yml and .yaml files are copied to the server.
 
 ### Adding reference genomes (optional)
-Reference genomes can be added to `files/HOSTNAME/genomes`. To change this directory change `genome_dir` in `files.settings`.
-The genomes are copied to the server using rsyn
+1. Add reference genomes to be copied to the server (see below)
+2. Specify which data managers to run (see below)
+3. Make sure data managers specified are installed (see [Extra tools](#extra-tools-optional) section)
+4. Create an admin api key by logging in as the admin user and creating an API key.
+Because an admin api key is needed, this task cannot be completed during the `run=install` step.
+5. [Run the installgenomes task](#install-genomes-on-the-galaxy-instance).
+Reference genomes can be added to `files/HOSTNAME/genomes`. To change this directory change `genome_dir` in `files.settings`.  
+The genomes are copied to the server using rsync. Ownership information will not be kept and genomes will be world-readable.
+
+In order to install the genomes a YAML file specifying the data managers that
+should be run should be placed in `files/HOSTNAME/dbkeys`. An example is included
+as `run-data-managers.yaml.sample`. Only .yml and .yaml files are copied to the server.
 
 ### Configuring LDAP (optional)
 <a href="#top">Back to top</a>
@@ -228,6 +239,11 @@ ansible-playbook main.yml -e "host=HOSTNAME run=rundockergalaxy"
 ### Install tool lists on the galaxy instance
 ```bash
 ansible-playbook main.yml -e "host=HOSTNAME run=installtools"   
+```
+
+### Install genomes on the galaxy instance
+```bash
+ansible-playbook main.yml -e "host=HOSTNAME run=installgenomes galaxy_docker_admin_api_key=YOURADMINAPIKEY" #This is not equal to the master api key   
 ```
 
 ### Install LDAP
