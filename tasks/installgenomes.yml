@@ -127,6 +127,7 @@
   with_items: "{{dbkeys.files}}"
 #  ignore_errors: yes
   register: result
+  notify: restart galaxy in container  
 
 - name: Debug ephemeris output
   debug:
@@ -139,3 +140,5 @@
     state: absent
   with_items:
    - "{{dbkeys.files}}"
+
+
