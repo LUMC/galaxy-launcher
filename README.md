@@ -4,6 +4,7 @@ This project contains the roles needed to install [bgruening/galaxy-docker-stabl
 image on an ubuntu server.
 
 
+## Table of contents
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Getting started](#getting-started)
@@ -35,7 +36,7 @@ image on an ubuntu server.
 <!-- /TOC -->
 
 ## Getting started  
-<a href="#top">Back to top</a>
+[back to to top](#table-of-contents)
 
 1. Clone the repository to your local computer.
 2. [Set up ansible](http://docs.ansible.com/ansible/intro_installation.html)
