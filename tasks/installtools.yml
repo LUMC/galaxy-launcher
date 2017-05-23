@@ -13,8 +13,9 @@
 
 - name: Install required ephemeris package
   pip:
-    name: "{{ ephemeris_package }}"
+    name: "{{ galaxy_docker_ephemeris_package }}"
     state: latest
+#    version: "{{ galaxy_docker_ephemeris_version }}"
 
 - name: Make sure tool directory exists
   file:
