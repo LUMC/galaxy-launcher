@@ -36,7 +36,7 @@ image on an ubuntu server.
 <!-- /TOC -->
 
 ## Getting started  
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 1. Clone the repository to your local computer.
 2. [Set up ansible](http://docs.ansible.com/ansible/intro_installation.html)
@@ -48,13 +48,13 @@ image on an ubuntu server.
 6. Create a new files directory by copying `files/example_host` to `files/HOSTNAME`
 
 ## Configuring your installation.
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 Settings files are located in `host_vars/HOSTNAME`. `docker.settings`, `galaxy.settings` and `port.settings` should be checked and if necessary changed.
 Also tool lists can be added to install a set of tools.
 
 ### docker.settings
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 Variable | Function
 ---|---
@@ -64,7 +64,7 @@ docker_user | a user that will be created without sudo rights on the remote mach
 docker_container_name | What name the container gets for easy access using docker commands. Default is "galaxy".
 
 ### galaxy.settings
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 Variable | Function
 ---|---
@@ -76,7 +76,7 @@ galaxy_report_password | The password to access the reports section.
 optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
 
 ### web.settings
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 Variable | Function
 ---|---
@@ -90,7 +90,7 @@ galaxy_sftp_port | By default this variable is not set and port is unaccessible.
 It is not recommended to touch the nginx settings unless you are familiar with configuring [ansible-role-nginx](https://github.com/jdauphant/ansible-role-nginx).
 
 ### backup.settings
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 backup_location: "backup/location/path"
 backup_user: "galaxy_backup_user"
@@ -133,21 +133,21 @@ rsync_settings:
  #* 0 is recommended because the archives are already compressed
 ```
 ### Personalization (optional)
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 See [bgruening/docker-galaxy-stable documentation](https://github.com/bgruening/docker-galaxy-stable#Personalize-your-Galaxy).
 
 Welcome files can be placed in `files\HOSTNAME\welcome`. This path can be changed in `files.settings`.
 
 ### Extra tools (optional)
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `tool_list_dir` in `files.settings`
 An example tool list can be found in `files/example_host/tools`.
 If no tool lists are present, this step will be automatically skipped. Only .yml and .yaml files are copied to the server.
 
 ### Adding reference genomes (optional)
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 1. Add reference genomes to be copied to the server (see below)
 2. Specify which data managers to run (see below)
@@ -163,7 +163,7 @@ should be run should be placed in `files/HOSTNAME/dbkeys`. An example is include
 as `run-data-managers.yaml.sample`. Only .yml and .yaml files are copied to the server.
 
 ### Configuring LDAP (optional)
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 Add a  GALAXY_CONFIG_AUTH_CONFIG_FILE key to `optional_environment_settings` in `host_vars/HOSTNAME/galaxy.settings` :
 ```
@@ -206,14 +206,14 @@ ldap_settings:
 
 
 ### Database (optional)
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 If you wish to use a postgresql database of another galaxy instance, make a dump of the instance.
 Put the dump file in `files/HOSTNAME/insert_db`. Alternatively you can specify the location by changing `insert_db_dir` in `files.settings`
 If no database is added, a new empty DB will be created.
 
 ## Set up the docker container with one command
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 To install docker, fetch the image, run it, add the database and install all the tools run:
 
@@ -227,7 +227,7 @@ ansible-playbook main.yml -e "host=HOSTNAME run=install addldap=True"
 Alternatively you can set up your machine step by step.
 
 ## Set up the docker container step by step
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 ### Install docker on the remote machine
 ```bash
@@ -256,7 +256,7 @@ ansible-playbook main.yml -e "host=HOSTNAME run=addldap"
 !WARNING! This will restart the galaxy instance within the container
 
 ## Testing a new version of the image.
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 If bgruening updates the docker image to a newer version than this can be tested as follows:
 1. Open the `host_vars/HOSTNAME/upgrade.settings` file
@@ -273,7 +273,7 @@ ansible-playbook main.yml -e "host=HOSTNAME run=deletetestupgrade"
 ```
 
 ## Upgrade the running instance to a new image
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 1. Make sure there are no jobs running on your instance. As an admin you can hold all new jobs so they will wait until the image is upgraded.
 2. Update the version tag of docker_image in `host_vars\HOSTNAME\docker.settings`
@@ -283,7 +283,7 @@ There is a setting overwrite_config_files in migrate.settings. Default is False.
 If set to True this will overwrite all your config files with the .distribution_config files.
 
 ## Backing up the database
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 This extracts the database of the running instance to `files/HOSTNAME/backupdb`.
 This path can be changed in `files.settings`. If you want to change the filename of the backup you can add
@@ -296,7 +296,7 @@ ansible-playbook main.yml -e "host=HOSTNAME run=extractdb"
 ```
 
 ## Removing the galaxy docker instance.
-[Back to to top](#table-of-contents)
+[Back to top](#table-of-contents)
 
 
 `ansible-playbook main.yml -e "host=HOSTNAME run=deletegalaxy` does the following things:
