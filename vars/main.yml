@@ -37,8 +37,8 @@ packages:
   - docker-engine
 
 # vars for installtools:
-bioblend_packages:
-  - bioblend
+galaxy_docker_ephemeris_package: ephemeris
+galaxy_docker_ephemeris_version: 0.6.2
 
 # vars for rundockergalaxy
 docker_published_ports: ""

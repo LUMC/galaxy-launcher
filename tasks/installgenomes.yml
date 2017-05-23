@@ -1,0 +1,141 @@
+---
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+- name: check if galaxy has started
+  command: echo this always reports as changed
+  notify: check if galaxy has started
+
+- meta: flush_handlers
+
+#- name: Install required ephemeris package
+#  pip:
+#    name: "{{ galaxy_docker_ephemeris_package }}"
+#    state: present
+#    version: "{{ galaxy_docker_ephemeris_version }}"
+
+- name: install git
+  package:
+    name: git
+    state: present 
+  tags: git_ephemeris
+
+- name: Install ephemeris repo
+  git: 
+    repo: "{{galaxy_docker_ephemeris_repo}}"
+    dest: "{{galaxy_docker_ephemeris_dir}}"
+    version: "{{galaxy_docker_ephemeris_branch}}"
+  tags: git_ephemeris
+
+- name: Install ephemeris requirements
+  command: "pip install -r {{galaxy_docker_ephemeris_dir}}/requirements.txt"
+  tags: git_ephemeris
+
+- name: Install ephemeris from git repo
+  command: "python setup.py install"
+  args:
+    chdir: "{{galaxy_docker_ephemeris_dir}}"
+  tags: git_ephemeris
+
+- name: Create empty work directory
+  file:
+    path: "{{galaxy_docker_dbkeys_dir}}"
+    state: directory
+
+- name: Find yml files in tool list directory
+  find:
+    paths: "{{dbkeys_list_dir}}"
+    patterns:
+      - "*.yml"
+      - "*.yaml"
+  register: dbkeys
+  delegate_to: 127.0.0.1
+  become: no
+
+- name: Show which yamls will be transferred
+  debug: 
+    var: dbkeys
+    verbosity: 1
+
+- name: delete api key from files
+  lineinfile:
+    destfile: "{{item.path}}"
+    regexp: "api_key:.*"
+    state: absent
+  with_items: 
+    - "{{dbkeys.files}}"
+  become: no
+  delegate_to: 127.0.0.1
+
+- name: delete galaxy_instance from files
+  lineinfile:
+    destfile: "{{item.path}}"
+    regexp: "galaxy_instance:.*"
+    state: absent     
+  with_items: 
+    - "{{dbkeys.files}}"
+  become: no
+  delegate_to: 127.0.0.1
+
+- name: Move dbkeys to galaxy server
+  copy:
+    dest: "{{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
+    src: "{{item.path}}"
+    force: yes
+    mode: 0600
+  with_items:
+    - "{{dbkeys.files}}"
+
+- name: Create genomes directory in export folder
+  file:
+    path: "{{docker_export_location}}/genomes"
+    state: directory
+
+- name: Make sure rsync is installed
+  package:
+    name: rsync
+    state: present
+
+- name: Move genomes to the server using rsync
+  synchronize:
+    compress: yes #Necessary for big fasta files
+    copy_links: "{{galaxy_docker_genome_copy_links}}" # You don't have to duplicate the file in the playbook directory but can symlink instead
+    delete: no # do not delete genomes already there
+    dest: "{{docker_export_location}}/genomes"
+    src: "{{genomes_dir}}"
+    archive: no #owner and chmod information should not be copied
+    recursive: yes
+    checksum: yes #when archive is no. Checksum should be yes, otherwise the files are always copied.
+  vars:
+    ansible_ssh_pipelining: False
+
+#- name: Use ephemeris shed install to run data managers
+#  command: "shed-install -g localhost:{{galaxy_web_port}} -a {{galaxy_docker_admin_api_key}} -d {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
+#  with_items: "{{dbkeys.files}}"
+#  ignore_errors: yes
+
+- name: Use ephemeris run-data-managers to run data managers
+  command: "run-data-managers -g localhost:{{galaxy_web_port}} -a {{galaxy_docker_admin_api_key}} --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}} -v"
+#  command: "run-data-managers -g localhost:{{galaxy_web_port}} -u {{galaxy_docker_admin_user}} -p {{galaxy_docker_admin_password}} --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
+  with_items: "{{dbkeys.files}}"
+#  ignore_errors: yes
+  register: result
+
+- name: Debug ephemeris output
+  debug:
+    var: result.stderr
+    verbosity: 1
+
+- name: remove added files
+  file:
+    path: "{{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
+    state: absent
+  with_items:
+   - "{{dbkeys.files}}"
