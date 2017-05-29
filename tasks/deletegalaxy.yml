@@ -12,7 +12,7 @@
 - name: Set parameters for deleting the test upgrade container
   set_fact:
     "{{item.key}}" : "{{item.value}}"
-  with_dict: "{{test_upgrade}}"
+  with_dict: "{{test_upgrade_settings}}"
   when: delete_test_upgrade
 
 - name: Remove docker container
@@ -29,6 +29,7 @@
 - name: remove firewall port exception
   ufw:
     name: "{{ufw_profile}}"
+    rule: allow
     delete: yes
     state: reloaded
 
@@ -42,6 +43,7 @@
     path: "/etc/nginx/sites-available/{{item.key}}.conf"
     state: absent
   with_dict: "{{nginx_sites}}"
+  when: not delete_test_upgrade
 
 - name: remove cron jobs for backup scripts
   cron:
