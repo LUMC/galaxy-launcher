@@ -260,7 +260,7 @@ ansible-playbook main.yml -e "host=HOSTNAME run=addldap"
 
 If bgruening updates the docker image to a newer version than this can be tested as follows:
 1. Open the `host_vars/HOSTNAME/upgrade.settings` file
-2. Set the settings for the test instance in the test_upgrade dictionary. Make sure the port mappings don't overlap with the running instance. Additional settings can be added to the dictionary.
+2. Set the settings for the test instance in the test_upgrade_settings dictionary. Make sure the port mappings don't overlap with the running instance. Additional settings can be added to the dictionary.
 3. Run `ansible-playbook main.yml -e "host=HOSTNAME run=testupgrade"`
 4. Check if the galaxy instance is running properly and if history is kept.
 (Tools won't run and data will not be included)
