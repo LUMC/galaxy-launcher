@@ -15,14 +15,14 @@
 - include: importdb.yml
   when: importdb
   
+- include: nginxsettings.yml
+  when: nginxsettings
+
 - include: upgrade.yml
   when: upgrade
 
 - include: galaxywelcome.yml
   when: galaxywelcome
-
-- include: nginxsettings.yml
-  when: nginxsettings
 
 - include_role:
     name: jdauphant.nginx

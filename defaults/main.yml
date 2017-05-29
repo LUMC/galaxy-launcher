@@ -90,9 +90,8 @@ galaxy_docker_ephemeris_repo: "https://github.com/rhpvorderman/ephemeris.git"
 galaxy_docker_ephemeris_branch: "allfixes"
 galaxy_docker_ephemeris_dir: "/opt/ephemeris"
 
-
 #defaults for upgrade
-test: False
+test_upgrade: False
 overwrite_config_files: False #Overwrites old config files with new distribution_config files
 
 no_overwrite: "-n" # No overwrite parameter for cp shell command.
