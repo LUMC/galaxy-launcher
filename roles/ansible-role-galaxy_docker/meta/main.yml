@@ -1,0 +1,24 @@
+galaxy_info:
+  author: Sequencing Analysis Support Core
+  description: A role to install bgruening/galaxy-docker-stable on a host
+  company: Leiden University Medical Center
+
+  license: APGLv3 for non-commercial use.
+
+  min_ansible_version: 2.3
+
+  platforms:
+  - name: Ubuntu
+    versions:
+      - 16.04
+
+  galaxy_tags: 
+    - galaxy
+    - docker
+    - bgruening
+    - galaxyproject
+    - lumc
+
+#dependencies: 
+#  - { role: jdauphant.nginx, nginx_sites: "{{nginx_sites}}" }
+

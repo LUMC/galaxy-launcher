@@ -1,0 +1,84 @@
+---
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+- name: Check if galaxy has started
+  command: echo this always reports as changed
+  notify: check if galaxy has started
+
+- meta: flush_handlers
+
+- name: Install required ephemeris package
+  pip:
+    name: "{{ galaxy_docker_ephemeris_package }}"
+    state: latest
+#    version: "{{ galaxy_docker_ephemeris_version }}"
+
+- name: Make sure tool directory exists
+  file:
+    path: "{{galaxy_docker_tool_dir}}"
+    state: directory
+
+- name: Find yml files in tool list directory
+  find:
+    paths: "{{tool_list_dir}}"
+    patterns:
+      - "*.yml"
+      - "*.yaml"
+  register: tools
+  delegate_to: 127.0.0.1
+  become: no
+
+- name: Show which yamls will be transferred
+  debug: 
+    var: tools
+    verbosity: 1
+
+- name: delete api key from files
+  lineinfile:
+    destfile: "{{item.path}}"
+    regexp: "api_key:.*"
+    state: absent
+  with_items: 
+    - "{{tools.files}}"
+  become: no
+  delegate_to: 127.0.0.1
+
+- name: delete galaxy_instance from files
+  lineinfile:
+    destfile: "{{item.path}}"
+    regexp: "galaxy_instance:.*"
+    state: absent     
+  with_items: 
+    - "{{tools.files}}"
+  become: no
+  delegate_to: 127.0.0.1
+
+- name: Move tools to galaxy server
+  copy:
+    dest: "{{galaxy_docker_tool_dir}}/{{item.path | basename}}"
+    src: "{{item.path}}"
+    force: yes
+    mode: 0600
+  with_items:
+    - "{{tools.files}}"
+
+- name: Use ephemeris shed install to install tools 
+  command: "shed-install -g localhost:{{galaxy_web_port}} -a {{galaxy_master_api_key}} -t {{galaxy_docker_tool_dir}}/{{item.path | basename}}"
+  with_items: "{{tools.files}}"
+  ignore_errors: yes
+
+- name: remove added files
+  file:
+    path: "{{galaxy_docker_tool_dir}}/{{item.path | basename}}"
+    state: absent
+  with_items:
+    - "{{tools.files}}"
+
