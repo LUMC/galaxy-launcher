@@ -38,14 +38,17 @@ image on an ubuntu server.
 ## Getting started  
 [Back to top](#table-of-contents)
 
-1. Clone the repository to your local computer.
+1. Clone the repository to your local computer. `git clone https://github.com/LUMC/galaxy-docker-ansible.git`
 2. [Set up ansible](http://docs.ansible.com/ansible/intro_installation.html)
   * Ansible version 2.3 is tested and required.
-3. Set up a passwordless sudo user on the remote host and set up an ssh key pair.
+3. Install ansible requirements
+  * Go to the cloned repository `cd galaxy-docker-ansible`  
+  * and run `ansible-galaxy install -r requirements.yml`
+4. Set up a passwordless sudo user on the remote host and set up an ssh key pair.
   * NOTE: a passwordless sudo user is required on the remote host to perform the database operations with ansible
-4. Make a new hosts file by copying `hosts.sample` to `hosts` and setup your galaxy host.
-5. Create a new configuration directory by copying `host_vars/example_host` to `host_vars/HOSTNAME`. Hostname should be equal to that specified in `hosts`
-6. Create a new files directory by copying `files/example_host` to `files/HOSTNAME`
+5. Make a new hosts file by copying `hosts.sample` to `hosts` and setup your galaxy host.
+6. Create a new configuration directory by copying `host_vars/example_host` to `host_vars/HOSTNAME`. Hostname should be equal to that specified in `hosts`
+7. Create a new files directory by copying `files/example_host` to `files/HOSTNAME`
 
 ## Configuring your installation.
 [Back to top](#table-of-contents)
