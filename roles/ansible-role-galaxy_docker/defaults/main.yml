@@ -1,0 +1,132 @@
+---
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# defaults file for galaxy_docker
+
+# docker defaults
+docker_user: galaxy
+user_groups: docker
+docker_image: bgruening/galaxy-stable
+docker_environment_file_location: "/home/{{docker_user}}/galaxydocker.env"
+docker_export_location: "/home/{{docker_user}}/"
+docker_container_name: galaxy
+
+# firewall, nginx and ports
+ufw_profile: galaxy
+public_galaxy_web_port: 80
+galaxy_web_port: 8080
+
+# Bgruening container defaults
+container_postgres_user: 1550
+container_database_name: galaxy
+galaxy_user_in_container: 1450
+container_database_username: "galaxy"
+galaxy_uid: "1450"
+
+# File locations:
+welcome_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/welcome/"
+import_db: "{{inventory_hostname}}/database_import/"
+tool_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/tools/"
+dbkeys_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/dbkeys/"
+genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
+fetch_location: "files/{{inventory_hostname}}/database_extract/"
+
+# defaults for addldap
+ldap_defaults:
+  login_use_username: True
+  allow_password_change: False
+  allow_register: False
+  auto_register: True
+  continue_on_failure: False
+  email_suffix: ""
+#  options: ""
+
+# defaults for cronbackupdb
+db_export_location: postgresql
+cronbackupdb_log_timestamp: "TZ='UTC' date +'%Z %F %T >'"
+backup_user: galaxy_backup
+backup_ssh_key_file: ".ssh/id_rsa"
+default_rsync_settings:
+  delete: True
+  compression_level: 0
+  cron:
+    special_time: "hourly"
+    
+backup_rsync_settings: {}
+backup_rsync_remote_host: False
+
+# defaults for deletegalaxy
+delete_files: False
+delete_test_upgrade: False
+delete_backup_files: False
+
+# defaults for extractdb
+backup_db_compression_level: 6
+backup_db_filename: "galaxy_database.{{ansible_date_time.iso8601}}.dump"
+exported_db_file: "postgresql/{{backup_db_filename}}"
+
+#defaults for importdb
+import_db_location: "database_import"
+
+# defaults for installdocker
+docker_default_location: "/var/lib/docker"
+
+# defaults for installtools
+galaxy_docker_tool_dir: "/tmp/galaxy_tool_lists"
+
+# defaults for installgenomes
+galaxy_docker_dbkeys_dir: "/tmp/galaxy_dkeys_lists"
+galaxy_docker_genome_copy_links: yes
+galaxy_docker_genomes_dest: "{{docker_export_location}}/genomes"
+galaxy_docker_ephemeris_repo: "https://github.com/rhpvorderman/ephemeris.git"
+galaxy_docker_ephemeris_branch: "allfixes"
+galaxy_docker_ephemeris_dir: "/opt/ephemeris"
+
+#defaults for upgrade
+test_upgrade: False
+overwrite_config_files: False #Overwrites old config files with new distribution_config files
+
+no_overwrite: "-n" # No overwrite parameter for cp shell command.
+
+##
+#Files to be migrated for testing
+##
+
+#root folder is the export folder
+# dest: "" therefore equals copying directly into the root folder.
+migrated_files:
+  - src: "galaxy-central/config"
+    dest: "galaxy-central"
+  - src: "postgresql"
+    dest: ""
+
+##
+#Files to be copied from .distribution_config to new config
+##
+new_config_files:
+  - src: ".distribution_config/."
+    dest: "galaxy-central/config"
+
+# Run
+installdocker: False
+importdb: False
+upgrade: False
+galaxywelcome: False
+addldap: False
+nginxsettings: False
+ansible_role_nginx: False
+galaxyfirewall: False
+rundockergalaxy: False
+cronbackupdb: False
+installtools: False
+extractdb: False
+deletegalaxy: False
+installgenomes: False

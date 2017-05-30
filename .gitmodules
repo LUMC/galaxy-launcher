@@ -1,3 +1,0 @@
-[submodule "roles/ansible-role-galaxy_docker"]
-	path = roles/ansible-role-galaxy_docker
-	url = git@github.com:LUMC/ansible-role-galaxy_docker.git
