@@ -27,6 +27,11 @@
     state: present 
   tags: git_ephemeris
 
+- name: Clean ephemeris git folder
+  file:
+    path: "{{galaxy_docker_ephemeris_dir}}"
+    state: absent
+
 - name: Install ephemeris repo
   git: 
     repo: "{{galaxy_docker_ephemeris_repo}}"
@@ -35,7 +40,9 @@
   tags: git_ephemeris
 
 - name: Install ephemeris requirements
-  command: "pip install -r {{galaxy_docker_ephemeris_dir}}/requirements.txt"
+  pip:
+    requirements: "{{galaxy_docker_ephemeris_dir}}/requirements.txt"
+    state: present
   tags: git_ephemeris
 
 - name: Install ephemeris from git repo
