@@ -15,11 +15,7 @@
 
 - meta: flush_handlers
 
-- name: Install required ephemeris package
-  pip:
-    name: "{{ galaxy_docker_ephemeris_package }}"
-    state: latest
-#    version: "{{ galaxy_docker_ephemeris_version }}"
+- include: installephemeris.yml
 
 - name: Make sure tool directory exists
   file:

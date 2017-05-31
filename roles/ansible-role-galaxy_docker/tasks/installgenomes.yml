@@ -15,34 +15,7 @@
 
 - meta: flush_handlers
 
-#- name: Install required ephemeris package
-#  pip:
-#    name: "{{ galaxy_docker_ephemeris_package }}"
-#    state: present
-#    version: "{{ galaxy_docker_ephemeris_version }}"
-
-- name: install git
-  package:
-    name: git
-    state: present 
-  tags: git_ephemeris
-
-- name: Install ephemeris repo
-  git: 
-    repo: "{{galaxy_docker_ephemeris_repo}}"
-    dest: "{{galaxy_docker_ephemeris_dir}}"
-    version: "{{galaxy_docker_ephemeris_branch}}"
-  tags: git_ephemeris
-
-- name: Install ephemeris requirements
-  command: "pip install -r {{galaxy_docker_ephemeris_dir}}/requirements.txt"
-  tags: git_ephemeris
-
-- name: Install ephemeris from git repo
-  command: "python setup.py install"
-  args:
-    chdir: "{{galaxy_docker_ephemeris_dir}}"
-  tags: git_ephemeris
+- include: installephemeris.yml
 
 - name: Create empty work directory
   file:
@@ -116,16 +89,10 @@
   vars:
     ansible_ssh_pipelining: False
 
-#- name: Use ephemeris shed install to run data managers
-#  command: "shed-install -g localhost:{{galaxy_web_port}} -a {{galaxy_docker_admin_api_key}} -d {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
-#  with_items: "{{dbkeys.files}}"
-#  ignore_errors: yes
-
 - name: Use ephemeris run-data-managers to run data managers
   command: "run-data-managers -g localhost:{{galaxy_web_port}} -a {{galaxy_docker_admin_api_key}} --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}} -v"
-#  command: "run-data-managers -g localhost:{{galaxy_web_port}} -u {{galaxy_docker_admin_user}} -p {{galaxy_docker_admin_password}} --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
   with_items: "{{dbkeys.files}}"
-#  ignore_errors: yes
+  ignore_errors: yes # If databases fail galaxy is still restarted so the ones that did not fail are available
   register: result
   notify: restart galaxy in container  
 
