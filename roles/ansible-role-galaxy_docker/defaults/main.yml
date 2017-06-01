@@ -38,6 +38,8 @@ tool_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/tools/"
 dbkeys_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/dbkeys/"
 genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
 fetch_location: "files/{{inventory_hostname}}/database_extract/"
+docker_custom_image_dir: "files/{{inventory_hostname}}/docker_custom_image/"
+docker_build_dir: "/tmp/docker_image/"
 
 # defaults for addldap
 ldap_defaults:
@@ -101,7 +103,7 @@ galaxy_docker_sge_environment:
   SGE_ROOT: /var/lib/gridengine
 
 #defaults for upgrade
-test: False
+test_upgrade: False
 overwrite_config_files: False #Overwrites old config files with new distribution_config files
 
 no_overwrite: "-n" # No overwrite parameter for cp shell command.
@@ -141,3 +143,4 @@ extractdb: False
 deletegalaxy: False
 installgenomes: False
 setupsge: False
+customimage: False

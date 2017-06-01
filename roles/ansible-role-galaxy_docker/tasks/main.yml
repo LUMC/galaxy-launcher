@@ -12,6 +12,9 @@
 - include: installdocker.yml
   when: installdocker
 
+- include: customimage.yml
+  when: customimage
+
 - include: importdb.yml
   when: importdb
 
@@ -23,7 +26,6 @@
 
 - include: galaxywelcome.yml
   when: galaxywelcome
-
 
 - include_role:
     name: jdauphant.nginx

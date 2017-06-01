@@ -9,19 +9,21 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# handlers file for galaxy_docker
+- name: Copy files to docker build directory
+  copy:
+    src: "{{docker_custom_image_dir}}"
+    dest: "{{docker_build_dir}}"
+    mode: 600
 
-- name: check if galaxy has started
-  uri:
-    url: "http://localhost:{{galaxy_web_port}}"
-    return_content: yes
-  register: result
-  until: 'galaxy_brand in result.content'  
-  retries: 20 
-  delay: 10
+- name: Build custom docker image
+  docker_image:
+    name: "{{docker_image}}"
+    path: "{{docker_build_dir}}"
+    pull: True
+    rm: True
+    state: present
 
-- name: restart galaxy in container
-  command: "docker exec {{docker_container_name}} {{command}}"
-  vars:
-    command: "supervisorctl restart {{supervisorctl_galaxy | default('galaxy')}}:*"
-  notify: check if galaxy has started
+- name: remove docker build directory
+  file:
+    path: "{{docker_build_dir}}"
+    state: absent

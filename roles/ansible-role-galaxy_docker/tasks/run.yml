@@ -108,7 +108,6 @@
 - name: Restart the docker container
   docker_container:
     env_file: "{{docker_environment_file_location}}"
-    volumes: "{{docker_export_location}}:/export/"
     volumes: "{{galaxy_docker_volumes.split(' ')}}"
     image: "{{docker_image}}"
     name: "{{docker_container_name}}"
