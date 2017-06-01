@@ -43,7 +43,7 @@
         - "gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript"
         - "uwsgi_read_timeout 300"
 
-- name: Add test upgrade profile. 
+- name: Add test upgrade profile.
   set_fact:
     nginx_sites_test_upgrade:
       test_upgrade_galaxy:
@@ -71,6 +71,3 @@
     - nginx_sites
     - nginx_configs
     - nginx_http_params
-
-
-  

@@ -9,10 +9,11 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- name: Setting new docker container for the test upgrade. 
+- name: Setting new docker container for the test upgrade.
   set_fact:
     docker_container_name: "{{test_upgrade_settings.docker_container_name}}"
   when: test_upgrade
+
 
 - name: Remove docker container before migrating
   docker_container:
@@ -62,7 +63,7 @@
     galaxy_root: "{{output.stdout_lines[-1]}}"
 
 - name: show galaxy_root
-  debug: 
+  debug:
     var: galaxy_root
     verbosity: 1
 
@@ -74,7 +75,7 @@
 
 - name: upgrade the database on the export location
   command: "docker exec {{name}} {{command}}"
-  vars: 
+  vars:
     volumes: "{{docker_export_location}}:/export/"
     image: "{{docker_image}}"
     name: "{{docker_container_name}}"
@@ -104,4 +105,3 @@
     dest: "{{docker_export_location}}/{{item.dest}}"
   with_items:
     - "{{new_config_files}}"
-

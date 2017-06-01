@@ -14,7 +14,7 @@
 
 - include: importdb.yml
   when: importdb
-  
+
 - include: nginxsettings.yml
   when: nginxsettings
 
@@ -24,9 +24,10 @@
 - include: galaxywelcome.yml
   when: galaxywelcome
 
+
 - include_role:
     name: jdauphant.nginx
-  when: ansible_role_nginx 
+  when: ansible_role_nginx
 
 - include: galaxyfirewall.yml
   when: galaxyfirewall
@@ -36,6 +37,9 @@
 
 - include: addldap.yml
   when: addldap
+
+- include: setupsge.yml
+  when: setupsge
 
 - include: cronbackupdb.yml
   when: cronbackupdb

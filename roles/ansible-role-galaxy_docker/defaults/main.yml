@@ -59,7 +59,7 @@ default_rsync_settings:
   compression_level: 0
   cron:
     special_time: "hourly"
-    
+
 backup_rsync_settings: {}
 backup_rsync_remote_host: False
 
@@ -90,13 +90,18 @@ galaxy_docker_genomes_dest: "{{docker_export_location}}/genomes"
 # ephemeris run-data-managers is not properly working in current version 0.6.1.
 # This will be fixed in 0.6.2, but for now a git repo with the necessary fixes is used.
 # galaxyprojtect/ephemeris/master is not used, because it is the development branch, and therefore not stable.
-galaxy_docker_ephemeris_repo: "https://github.com/rhpvorderman/ephemeris.git"  
+galaxy_docker_ephemeris_repo: "https://github.com/rhpvorderman/ephemeris.git"
 galaxy_docker_ephemeris_branch: "allfixes"
 galaxy_docker_ephemeris_dir: "/opt/ephemeris"
 ephemeris_from_git: True
 
+# Running cluster
+galaxy_docker_sge_environment:
+  DRMAA_LIBRARY_PATH: /usr/lib/libdrmaa.so
+  SGE_ROOT: /var/lib/gridengine
+
 #defaults for upgrade
-test_upgrade: False
+test: False
 overwrite_config_files: False #Overwrites old config files with new distribution_config files
 
 no_overwrite: "-n" # No overwrite parameter for cp shell command.
@@ -135,3 +140,4 @@ installtools: False
 extractdb: False
 deletegalaxy: False
 installgenomes: False
+setupsge: False

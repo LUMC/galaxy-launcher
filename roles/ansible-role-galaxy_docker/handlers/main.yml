@@ -24,4 +24,7 @@
   command: "docker exec {{docker_container_name}} {{command}}"
   vars:
     command: "supervisorctl restart {{supervisorctl_galaxy | default('galaxy')}}:*"
+<<<<<<< HEAD
   notify: check if galaxy has started
+=======
+>>>>>>> origin/fix-GALAXY-5
