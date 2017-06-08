@@ -20,7 +20,7 @@
     name: "{{docker_image}}"
     path: "{{docker_build_dir}}"
     pull: True
-    rm: True
+    force: yes
     state: present
 
 - name: remove docker build directory
