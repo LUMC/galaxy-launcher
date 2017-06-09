@@ -16,65 +16,33 @@
     name: "{{docker_user}}"
     groups: "{{user_groups}}"
 
-- name: Set docker published web port
-  set_fact:
-    docker_published_web_port: "127.0.0.1:{{galaxy_web_port}}:80"
-  when:
-    - galaxy_web_port is defined
-    - galaxy_web_port != ''
+- name: Create directory for ansible_generated vars
+  file:
+    path: "{{ansible_generated_vars_dir}}"
+    state: directory
+  become: no
+  delegate_to: 127.0.0.1
 
-- name: set docker published ftp port
-  set_fact:
-    docker_published_ftp_port: " 127.0.0.1:{{galaxy_ftp_port}}:8021"
-  when:
-    - galaxy_ftp_port is defined
-    - galaxy_ftp_port != ''
+- name: Create file with port and volume settings
+  template:
+    dest: "{{ansible_generated_vars_dir}}/docker_ports_and_volumes.yml"
+    src: "docker_ports_and_volumes.yml.j2"
+    force: yes
+  become: no
+  delegate_to: 127.0.0.1
+#  ansible_connection: local
 
-- name: set docker published sftp port
-  set_fact:
-    docker_published_sftp_port: " 127.0.0.1:{{galaxy_sftp_port}}:8022"
-  when:
-    - galaxy_sftp_port is defined
-    - galaxy_sftp_port != ''
-
-- name: show published ports
-  debug:
-    var: "{{ item }}"
-    verbosity: 1
-  with_items:
-    - docker_published_web_port
-    - docker_published_ftp_port
-    - docker_published_sftp_port
-
-- name: Set docker published ports
-  set_fact:
-    docker_published_ports: "{{docker_published_ports + item}}"
-  with_items:
-    - "{{ docker_published_web_port | default('')}}"
-    - "{{ docker_published_ftp_port | default('')}}"
-    - "{{ docker_published_sftp_port | default('')}}"
-    - "{{ docker_extra_ports | default ('')}}"
+- name: Include port and volume settings
+  include_vars: "{{ansible_generated_vars_dir}}/docker_ports_and_volumes.yml"
 
 - name: Show docker published ports
   debug:
-    var: docker_published_ports.split()
+    var: docker_published_ports
     verbosity: 1
-
-- name: Set cluster shared folder
-  set_fact:
-    galaxy_docker_cluster_shared_folder: " {{optional_environment_settings.GALAXY_CONFIG_CLUSTER_FILES_DIRECTORY}}:{{optional_environment_settings.GALAXY_CONFIG_CLUSTER_FILES_DIRECTORY}}"
-
-- name: Create exported volumes
-  set_fact:
-    galaxy_docker_volumes: "{{ galaxy_docker_volumes + item }}"
-  with_items:
-    - "{{docker_export_location}}:/export/"
-    - "{{galaxy_docker_cluster_shared_folder | default('')}}"
-    - "{{ docker_extra_volumes | default('')}}"
 
 - name: Show volumes
   debug:
-    var: galaxy_docker_volumes.split(' ')
+    var: docker_mounted_volumes
     verbosity: 1
 
 - name: Make sure export location exists
@@ -110,10 +78,11 @@
 - name: Restart the docker container
   docker_container:
     env_file: "{{docker_environment_file_location}}"
-    volumes: "{{galaxy_docker_volumes.split(' ')}}"
+    volumes: "{{docker_mounted_volumes}}"
     image: "{{docker_image}}"
     name: "{{docker_container_name}}"
-    published_ports: "{{docker_published_ports.split(' ')}}"
+    hostname: "{{docker_container_hostname}}"
+    published_ports: "{{docker_published_ports}}"
     state: started
     restart: yes
   become_user: "{{docker_user}}"

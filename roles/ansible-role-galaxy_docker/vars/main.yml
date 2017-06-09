@@ -39,7 +39,3 @@ packages:
 # vars for installtools:
 galaxy_docker_ephemeris_package: ephemeris
 galaxy_docker_ephemeris_version: 0.6.2
-
-# vars for rundockergalaxy
-docker_published_ports: ""
-galaxy_docker_volumes: ""
