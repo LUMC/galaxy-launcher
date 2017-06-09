@@ -53,6 +53,7 @@
     - "{{ docker_published_web_port | default('')}}"
     - "{{ docker_published_ftp_port | default('')}}"
     - "{{ docker_published_sftp_port | default('')}}"
+    - "{{ docker_extra_ports | default ('')}}"
 
 - name: Show docker published ports
   debug:
@@ -69,11 +70,12 @@
   with_items:
     - "{{docker_export_location}}:/export/"
     - "{{galaxy_docker_cluster_shared_folder | default('')}}"
+    - "{{ docker_extra_volumes | default('')}}"
 
 - name: Show volumes
   debug:
     var: galaxy_docker_volumes.split(' ')
-    verbosity: 0
+    verbosity: 1
 
 - name: Make sure export location exists
   file:

@@ -18,7 +18,7 @@ docker_image: bgruening/galaxy-stable
 docker_environment_file_location: "/home/{{docker_user}}/galaxydocker.env"
 docker_export_location: "/home/{{docker_user}}/"
 docker_container_name: galaxy
-
+docker_extra_volumes: ""
 # firewall, nginx and ports
 ufw_profile: galaxy
 public_galaxy_web_port: 80
