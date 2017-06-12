@@ -29,6 +29,7 @@ galaxy_web_port: 8080
 container_postgres_user: 1550
 container_database_name: galaxy
 galaxy_user_in_container: 1450
+container_galaxy_user: 1450
 container_database_username: "galaxy"
 galaxy_uid: "1450"
 
