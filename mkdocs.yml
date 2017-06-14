@@ -2,4 +2,12 @@ site_name: galaxy-docker-ansible
 theme: readthedocs
 pages:
   - Home: index.md
-  - Installation: installation.md
+  - User guide:
+      - Installing galaxy-docker-ansible: user_guide/installation.md
+      - Configuring a galaxy instance: user_guide/configure_instance.md
+      - Installing and administrating a galaxy instance: user_guide/install_administrate.md
+#  - Developer documentation:
+  - About:
+      - Contributing: about/contributing.md
+      - Author: about/author.md
+      - License: about/license.md
