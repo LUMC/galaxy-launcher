@@ -15,13 +15,11 @@ In `hosts` the ip address, hostname and remote user of the host can be defined.
 Settings files are located in `host_vars/HOSTNAME`. These files are all read by ansible for use as variables. In `files/HOSTNAME` all the files that are transferred to the host are stored.
 
 ## Configuring your installation.
-[Back to top](#table-of-contents)
 
 Settings files are located in `host_vars/HOSTNAME`. `docker.settings`, `galaxy.settings` and `port.settings` should be checked and if necessary changed.
 Also tool lists can be added to install a set of tools.
 
 ### docker.settings
-[Back to top](#table-of-contents)
 
 Variable | Function
 ---|---
@@ -31,7 +29,6 @@ docker_user | a user that will be created without sudo rights on the remote mach
 docker_container_name | What name the container gets for easy access using docker commands. Default is "galaxy".
 
 ### galaxy.settings
-[Back to top](#table-of-contents)
 
 Variable | Function
 ---|---
@@ -43,7 +40,6 @@ galaxy_report_password | The password to access the reports section.
 optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
 
 ### web.settings
-[Back to top](#table-of-contents)
 
 Variable | Function
 ---|---
@@ -57,7 +53,6 @@ galaxy_sftp_port | By default this variable is not set and port is unaccessible.
 It is not recommended to touch the nginx settings unless you are familiar with configuring [ansible-role-nginx](https://github.com/jdauphant/ansible-role-nginx).
 
 ### backup.settings
-[Back to top](#table-of-contents)
 
 backup_location: "backup/location/path"
 backup_user: "galaxy_backup_user"
@@ -100,21 +95,18 @@ rsync_settings:
  #* 0 is recommended because the archives are already compressed
 ```
 ### Personalization (optional)
-[Back to top](#table-of-contents)
 
 See [bgruening/docker-galaxy-stable documentation](https://github.com/bgruening/docker-galaxy-stable#Personalize-your-Galaxy).
 
 Welcome files can be placed in `files\HOSTNAME\welcome`. This path can be changed in `files.settings`.
 
 ### Extra tools (optional)
-[Back to top](#table-of-contents)
 
 Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `tool_list_dir` in `files.settings`
 An example tool list can be found in `files/example_host/tools`.
 If no tool lists are present, this step will be automatically skipped. Only .yml and .yaml files are copied to the server.
 
 ### Adding reference genomes (optional)
-[Back to top](#table-of-contents)
 
 1. Add reference genomes to be copied to the server (see below)
 2. Specify which data managers to run (see below)
@@ -130,7 +122,6 @@ should be run should be placed in `files/HOSTNAME/dbkeys`. An example is include
 as `run-data-managers.yaml.sample`. Only .yml and .yaml files are copied to the server.
 
 ### Configuring LDAP (optional)
-[Back to top](#table-of-contents)
 
 Add a  GALAXY_CONFIG_AUTH_CONFIG_FILE key to `optional_environment_settings` in `host_vars/HOSTNAME/galaxy.settings` :
 ```
@@ -172,7 +163,6 @@ ldap_settings:
 ```
 
 ### Database (optional)
-[Back to top](#table-of-contents)
 
 If you wish to use a postgresql database of another galaxy instance, make a dump of the instance.
 Put the dump file in `files/HOSTNAME/database_import`. Alternatively you can specify the location by changing `insert_db_dir` in `files.settings`

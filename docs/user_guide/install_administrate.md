@@ -3,7 +3,6 @@
 This page contains the commands needed to run and administrate a galaxy instance.
 
 ## Set up the docker container with one command
-[Back to top](#table-of-contents)
 
 To install docker, fetch the image, run it, add the database and install all the tools run:
 
@@ -17,7 +16,6 @@ ansible-playbook main.yml -e "host=HOSTNAME run=install addldap=True"
 Alternatively you can set up your machine step by step.
 
 ## Set up the docker container step by step
-[Back to top](#table-of-contents)
 
 ### Install docker on the remote machine
 ```bash
@@ -46,7 +44,6 @@ ansible-playbook main.yml -e "host=HOSTNAME run=addldap"
 !WARNING! This will restart the galaxy instance within the container
 
 ## Testing a new version of the image.
-[Back to top](#table-of-contents)
 
 If bgruening updates the docker image to a newer version than this can be tested as follows:
 1. Open the `host_vars/HOSTNAME/upgrade.settings` file
@@ -63,7 +60,6 @@ ansible-playbook main.yml -e "host=HOSTNAME run=deletetestupgrade"
 ```
 
 ## Upgrade the running instance to a new image
-[Back to top](#table-of-contents)
 
 1. Make sure there are no jobs running on your instance. As an admin you can hold all new jobs so they will wait until the image is upgraded.
 2. Update the version tag of docker_image in `host_vars\HOSTNAME\docker.settings`
@@ -73,7 +69,6 @@ There is a setting overwrite_config_files in migrate.settings. Default is False.
 If set to True this will overwrite all your config files with the .distribution_config files.
 
 ## Backing up the database
-[Back to top](#table-of-contents)
 
 This extracts the database of the running instance to `files/HOSTNAME/backupdb`.
 This path can be changed in `files.settings`. If you want to change the filename of the backup you can add
@@ -86,8 +81,6 @@ ansible-playbook main.yml -e "host=HOSTNAME run=extractdb"
 ```
 
 ## Removing the galaxy docker instance.
-[Back to top](#table-of-contents)
-
 
 `ansible-playbook main.yml -e "host=HOSTNAME run=deletegalaxy` does the following things:
 + deletes the container
