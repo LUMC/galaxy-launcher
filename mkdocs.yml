@@ -15,8 +15,8 @@ pages:
     - Add ldap: developer_docs/addldap.md
     - Cron backup db: developer_docs/cronbackupdb.md
     - Install tools: developer_docs/installtools.md
-    - Install genomes: installgenomes.md
-    - Delete galaxy: deletegalaxy.md
+    - Install genomes: developer_docs/installgenomes.md
+    - Delete galaxy: developer_docs/deletegalaxy.md
   - About:
       - Contributing: about/contributing.md
       - Author: about/author.md
