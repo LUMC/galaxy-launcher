@@ -26,3 +26,5 @@ files/*
 !files/example_host
 
 roles/jdauphant.nginx
+
+.venv
