@@ -28,3 +28,5 @@ files/*
 roles/jdauphant.nginx
 
 .venv
+
+site/
