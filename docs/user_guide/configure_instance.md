@@ -1,4 +1,6 @@
-# Setting up a galaxy instance
+# Configuring galaxy instance
+
+On this page you can find all information on configuring the galaxy instance.
 
 ## Setting up the galaxy host
 1. Set up a (virtual) server running ubuntu. Galaxy-docker-ansible is tested on Ubuntu 16.04 LTS
@@ -169,10 +171,9 @@ ldap_settings:
   email_suffix: "@example.com"
 ```
 
-
 ### Database (optional)
 [Back to top](#table-of-contents)
 
 If you wish to use a postgresql database of another galaxy instance, make a dump of the instance.
-Put the dump file in `files/HOSTNAME/insert_db`. Alternatively you can specify the location by changing `insert_db_dir` in `files.settings`
+Put the dump file in `files/HOSTNAME/database_import`. Alternatively you can specify the location by changing `insert_db_dir` in `files.settings`
 If no database is added, a new empty DB will be created.
