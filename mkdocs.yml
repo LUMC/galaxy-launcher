@@ -1,0 +1,23 @@
+site_name: galaxy-docker-ansible
+theme: readthedocs
+pages:
+  - Home: index.md
+  - User guide:
+      - Installing galaxy-docker-ansible: user_guide/installation.md
+      - Configuring a galaxy instance: user_guide/configure_instance.md
+      - Installing and administrating a galaxy instance: user_guide/install_administrate.md
+  - Developer documentation:
+    - Introduction: developer_docs/introduction.md
+    - Install docker: developer_docs/installdocker.md
+    - Galaxy welcome: developer_docs/galaxywelcome.md
+    - Nginx settings: developer_docs/nginxsettings.md
+    - Run docker galaxy: developer_docs/rundockergalaxy.md
+    - Add ldap: developer_docs/addldap.md
+    - Cron backup db: developer_docs/cronbackupdb.md
+    - Install tools: developer_docs/installtools.md
+    - Install genomes: developer_docs/installgenomes.md
+    - Delete galaxy: developer_docs/deletegalaxy.md
+  - About:
+      - Contributing: about/contributing.md
+      - Author: about/author.md
+      - License: about/license.md
