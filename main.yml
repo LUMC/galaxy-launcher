@@ -22,4 +22,4 @@
       - "{{run | default('[]')}}"
 
   roles:
-    - role: ansible-role-galaxy_docker
+    - role: galaxy-docker
