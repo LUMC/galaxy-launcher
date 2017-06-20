@@ -7,9 +7,9 @@ galaxy_brand: "test"
 galaxy_report_user: admin
 galaxy_report_password: admin
 
-#optional settings
+# optional settings
 optional_environment_settings:
   GALAXY_CONFIG_CONDA_AUTO_INSTALL: True
   GALAXY_CONFIG_CONDA_AUTO_INIT: True
   GALAXY_CONFIG_USE_CACHED_DEPENDENCY_MANAGER: True
-  NONUSE=proftp
+  NONUSE: proftp
