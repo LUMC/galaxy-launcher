@@ -30,3 +30,4 @@ roles/jdauphant.nginx
 .venv
 
 site/
+.vagrant/
