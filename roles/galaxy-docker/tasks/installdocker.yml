@@ -23,35 +23,30 @@
     src: "{{ docker_default_location }}"
   when: "not docker_default_location=='/var/lib/docker'"
 
-# Distrospecific
-- name: Install Docker prerequisites on Ubuntu
-  apt:
-    update_cache: yes
-    pkg: "{{ prerequisites }}"
-    state: latest
-  when: "ansible_distribution == 'Ubuntu'"
-
-- name: Install Docker key on Ubuntu
-  apt_key:
-    url: "{{ key }}"
-  when: "ansible_distribution == 'Ubuntu'"
-
-- name: Install Docker repository on Ubuntu
-  apt_repository:
-    repo: "{{ repo }}"
-  when: "ansible_distribution == 'Ubuntu'"
-  register: repo_output
-
-- name: Install Docker packages on Ubuntu
-  apt:
-    pkg: "{{ packages }}"
-    state: latest
-    update_cache: yes
-  when: "ansible_distribution == 'Ubuntu'"
+# Distrospecific. Only disto.
+# ansible_distribution_version specific things should be handled down the line
+- include: "installdocker/{{ansible_distribution}}.yml"
 
 # General postinstall
+- name: install required python_packages
+  package:
+    name: "{{python_packages}}"
+    state: latest
 
 - name: Install required PIP packages
   pip:
     name: "{{ pip_packages }}"
     state: latest
+
+- name: start docker service
+  service:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: test docker service
+  command: docker run hello-world
+  register: result
+  until: '"Hello from Docker!" in result.stdout'
+  retries: 10
+  delay: 10
