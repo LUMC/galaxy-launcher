@@ -6,8 +6,7 @@
 
 *travis.yml
 
-config/hosts
-hosts
+/hosts
 
 licenses/license_header
 
@@ -30,3 +29,4 @@ roles/jdauphant.nginx
 .venv
 
 site/
+.vagrant/

@@ -1,0 +1,9 @@
+[test]
+ubuntu-16.04 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=2201
+centos-7.2 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=2202
+
+[test:vars]
+
+[all:vars]
+ansible_ssh_pipelining=yes
+ansible_connection=ssh
