@@ -10,7 +10,9 @@
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # tasks file for cronbackupdb
+# This installs backup scripts in the backup folder and sets cron jobs to run those scripts
 
+# Setup installs pigz and creates a backup user and backup folder
 - include: setup.yml
 
 - name: create folder for each job within the backup folder
@@ -56,6 +58,6 @@
     log_file: "{{backup_location}}/logs/{{item.key}}.log"
   with_dict: "{{ backupdb_cron_jobs }}"
 
-
+# Sets up a rsync script to automatically synchronize the backups to a remote host.
 - include: rsync.yml
   when: backup_rsync_remote_host

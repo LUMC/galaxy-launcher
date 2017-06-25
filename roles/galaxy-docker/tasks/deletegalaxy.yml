@@ -9,6 +9,8 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+# This deletes the galaxy container and all remnants.
+
 - name: Set parameters for deleting the test upgrade container
   set_fact:
     "{{item.key}}" : "{{item.value}}"

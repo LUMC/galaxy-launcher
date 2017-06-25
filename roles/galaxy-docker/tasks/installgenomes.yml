@@ -9,6 +9,8 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+
+# This handler should be run before the task. Hence the command.
 - name: check if galaxy has started
   command: echo this always reports as changed
   notify: check if galaxy has started
@@ -37,6 +39,7 @@
     var: dbkeys
     verbosity: 1
 
+# This should be fed from the command line.
 - name: delete api key from files
   lineinfile:
     destfile: "{{item.path}}"
@@ -47,6 +50,7 @@
   become: no
   delegate_to: 127.0.0.1
 
+# It should be this instance. So no room for interpretation in the the yamls.
 - name: delete galaxy_instance from files
   lineinfile:
     destfile: "{{item.path}}"

@@ -9,12 +9,16 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+# This task decides wich sub-tasks should be run based on the boolean variables.
+# The order should represent the order in which tasks are ideally done.
+
 - include: installdocker.yml
   when: installdocker
 
 - include: importdb.yml
   when: importdb
-  
+
+# Setting nginx should be done before upgrade, in case a testupgrade server is run.
 - include: nginxsettings.yml
   when: nginxsettings
 
@@ -26,7 +30,7 @@
 
 - include_role:
     name: jdauphant.nginx
-  when: ansible_role_nginx 
+  when: ansible_role_nginx
 
 - include: galaxyfirewall.yml
   when: galaxyfirewall
@@ -34,6 +38,7 @@
 - include: run.yml
   when: rundockergalaxy
 
+# If a container is not restarted with exactly the same settings. All changes within the container are lost. Therefore addldap runs after run
 - include: addldap.yml
   when: addldap
 

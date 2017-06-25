@@ -9,6 +9,10 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+# This task creates a  firewall profile and enables it.
+# A profile was chosen because a profile can be cleanly disabled and deleted.
+# The alternative of programming ports directly in this yaml would be more messy when cleaning.
+
 - name: Copy profile to ufw firewall
   template:
     dest: "/etc/ufw/applications.d/{{ufw_profile}}"
