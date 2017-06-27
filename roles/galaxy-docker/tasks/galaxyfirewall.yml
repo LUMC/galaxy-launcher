@@ -9,18 +9,25 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+- name: Install ufw firewall.
+  package:
+    name: ufw
+    state: latest
 - name: Copy profile to ufw firewall
   template:
     dest: "/etc/ufw/applications.d/{{ufw_profile}}"
     force: yes
     src: ufwgalaxyprofile.j2
 
-# Apparently sshrules are removed if OpenSSH rule is not enabled    
+# Apparently sshrules are removed if OpenSSH rule is not enabled on Ubuntu
+# The remote machine will become unmanagable because ssh port will be closed
+# This rule prevents this behaviour.
 - name: set the firewall open for ssh
   ufw:
     rule: allow
     name: OpenSSH
-   
+  when: ansible_distribution == 'Ubuntu'
+
 - name: set the firewall open for Galaxy
   ufw:
     name: "{{ufw_profile}}"
