@@ -43,7 +43,7 @@
         - "gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript"
         - "uwsgi_read_timeout 300"
 
-- name: Add test upgrade profile. 
+- name: Add test upgrade profile.
   set_fact:
     nginx_sites_test_upgrade:
       test_upgrade_galaxy:
@@ -62,7 +62,7 @@
     nginx_sites: "{{ nginx_sites | combine(nginx_sites_test_upgrade)}}"
     nginx_configs: "{{ nginx_configs | combine(nginx_configs_test_upgrade) }}"
   when: test_upgrade
-  
+
 - name: show variables
   debug:
     var: "{{item}}"
@@ -72,5 +72,23 @@
     - nginx_configs
     - nginx_http_params
 
+- name: show se linux
+  debug:
+    var: ansible_selinux
+    verbosity: 0
 
-  
+- name: install prerequisites for SElinux
+  when: ansible_selinux
+  yum:
+    pkg: "{{item}}"
+    state: latest
+  with_items:
+    - libselinux-python
+    - libsemanage-python
+
+- name: Set SE boolean so nginx will work.
+  when: ansible_selinux
+  seboolean:
+    name: httpd_can_network_connect
+    persistent: yes
+    state: yes

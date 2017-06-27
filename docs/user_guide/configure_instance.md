@@ -3,7 +3,9 @@
 On this page you can find all information on configuring the galaxy instance.
 
 ## Setting up the galaxy host
-1. Set up a (virtual) server running ubuntu. Galaxy-docker-ansible is tested on Ubuntu 16.04 LTS
+1. Set up a (virtual) server running one of the supported distributions. Galaxy-docker-ansible is tested on the following distributions:
+  * Ubuntu 16.04 LTS
+  * CentOS 7.2
 2. Set up a passwordless sudo user on the remote host and set up an ssh key pair.
   * NOTE: a passwordless sudo user is required on the remote host to perform rsync synchronization between the ansible-control host and the remote host.
 3. Make a new hosts file by copying `hosts.sample` to `hosts` and setup your galaxy host.
