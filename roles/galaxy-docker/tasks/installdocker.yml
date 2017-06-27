@@ -9,28 +9,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- name: Install Docker prerequisites on Ubuntu
-  apt:
-    update_cache: yes
-    pkg: "{{ prerequisites }}"
-    state: latest
-  when: "ansible_distribution == 'Ubuntu'"
-
-- name: Install required PIP packages
-  pip:
-    name: "{{ pip_packages }}"
-    state: latest
-
-- name: Install Docker key on Ubuntu
-  apt_key:
-    url: "{{ key }}"
-  when: "ansible_distribution == 'Ubuntu'"
-
-- name: Install Docker repository on Ubuntu
-  apt_repository:
-    repo: "{{ repo }}"
-  when: "ansible_distribution == 'Ubuntu'"
-  register: repo_output
+# General preinstall for all distro's
 
 - name: Create docker default location
   file:
@@ -41,13 +20,33 @@
   file:
     state: link
     path: /var/lib/docker
-    src: "{{ docker_default_location }}" 
-  when: "not docker_default_location=='/var/lib/docker'"  
+    src: "{{ docker_default_location }}"
+  when: "not docker_default_location=='/var/lib/docker'"
 
-- name: Install Docker packages on Ubuntu
-  apt:
-    pkg: "{{ packages }}"
+# Distrospecific. Only disto.
+# ansible_distribution_version specific things should be handled down the line
+- include: "installdocker/{{ansible_distribution}}.yml"
+
+# General postinstall
+- name: install required python_packages
+  package:
+    name: "{{python_packages}}"
     state: latest
-    update_cache: yes
-  when: "ansible_distribution == 'Ubuntu'"
 
+- name: Install required PIP packages
+  pip:
+    name: "{{ pip_packages }}"
+    state: latest
+
+- name: start docker service
+  service:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: test docker service
+  command: docker run hello-world
+  register: result
+  until: '"Hello from Docker!" in result.stdout'
+  retries: 10
+  delay: 10

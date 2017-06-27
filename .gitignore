@@ -3,6 +3,7 @@
 *.config
 *.swp
 *.pyc
+*.log
 
 *travis.yml
 
