@@ -10,6 +10,8 @@
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # tasks file for nginxsettings
+# This sets a nginx settings file. Currently only one galaxy instance and one test upgrade instance is supported.
+# To install multiple galaxies in the same vm this needs to be changed.
 
 - name: set nginx settings
   set_fact:
@@ -62,7 +64,7 @@
     nginx_sites: "{{ nginx_sites | combine(nginx_sites_test_upgrade)}}"
     nginx_configs: "{{ nginx_configs | combine(nginx_configs_test_upgrade) }}"
   when: test_upgrade
-  
+
 - name: show variables
   debug:
     var: "{{item}}"
@@ -71,3 +73,24 @@
     - nginx_sites
     - nginx_configs
     - nginx_http_params
+
+- name: show se linux
+  debug:
+    var: ansible_selinux
+    verbosity: 0
+
+- name: install prerequisites for SElinux
+  when: ansible_selinux
+  yum:
+    pkg: "{{item}}"
+    state: latest
+  with_items:
+    - libselinux-python
+    - libsemanage-python
+
+- name: Set SE boolean so nginx will work.
+  when: ansible_selinux
+  seboolean:
+    name: httpd_can_network_connect
+    persistent: yes
+    state: yes

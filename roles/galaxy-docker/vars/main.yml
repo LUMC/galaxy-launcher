@@ -22,19 +22,15 @@ backup_galaxy_rsync_settings: "{{ default_rsync_settings | combine(backup_rsync_
 prerequisites:
   - linux-image-extra-virtual
   - "linux-image-extra-{{ansible_kernel}}"
-  - apt-transport-https
-  - ca-certificates
-  - curl
-  - software-properties-common
+
+python_packages:
   - python-pip
-  - python-pkg-resources
-  - python-setuptools
 pip_packages:
   - docker-py
-key: "https://apt.dockerproject.org/gpg"
-repo: "deb https://apt.dockerproject.org/repo/ {{ansible_distribution | lower}}-{{ansible_distribution_release}} main"
-packages:
-  - docker-engine
+docker_gpg_key: "https://download.docker.com/linux/{{ansible_distribution | lower}}/gpg"
+docker_apt_repository: "deb https://download.docker.com/linux/{{ansible_distribution | lower}} {{ansible_distribution_release}} stable"
+docker_packages:
+  - docker-ce
 
 # vars for installtools:
 galaxy_docker_ephemeris_package: ephemeris

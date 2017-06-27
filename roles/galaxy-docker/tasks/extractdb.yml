@@ -10,6 +10,8 @@
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # tasks file for extractdb
+# This creates a database dump on the server and copies it to your
+# ansible control host
 
 - name: register whether the container is running
   command: "docker inspect -f {{inspect}} {{docker_container_name}}"
@@ -64,7 +66,7 @@
     src: "{{docker_export_location}}/{{exported_db_file}}"
     mode: pull
   vars:
-    ansible_ssh_pipelining: False
+    ansible_ssh_pipelining: False # Rscync does not work with ssh pipelining
     
 - name: Delete dump file on server
   file:
