@@ -105,9 +105,9 @@
     - python-selinux
     - libsemanage-common
     - python-semanage
-  when: 
-    - ansible_os_family == 'Debian'
+  when:
     - ansible_selinux
+    - ansible_os_family == 'Debian'
 
 - name: Set SE boolean so nginx will work.
   when: ansible_selinux
