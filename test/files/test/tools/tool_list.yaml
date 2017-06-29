@@ -39,8 +39,6 @@
 #  * install_resolver_dependencies: True or False - whether to install dependencies
 #                                through a resolver (e.g Conda). (default: False)
 
-api_key: <Admin user API key from galaxy_instance>
-galaxy_instance: <Galaxy instance IP>
 tools:
 - name: fastqc
   owner: devteam
