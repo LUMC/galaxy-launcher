@@ -31,22 +31,23 @@
 #                   installed. (default: https://toolshed.g2.bx.psu.edu)
 #  * revisions: a list of revisions of the tool, all of which will attempt to
 #               be installed. (default: latest)
-#  * install_tool_dependencies: True or False - whether to install classic galaxy 
+#  * install_tool_dependencies: True or False - whether to install classic galaxy
 #                               Tool Shed dependencies or not. (default: True)
 #  * install_repository_dependencies: True or False - whether to install classic
-#                               Galaxy Tool Shed repo dependencies or not. 
+#                               Galaxy Tool Shed repo dependencies or not.
 #                               (default: True)
 #  * install_resolver_dependencies: True or False - whether to install dependencies
 #                                through a resolver (e.g Conda). (default: False)
 
 tools:
-- name: fastqc
+- name: data_manager_fetch_genome_dbkeys_all_fasta
   owner: devteam
-  tool_panel_section_id: cshl_library_information
   tool_shed_url: https://toolshed.g2.bx.psu.edu
   revisions:
-  - '8c650f7f76e9'  # v0.62
-  - 'd2cf2c0c8a11'  # v0.63
+  - 16ab4dd6a0e5
+  - b1bc53e9bbc5
+  install_tool_dependencies: True
+  install_repository_dependencies: True
 - name: bedtools
   owner: iuc
   tool_panel_section_label: 'BED tools'
