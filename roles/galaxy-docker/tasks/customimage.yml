@@ -1,0 +1,29 @@
+---
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+- name: Copy files to docker build directory
+  copy:
+    src: "{{docker_custom_image_dir}}"
+    dest: "{{docker_build_dir}}"
+    mode: 600
+
+- name: Build custom docker image
+  docker_image:
+    name: "{{docker_image}}"
+    path: "{{docker_build_dir}}"
+    pull: True
+    force: yes
+    state: present
+
+- name: remove docker build directory
+  file:
+    path: "{{docker_build_dir}}"
+    state: absent
