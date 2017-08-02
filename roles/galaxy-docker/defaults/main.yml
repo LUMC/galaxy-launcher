@@ -18,7 +18,8 @@ docker_image: bgruening/galaxy-stable
 docker_environment_file_location: "/home/{{docker_user}}/galaxydocker.env"
 docker_export_location: "/home/{{docker_user}}/"
 docker_container_name: galaxy
-
+docker_container_hostname: galaxy-docker
+docker_extra_volumes: ""
 # firewall, nginx and ports
 ufw_profile: galaxy
 public_galaxy_web_port: 80
@@ -41,6 +42,7 @@ genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
 fetch_location: "files/{{inventory_hostname}}/database_extract/"
 docker_custom_image_dir: "files/{{inventory_hostname}}/docker_custom_image/"
 docker_build_dir: "/tmp/docker_image/"
+ansible_generated_vars_dir: "/tmp/ansible_generated_vars/"
 
 # defaults for addldap
 ldap_defaults:
