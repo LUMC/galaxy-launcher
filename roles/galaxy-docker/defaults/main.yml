@@ -42,7 +42,10 @@ genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
 fetch_location: "files/{{inventory_hostname}}/database_extract/"
 docker_custom_image_dir: "files/{{inventory_hostname}}/docker_custom_image/"
 docker_build_dir: "/tmp/docker_image/"
+<<<<<<< HEAD
 ansible_generated_vars_dir: "/tmp/ansible_generated_vars/"
+=======
+>>>>>>> develop
 
 # defaults for addldap
 ldap_defaults:
