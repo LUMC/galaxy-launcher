@@ -42,10 +42,8 @@ genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
 fetch_location: "files/{{inventory_hostname}}/database_extract/"
 docker_custom_image_dir: "files/{{inventory_hostname}}/docker_custom_image/"
 docker_build_dir: "/tmp/docker_image/"
-<<<<<<< HEAD
 ansible_generated_vars_dir: "/tmp/ansible_generated_vars/"
-=======
->>>>>>> develop
+
 
 # defaults for addldap
 ldap_defaults:
@@ -95,13 +93,11 @@ galaxy_docker_dbkeys_dir: "/tmp/galaxy_dkeys_lists"
 galaxy_docker_genome_copy_links: yes
 galaxy_docker_genomes_dest: "{{docker_export_location}}/genomes"
 
-# ephemeris run-data-managers is not properly working in current version 0.6.1.
-# This will be fixed in 0.6.2, but for now a git repo with the necessary fixes is used.
-# galaxyprojtect/ephemeris/master is not used, because it is the development branch, and therefore not stable.
-galaxy_docker_ephemeris_repo: "https://github.com/rhpvorderman/ephemeris.git"
-galaxy_docker_ephemeris_branch: "allfixes"
+# Ephemeris can be installed from git if extra functionality is needed which is not in the pypi package yet.
+galaxy_docker_ephemeris_repo: "https://github.com/galaxyproject/ephemeris.git"
+galaxy_docker_ephemeris_branch: "master"
 galaxy_docker_ephemeris_dir: "/opt/ephemeris"
-ephemeris_from_git: True
+ephemeris_from_git: False
 
 # Running cluster
 galaxy_docker_sge_environment:

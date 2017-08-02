@@ -90,11 +90,12 @@
     archive: no #owner and chmod information should not be copied
     recursive: yes
     checksum: yes #when archive is no. Checksum should be yes, otherwise the files are always copied.
+    ssh_args: "{{ansible_ssh_extra_args}}"
   vars:
     ansible_ssh_pipelining: False
 
 - name: Use ephemeris run-data-managers to run data managers
-  command: "run-data-managers -g localhost:{{galaxy_web_port}} -a {{galaxy_docker_admin_api_key}} --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}} -v"
+  command: "run-data-managers -g localhost:{{galaxy_web_port}} -a {{galaxy_admin_api_key}} --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}} -v"
   with_items: "{{dbkeys.files}}"
   ignore_errors: yes # If databases fail galaxy is still restarted so the ones that did not fail are available
 
