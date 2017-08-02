@@ -2,8 +2,8 @@
 # Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
 # Contact us at: sasc@lumc.nl
 #
-# This file is part of galaxy-docker-ansible. 
-# A dual licensing mode is applied. 
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
 # The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
 # For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
 #
@@ -21,8 +21,32 @@
     dest: "{{docker_export_location}}/act_qmaster"
     src: "act_qmaster.j2"
 
+- name: Create config folder
+  docker_container:
+    volumes: "{{docker_export_location}}:/export/"
+    image: "{{docker_image}}"
+    name: "{{docker_container_name}}"
+    state: started
+    command: "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
+  become_user: "{{docker_user}}"
+  become: yes
+
+- name: Register whether config folder is already created
+  stat:
+    path: "{{docker_export_location}}/galaxy-central/config"
+  register: default_config_folder
+  until: default_config_folder.stat.exists
+  retries: 10
+  delay: 10
+
+- name: Create job_conf.xml
+  template:
+    dest: "{{docker_export_location}}/galaxy-central/config/job_conf.xml"
+    src: "job_conf.xml.j2"
+    force: yes
+
 #- name: Add necessary environment variables
-#  set_fact:  
+#  set_fact:
 #    optional_environment_settings: "{{optional_environment_settings | combine(galaxy_docker_sge_environment)}}"
 
 #- name: Copy sudoers file to export location
@@ -41,4 +65,3 @@
     name: "{{ docker_container_name }}"
     state: started
     restart: yes
-
