@@ -35,7 +35,7 @@
   become: no
 
 - name: Show which yamls will be transferred
-  debug: 
+  debug:
     var: dbkeys
     verbosity: 1
 
@@ -45,7 +45,7 @@
     destfile: "{{item.path}}"
     regexp: "api_key:.*"
     state: absent
-  with_items: 
+  with_items:
     - "{{dbkeys.files}}"
   become: no
   delegate_to: 127.0.0.1
@@ -55,8 +55,8 @@
   lineinfile:
     destfile: "{{item.path}}"
     regexp: "galaxy_instance:.*"
-    state: absent     
-  with_items: 
+    state: absent
+  with_items:
     - "{{dbkeys.files}}"
   become: no
   delegate_to: 127.0.0.1
@@ -90,15 +90,16 @@
     archive: no #owner and chmod information should not be copied
     recursive: yes
     checksum: yes #when archive is no. Checksum should be yes, otherwise the files are always copied.
+    ssh_args: "{{ansible_ssh_extra_args}}"
   vars:
     ansible_ssh_pipelining: False
 
 - name: Use ephemeris run-data-managers to run data managers
-  command: "run-data-managers -g localhost:{{galaxy_web_port}} -a {{galaxy_docker_admin_api_key}} --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}} -v"
+  command: "run-data-managers -g localhost:{{galaxy_web_port}} -a {{galaxy_admin_api_key}} --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}} -v"
   with_items: "{{dbkeys.files}}"
   ignore_errors: yes # If databases fail galaxy is still restarted so the ones that did not fail are available
   register: result
-  notify: restart galaxy in container  
+  notify: restart galaxy in container
 
 - name: Debug ephemeris output
   debug:
@@ -111,5 +112,3 @@
     state: absent
   with_items:
    - "{{dbkeys.files}}"
-
-

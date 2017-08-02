@@ -1,6 +1,8 @@
 
-tool_list_dir: "{{playbook_dir}}/test/files/{{ inventory_hostname }}/tools/"
-backup_db_dir: "{{ inventory_hostname }}/backup_db"
-insert_db_dir: "{{ inventory_hostname }}/insert_db"
-ssh_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/ssh"
-welcome_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/welcome/"
+tool_list_dir: "{{playbook_dir}}/test/files/test/tools/"
+backup_db_dir: "{{playbook_dir}}/test/files/test/backup_db"
+insert_db_dir: "{{playbook_dir}}/test/files/test//insert_db"
+ssh_dir: "{{playbook_dir}}/test/files/{{ inventory_hostname }}/ssh"
+welcome_dir: "{{playbook_dir}}/test/files/test/welcome/"
+genomes_dir: "{{playbook_dir}}/test/files/test/genomes/"
+dbkeys_list_dir: "{{playbook_dir}}/test/files/test/dbkeys/"
