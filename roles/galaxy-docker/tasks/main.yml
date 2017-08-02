@@ -15,6 +15,9 @@
 - include: installdocker.yml
   when: installdocker
 
+- include: customimage.yml
+  when: customimage
+
 - include: importdb.yml
   when: importdb
 
