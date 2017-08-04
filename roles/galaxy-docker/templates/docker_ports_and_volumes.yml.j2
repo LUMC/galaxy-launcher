@@ -38,4 +38,7 @@ docker_mounted_volumes:
   - "{{extra_volume}}"
   {% endfor %}
   {% endif %}
+  {% if galaxy_cluster_virtualenv is defined%}
+  - "{{galaxy_cluster_virtualenv}}:/galaxy_venv"
+  {% endif %}
 ...

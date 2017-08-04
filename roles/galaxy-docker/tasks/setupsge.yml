@@ -41,11 +41,50 @@
   retries: 10
   delay: 10
 
+- name: install virtualenv module on cluster
+  pip:
+    name: virtualenv
+    state: latest
+
 - name: Create job_conf.xml
   template:
     dest: "{{docker_export_location}}/galaxy-central/config/job_conf.xml"
     src: "job_conf.xml.j2"
     force: yes
+
+- name: make sure galaxy_venv exists
+  file:
+    path: "{{galaxy_cluster_virtualenv}}"
+    state: directory
+    owner: "{{container_galaxy_user}}"
+  when: galaxy_cluster_virtualenv is defined
+
+- name: Create virtualenv
+  pip:
+    name: "pip>=8.1"
+    virtualenv: "{{galaxy_cluster_virtualenv}}"
+
+- name:  Create script to populate virtualenv
+  template:
+    dest: "{{docker_export_location}}/create_galaxy_venv.sh"
+    mode: 700
+    src: create_galaxy_venv.sh.j2
+
+- name: create galaxy_venv
+  docker_container:
+    volumes:
+      - "{{galaxy_cluster_virtualenv}}:/galaxy_venv/"
+      - "{{docker_export_location}}:/export/"
+    image: "{{docker_image}}"
+    name: "{{docker_container_name}}"
+    state: started
+    restart: yes
+    user: "{{container_galaxy_user}}"
+    command: "/export/create_galaxy_venv.sh"
+  become_user: "{{docker_user}}"
+  become: yes
+  when: galaxy_cluster_virtualenv is defined
+
 
 #- name: Add necessary environment variables
 #  set_fact:
