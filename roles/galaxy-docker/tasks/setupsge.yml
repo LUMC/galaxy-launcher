@@ -17,16 +17,11 @@
     state: directory
     owner: "{{container_galaxy_user}}"
 
-- name: create act_qmaster file
-  template:
-    dest: "{{docker_export_location}}/act_qmaster"
-    src: "act_qmaster.j2"
-
 - name: Create config folder
   docker_container:
     volumes: "{{docker_export_location}}:/export/"
     image: "{{docker_image}}"
-    name: "{{docker_container_name}}"
+    name: "export_folder_creator_{{ansible_date_time.epoch}}"
     state: started
     user: "{{container_galaxy_user}}"
     command: "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
@@ -44,15 +39,9 @@
 - name: install virtualenv module on cluster
   pip:
     name: virtualenv
-    state: latest
+  when: galaxy_cluster_virtualenv is defined
 
-- name: Create job_conf.xml
-  template:
-    dest: "{{docker_export_location}}/galaxy-central/config/job_conf.xml"
-    src: "job_conf.xml.j2"
-    force: yes
-
-- name: make sure galaxy_venv exists
+- name: make sure galaxy_venv directory exists
   file:
     path: "{{galaxy_cluster_virtualenv}}"
     state: directory
@@ -63,27 +52,40 @@
   pip:
     name: "pip>=8.1"
     virtualenv: "{{galaxy_cluster_virtualenv}}"
-
-- name:  Create script to populate virtualenv
-  template:
-    dest: "{{docker_export_location}}/create_galaxy_venv.sh"
-    mode: 700
-    src: create_galaxy_venv.sh.j2
-
-- name: create galaxy_venv
-  docker_container:
-    volumes:
-      - "{{galaxy_cluster_virtualenv}}:/galaxy_venv/"
-      - "{{docker_export_location}}:/export/"
-    image: "{{docker_image}}"
-    name: "{{docker_container_name}}"
-    state: started
-    restart: yes
-    user: "{{container_galaxy_user}}"
-    command: "/export/create_galaxy_venv.sh"
-  become_user: "{{docker_user}}"
-  become: yes
   when: galaxy_cluster_virtualenv is defined
+
+- name: Install pinned-requirements
+  pip:
+    requirements: "{{item}}"
+    virtualenv: "{{galaxy_cluster_virtualenv}}"
+    extra_args: --index-url https://wheels.galaxyproject.org/simple --only-binary all
+  with_items:
+    - "{{docker_export_location}}/galaxy-central/lib/galaxy/dependencies/pinned-requirements.txt"
+#    - "{{docker_export_location}}/galaxy-central/lib/galaxy/dependencies/conditional-requirements.txt"
+  when: galaxy_cluster_virtualenv is defined
+
+- name: Add some conditional-requirements. Deprecated with bgruening/galaxy-stable:17.09
+  pip:
+    name: "{{item}}"
+    virtualenv: "{{galaxy_cluster_virtualenv}}"
+    extra_args: --index-url https://wheels.galaxyproject.org/simple --only-binary all
+  with_items:
+    - "psycopg2==2.6.1"
+    - "drmaa"
+    - "uWSGI"
+    - "watchdog"
+  when: galaxy_cluster_virtualenv is defined
+
+- name: create act_qmaster file
+  template:
+    dest: "{{docker_export_location}}/act_qmaster"
+    src: "act_qmaster.j2"
+
+- name: Create job_conf.xml
+  template:
+    dest: "{{docker_export_location}}/galaxy-central/config/job_conf.xml"
+    src: "job_conf.xml.j2"
+    force: yes
 
 
 #- name: Add necessary environment variables
@@ -100,9 +102,3 @@
 #  command: "docker exec {{docker_container_name}} {{command}}"
 #  vars:
 #    command: "cp -p /export/galaxy_sudoers /etc/sudoers.d/galaxy"
-
-- name: restart galaxy
-  docker_container:
-    name: "{{ docker_container_name }}"
-    state: started
-    restart: yes
