@@ -12,7 +12,7 @@
   </handlers>
   <destinations default="cluster">
     <destination id="cluster" runner="sge">
-      <env file="/galaxy_venv/bin/activate"/>
+      <env file="{{galaxy_cluster_virtualenv | default('/galaxy_venv')}}/bin/activate"/>
       <param id="embed_metadata_in_job">False</param>
     </destination>
     <destination id="local_no_container" runner="local">
