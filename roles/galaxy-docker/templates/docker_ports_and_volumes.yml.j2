@@ -42,4 +42,7 @@ docker_mounted_volumes:
   - "{{galaxy_cluster_virtualenv}}:/galaxy_venv"
   - "{{galaxy_cluster_virtualenv}}:{{galaxy_cluster_virtualenv}}"
   {% endif %}
+  {% if optional_environment_settings.SGE_ROOT is defined%}
+  - "{{optional_environment_settings.SGE_ROOT}}:{{optional_environment_settings.SGE_ROOT}}"
+  {% endif %}
 ...
