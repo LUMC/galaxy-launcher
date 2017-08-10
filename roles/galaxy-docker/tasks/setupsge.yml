@@ -113,6 +113,7 @@
     state: present
     regexp: '(<toolbox tool_path=")(.*)(">)'
     line: '\1{{docker_export_location}}/shed_tools\3'
+    path: "{{docker_export_location}}/galaxy-central/config/shed_tool_conf.xml"
 #- name: Add necessary environment variables
 #  set_fact:
 #    optional_environment_settings: "{{optional_environment_settings | combine(galaxy_docker_sge_environment)}}"
