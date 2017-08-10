@@ -34,7 +34,23 @@
   register: default_config_folder
   until: default_config_folder.stat.exists
   retries: 10
-  delay: 10
+  delay: 15
+
+- name: Create cluster filesystem folders
+  file:
+      path: "{{item}}"
+      state: directory
+      owner: "{{container_galaxy_user}}"
+  with_items:
+    - optional_environment_settings.GALAXY_CONFIG_JOB_WORKING_DIRECTORY
+    - optional_environment_settings.GALAXY_CONFIG_FILE_PATH
+
+- name: Create cluster filesystem new file path
+  file:
+    path: "{{optional_environment_settings.GALAXY_CONFIG_NEW_FILE_PATH}}"
+    state: directory
+    mode: 1777
+    owner: "{{container_galaxy_user}}"
 
 - name: install virtualenv module on cluster
   pip:
