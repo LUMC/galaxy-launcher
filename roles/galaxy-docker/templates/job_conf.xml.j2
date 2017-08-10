@@ -13,6 +13,7 @@
  <destinations default="cluster">
    <destination id="cluster" runner="sge">
      <env file="{{galaxy_cluster_virtualenv | default('/galaxy_venv')}}/bin/activate"/>
+     <env id="GALAXY_ROOT_DIR">"{{docker_export_location}}/galaxy-central"</env>
      <param id="embed_metadata_in_job">True</param>
    </destination>
    <destination id="local_no_container" runner="local">
