@@ -42,14 +42,17 @@
       state: directory
       owner: "{{container_galaxy_user}}"
   with_items:
-    - optional_environment_settings.GALAXY_CONFIG_JOB_WORKING_DIRECTORY
-    - optional_environment_settings.GALAXY_CONFIG_FILE_PATH
+    - "{{optional_environment_settings.GALAXY_CONFIG_JOB_WORKING_DIRECTORY}}"
+    - "{{optional_environment_settings.GALAXY_CONFIG_FILE_PATH}}"
+  when:
+    - optional_environment_settings.GALAXY_CONFIG_JOB_WORKING_DIRECTORY is defined
+    - optional_environment_settings.GALAXY_CONFIG_FILE_PATH is defined
 
 - name: Create cluster filesystem new file path
   file:
     path: "{{optional_environment_settings.GALAXY_CONFIG_NEW_FILE_PATH}}"
     state: directory
-    mode: 1777
+    mode: 01777
     owner: "{{container_galaxy_user}}"
 
 - name: install virtualenv module on cluster
@@ -103,7 +106,13 @@
     src: "job_conf.xml.j2"
     force: yes
 
-
+- name: Edit shed_tool_conf.xml to contain the right tool shed location
+  lineinfile:
+    backrefs: yes
+    backup: yes
+    state: present
+    regexp: '(<toolbox tool_path=")(.*)(">)'
+    line: '\1{{docker_export_location}}/shed_tools\3'
 #- name: Add necessary environment variables
 #  set_fact:
 #    optional_environment_settings: "{{optional_environment_settings | combine(galaxy_docker_sge_environment)}}"
