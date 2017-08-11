@@ -106,6 +106,12 @@
     src: "job_conf.xml.j2"
     force: yes
 
+- name: Create environment setup file
+  template:
+    dest: "{{docker_export_location}}/environment_setup_file.sh"
+    src: "environment_setup_file.sh.j2"
+    force: yes
+
 - name: Edit shed_tool_conf.xml to contain the right tool shed location
   lineinfile:
     backrefs: yes
