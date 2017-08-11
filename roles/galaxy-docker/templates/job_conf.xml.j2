@@ -12,20 +12,19 @@
  </handlers>
  <destinations default="cluster">
    <destination id="cluster" runner="sge">
-     <env id="GALAXY_VIRTUAL_ENV">{{galaxy_cluster_virtualenv | default('/galaxy_venv')}}</env>
+     <env file="{{galaxy_cluster_virtualenv | default('/galaxy_venv')}}/bin/activate"/>
      <env id="GALAXY_ROOT_DIR">{{docker_export_location}}/galaxy-central</env>
      <env id="GALAXY_LIB">{{docker_export_location}}/galaxy-central/lib</env>
+     <env id="PYTHONPATH">{{docker_export_location}}/galaxy-central/lib</env>
      <param id="embed_metadata_in_job">True</param>
    </destination>
    <destination id="local_no_container" runner="local">
      <env file="/galaxy_venv/bin/activate"/>
    </destination>
  </destinations>
- <!--
  <tools>
    <tool id="upload1" destination="local_no_container"/>
  </tools>
- -->
  <limits>
    <limit type="registered_user_concurrent_jobs">{{galaxy_cluster_registered_user_concurrent_jobs | default("2")}}</limit>
    <limit type="anonymous_user_concurrent_jobs">{{galaxy_cluster_anonymous_user_concurrent_jobs | default ("1")}}</limit>
