@@ -1,0 +1,2 @@
+galaxy_docker_gridengine_master_host: "ogs-head"
+galaxy_cluster_virtualenv: "/exports/galaxy/galaxy_venv"

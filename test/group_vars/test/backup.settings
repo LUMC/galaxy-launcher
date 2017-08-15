@@ -5,13 +5,13 @@ backup_rsync_remote_host: False
 backupdb_cron_jobs:
   5minutely:
     description: "lots of backups for testing"
-    timestamp: "-%Z%Y%m%dT%H%M%S" 
+    timestamp: "-%Z%Y%m%dT%H%M%S"
     filename: "galaxy-hourly-backup"
-    files_to_keep: 24
+    files_to_keep: 12
     compression_level: 6
-    compression_threads: 4
+    compression_threads: 2
     cron:
-      special_time: "hourly"
+      minute: "*/5"
 
 #Rsync settings
 backup_rsync_settings:
@@ -21,7 +21,7 @@ backup_rsync_settings:
   delete: True
   compression_level: 0
   cron:
-    special_time: "hourly" 
+    special_time: "hourly"
 
 # Set compression level. This compresses the data before sending to save bandwith
 # This does not compress the files.
