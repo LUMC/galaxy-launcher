@@ -60,11 +60,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   # View the documentation for the provider you're using for more
   # information on available options.
-  $script = <<SCRIPT
-  echo "192.168.99.100:/exports /exports nfs defaults 0 0" >> /etc/fstab
-  SCRIPT
+$script = <<SCRIPT
+echo "192.168.99.100:/exports /exports nfs defaults 0 0" >> /etc/fstab
+SCRIPT
 
-  Vagrant.configure("2") do |config|
-    config.vm.provision "shell", inline: $script
-
-end
+  config.vm.provision "shell", inline: $script
+  end
