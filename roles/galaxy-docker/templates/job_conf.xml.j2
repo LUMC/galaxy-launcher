@@ -16,7 +16,7 @@
      <env id="GALAXY_ROOT_DIR">{{docker_export_location}}/galaxy-central</env>
      <env id="GALAXY_LIB">{{docker_export_location}}/galaxy-central/lib</env>
      <env id="PYTHONPATH">{{docker_export_location}}/galaxy-central/lib</env>
-     <param id="embed_metadata_in_job">True</param>
+     <param id="embed_metadata_in_job">{{cluster_embed_metadata_in_job | default ('True')}}</param>
    </destination>
    <destination id="local_no_container" runner="local">
      <env file="/galaxy_venv/bin/activate"/>

@@ -6,6 +6,7 @@ Maintainer test@example.com
 
 USER root
 
-RUN echo "192.168.99.100 ogs-cluster-head" >> /etc/hosts
+run sed -i '3iecho "192.168.99.100 ogs-head" >> /etc/hosts' /usr/bin/startup
+
 
 CMD ["/usr/bin/startup"]

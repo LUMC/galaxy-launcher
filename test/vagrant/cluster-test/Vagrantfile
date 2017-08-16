@@ -62,7 +62,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # information on available options.
 $script = <<SCRIPT
 echo "192.168.99.100:/exports /exports nfs defaults 0 0" >> /etc/fstab
-apt install -y python
+apt install -y python nfs-common
+mkdir -p /exports
+mount -a
 SCRIPT
 
   config.vm.provision "shell", inline: $script
