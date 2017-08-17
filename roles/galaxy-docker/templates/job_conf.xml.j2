@@ -1,3 +1,4 @@
+#jinja2: trim_blocks:False
 <?xml version="1.0" encoding="UTF-8"?>
 <job_conf>
  <plugins workers="{{galaxy_job_workers | default("2")}}">
@@ -16,6 +17,11 @@
      <env id="GALAXY_ROOT_DIR">{{docker_export_location}}/galaxy-central</env>
      <env id="GALAXY_LIB">{{docker_export_location}}/galaxy-central/lib</env>
      <env id="PYTHONPATH">{{docker_export_location}}/galaxy-central/lib</env>
+     {%if cluster_environment_variables is defined %}
+     {% for env_var, env_setting in cluster_environment_variables.iteritems() %}
+     <env id="{{env_var}}">{{env_setting}}</env>
+     {% endfor %}
+     {% endif %}
      <param id="embed_metadata_in_job">{{cluster_embed_metadata_in_job | default ('True')}}</param>
    </destination>
    <destination id="local_no_container" runner="local">
