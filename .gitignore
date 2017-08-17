@@ -16,6 +16,7 @@ deprecated/
 !host_vars/
 host_vars/*
 !host_vars/example_host
+!host_vars/cluster_example_host
 
 !group_vars/
 group_vars/*
@@ -24,6 +25,7 @@ group_vars/*
 !files/
 files/*
 !files/example_host
+!files/cluster_example_host
 
 roles/jdauphant.nginx
 
