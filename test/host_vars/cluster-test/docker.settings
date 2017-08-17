@@ -1,9 +1,9 @@
 docker_default_location: "/data/docker"
 docker_image: "cluster-galaxy-stable:17.05"
 docker_user: "galaxy"
-docker_export_location: "/exports/galaxy/galaxy_storage"
+docker_export_location: "{{galaxy_shared_cluster_directory}}/galaxy_storage"
 docker_container_name: "galaxy"
-docker_cluster_location: "/exports/galaxy"
+galaxy_shared_cluster_directory: "/exports/galaxy"
 
 docker_extra_ports:
   - "6444:6444"

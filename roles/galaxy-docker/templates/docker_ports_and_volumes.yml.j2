@@ -30,8 +30,8 @@ docker_published_ports:
   {% endif %}
 docker_mounted_volumes:
   - "{{docker_export_location}}:/export/"
-  {% if docker_cluster_location is defined%}
-  - "{{docker_cluster_location}}:{{docker_cluster_location}}"
+  {% if galaxy_shared_cluster_directory is defined%}
+  - "{{galaxy_shared_cluster_directory}}:{{galaxy_shared_cluster_directory}}"
   {% endif %}
   {% if docker_extra_volumes is defined and docker_extra_volumes !='' %}
   {% for extra_volume in docker_extra_volumes %}
