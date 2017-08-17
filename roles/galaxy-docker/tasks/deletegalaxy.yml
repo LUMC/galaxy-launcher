@@ -15,6 +15,7 @@
   set_fact:
     "{{item.key}}" : "{{item.value}}"
   with_dict: "{{test_upgrade_settings}}"
+
   when: delete_test_upgrade
 
 - name: Remove docker container

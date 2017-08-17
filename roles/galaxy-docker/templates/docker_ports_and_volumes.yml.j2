@@ -30,12 +30,19 @@ docker_published_ports:
   {% endif %}
 docker_mounted_volumes:
   - "{{docker_export_location}}:/export/"
-  {% if optional_environment_settings.GALAXY_CONFIG_CLUSTER_FILES_DIRECTORY is defined%}
-  - "{{optional_environment_settings.GALAXY_CONFIG_CLUSTER_FILES_DIRECTORY}}:{{optional_environment_settings.GALAXY_CONFIG_CLUSTER_FILES_DIRECTORY}}"
+  {% if galaxy_shared_cluster_directory is defined%}
+  - "{{galaxy_shared_cluster_directory}}:{{galaxy_shared_cluster_directory}}"
   {% endif %}
   {% if docker_extra_volumes is defined and docker_extra_volumes !='' %}
   {% for extra_volume in docker_extra_volumes %}
   - "{{extra_volume}}"
   {% endfor %}
   {% endif %}
+#  {% if galaxy_cluster_virtualenv is defined%}
+#  - "{{galaxy_cluster_virtualenv}}:/galaxy_venv"
+#  - "{{galaxy_cluster_virtualenv}}:{{galaxy_cluster_virtualenv}}"
+#  {% endif %}
+#  {% if optional_environment_settings.SGE_ROOT is defined%}
+#  - "{{optional_environment_settings.SGE_ROOT}}:{{optional_environment_settings.SGE_ROOT}}"
+#  {% endif %}
 ...

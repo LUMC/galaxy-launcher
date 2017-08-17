@@ -28,6 +28,9 @@
 - include: upgrade.yml
   when: upgrade
 
+- include: setupsge.yml
+  when: setupsge
+
 - include: galaxywelcome.yml
   when: galaxywelcome
 
@@ -44,6 +47,8 @@
 # If a container is not restarted with exactly the same settings. All changes within the container are lost. Therefore addldap runs after run
 - include: addldap.yml
   when: addldap
+
+
 
 - include: cronbackupdb.yml
   when: cronbackupdb

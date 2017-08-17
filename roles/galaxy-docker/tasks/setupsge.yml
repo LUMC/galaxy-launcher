@@ -1,0 +1,136 @@
+---
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# Add SGE settings to galaxy docker instance
+
+- name: make sure export location exists
+  file:
+    path: "{{docker_export_location}}"
+    state: directory
+    owner: "{{container_galaxy_user}}"
+
+- name: Create config folder
+  docker_container:
+    volumes: "{{docker_export_location}}:/export/"
+    image: "{{docker_image}}"
+    name: "export_folder_creator_{{ansible_date_time.epoch}}"
+    state: started
+    user: "{{container_galaxy_user}}"
+    command: "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
+  become_user: "{{docker_user}}"
+  become: yes
+
+- name: Register whether config folder is already created
+  stat:
+    path: "{{docker_export_location}}/galaxy-central/config"
+  register: default_config_folder
+  until: default_config_folder.stat.exists
+  retries: 10
+  delay: 15
+
+- name: Create cluster filesystem folders
+  file:
+      path: "{{item}}"
+      state: directory
+      owner: "{{container_galaxy_user}}"
+  with_items:
+    - "{{optional_environment_settings.GALAXY_CONFIG_JOB_WORKING_DIRECTORY}}"
+    - "{{optional_environment_settings.GALAXY_CONFIG_FILE_PATH}}"
+  when:
+    - optional_environment_settings.GALAXY_CONFIG_JOB_WORKING_DIRECTORY is defined
+    - optional_environment_settings.GALAXY_CONFIG_FILE_PATH is defined
+
+- name: Create cluster filesystem new file path
+  file:
+    path: "{{optional_environment_settings.GALAXY_CONFIG_NEW_FILE_PATH}}"
+    state: directory
+    mode: 01777
+    owner: "{{container_galaxy_user}}"
+
+- name: install virtualenv module on cluster
+  pip:
+    name: virtualenv
+  when: galaxy_cluster_virtualenv is defined
+
+- name: make sure galaxy_venv directory exists
+  file:
+    path: "{{galaxy_cluster_virtualenv}}"
+    state: directory
+    owner: "{{container_galaxy_user}}"
+  when: galaxy_cluster_virtualenv is defined
+
+- name: Create virtualenv
+  pip:
+    name: "pip>=8.1"
+    virtualenv: "{{galaxy_cluster_virtualenv}}"
+  when: galaxy_cluster_virtualenv is defined
+
+- name: Install pinned-requirements
+  pip:
+    requirements: "{{item}}"
+    virtualenv: "{{galaxy_cluster_virtualenv}}"
+    extra_args: --index-url https://wheels.galaxyproject.org/simple --only-binary all
+  with_items:
+    - "{{docker_export_location}}/galaxy-central/lib/galaxy/dependencies/pinned-requirements.txt"
+#    - "{{docker_export_location}}/galaxy-central/lib/galaxy/dependencies/conditional-requirements.txt"
+  when: galaxy_cluster_virtualenv is defined
+
+- name: Add some conditional-requirements. Deprecated with bgruening/galaxy-stable:17.09
+  pip:
+    name: "{{item}}"
+    virtualenv: "{{galaxy_cluster_virtualenv}}"
+    extra_args: --index-url https://wheels.galaxyproject.org/simple --only-binary all
+  with_items:
+    - "psycopg2==2.6.1"
+    - "drmaa"
+    - "uWSGI"
+    - "watchdog"
+  when: galaxy_cluster_virtualenv is defined
+
+- name: create act_qmaster file
+  template:
+    dest: "{{docker_export_location}}/act_qmaster"
+    src: "act_qmaster.j2"
+
+- name: Create job_conf.xml
+  template:
+    dest: "{{docker_export_location}}/galaxy-central/config/job_conf.xml"
+    src: "job_conf.xml.j2"
+    force: yes
+
+- name: Create environment setup file
+  template:
+    dest: "{{docker_export_location}}/environment_setup_file.sh"
+    src: "environment_setup_file.sh.j2"
+    force: yes
+
+- name: Edit shed_tool_conf.xml to contain the right tool shed location
+  lineinfile:
+    backrefs: yes
+    backup: yes
+    state: present
+    regexp: '(<toolbox tool_path=")(.*)(">)'
+    line: '\1{{docker_export_location}}/shed_tools\3'
+    path: "{{docker_export_location}}/galaxy-central/config/shed_tool_conf.xml"
+#- name: Add necessary environment variables
+#  set_fact:
+#    optional_environment_settings: "{{optional_environment_settings | combine(galaxy_docker_sge_environment)}}"
+
+#- name: Copy sudoers file to export location
+#  copy:
+#    src: galaxy_sudoers
+#    dest: "{{ docker_export_location }}/galaxy_sudoers"
+#    mode: 0440
+
+#- name: copy sudo
+#  command: "docker exec {{docker_container_name}} {{command}}"
+#  vars:
+#    command: "cp -p /export/galaxy_sudoers /etc/sudoers.d/galaxy"

@@ -1,0 +1,17 @@
+docker_default_location: "/data/docker"
+docker_image: "cluster-galaxy-stable:17.05"
+docker_user: "galaxy"
+docker_export_location: "{{galaxy_shared_cluster_directory}}/galaxy_storage"
+docker_container_name: "galaxy"
+docker_container_hostname: "galaxy-docker"
+
+# Connect extra volumes to which your container needs acces to
+#docker_extra_volumes:
+# - /tmp/:/tmp/:rw # Use docker CLI-style syntax: /host:/container[:mode]. You can specify a read mode for the mount with either ro or rw.
+# For example: mount a cluster genomes folder as read-only
+# - /exports/genomes:/exports/genomes:ro
+# Extra ports could be needed to connect to an external cluster.
+# Below example is for SGE
+#docker_extra_ports:
+#  - "6444:6444"
+#  - "6445:6445"

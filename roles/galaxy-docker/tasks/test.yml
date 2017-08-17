@@ -12,9 +12,9 @@
 # Tasks for testing migration
 
 #- name: copy running instance files to test location
-#  copy module is not used because remote_src does not support recursive copying. 
+#  copy module is not used because remote_src does not support recursive copying.
 #  Please enable the module if it is supported in future versions of anisble
-#  copy:  
+#  copy:
 #    remote_src: True
 
 - name: Create empty test location directory
@@ -26,7 +26,7 @@
     - directory
 
 - name: create subfolders
-  file: 
+  file:
     state: directory
     path: "{{test_upgrade_settings.docker_export_location}}/{{item.dest}}"
   with_items: "{{migrated_files}}"
@@ -41,11 +41,9 @@
     - "{{migrated_files}}"
 
 - name: Set test upgrade parameters for the docker container
-  set_fact: 
+  set_fact:
     "{{item.key}}" : "{{item.value}}"
   with_dict: "{{test_upgrade_settings}}"
 
 - debug:
     var: galaxy_brand
-
-

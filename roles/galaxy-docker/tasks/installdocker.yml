@@ -38,6 +38,13 @@
     name: "{{ pip_packages }}"
     state: latest
 
+- name: Create user to run docker image
+  user:
+    createhome: yes
+    name: "{{docker_user}}"
+    groups: "{{user_groups}}"
+    state: present
+
 - name: start docker service
   service:
     name: docker
@@ -50,3 +57,5 @@
   until: '"Hello from Docker!" in result.stdout'
   retries: 10
   delay: 10
+  become: yes
+  become_user: "{{docker_user}}"

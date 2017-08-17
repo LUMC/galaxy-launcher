@@ -10,8 +10,6 @@
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # this task installs ephemeris. It is used for installing tools and genomes.
-# Unfortunately fixes upstream have not been incorporated in a pypi package yet.
-# Hence the workaround with a patched git repo.
 
 - name: Install required ephemeris package
   pip:
@@ -23,7 +21,7 @@
 - name: install git
   package:
     name: git
-    state: present 
+    state: present
   when: ephemeris_from_git
 
 - name: Clean ephemeris git folder
@@ -33,7 +31,7 @@
   when: ephemeris_from_git
 
 - name: Install ephemeris repo
-  git: 
+  git:
     repo: "{{galaxy_docker_ephemeris_repo}}"
     dest: "{{galaxy_docker_ephemeris_dir}}"
     version: "{{galaxy_docker_ephemeris_branch}}"

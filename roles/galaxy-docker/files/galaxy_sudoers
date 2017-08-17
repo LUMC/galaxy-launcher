@@ -1,0 +1,3 @@
+galaxy  ALL = (root) NOPASSWD: SETENV: /galaxy-central/scripts/drmaa_external_runner.py
+galaxy  ALL = (root) NOPASSWD: SETENV: /galaxy-central/scripts/drmaa_external_killer.py
+galaxy  ALL = (root) NOPASSWD: SETENV: /galaxy-central/scripts/external_chown_script.py

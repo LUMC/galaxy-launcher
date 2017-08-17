@@ -44,6 +44,7 @@ docker_custom_image_dir: "files/{{inventory_hostname}}/docker_custom_image/"
 docker_build_dir: "/tmp/docker_image/"
 ansible_generated_vars_dir: "/tmp/ansible_generated_vars/"
 
+
 # defaults for addldap
 ldap_defaults:
   login_use_username: True
@@ -93,10 +94,15 @@ galaxy_docker_genome_copy_links: yes
 galaxy_docker_genomes_dest: "{{docker_export_location}}/genomes"
 
 # Ephemeris can be installed from git if extra functionality is needed which is not in the pypi package yet.
-galaxy_docker_ephemeris_repo: "https://github.com/galaxyproject/ephemeris.git"  
+galaxy_docker_ephemeris_repo: "https://github.com/galaxyproject/ephemeris.git"
 galaxy_docker_ephemeris_branch: "master"
 galaxy_docker_ephemeris_dir: "/opt/ephemeris"
 ephemeris_from_git: False
+
+# Running cluster
+galaxy_docker_sge_environment:
+  DRMAA_LIBRARY_PATH: /usr/lib/libdrmaa.so
+  SGE_ROOT: /var/lib/gridengine
 
 #defaults for upgrade
 test_upgrade: False
@@ -138,4 +144,5 @@ installtools: False
 extractdb: False
 deletegalaxy: False
 installgenomes: False
+setupsge: False
 customimage: False
