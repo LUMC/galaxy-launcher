@@ -16,7 +16,7 @@ optional_environment_settings:
   GALAXY_CONFIG_USE_CACHED_DEPENDENCY_MANAGER: True
   GALAXY_CONFIG_SANITIZE_ALL_HTML: True
   GALAXY_LOGGING: full
-  NONUSE: proftp,condor,slurm,slurmctld
+  NONUSE: proftp,condor,slurm
   SGE_ROOT: /var/lib/gridengine
   DRMAA_LIBRARY_PATH: /usr/lib/gridengine-drmaa/lib/libdrmaa.so.1.0
   GALAXY_CONFIG_OUTPUTS_TO_WORKING_DIRECTORY: True

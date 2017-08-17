@@ -99,11 +99,6 @@ galaxy_docker_ephemeris_branch: "master"
 galaxy_docker_ephemeris_dir: "/opt/ephemeris"
 ephemeris_from_git: False
 
-# Running cluster
-galaxy_docker_sge_environment:
-  DRMAA_LIBRARY_PATH: /usr/lib/libdrmaa.so
-  SGE_ROOT: /var/lib/gridengine
-
 #defaults for upgrade
 test_upgrade: False
 overwrite_config_files: False #Overwrites old config files with new distribution_config files
