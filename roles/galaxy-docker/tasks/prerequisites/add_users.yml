@@ -1,0 +1,6 @@
+- name: Create user to run docker image
+  user:
+    createhome: yes
+    name: "{{docker_user}}"
+    groups: "{{user_groups}}"
+    state: present
