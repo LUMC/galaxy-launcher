@@ -82,9 +82,6 @@ exported_db_file: "postgresql/{{backup_db_filename}}"
 #defaults for importdb
 import_db_location: "database_import"
 
-# defaults for installdocker
-docker_default_location: "/var/lib/docker"
-
 # defaults for installtools
 galaxy_docker_tool_dir: "/tmp/galaxy_tool_lists"
 
