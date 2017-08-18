@@ -1,6 +1,5 @@
-docker_default_location: "/data/docker"
+installdocker_default_location: "/data/docker"
 docker_image: "bgruening/galaxy-stable:17.05"
-docker_user: "galaxy"                                           
-docker_export_location: "/data/galaxy/galaxy_storage"  
-docker_container_name: "galaxy"                                 
-
+docker_user: "galaxy"
+docker_export_location: "/data/galaxy/galaxy_storage"
+docker_container_name: "galaxy"

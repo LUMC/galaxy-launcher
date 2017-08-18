@@ -12,7 +12,8 @@
 # This task decides wich sub-tasks should be run based on the boolean variables.
 # The order should represent the order in which tasks are ideally done.
 
-- include: installdocker.yml
+- include_role:
+    name: installdocker
   when: installdocker
 
 - include: customimage.yml

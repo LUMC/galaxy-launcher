@@ -124,4 +124,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # chef-validator, unless you changed the configuration.
   #
   #   chef.validation_client_name = "ORGNAME-validator"
+$script = <<SCRIPT
+apt install -y python
+SCRIPT
+
+  config.vm.provision "shell", inline: $script
+
 end

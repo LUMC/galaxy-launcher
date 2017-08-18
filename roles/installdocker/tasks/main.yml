@@ -23,8 +23,8 @@
   file:
     state: link
     path: /var/lib/docker
-    src: "{{ docker_default_location }}"
-  when: "not docker_default_location=='/var/lib/docker'"
+    src: "{{ installdocker_default_location }}"
+  when: "not installdocker_default_location=='/var/lib/docker'"
 
 # Distrospecific. Only disto.
 # ansible_distribution_version specific things should be handled down the line
