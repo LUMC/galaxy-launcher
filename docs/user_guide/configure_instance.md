@@ -25,7 +25,7 @@ Also tool lists can be added to install a set of tools.
 
 Variable | Function
 ---|---
-docker_default_location | Where docker stores the images and containers. Use a volume with ample disk space.
+installdocker_default_location | Where docker stores the images and containers. Use a volume with ample disk space.
 docker_image | The docker image. Defaults to "bgruening/galaxy-stable:latest" but it's better to tag it with a version number. (i.e. 17.01)
 docker_user | a user that will be created without sudo rights on the remote machine.
 docker_container_name | What name the container gets for easy access using docker commands. Default is "galaxy".

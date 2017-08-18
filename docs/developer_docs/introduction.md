@@ -51,7 +51,7 @@ backup_user | Name of the backup user | galaxy_backup
 backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
 galaxy_user_in_container | the UID of the galaxy user in the container | 1450
 welcome_dir | the directory containing the welcome files. | {{playbook_dir}}/ files/{{inventory_hostname}}/welcome.html
-docker_default_location | Where the docker images are stored and run | /var/lib/docker
+installdocker_default_location | Where the docker images are stored and run | /var/lib/docker
 galaxy_web_port | The port on which galaxy will be exposed to localhost. |8080
 public_galaxy_web_port | The port on which galaxy will be hosted. |80
 
