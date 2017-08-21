@@ -9,11 +9,6 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- name: Install rsync
-  package:
-    name: rsync
-    state: latest
-
 - name: register dump_file
   set_fact:
     imported_db: "{{dump_file_list.files[0].path | basename }}"
@@ -48,7 +43,7 @@
     state: directory
     mode: 0700
     owner: "{{galaxy_uid}}"
-    group: "{{galaxy_uid}}" 
+    group: "{{galaxy_uid}}"
 
 - name: copy database files using rsync
   synchronize:
@@ -66,7 +61,7 @@
     mode: 0600
     owner: "{{galaxy_uid}}"
     group: "{{galaxy_uid}}"
-    state: file 
+    state: file
   register: debug_copy
 
 - name: stop galaxy service in container
@@ -81,7 +76,7 @@
     dest: "{{docker_export_location}}/new_empty_db"
     mode: 0600
     owner: "{{container_postgres_user}}"
-    group: "{{container_postgres_user}}" 
+    group: "{{container_postgres_user}}"
 
 - name: Delete old database and create new_empty one
   command: "docker exec -u {{user}} {{name}} {{command}}"
@@ -89,19 +84,19 @@
     name: "{{docker_container_name}}"
     command: "psql -f /export/new_empty_db"
     user: "{{container_postgres_user}}"
-  register: database_created  
+  register: database_created
 
 - name: Database deletion and creation results
   debug:
     var: database_created.stdout
- 
+
 - name: Import new database in galaxy container
   command: "docker exec -u {{user}} {{name}} {{command}}"
   vars:
     name: "{{docker_container_name}}"
     command: "psql -d {{container_database_name}} -f /export/{{import_db_location}}/{{imported_db}}"
     user: "{{galaxy_uid}}"
- 
+
 - name: Delete temporary files
   file:
     path: "{{item}}"

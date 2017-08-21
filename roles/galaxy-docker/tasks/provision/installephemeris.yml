@@ -18,12 +18,6 @@
     version: "{{ galaxy_docker_ephemeris_version }}"
   when: not ephemeris_from_git
 
-- name: install git
-  package:
-    name: git
-    state: present
-  when: ephemeris_from_git
-
 - name: Clean ephemeris git folder
   file:
     path: "{{galaxy_docker_ephemeris_dir}}"
