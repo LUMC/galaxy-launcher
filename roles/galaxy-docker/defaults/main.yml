@@ -30,6 +30,7 @@ galaxy_docker_docker_user_groups: docker
 docker_image: bgruening/galaxy-stable
 docker_environment_file_location: "/home/{{galaxy_docker_docker_user}}/galaxydocker.env"
 docker_export_location: "/data/galaxy/galaxy_storage"
+galaxy_docker_export_location_mode: "0770"
 docker_container_name: galaxy
 docker_container_hostname: galaxy-docker
 docker_extra_volumes: ""
@@ -139,8 +140,10 @@ galaxy_docker_run_unpriviledged: False
 galaxy_docker_prepare_docker: true
 galaxy_docker_prerequisites: false
 
-galaxy_docker_add_users: True
-galaxy_docker_install_packages: True
+galaxy_docker_add_users: False
+galaxy_docker_add_user_ssh_keys: "{{galaxy_docker_add_users}}"
+galaxy_docker_install_packages: False
+galaxy_docker_create_export_folder: True
 installdocker: False
 importdb: False
 upgrade: False

@@ -16,8 +16,14 @@
 - include: add_users.yml
   when: galaxy_docker_add_users
 
+- include: add_user_ssh_keys.yml
+  when: galaxy_docker_add_user_ssh_keys
+
 - include: install_packages.yml
   when: galaxy_docker_install_packages
+
+- include: create_export_folder.yml
+  when: galaxy_docker_create_export_folder
 
 - include: nginxsettings.yml
   when: nginxsettings

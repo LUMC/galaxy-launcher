@@ -10,12 +10,6 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- name: Create user to run docker image
-  user:
-    createhome: yes
-    name: "{{docker_user}}"
-    groups: "{{user_groups}}"
-
 - name: Create directory for ansible_generated vars
   file:
     path: "{{ansible_generated_vars_dir}}"
