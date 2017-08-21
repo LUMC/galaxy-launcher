@@ -137,8 +137,9 @@ new_config_files:
 
 galaxy_docker_run_unpriviledged: False
 # Run
-galaxy_docker_prepare_docker: true
+galaxy_docker_prepare_docker: False
 galaxy_docker_prerequisites: false
+galaxy_docker_template_galaxy_settings: true
 
 galaxy_docker_add_users: False
 galaxy_docker_add_user_ssh_keys: "{{galaxy_docker_add_users}}"

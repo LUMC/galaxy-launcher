@@ -45,47 +45,46 @@
   vars:
     ansible_ssh_user: "{{galaxy_docker_docker_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
+  when: galaxy_docker_prepare_docker
+
+- include: upgrade/main.yml
+  when: galaxy_docker_upgrade
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
+  vars:
+    ansible_ssh_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
+
+- include: template_galaxy_settings/main.yml
+  when: galaxy_docker_template_galaxy_settings
+- include: provision/main.yml
+  when: galaxy_docker_provision
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
+  vars:
+    ansible_ssh_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
 
 - include: provision/main.yml
   when: galaxy_docker_provision
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
+  vars:
+    ansible_ssh_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
 
-# Setting nginx should be done before upgrade, in case a testupgrade server is run.
-- include: nginxsettings.yml
-  when: nginxsettings
+- include: start_container/main.yml
+  when: galaxy_docker_run
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
+  vars:
+    ansible_ssh_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
 
-- include: upgrade.yml
-  when: upgrade
-
-- include: setupsge.yml
-  when: setupsge
-
-- include: galaxywelcome.yml
-  when: galaxywelcome
-
-
-
-
-
-- include: run.yml
-  when: rundockergalaxy
-
-# If a container is not restarted with exactly the same settings. All changes within the container are lost. Therefore addldap runs after run
-- include: addldap.yml
-  when: addldap
-
-
-
-- include: cronbackupdb.yml
-  when: cronbackupdb
-
-- include: installtools.yml
-  when: installtools
-
-- include: installgenomes.yml
-  when: installgenomes
-
-- include: extractdb.yml
-  when: extractdb
-
-- include: deletegalaxy.yml
-  when: deletegalaxy
+- include: backups/main.yml
+  when: galaxy_docker_backups
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
+  vars:
+    ansible_ssh_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"

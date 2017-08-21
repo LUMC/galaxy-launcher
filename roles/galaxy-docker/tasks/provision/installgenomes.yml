@@ -17,8 +17,6 @@
 
 - meta: flush_handlers
 
-- include: installephemeris.yml
-
 - name: Create empty work directory
   file:
     path: "{{galaxy_docker_dbkeys_dir}}"

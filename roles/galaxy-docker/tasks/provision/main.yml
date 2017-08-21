@@ -1,0 +1,18 @@
+- include: importdb.yml
+  when: importdb
+
+- include: installephemeris.yml
+    when: ( installtools or installgenomes )
+
+- name: Check if galaxy has started
+  command: echo this always reports as changed
+  notify: check if galaxy has started
+  when: ( installtools or installgenomes )
+
+- meta: flush_handlers
+
+- include: installtools.yml
+  when: installtools
+
+- include: installgenomes.yml
+  when: installgenomes

@@ -111,8 +111,7 @@
     state: stopped
 
 - name: Make sure to upgrade the database
-  set_fact:
-    upgrade: True
+  include: ../upgrade/main.yml
 
 - name: MSG make sure to upgrade the database
   debug:

@@ -15,8 +15,6 @@
 
 - meta: flush_handlers
 
-- include: installephemeris.yml
-
 - name: Make sure tool directory exists
   file:
     path: "{{galaxy_docker_tool_dir}}"

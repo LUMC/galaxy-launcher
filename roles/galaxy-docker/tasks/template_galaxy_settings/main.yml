@@ -5,3 +5,7 @@
   until: default_config_folder.stat.exists
   retries: 10
   delay: 15
+
+- include: addldap.yml
+  when: addldap
+  

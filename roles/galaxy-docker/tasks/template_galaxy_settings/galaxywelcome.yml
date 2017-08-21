@@ -15,13 +15,8 @@
 # - copies all new welcome html files to the export folder
 
 
-- name: Make sure export folder exists
-  file: 
-    path: "{{docker_export_location}}"
-    state: directory
-
 - name: Search old "welcome" files in the export folder
-  find: 
+  find:
     paths: "{{docker_export_location}}"
     patterns: "(?i)welcome.*"
     use_regex: True
@@ -30,19 +25,19 @@
   register: old_welcome_files
 
 - name: Show which welcome files will be deleted.
-  debug: 
+  debug:
     var: old_welcome_files
     verbosity: 1
 
 - name: Delete old "welcome" files in the export folder
-  file: 
+  file:
     path: "{{item.path}}"
     state: absent
   with_items:
     -   "{{old_welcome_files.files}}"
 
 - name: Search new "welcome" files in the welcome folder
-  find: 
+  find:
     paths: "{{welcome_dir}}"
     patterns: "(?i)welcome.*"
     use_regex: True
@@ -53,17 +48,15 @@
   register: new_welcome_files
 
 - name: Show which welcome files will be copied
-  debug: 
+  debug:
     var: new_welcome_files
     verbosity: 1
 
 - name: Copy welcome files
-  copy: 
+  copy:
     mode: 0644
     owner: "{{galaxy_user_in_container}}"
     dest: "{{docker_export_location}}/{{item.path | basename | lower}}"
     src: "{{item.path}}"
   with_items:
     - "{{new_welcome_files.files}}"
-
-
