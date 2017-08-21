@@ -19,3 +19,8 @@
   package:
     name: git
     state: present
+
+- name: install virtualenv
+  pip:
+    name: virtualenv
+    state: present

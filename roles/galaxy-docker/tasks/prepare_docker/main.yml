@@ -1,3 +1,4 @@
 - include: customimage.yml
   when: customimage
-  
+
+- include: create_export_directory_folders.yml
