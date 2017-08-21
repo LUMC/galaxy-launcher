@@ -12,15 +12,34 @@
 # This task decides wich sub-tasks should be run based on the boolean variables.
 # The order should represent the order in which tasks are ideally done.
 
-- include_role:
-    name: installdocker
-  when: installdocker
+- name: Run as passwordless sudo user
+  set_fact:
+    galaxy_docker_become: yes
+    galaxy_docker_become_method: sudo
+    galaxy_docker_docker_ssh_user: "{{ansible_ssh_user}}"
+    galaxy_docker_web_ssh_user: "{{ansible_ssh_user}}"
+    galaxy_docker_database_ssh_user: "{{ansible_ssh_user}}"
+  when: not galaxy_docker_run_unpriviledged
 
-- include: customimage.yml
-  when: customimage
+- name: Run as several users over ssh
+  set_fact:
+    galaxy_docker_become: no
+    galaxy_docker_become_method: sudo
+    galaxy_docker_docker_ssh_user: "{{galaxy_docker_docker_user}}"
+    galaxy_docker_web_ssh_user: "{{galaxy_docker_web_user}}"
+    galaxy_docker_database_ssh_user: "{{galaxy_docker_database_user}}"
+  when: galaxy_docker_run_unpriviledged
 
-- include: importdb.yml
-  when: importdb
+- include: prerequisites/main.yml
+
+- include: prepare_docker/main.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
+  vars:
+    ansible_ssh_user: "{{galaxy_docker_docker_ssh_user}}"
+
+- include: provision/main.yml
+  when: galaxy_docker_provision
 
 # Setting nginx should be done before upgrade, in case a testupgrade server is run.
 - include: nginxsettings.yml
@@ -35,12 +54,9 @@
 - include: galaxywelcome.yml
   when: galaxywelcome
 
-- include_role:
-    name: jdauphant.nginx
-  when: ansible_role_nginx
 
-- include: galaxyfirewall.yml
-  when: galaxyfirewall
+
+
 
 - include: run.yml
   when: rundockergalaxy

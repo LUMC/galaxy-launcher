@@ -1,0 +1,3 @@
+- include: customimage.yml
+  when: customimage
+  

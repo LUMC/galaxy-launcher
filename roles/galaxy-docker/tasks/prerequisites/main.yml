@@ -9,21 +9,22 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- name: Copy files to docker build directory
-  copy:
-    src: "{{docker_custom_image_dir}}"
-    dest: "{{docker_build_dir}}"
-    mode: 600
+- include_role:
+    name: installdocker
+  when: installdocker
 
-- name: Build custom docker image
-  docker_image:
-    name: "{{docker_image}}"
-    path: "{{docker_build_dir}}"
-    pull: True
-    force: yes
-    state: present
+- include: add_users.yml
+  when: galaxy_docker_add_users
 
-- name: remove docker build directory
-  file:
-    path: "{{docker_build_dir}}"
-    state: absent
+- include: install_packages.yml
+  when: galaxy_docker_install_packages
+
+- include: nginxsettings.yml
+  when: nginxsettings
+
+- include_role:
+    name: jdauphant.nginx
+  when: ansible_role_nginx
+
+- include: galaxyfirewall.yml
+  when: galaxyfirewall

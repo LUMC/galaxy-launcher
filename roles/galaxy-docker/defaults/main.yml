@@ -11,12 +11,20 @@
 
 # defaults file for galaxy_docker
 
+#users
+galaxy_docker_docker_user: galaxy_docker
+galaxy_docker_database_user: postgres
+galaxy_docker_database_user_id: 1550
+galaxy_docker_database_group_id: 1550
+galaxy_docker_web_user: galaxy
+galaxy_docker_web_user_id: 1450
+galaxy_docker_web_group_id: 1450
+
 # docker defaults
-docker_user: galaxy
-user_groups: docker
+galaxy_docker_docker_user_groups: docker
 docker_image: bgruening/galaxy-stable
-docker_environment_file_location: "/home/{{docker_user}}/galaxydocker.env"
-docker_export_location: "/home/{{docker_user}}/"
+docker_environment_file_location: "/home/{{galaxy_docker_docker_user}}/galaxydocker.env"
+docker_export_location: "/data/galaxy/galaxy_storage"
 docker_container_name: galaxy
 docker_container_hostname: galaxy-docker
 docker_extra_volumes: ""
@@ -41,7 +49,7 @@ dbkeys_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/dbkeys/"
 genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
 fetch_location: "files/{{inventory_hostname}}/database_extract/"
 docker_custom_image_dir: "files/{{inventory_hostname}}/docker_custom_image/"
-docker_build_dir: "/tmp/docker_image/"
+docker_build_dir: "/home/{{galaxy_docker_docker_user}}/docker_image/"
 ansible_generated_vars_dir: "/tmp/ansible_generated_vars/"
 
 
@@ -121,7 +129,13 @@ new_config_files:
   - src: ".distribution_config/."
     dest: "galaxy-central/config"
 
+galaxy_docker_run_unpriviledged: False
 # Run
+galaxy_docker_prepare_docker: true
+galaxy_docker_prerequisites: true
+
+galaxy_docker_add_users: True
+galaxy_docker_install_packages: True
 installdocker: False
 importdb: False
 upgrade: False

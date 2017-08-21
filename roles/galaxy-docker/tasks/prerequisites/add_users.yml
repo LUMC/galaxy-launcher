@@ -1,6 +1,20 @@
 - name: Create user to run docker image
   user:
     createhome: yes
-    name: "{{docker_user}}"
-    groups: "{{user_groups}}"
+    name: "{{galaxy_docker_docker_user}}"
+    groups: "{{galaxy_docker_docker_user_groups}}"
+    state: present
+
+- name: Create galaxy web user
+  user:
+    createhome: no
+    name: "{{galaxy_docker_web_user}}"
+    uid: "{{galaxy_docker_web_user_id}}"
+    state: present
+
+- name: create galaxy database user
+  user:
+    createhome: no
+    name: "{{galaxy_docker_database_user}}"
+    uid: "{{galaxy_docker_database_user_id}}"
     state: present
