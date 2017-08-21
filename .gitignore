@@ -33,3 +33,5 @@ roles/jdauphant.nginx
 
 site/
 .vagrant/
+
+*.rsa*

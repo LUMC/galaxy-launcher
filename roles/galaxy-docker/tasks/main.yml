@@ -12,6 +12,8 @@
 # This task decides wich sub-tasks should be run based on the boolean variables.
 # The order should represent the order in which tasks are ideally done.
 
+# This sets the connection for al sections of the role to the default connecting passwordless sudo user.
+# unpriviledged users are run via sudo
 - name: Run as passwordless sudo user
   set_fact:
     galaxy_docker_become: yes
@@ -19,8 +21,12 @@
     galaxy_docker_docker_ssh_user: "{{ansible_ssh_user}}"
     galaxy_docker_web_ssh_user: "{{ansible_ssh_user}}"
     galaxy_docker_database_ssh_user: "{{ansible_ssh_user}}"
+    galaxy_docker_docker_user_private_key: "{{ansible_ssh_private_key_file}}"
+    galaxy_docker_docker_user_private_key: "{{ansible_ssh_private_key_file}}"
+    galaxy_docker_web_user_private_key: "{{ansible_ssh_private_key_file}}"
   when: not galaxy_docker_run_unpriviledged
 
+# Starts a new ssh connection as an unpriviledged user for each section of the role
 - name: Run as several users over ssh
   set_fact:
     galaxy_docker_become: no
@@ -31,12 +37,14 @@
   when: galaxy_docker_run_unpriviledged
 
 - include: prerequisites/main.yml
+  when: galaxy_docker_prerequisites
 
 - include: prepare_docker/main.yml
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"
   vars:
     ansible_ssh_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
 
 - include: provision/main.yml
   when: galaxy_docker_provision

@@ -7,14 +7,87 @@
 
 - name: Create galaxy web user
   user:
-    createhome: no
+    createhome: yes
     name: "{{galaxy_docker_web_user}}"
     uid: "{{galaxy_docker_web_user_id}}"
     state: present
 
 - name: create galaxy database user
   user:
-    createhome: no
+    createhome: yes
     name: "{{galaxy_docker_database_user}}"
     uid: "{{galaxy_docker_database_user_id}}"
     state: present
+
+- name: Create key directory
+  file:
+    path: "{{galaxy_docker_remote_key_dir}}"
+    state: directory
+    mode: 0600
+
+- name: Create ssh keys
+  command: "ssh-keygen -t rsa -f {{galaxy_docker_remote_key_dir}}/{{item}}.rsa"
+  args:
+    creates: "{{galaxy_docker_remote_key_dir}}/{{item}}.rsa"
+  with_items:
+    - "{{galaxy_docker_docker_user}}"
+    - "{{galaxy_docker_web_user}}"
+    - "{{galaxy_docker_database_user}}"
+
+# Weird ansible limtitation initiated shannanigans
+- name: Get docker user public key
+  command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_docker_user}}.rsa.pub
+  register: galaxy_docker_docker_user_public_key
+
+- name: Get web user public key
+  command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_web_user}}.rsa.pub
+  register: galaxy_docker_web_user_public_key
+
+- name: Get database user public key
+  command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_database_user}}.rsa.pub
+  register: galaxy_docker_database_user_public_key
+
+- name: Add keys to authorized key files
+  authorized_key:
+    key: "{{galaxy_docker_docker_user_public_key.stdout}}"
+    user: "{{galaxy_docker_docker_user}}"
+
+- name: Add keys to authorized key files
+  authorized_key:
+    key: "{{galaxy_docker_web_user_public_key.stdout}}"
+    user: "{{galaxy_docker_web_user}}"
+
+- name: Add keys to authorized key files
+  authorized_key:
+    key: "{{galaxy_docker_database_user_public_key.stdout}}"
+    user: "{{galaxy_docker_database_user}}"
+
+
+# The proper way! But does not work.
+#- name: Add keys to authorized key files
+#  authorized_key:
+#    key: "file://{{galaxy_docker_remote_key_dir}}/{{item}}.rsa.pub"
+#    user: "{{item}}"
+#  with_items:
+#    - "{{galaxy_docker_docker_user}}"
+#    - "{{galaxy_docker_web_user}}"
+#    - "{{galaxy_docker_database_user}}"
+
+- name: Copy key to ansible host
+  synchronize:
+    mode: pull
+    dest: "{{ssh_dir}}/"
+    src: "{{galaxy_docker_remote_key_dir}}/{{item}}.rsa"
+    perms: yes
+  vars:
+    ansible_ssh_pipelining: False
+  with_items:
+    - "{{galaxy_docker_docker_user}}"
+    - "{{galaxy_docker_web_user}}"
+    - "{{galaxy_docker_database_user}}"
+
+
+- name: Remove key directory
+  file:
+    path: "{{galaxy_docker_remote_key_dir}}"
+    state: absent
