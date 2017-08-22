@@ -1,0 +1,31 @@
+---
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# this task installs ephemeris. It is used for installing tools and genomes.
+
+- name: Create genomes directory in export folder
+  file:
+    path: "{{docker_export_location}}/genomes"
+    state: directory
+
+- name: Move genomes to the server using rsync
+  synchronize:
+    compress: yes #Necessary for big fasta files
+    copy_links: "{{galaxy_docker_genome_copy_links}}" # You don't have to duplicate the file in the playbook directory but can symlink instead
+    delete: no # do not delete genomes already there
+    dest: "{{docker_export_location}}/genomes"
+    src: "{{genomes_dir}}"
+    archive: no #owner and chmod information should not be copied
+    recursive: yes
+    checksum: yes #when archive is no. Checksum should be yes, otherwise the files are always copied.
+#    ssh_args: "{{ansible_ssh_extra_args}}"
+#  vars:
+#    ansible_ssh_pipelining: False

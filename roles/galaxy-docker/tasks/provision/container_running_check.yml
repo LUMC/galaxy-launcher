@@ -1,0 +1,52 @@
+---
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# this task installs ephemeris. It is used for installing tools and genomes.
+
+- name: register whether the container is running
+  command: "docker inspect -f {{inspect}} {{docker_container_name}}"
+  vars:
+    inspect: !unsafe '{{.State.Running}}'
+  register: docker_running
+  when: ( installtools or installgenomes )
+  ignore_errors: yes # If the container does not exist this will run.
+
+- name: Show docker inspection results
+  debug:
+    var: docker_running
+    verbosity: 1
+  when: docker_running is defined
+
+- include: start_provision_container.yml
+  when:
+    - docker_running is defined
+    - not docker_running.stdout | bool
+
+- name: Set provision key when starting provision container
+  set_fact:
+    galaxy_admin_api_key: "{{galaxy_docker_provision_key}}"
+  when:
+    - docker_running is defined
+    - not docker_running.stdout | bool
+
+- name: Use public web port when running production container
+  set_fact:
+    galaxy_docker_provision_port: "{{galaxy_web_port}}"
+  when:
+    - docker_running is defined
+    - docker_running.stdout | bool
+
+- name: Activate handler to check if provision galaxy has started
+  command: echo this always reports as changed
+  notify: check if provision galaxy has started
+  when: ( installtools or installgenomes )
+
+- meta: flush_handlers

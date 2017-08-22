@@ -1,48 +1,21 @@
 - include: importdb.yml
   when: importdb
 
-- name: register whether the container is running
-  command: "docker inspect -f {{inspect}} {{docker_container_name}}"
+- debug:
+    var: galaxy_docker_web_ssh_user
+
+- include: transfer_genomes.yml
+  when: installgenomes
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
   vars:
-    inspect: !unsafe '{{.State.Running}}'
-  register: docker_running
-  when: ( installtools or installgenomes )
-  ignore_errors: yes # If the container does not exist this will run.
-
-- name: Show docker inspection results
-  debug:
-    var: docker_running
-    verbosity: 1
-  when: docker_running is defined
-
-- include: start_provision_container.yml
-  when:
-    - docker_running is defined
-    - not docker_running.stdout | bool
-
-- name: Set provision key when starting provision container
-  set_fact:
-    galaxy_admin_api_key: "{{galaxy_docker_provision_key}}"
-  when:
-    - docker_running is defined
-    - not docker_running.stdout | bool
-
-- name: Use public web port when running production container
-  set_fact:
-    galaxy_docker_provision_port: "{{galaxy_web_port}}"
-  when:
-    - docker_running is defined
-    - docker_running.stdout | bool
+    ansible_ssh_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
 
 - include: installephemeris.yml
   when: ( installtools or installgenomes )
 
-- name: Activate handler to check if provision galaxy has started
-  command: echo this always reports as changed
-  notify: check if provision galaxy has started
-  when: ( installtools or installgenomes )
-
-- meta: flush_handlers
+- include: container_running_check.yml
 
 - include: installtools.yml
   when: installtools
