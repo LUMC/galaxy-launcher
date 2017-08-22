@@ -47,6 +47,7 @@
   pip:
     name: "passlib"
     state: latest
+    virtualenv: "{{galaxy_docker_docker_user_virtualenv}}"
 
 - name: Add report_htpasswd file for Report Webapp
   htpasswd:
@@ -55,6 +56,9 @@
     name: "{{galaxy_report_user}}"
     password: "{{galaxy_report_password}}"
     path: "{{docker_export_location}}/reports_htpasswd"
+  environment:
+    VIRTUALENV: "{{galaxy_docker_docker_user_virtualenv}}"
+    PATH: "$VIRTUAL_ENV/bin:$PATH"
 
 - name: Update docker environment file
   template:
