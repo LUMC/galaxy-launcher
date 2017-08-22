@@ -14,5 +14,5 @@
     path: "{{docker_export_location}}"
     state: directory
     group: "{{galaxy_docker_web_group_id}}"
-    owner: "{{galaxy_docker_Web_user}}"
+    owner: "{{galaxy_docker_web_user}}"
     mode: "{{galaxy_docker_export_location_mode}}"

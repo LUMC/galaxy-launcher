@@ -9,7 +9,7 @@
 - include: addldap.yml
   when: addldap
 
-- include: galaxy_welcome.yml
+- include: galaxywelcome.yml
   when: galaxywelcome
 
 - include: setup_cluster_general.yml

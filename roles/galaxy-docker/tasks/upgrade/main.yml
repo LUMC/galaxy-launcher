@@ -1,4 +1,4 @@
-- include: nginxsettings.yml
+- include: ../prerequisites/nginxsettings.yml
   when: nginxsettings
 
 - name: Setting new docker container for the test upgrade.

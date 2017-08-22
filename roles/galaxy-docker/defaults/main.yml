@@ -143,14 +143,14 @@ galaxy_docker_run_unpriviledged: False
 # Run
 galaxy_docker_prepare_docker: False
 galaxy_docker_prerequisites: False
-galaxy_docker_template_galaxy_settings: True
+galaxy_docker_template_galaxy_settings: False
 galaxy_docker_upgrade: False
 galaxy_docker_provision: False
 galaxy_docker_run: False
 galaxy_docker_add_users: False
 galaxy_docker_add_user_ssh_keys: False
 galaxy_docker_install_packages: False
-galaxy_docker_create_export_folder: True
+galaxy_docker_create_export_folder: False
 galaxy_docker_backups: False
 
 installdocker: False

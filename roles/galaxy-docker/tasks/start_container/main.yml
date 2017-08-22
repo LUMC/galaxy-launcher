@@ -1,5 +1,5 @@
 - include: run.yml
   when: galaxy_docker_run
 
-- include: install_python_depencies.yml
+- include: install_python_dependencies.yml
   when: addldap
