@@ -57,8 +57,6 @@
 
 - include: template_galaxy_settings/main.yml
   when: galaxy_docker_template_galaxy_settings
-- include: provision/main.yml
-  when: galaxy_docker_provision
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_web_user}}"
   vars:

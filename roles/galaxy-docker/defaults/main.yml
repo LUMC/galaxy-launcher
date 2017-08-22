@@ -26,7 +26,7 @@ galaxy_docker_web_user_id: 1450
 galaxy_docker_web_group_id: 1450
 galaxy_docker_web_user_private_key: "{{ssh_dir}}/{{galaxy_docker_web_user}}.rsa"
 
-galaxy_docker_provision_user: admin
+galaxy_docker_provision_user: admin@galaxy.org
 galaxy_docker_provision_key: admin
 
 # docker defaults
@@ -60,7 +60,7 @@ genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
 fetch_location: "files/{{inventory_hostname}}/database_extract/"
 docker_custom_image_dir: "files/{{inventory_hostname}}/docker_custom_image/"
 docker_build_dir: "/home/{{galaxy_docker_docker_user}}/docker_image/"
-ansible_generated_vars_dir: "/tmp/ansible_generated_vars/"
+ansible_generated_vars_dir: "/tmp/ansible_generated_vars/{{ansible_hostname}}/"
 ssh_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/ssh"
 
 # defaults for addldap
@@ -152,6 +152,7 @@ galaxy_docker_add_user_ssh_keys: False
 galaxy_docker_install_packages: False
 galaxy_docker_create_export_folder: False
 galaxy_docker_backups: False
+galaxy_docker_cluster: False
 
 installdocker: False
 importdb: False

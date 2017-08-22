@@ -10,11 +10,6 @@
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-# This handler should be run before the task. Hence the command.
-- name: check if galaxy has started
-  command: echo this always reports as changed
-  notify: check if galaxy has started
-
 - meta: flush_handlers
 
 - name: Create empty work directory

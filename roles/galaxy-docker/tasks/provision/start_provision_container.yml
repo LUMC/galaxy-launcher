@@ -20,11 +20,14 @@
 
 - name: Create file with volume settings
   template:
-    dest: "{{ansible_generated_vars_dir}}/docker_ports_and_volumes.yml"
+    dest: "{{ansible_generated_vars_dir}}/docker_volumes_provision.yml"
     src: "docker_volumes_provision.yml.j2"
     force: yes
   become: no
   delegate_to: 127.0.0.1
+
+- name: Include port and volume settings
+  include_vars: "{{ansible_generated_vars_dir}}/docker_volumes_provision.yml"
 
 - name: Show volumes
   debug:
@@ -35,8 +38,6 @@
   template:
     src: docker_environment_provision.j2
     dest: "{{docker_environment_file_location}}"
-    group: "{{docker_user}}"
-    owner: "{{docker_user}}"
     mode: 0600
 
 - name: Start the docker provision container
@@ -49,7 +50,7 @@
     published_ports: "127.0.0.1:{{galaxy_docker_provision_port}}:80"
     state: started
     restart: yes
-  notify: check if galaxy has started
+  notify: check if provision galaxy has started
 
 - name: remove docker environment file
   file:

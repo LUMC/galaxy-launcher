@@ -16,8 +16,17 @@
     url: "http://localhost:{{galaxy_web_port}}"
     return_content: yes
   register: result
-  until: 'galaxy_brand in result.content'  
-  retries: 20 
+  until: 'galaxy_brand in result.content'
+  retries: 20
+  delay: 10
+
+- name: check if provision galaxy has started
+  uri:
+    url: "http://localhost:{{galaxy_docker_provision_port}}"
+    return_content: yes
+  register: result
+  until: 'galaxy_brand in result.content'
+  retries: 20
   delay: 10
 
 - name: restart galaxy in container
