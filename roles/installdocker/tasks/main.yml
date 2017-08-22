@@ -28,7 +28,8 @@
 
 # Distrospecific. Only disto.
 # ansible_distribution_version specific things should be handled down the line
-- include: "distributions/{{ansible_distribution}}.yml"
+- include: "{{role_path}}/tasks/distributions/{{ansible_distribution}}.yml"
+
 
 # General postinstall
 - name: install required python_packages

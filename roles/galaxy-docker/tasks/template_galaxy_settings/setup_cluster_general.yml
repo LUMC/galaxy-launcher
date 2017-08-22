@@ -42,6 +42,7 @@
   when: galaxy_cluster_virtualenv is defined
 
 - name: Add some conditional-requirements.
+  pip:
     name: "{{item}}"
     virtualenv: "{{galaxy_cluster_virtualenv}}"
     extra_args: --index-url https://wheels.galaxyproject.org/simple --only-binary all
