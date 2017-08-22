@@ -19,12 +19,19 @@
     - docker_running is defined
     - not docker_running.stdout | bool
 
-- name: Set provision key
+- name: Set provision key when starting provision container
   set_fact:
     galaxy_admin_api_key: "{{galaxy_docker_provision_key}}"
   when:
     - docker_running is defined
     - not docker_running.stdout | bool
+
+- name: Use public web port when running production container
+  set_fact:
+    galaxy_docker_provision_port: "{{galaxy_web_port}}"
+  when:
+    - docker_running is defined
+    - docker_running.stdout | bool
 
 - include: installephemeris.yml
   when: ( installtools or installgenomes )

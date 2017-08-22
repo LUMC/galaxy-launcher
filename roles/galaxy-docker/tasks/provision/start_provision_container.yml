@@ -46,7 +46,7 @@
     image: "{{docker_image}}"
     name: "{{docker_container_name}}"
     hostname: "{{docker_container_hostname}}"
-    published_ports: "127.0.0.1:{{galaxy_web_port}}:80"
+    published_ports: "127.0.0.1:{{galaxy_docker_provision_port}}:80"
     state: started
     restart: yes
   notify: check if galaxy has started

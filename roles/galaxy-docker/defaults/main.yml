@@ -42,7 +42,7 @@ docker_extra_volumes: ""
 ufw_profile: galaxy
 public_galaxy_web_port: 80
 galaxy_web_port: 8080
-
+galaxy_docker_provision_port: 8008
 # Bgruening container defaults
 container_postgres_user: 1550
 container_database_name: galaxy
