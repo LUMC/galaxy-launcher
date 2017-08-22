@@ -9,12 +9,11 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-installdocker: True
-nginxsettings: True
-ansible_role_nginx: True
-galaxyfirewall: True
+galaxy_docker_prepare_docker: True
+galaxy_docker_template_galaxy_settings: True
+galaxy_docker_provision: True
+galaxy_docker_run: True
+
 galaxywelcome: True
-rundockergalaxy: True
-importdb: True
-cronbackupdb: True
 installtools: True
+installgenomes: True
