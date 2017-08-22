@@ -14,6 +14,7 @@ galaxy_docker_remote_key_dir: /tmp/keys
 #users
 galaxy_docker_docker_user: galaxy_docker
 galaxy_docker_docker_user_private_key: "{{ssh_dir}}/{{galaxy_docker_docker_user}}.rsa"
+galaxy_docker_docker_user_virtualenv: "/home/{{galaxy_docker_docker_user}}/virtualenv"
 
 galaxy_docker_database_user: postgres
 galaxy_docker_database_user_id: 1550
@@ -24,6 +25,9 @@ galaxy_docker_web_user: galaxy
 galaxy_docker_web_user_id: 1450
 galaxy_docker_web_group_id: 1450
 galaxy_docker_web_user_private_key: "{{ssh_dir}}/{{galaxy_docker_web_user}}.rsa"
+
+galaxy_docker_provision_user: admin
+galaxy_docker_provision_key: admin
 
 # docker defaults
 galaxy_docker_docker_user_groups: docker
@@ -107,7 +111,7 @@ galaxy_docker_genomes_dest: "{{docker_export_location}}/genomes"
 # Ephemeris can be installed from git if extra functionality is needed which is not in the pypi package yet.
 galaxy_docker_ephemeris_repo: "https://github.com/galaxyproject/ephemeris.git"
 galaxy_docker_ephemeris_branch: "master"
-galaxy_docker_ephemeris_dir: "/opt/ephemeris"
+galaxy_docker_ephemeris_dir: "/home/{{galaxy_docker_docker_user}}/ephemeris"
 ephemeris_from_git: False
 
 #defaults for upgrade
@@ -138,13 +142,17 @@ new_config_files:
 galaxy_docker_run_unpriviledged: False
 # Run
 galaxy_docker_prepare_docker: False
-galaxy_docker_prerequisites: false
-galaxy_docker_template_galaxy_settings: true
-
+galaxy_docker_prerequisites: False
+galaxy_docker_template_galaxy_settings: True
+galaxy_docker_upgrade: False
+galaxy_docker_provision: False
+galaxy_docker_run: False
 galaxy_docker_add_users: False
-galaxy_docker_add_user_ssh_keys: "{{galaxy_docker_add_users}}"
+galaxy_docker_add_user_ssh_keys: False
 galaxy_docker_install_packages: False
 galaxy_docker_create_export_folder: True
+galaxy_docker_backups: False
+
 installdocker: False
 importdb: False
 upgrade: False

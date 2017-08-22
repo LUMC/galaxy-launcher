@@ -16,6 +16,7 @@
     name: "{{ galaxy_docker_ephemeris_package }}"
     state: present
     version: "{{ galaxy_docker_ephemeris_version }}"
+    virtualenv: "{{galaxy_docker_docker_user_virtualenv}}"
   when: not ephemeris_from_git
 
 - name: Clean ephemeris git folder
@@ -35,10 +36,11 @@
   pip:
     requirements: "{{galaxy_docker_ephemeris_dir}}/requirements.txt"
     state: present
+    virtualenv: "{{galaxy_docker_docker_user_virtualenv}}"
   when: ephemeris_from_git
 
 - name: Install ephemeris from git repo
-  command: "python setup.py install"
+  command: "{{galaxy_docker_docker_user_virtualenv}}/bin/python setup.py install"
   args:
     chdir: "{{galaxy_docker_ephemeris_dir}}"
   when: ephemeris_from_git

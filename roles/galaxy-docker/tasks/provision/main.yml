@@ -1,8 +1,33 @@
 - include: importdb.yml
   when: importdb
 
+- name: register whether the container is running
+  command: "docker inspect -f {{inspect}} {{docker_container_name}}"
+  vars:
+    inspect: !unsafe '{{.State.Running}}'
+  register: docker_running
+  when: ( installtools or installgenomes )
+
+- name: Show docker inspection results
+  debug:
+    var: docker_running
+    verbosity: 1
+  when: docker_running is defined
+
+- include: start_provision_container.yml
+  when:
+    - docker_running is defined
+    - not docker_running.stdout | bool
+
+- name: Set provision key
+  set_fact:
+    galaxy_admin_api_key: "{{galaxy_docker_provision_key}}"
+  when:
+    - docker_running is defined
+    - not docker_running.stdout | bool
+
 - include: installephemeris.yml
-    when: ( installtools or installgenomes )
+  when: ( installtools or installgenomes )
 
 - name: Check if galaxy has started
   command: echo this always reports as changed

@@ -110,9 +110,10 @@
     name: "{{docker_container_name}}"
     state: stopped
 
-- name: Make sure to upgrade the database
-  include: ../upgrade/main.yml
-
 - name: MSG make sure to upgrade the database
   debug:
     msg: Make sure to upgrade the database before running the container
+
+
+- name: Make sure to upgrade the database
+  include: ../upgrade/main.yml

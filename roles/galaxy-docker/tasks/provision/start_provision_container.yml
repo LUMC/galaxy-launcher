@@ -1,4 +1,3 @@
-
 ---
 # Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
 # Contact us at: sasc@lumc.nl
@@ -10,6 +9,8 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+# this task installs ephemeris. It is used for installing tools and genomes.
+
 - name: Create directory for ansible_generated vars
   file:
     path: "{{ansible_generated_vars_dir}}"
@@ -17,65 +18,37 @@
   become: no
   delegate_to: 127.0.0.1
 
-- name: Create file with port and volume settings
+- name: Create file with volume settings
   template:
     dest: "{{ansible_generated_vars_dir}}/docker_ports_and_volumes.yml"
-    src: "docker_ports_and_volumes.yml.j2"
+    src: "docker_volumes_provision.yml.j2"
     force: yes
   become: no
   delegate_to: 127.0.0.1
-#  ansible_connection: local
-
-- name: Include port and volume settings
-  include_vars: "{{ansible_generated_vars_dir}}/docker_ports_and_volumes.yml"
-
-- name: Show docker published ports
-  debug:
-    var: docker_published_ports
-    verbosity: 1
 
 - name: Show volumes
   debug:
     var: docker_mounted_volumes
     verbosity: 1
 
-- fail:
-    msg: "galaxy_report_user and galaxy_report_password should be defined!"
-  when: (galaxy_report_password is not defined) or (galaxy_report_user is not defined)
-
-- name: install required passlib module
-  pip:
-    name: "passlib"
-    state: latest
-
-- name: Add report_htpasswd file for Report Webapp
-  htpasswd:
-    create: yes
-    crypt_scheme: sha512_crypt #Other secure choices: https://passlib.readthedocs.io/en/stable/narr/quickstart.html#recommended-hashes
-    name: "{{galaxy_report_user}}"
-    password: "{{galaxy_report_password}}"
-    path: "{{docker_export_location}}/reports_htpasswd"
-
 - name: Update docker environment file
   template:
-    src: docker_environment_dict.j2
+    src: docker_environment_provision.j2
     dest: "{{docker_environment_file_location}}"
     group: "{{docker_user}}"
     owner: "{{docker_user}}"
     mode: 0600
 
-- name: Restart the docker container
+- name: Start the docker provision container
   docker_container:
     env_file: "{{docker_environment_file_location}}"
     volumes: "{{docker_mounted_volumes}}"
     image: "{{docker_image}}"
     name: "{{docker_container_name}}"
     hostname: "{{docker_container_hostname}}"
-    published_ports: "{{docker_published_ports}}"
+    published_ports: "127.0.0.1:{{galaxy_web_port}}:80"
     state: started
     restart: yes
-  become_user: "{{docker_user}}"
-  become: yes
   notify: check if galaxy has started
 
 - name: remove docker environment file
