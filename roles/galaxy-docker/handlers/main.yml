@@ -11,6 +11,12 @@
 
 # handlers file for galaxy_docker
 
+- name: restart galaxy in container
+  command: "docker exec {{docker_container_name}} {{command}}"
+  vars:
+    command: "supervisorctl restart {{supervisorctl_galaxy | default('galaxy')}}:*"
+  notify: check if galaxy has started
+
 - name: check if galaxy has started
   uri:
     url: "http://localhost:{{galaxy_web_port}}"
@@ -28,9 +34,3 @@
   until: 'galaxy_brand in result.content'
   retries: 20
   delay: 10
-
-- name: restart galaxy in container
-  command: "docker exec {{docker_container_name}} {{command}}"
-  vars:
-    command: "supervisorctl restart {{supervisorctl_galaxy | default('galaxy')}}:*"
-  notify: check if galaxy has started
