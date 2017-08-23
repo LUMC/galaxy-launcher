@@ -36,6 +36,7 @@ docker_environment_file_location: "/home/{{galaxy_docker_docker_user}}/galaxydoc
 docker_export_location: "/data/galaxy/galaxy_storage"
 galaxy_docker_export_location_mode: "0770"
 docker_container_name: galaxy
+docker_provision_container_name: galaxy-provision
 docker_container_hostname: galaxy-docker
 docker_extra_volumes: ""
 # firewall, nginx and ports

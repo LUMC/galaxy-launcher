@@ -11,42 +11,67 @@
 
 # this task installs ephemeris. It is used for installing tools and genomes.
 
-- name: register whether the container is running
+- name: register whether the production container is running
   command: "docker inspect -f {{inspect}} {{docker_container_name}}"
   vars:
     inspect: !unsafe '{{.State.Running}}'
-  register: docker_running
+  register: production_container_running
+  when: ( installtools or installgenomes )
+  ignore_errors: yes # If the container does not exist this will run.
+
+- name: register whether the docker provision container is running
+  command: "docker inspect -f {{inspect}} {{docker_provision_container_name}}"
+  vars:
+    inspect: !unsafe '{{.State.Running}}'
+  register: provision_container_running
   when: ( installtools or installgenomes )
   ignore_errors: yes # If the container does not exist this will run.
 
 - name: Show docker inspection results
   debug:
-    var: docker_running
+    var: production_container_running
     verbosity: 1
-  when: docker_running is defined
+  when: production_container_running
+
+- name: Show docker inspection results
+  debug:
+    var: provision_container_running
+    verbosity: 1
+  when: provision_container_running
 
 - include: start_provision_container.yml
   when:
-    - docker_running is defined
-    - not docker_running.stdout | bool
+    - production_container_running is defined
+    - provision_container_running is defined
+    - not production_container_running.stdout | bool
+    - not provision_container_running.stdout | bool
 
 - name: Set provision key when starting provision container
   set_fact:
     galaxy_admin_api_key: "{{galaxy_docker_provision_key}}"
   when:
-    - docker_running is defined
-    - not docker_running.stdout | bool
+    - production_container_running is defined
+    - not production_container_running.stdout | bool
 
-- name: Use public web port when running production container
+- name: Use public web port for provisioning when running production container
   set_fact:
     galaxy_docker_provision_port: "{{galaxy_web_port}}"
   when:
-    - docker_running is defined
-    - docker_running.stdout | bool
+    - production_container_running is defined
+    - production_container_running.stdout | bool
 
 - name: Activate handler to check if provision galaxy has started
   command: echo this always reports as changed
   notify: check if provision galaxy has started
-  when: ( installtools or installgenomes )
+  when:
+    - ( installtools or installgenomes )
+    - not production_container_running.stdout | bool
+
+- name: Activate handler to check if production galaxy has a working galaxy
+  command: echo this always reports as changed
+  notify: check if galaxy has started
+  when:
+    - ( installtools or installgenomes )
+    - production_container_running.stdout | bool
 
 - meta: flush_handlers
