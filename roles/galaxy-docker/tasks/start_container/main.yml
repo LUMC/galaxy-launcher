@@ -1,3 +1,9 @@
+- command: whoami
+  register: whoami
+
+- debug:
+    var: whoami.stdout
+    
 - include: run.yml
   when: galaxy_docker_run
 

@@ -9,21 +9,15 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- name: Register whether config folder is already created
-  stat:
-    path: "{{docker_export_location}}/galaxy-central/config"
-  register: default_config_folder
-  until: default_config_folder.stat.exists
-  retries: 10
-  delay: 15
+- fail:
+    msg: "galaxy_report_user and galaxy_report_password should be defined!"
+  when: (galaxy_report_password is not defined) or (galaxy_report_user is not defined)
 
-- include: addldap.yml
-  when: addldap
 
-- include: galaxywelcome.yml
-  when: galaxywelcome
-
-- include: setup_cluster_general.yml
-  when: galaxy_docker_cluster
-
-- include: report_user.yml
+- name: Add report_htpasswd file for Report Webapp
+  htpasswd:
+    create: yes
+    crypt_scheme: sha512_crypt #Other secure choices: https://passlib.readthedocs.io/en/stable/narr/quickstart.html#recommended-hashes
+    name: "{{galaxy_report_user}}"
+    password: "{{galaxy_report_password}}"
+    path: "{{docker_export_location}}/reports_htpasswd"

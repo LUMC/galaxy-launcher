@@ -24,3 +24,8 @@
   pip:
     name: virtualenv
     state: present
+
+- name: install required passlib module
+  pip:
+    name: "passlib"
+    state: latest
