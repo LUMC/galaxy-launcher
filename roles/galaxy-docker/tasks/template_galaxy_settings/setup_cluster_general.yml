@@ -67,3 +67,9 @@
     regexp: '(<toolbox tool_path=")(.*)(">)'
     line: '\1{{docker_export_location}}/shed_tools\3'
     path: "{{docker_export_location}}/galaxy-central/config/shed_tool_conf.xml"
+
+- name: Create environment setup file
+  template:
+    dest: "{{docker_export_location}}/environment_setup_file.sh"
+    src: "environment_setup_file.sh.j2"
+    force: yes

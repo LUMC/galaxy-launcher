@@ -12,12 +12,6 @@
 # Add SGE settings to galaxy docker instance
 
 
-- name: Create environment setup file
-  template:
-    dest: "{{docker_export_location}}/environment_setup_file.sh"
-    src: "environment_setup_file.sh.j2"
-    force: yes
-
 - name: create act_qmaster file
   template:
     dest: "{{docker_export_location}}/act_qmaster"
