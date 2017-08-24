@@ -40,6 +40,9 @@ docker_container_name: galaxy
 docker_provision_container_name: galaxy-provision
 docker_container_hostname: galaxy-docker
 docker_extra_volumes: ""
+docker_build_dir: "/home/{{galaxy_docker_docker_user}}/docker_image/"
+bgruening_galaxy_stable_version: 17.05
+docker_image_changed_uids: "galaxy-stable-changed-uids:{{bgruening_galaxy_stable_version}}"
 # firewall, nginx and ports
 ufw_profile: galaxy
 public_galaxy_web_port: 80
@@ -61,7 +64,7 @@ dbkeys_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/dbkeys/"
 genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
 fetch_location: "files/{{inventory_hostname}}/database_extract/"
 docker_custom_image_dir: "files/{{inventory_hostname}}/docker_custom_image/"
-docker_build_dir: "/home/{{galaxy_docker_docker_user}}/docker_image/"
+
 ansible_generated_vars_dir: "/tmp/ansible_generated_vars/{{ansible_hostname}}/"
 ssh_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/ssh"
 
@@ -156,6 +159,7 @@ galaxy_docker_create_export_folder: False
 galaxy_docker_backups: False
 galaxy_docker_cluster: False
 galaxy_docker_transfer_genomes: False
+galaxy_docker_change_uids: False
 installdocker: False
 importdb: False
 upgrade: False
