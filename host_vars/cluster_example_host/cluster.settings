@@ -1,0 +1,6 @@
+galaxy_docker_gridengine_master_host: "ogs-head"
+galaxy_cluster_virtualenv: "{{galaxy_shared_cluster_directory}}/galaxy_venv"
+#cluster_embed_metadata_in_job: False
+cluster_environment_variables:
+  LC_ALL: "en_US.UTF-8"
+galaxy_shared_cluster_directory: "/exports/galaxy"
