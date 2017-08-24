@@ -1,7 +1,7 @@
 - include: change_uids.yml
   when: galaxy_docker_change_uids
-  
+
 - include: customimage.yml
-  when: customimage
+  when: (customimage or galaxy_docker_change_uids)
 
 - include: create_export_directory_folders.yml

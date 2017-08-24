@@ -9,15 +9,17 @@
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 {% if galaxy_docker_change_uids %}
-from {{docker_image_changed_uids}}:{{bgruening_galaxy_stable_version}}
+from {{docker_image_changed_uids}}
 {% else %}
 from bgruening/galaxy-stable:{{bgruening_galaxy_stable_version}}
 {% endif %}
 
 Maintainer ansible-generated
 
+{% if docker_custom_image_lines is defined %}
 {% for line in docker_custom_image_lines %}
-line
+{{line}}
 {% endfor %}
+{% endif %}
 
 CMD ["/usr/bin/startup"]
