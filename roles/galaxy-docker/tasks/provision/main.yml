@@ -14,7 +14,7 @@
   when: importdb
 
 - include: transfer_genomes.yml
-  when: installgenomes
+  when: galaxy_docker_transfer_genomes
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_web_user}}"
   vars:

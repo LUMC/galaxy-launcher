@@ -155,7 +155,7 @@ galaxy_docker_install_packages: False
 galaxy_docker_create_export_folder: False
 galaxy_docker_backups: False
 galaxy_docker_cluster: False
-
+galaxy_docker_transfer_genomes: False
 installdocker: False
 importdb: False
 upgrade: False
