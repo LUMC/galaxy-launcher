@@ -5,9 +5,9 @@
     mode: 0600
 
 - name: Create ssh keys
-  command: "ssh-keygen -t rsa -f {{galaxy_docker_remote_key_dir}}/{{item}}.rsa"
+  command: "ssh-keygen -t -f {{galaxy_docker_remote_key_dir}}/{{item}}"
   args:
-    creates: "{{galaxy_docker_remote_key_dir}}/{{item}}.rsa"
+    creates: "{{galaxy_docker_remote_key_dir}}/{{item}}"
   with_items:
     - "{{galaxy_docker_docker_user}}"
     - "{{galaxy_docker_web_user}}"
@@ -15,15 +15,15 @@
 
 # Weird ansible limtitation initiated shannanigans
 - name: Get docker user public key
-  command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_docker_user}}.rsa.pub
+  command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_docker_user}}.pub
   register: galaxy_docker_docker_user_public_key
 
 - name: Get web user public key
-  command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_web_user}}.rsa.pub
+  command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_web_user}}.pub
   register: galaxy_docker_web_user_public_key
 
 - name: Get database user public key
-  command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_database_user}}.rsa.pub
+  command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_database_user}}.pub
   register: galaxy_docker_database_user_public_key
 
 - name: Add keys to authorized key files
@@ -45,7 +45,7 @@
 # The proper way! But does not work.
 #- name: Add keys to authorized key files
 #  authorized_key:
-#    key: "file://{{galaxy_docker_remote_key_dir}}/{{item}}.rsa.pub"
+#    key: "file://{{galaxy_docker_remote_key_dir}}/{{item}}.pub"
 #    user: "{{item}}"
 #  with_items:
 #    - "{{galaxy_docker_docker_user}}"
@@ -56,7 +56,7 @@
   synchronize:
     mode: pull
     dest: "{{ssh_dir}}/"
-    src: "{{galaxy_docker_remote_key_dir}}/{{item}}.rsa"
+    src: "{{galaxy_docker_remote_key_dir}}/{{item}}"
     perms: yes
   vars:
     ansible_ssh_pipelining: False
