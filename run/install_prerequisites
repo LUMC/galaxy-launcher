@@ -9,7 +9,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-galaxy_docker_run_unpriviledged: False
+galaxy_docker_run_privileged: True
 galaxy_docker_prerequisites: True
 galaxy_docker_install_packages: True
 galaxy_docker_create_export_folder: True

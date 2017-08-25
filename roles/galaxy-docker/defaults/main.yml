@@ -144,7 +144,7 @@ new_config_files:
   - src: ".distribution_config/."
     dest: "galaxy-central/config"
 
-galaxy_docker_run_unpriviledged: False
+galaxy_docker_run_privileged: True
 # Run
 galaxy_docker_prepare_docker: False
 galaxy_docker_prerequisites: False
