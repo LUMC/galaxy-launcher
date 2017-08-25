@@ -2,14 +2,18 @@
   docker_container:
     volumes: "{{docker_export_location}}:/export/"
     image: "{{docker_image}}"
-    name: "export_folder_creator"
+    name: "export_folder_creator_{{ansible_date_time.epoch}}"
     state: started
-    restart: yes
     user: "{{galaxy_docker_web_user_id}}"
     command: "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
+  register: docker_container
+
+- name: Save config folder creator container name
+  set_fact:
+    config_folder_creator_name: '{{docker_container.ansible_facts.docker_container.Name.replace("/","")}}'
 
 - name: register whether the folder creator container has finished
-  command: "docker inspect -f {{inspect}} export_folder_creator"
+  command: "docker inspect -f {{inspect}} {{config_folder_creator_name}}"
   vars:
     inspect: !unsafe '{{.State.Running}}'
   register: folder_container_running
