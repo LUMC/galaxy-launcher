@@ -18,9 +18,9 @@
   set_fact:
     galaxy_docker_become: yes
     galaxy_docker_become_method: sudo
-    galaxy_docker_docker_ssh_user: "{{ansible_ssh_user}}"
-    galaxy_docker_web_ssh_user: "{{ansible_ssh_user}}"
-    galaxy_docker_database_ssh_user: "{{ansible_ssh_user}}"
+    galaxy_docker_docker_ssh_user: "{{ansible_user}}"
+    galaxy_docker_web_ssh_user: "{{ansible_user}}"
+    galaxy_docker_database_ssh_user: "{{ansible_user}}"
     galaxy_docker_database_user_private_key: "{{ansible_ssh_private_key_file}}"
     galaxy_docker_docker_user_private_key: "{{ansible_ssh_private_key_file}}"
     galaxy_docker_web_user_private_key: "{{ansible_ssh_private_key_file}}"
@@ -43,7 +43,7 @@
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"
   vars:
-    ansible_ssh_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
   when: galaxy_docker_prepare_docker
 
@@ -52,7 +52,7 @@
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"
   vars:
-    ansible_ssh_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
 
 - include: template_galaxy_settings/main.yml
@@ -60,7 +60,7 @@
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_web_user}}"
   vars:
-    ansible_ssh_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_user: "{{galaxy_docker_web_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
 
 - include: provision/main.yml
@@ -68,7 +68,7 @@
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"
   vars:
-    ansible_ssh_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
 
 - include: start_container/main.yml
@@ -76,7 +76,7 @@
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"
   vars:
-    ansible_ssh_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
 
 - include: backups/main.yml
@@ -84,5 +84,5 @@
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"
   vars:
-    ansible_ssh_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
