@@ -43,7 +43,7 @@
 
 - name: Build docker image with changed_uids
   docker_image:
-    name: "{{docker_image_changed_uids}}"
+    name: "{{docker_image_changed_uids}}:{{bgruening_galaxy_stable_version}}"
     path: "{{docker_build_dir}}/change_uid/galaxy"
     pull: True
     force: yes

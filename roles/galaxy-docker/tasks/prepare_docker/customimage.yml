@@ -28,6 +28,7 @@
     path: "{{docker_build_dir}}/custom_image"
     force: yes
     state: present
+    pull: "{{ (not galaxy_docker_change_uids) | bool}}"
 
 - name: remove docker build directory
   file:
