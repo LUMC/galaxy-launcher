@@ -34,4 +34,4 @@ roles/jdauphant.nginx
 site/
 .vagrant/
 
-*.rsa*
+test/files/*/ssh/*

@@ -5,7 +5,7 @@
     mode: 0600
 
 - name: Create ssh keys
-  command: "ssh-keygen -t -f {{galaxy_docker_remote_key_dir}}/{{item}}"
+  command: "ssh-keygen -t rsa -f {{galaxy_docker_remote_key_dir}}/{{item}}"
   args:
     creates: "{{galaxy_docker_remote_key_dir}}/{{item}}"
   with_items:
