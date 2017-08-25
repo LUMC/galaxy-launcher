@@ -12,6 +12,4 @@
     dest: "{{docker_export_location}}/galaxy-central/config/auth_conf.xml"
     force: yes
     src: auth_conf.xml.j2
-    owner: "{{container_galaxy_user}}"
-    group: "{{container_galaxy_user}}"
     mode: 0700

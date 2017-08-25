@@ -55,7 +55,6 @@
 - name: Copy welcome files
   copy:
     mode: 0644
-    owner: "{{galaxy_user_in_container}}"
     dest: "{{docker_export_location}}/{{item.path | basename | lower}}"
     src: "{{item.path}}"
   with_items:

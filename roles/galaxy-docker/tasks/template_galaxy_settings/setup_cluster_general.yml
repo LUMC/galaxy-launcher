@@ -2,7 +2,6 @@
   file:
       path: "{{item}}"
       state: directory
-      owner: "{{container_galaxy_user}}"
   with_items:
     - "{{optional_environment_settings.GALAXY_CONFIG_JOB_WORKING_DIRECTORY}}"
     - "{{optional_environment_settings.GALAXY_CONFIG_FILE_PATH}}"
@@ -15,14 +14,11 @@
     path: "{{optional_environment_settings.GALAXY_CONFIG_NEW_FILE_PATH}}"
     state: directory
     mode: 01777
-    owner: "{{container_galaxy_user}}"
-
 
 - name: make sure galaxy_venv directory exists
   file:
     path: "{{galaxy_cluster_virtualenv}}"
     state: directory
-    owner: "{{container_galaxy_user}}"
   when: galaxy_cluster_virtualenv is defined
 
 - name: Create virtualenv
@@ -33,12 +29,9 @@
 
 - name: Install pinned-requirements
   pip:
-    requirements: "{{item}}"
+    requirements: "{{docker_export_location}}/galaxy-central/lib/galaxy/dependencies/pinned-requirements.txt"
     virtualenv: "{{galaxy_cluster_virtualenv}}"
     extra_args: --index-url https://wheels.galaxyproject.org/simple --only-binary all
-  with_items:
-    - "{{docker_export_location}}/galaxy-central/lib/galaxy/dependencies/pinned-requirements.txt"
-#    - "{{docker_export_location}}/galaxy-central/lib/galaxy/dependencies/conditional-requirements.txt"
   when: galaxy_cluster_virtualenv is defined
 
 - name: Add some conditional-requirements.
