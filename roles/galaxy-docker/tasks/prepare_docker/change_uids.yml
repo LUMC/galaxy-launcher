@@ -43,8 +43,10 @@
 
 - name: Build docker image with changed_uids
   docker_image:
-    name: "{{docker_image_changed_uids}}:{{bgruening_galaxy_stable_version}}"
+    name: "{{docker_image_changed_uids}}"
     path: "{{docker_build_dir}}/change_uid/galaxy"
     pull: True
     force: yes
     state: present
+  vars:
+    ansible_connection: smart #solves a weird connection error. But unclear why.
