@@ -63,25 +63,6 @@
   with_items:
     - "{{dbkeys.files}}"
 
-- name: Create genomes directory in export folder
-  file:
-    path: "{{docker_export_location}}/genomes"
-    state: directory
-
-- name: Move genomes to the server using rsync
-  synchronize:
-    compress: yes #Necessary for big fasta files
-    copy_links: "{{galaxy_docker_genome_copy_links}}" # You don't have to duplicate the file in the playbook directory but can symlink instead
-    delete: no # do not delete genomes already there
-    dest: "{{docker_export_location}}/genomes"
-    src: "{{genomes_dir}}"
-    archive: no #owner and chmod information should not be copied
-    recursive: yes
-    checksum: yes #when archive is no. Checksum should be yes, otherwise the files are always copied.
-    ssh_args: "{{ansible_ssh_extra_args}}"
-  vars:
-    ansible_ssh_pipelining: False
-
 - name: Use ephemeris run-data-managers to run data managers
   command: "{{galaxy_docker_docker_user_virtualenv}}/bin/run-data-managers -g localhost:{{galaxy_docker_provision_port}} -a {{galaxy_admin_api_key}} --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}} -v"
   with_items: "{{dbkeys.files}}"
