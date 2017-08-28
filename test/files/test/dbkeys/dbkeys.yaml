@@ -2,7 +2,7 @@
 
 data_managers:
     # Data manager ID
-    - id: toolshed.g2.bx.psu.edu/repos/devteam/data_manager_fetch_genome_dbkeys_all_fasta/data_manager_fetch_genome_all_fasta_dbkey/0.0.2
+    - id: data_manager_fetch_genome_all_fasta_dbkey
       # tool parameters, nested parameters should be specified using a pipe (|)
       params:
         - 'dbkey_source|dbkey': '{{ item }}'
@@ -11,7 +11,7 @@ data_managers:
       # Items refere to a list of variables you want to run this data manager. You can use them inside the param field with {{ item }}
       # In case of genome for example you can run this DM with multiple genomes, or you could give multiple URLs.
       items:
-        - ce6
+        - eboVir3
         #- dm3
         #- mm9
       # Name of the data-tables you want to reload after your DM are finished. This can be important for subsequent data managers

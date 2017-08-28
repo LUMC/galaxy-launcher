@@ -33,8 +33,6 @@
   with_items:
     - src: "galaxy-central/config"
       dest: "galaxy-central"
-    - src: "postgresql"
-      dest: ""
 
 - name: Copy running instance files to test location
   command: "cp -p -R {{src}} {{dest}}"
@@ -44,8 +42,13 @@
   with_items:
     - src: "galaxy-central/config"
       dest: "galaxy-central"
-    - src: "postgresql"
-      dest: ""
+
+- include: copy_database.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_database_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_database_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_database_user_private_key}}"
 
 - name: Set test upgrade parameters for the docker container
   set_fact:

@@ -9,24 +9,19 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- name: Create user to run docker image
-  user:
-    createhome: yes
-    name: "{{galaxy_docker_docker_user}}"
-    groups: "{{galaxy_docker_docker_user_groups}}"
-    state: present
+- name: create subfolders
+  file:
+    state: directory
+    path: "{{test_upgrade_settings.docker_export_location}}/{{item.dest}}"
+  with_items:
+    - src: "postgresql"
+      dest: ""
 
-- name: Create galaxy web user
-  user:
-    createhome: yes
-    name: "{{galaxy_docker_web_user}}"
-    uid: "{{galaxy_docker_web_user_id}}"
-    state: present
-
-- name: create galaxy database user
-  user:
-    createhome: yes
-    name: "{{galaxy_docker_database_user}}"
-    uid: "{{galaxy_docker_database_user_id}}"
-    state: present
-    groups: "{{galaxy_docker_web_group_id}}"
+- name: Copy running instance files to test location
+  command: "cp -p -R {{src}} {{dest}}"
+  vars:
+    src: "{{docker_export_location}}/{{item.src}}"
+    dest: "{{test_upgrade_settings.docker_export_location}}/{{item.dest}}"
+  with_items:
+    - src: "postgresql"
+      dest: ""

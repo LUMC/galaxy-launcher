@@ -86,3 +86,11 @@
   vars:
     ansible_user: "{{galaxy_docker_docker_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
+
+# Makes sure the handlers are run as a docker enabled user at the end of the play.
+- include: run_handlers.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
