@@ -120,31 +120,11 @@ galaxy_docker_ephemeris_dir: "/home/{{galaxy_docker_docker_user}}/ephemeris"
 ephemeris_from_git: False
 
 #defaults for upgrade
-test_upgrade: False
+galaxy_docker_test_upgrade: False
 overwrite_config_files: False #Overwrites old config files with new distribution_config files
 
-no_overwrite: "-n" # No overwrite parameter for cp shell command.
 
-##
-#Files to be migrated for testing
-##
-
-#root folder is the export folder
-# dest: "" therefore equals copying directly into the root folder.
-migrated_files:
-  - src: "galaxy-central/config"
-    dest: "galaxy-central"
-  - src: "postgresql"
-    dest: ""
-
-##
-#Files to be copied from .distribution_config to new config
-##
-new_config_files:
-  - src: ".distribution_config/."
-    dest: "galaxy-central/config"
-
-galaxy_docker_run_privileged: True
+galaxy_docker_run_privileged: False
 # Run
 galaxy_docker_prepare_docker: False
 galaxy_docker_prerequisites: False

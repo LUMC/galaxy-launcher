@@ -57,13 +57,13 @@
       upstream:
         - "{{nginx_configs.upstream[0]}}"
         - "upstream test_upgrade_galaxy { server localhost:{{test_upgrade_settings.galaxy_web_port}}; }"
-  when: test_upgrade
+  when: galaxy_docker_test_upgrade
 
 - name: combine test upgrade profile with regular galaxy profile
   set_fact:
     nginx_sites: "{{ nginx_sites | combine(nginx_sites_test_upgrade)}}"
     nginx_configs: "{{ nginx_configs | combine(nginx_configs_test_upgrade) }}"
-  when: test_upgrade
+  when: galaxy_docker_test_upgrade
 
 - name: show variables
   debug:

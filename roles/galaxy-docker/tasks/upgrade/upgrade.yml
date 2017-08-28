@@ -9,7 +9,6 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
 - name: Remove docker container before migrating
   docker_container:
     name: "{{docker_container_name}}"
@@ -18,13 +17,19 @@
 
 - name: moving to another export folder for testing
   include: test.yml
-  when: test_upgrade
+  when: galaxy_docker_test_upgrade
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
 
-- name: delete .distribution_config folder
-  file:
-    path: "{{docker_export_location}}/.distribution_config"
-    state: absent
-  when: not test_upgrade
+- include: delete_distr_config.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
 
 - name: Start docker container
   docker_container:
@@ -34,33 +39,6 @@
     state: started
     command: "/usr/bin/startup"
     detach: True
-
-#- name: create default galaxy folders
-#  docker_container:
-#    volumes: "{{docker_export_location}}:/export/"
-#    image: "{{docker_image}}"
-#    name: "{{docker_container_name}}"
-#    state: started
-#    command: "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
-
-- name: get galaxy central location from docker container
-  command: "docker exec {{name}} {{command}}"
-  vars:
-    volumes: "{{docker_export_location}}:/export/"
-    image: "{{docker_image}}"
-    name: "{{docker_container_name}}"
-    state: started
-    command: "bash -c 'echo \"$GALAXY_ROOT\"'"
-  register: output
-
-- name: register galaxy root
-  set_fact:
-    galaxy_root: "{{output.stdout_lines[-1]}}"
-
-- name: show galaxy_root
-  debug:
-    var: galaxy_root
-    verbosity: 1
 
 - name: Check if postgres is online
   command: "docker exec {{docker_container_name}} service postgresql status"
@@ -75,7 +53,7 @@
     image: "{{docker_image}}"
     name: "{{docker_container_name}}"
     state: started
-    command: "sh {{galaxy_root}}/manage_db.sh upgrade"
+    command: "bash -c 'sh $GALAXY_ROOT/manage_db.sh upgrades'"
   register: migration_result
 
 - name: show migration results
@@ -88,15 +66,9 @@
     name: "{{docker_container_name}}"
     state: stopped
 
-- name: Overwrite old config files?
-  set_fact:
-    no_overwrite: ""
-  when: overwrite_config_files
-
-- name: Add new config files
-  command: "cp -p -r {{no_overwrite}} {{src}} {{dest}}"
+- include: add_new_config.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
   vars:
-    src: "{{docker_export_location}}/{{item.src}}"
-    dest: "{{docker_export_location}}/{{item.dest}}"
-  with_items:
-    - "{{new_config_files}}"
+    ansible_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"

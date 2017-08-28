@@ -1,0 +1,13 @@
+- name: Overwrite old config files?
+  set_fact:
+    no_overwrite: ""
+  when: overwrite_config_files
+
+- name: Add new config files
+  command: "cp -p -r {{no_overwrite | default('-n')}} {{src}} {{dest}}"
+  vars:
+    src: "{{docker_export_location}}/{{item.src}}"
+    dest: "{{docker_export_location}}/{{item.dest}}"
+  with_items:
+    - src: ".distribution_config/."
+      dest: "galaxy-central/config"

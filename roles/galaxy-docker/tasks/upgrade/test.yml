@@ -21,6 +21,7 @@
   file:
     path: "{{test_upgrade_settings.docker_export_location}}"
     state: "{{item}}"
+    mode: "{{galaxy_docker_export_location_mode}}"
   with_items:
     - absent
     - directory
@@ -29,8 +30,11 @@
   file:
     state: directory
     path: "{{test_upgrade_settings.docker_export_location}}/{{item.dest}}"
-  with_items: "{{migrated_files}}"
-
+  with_items:
+    - src: "galaxy-central/config"
+      dest: "galaxy-central"
+    - src: "postgresql"
+      dest: ""
 
 - name: Copy running instance files to test location
   command: "cp -p -R {{src}} {{dest}}"
@@ -38,12 +42,17 @@
     src: "{{docker_export_location}}/{{item.src}}"
     dest: "{{test_upgrade_settings.docker_export_location}}/{{item.dest}}"
   with_items:
-    - "{{migrated_files}}"
+    - src: "galaxy-central/config"
+      dest: "galaxy-central"
+    - src: "postgresql"
+      dest: ""
 
 - name: Set test upgrade parameters for the docker container
   set_fact:
     "{{item.key}}" : "{{item.value}}"
   with_dict: "{{test_upgrade_settings}}"
 
-- debug:
+- name: Set container defaults succesfull?
+  debug:
     var: galaxy_brand
+    verbosity: 1
