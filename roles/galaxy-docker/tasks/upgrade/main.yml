@@ -4,4 +4,4 @@
   when: galaxy_docker_test_upgrade
 
 - include: upgrade.yml
-  when: galaxy_docker_upgrade
+  when: galaxy_docker_upgrade or galaxy_docker_test_upgrade

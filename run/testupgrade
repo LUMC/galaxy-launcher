@@ -10,8 +10,4 @@
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 galaxy_docker_test_upgrade: True
-upgrade: True
-nginxsettings: True
-galaxyfirewall: True
-ansible_role_nginx: True
-rundockergalaxy: True
+galaxy_docker_run: True

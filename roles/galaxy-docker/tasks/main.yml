@@ -48,7 +48,7 @@
   when: galaxy_docker_prepare_docker
 
 - include: upgrade/main.yml
-  when: (galaxy_docker_upgrade or galaxy_docker_test_upgrade)
+  when: galaxy_docker_upgrade or galaxy_docker_test_upgrade
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"
   vars:
