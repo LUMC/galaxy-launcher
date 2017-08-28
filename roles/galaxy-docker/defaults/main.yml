@@ -125,7 +125,7 @@ galaxy_docker_test_upgrade: False
 overwrite_config_files: False #Overwrites old config files with new distribution_config files
 
 
-galaxy_docker_run_privileged: False
+galaxy_docker_run_privileged: True
 # Run
 galaxy_docker_prepare_docker: False
 galaxy_docker_prerequisites: False
