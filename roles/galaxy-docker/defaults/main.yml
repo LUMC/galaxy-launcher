@@ -45,6 +45,7 @@ bgruening_galaxy_stable_version: latest
 docker_image_changed_uids: "galaxy_stable_changed_uids:{{bgruening_galaxy_stable_version}}"
 # firewall, nginx and ports
 ufw_profile: galaxy
+galaxy_docker_test_ufw_profile: testgalaxy
 public_galaxy_web_port: 80
 galaxy_web_port: 8080
 galaxy_docker_provision_port: 8008
