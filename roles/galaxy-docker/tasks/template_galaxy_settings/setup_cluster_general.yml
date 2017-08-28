@@ -13,12 +13,13 @@
   file:
     path: "{{optional_environment_settings.GALAXY_CONFIG_NEW_FILE_PATH}}"
     state: directory
-    mode: 01777
+    mode: 01770
 
 - name: make sure galaxy_venv directory exists
   file:
     path: "{{galaxy_cluster_virtualenv}}"
     state: directory
+    mode: "{{galaxy_docker_export_location_mode}}"
   when: galaxy_cluster_virtualenv is defined
 
 - name: Create virtualenv
