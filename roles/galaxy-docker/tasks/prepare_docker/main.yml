@@ -4,11 +4,7 @@
 - include: customimage.yml
   when: (customimage or galaxy_docker_change_uids)
 
-- name: Check if export folder is created with right permissions
-  file:
-    path: "{{docker_export_location}}"
-    state: directory
-    mode: "{{galaxy_docker_export_location_mode}}"
+- include: create_export_folder.yml
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_web_user}}"
   vars:
