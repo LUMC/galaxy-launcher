@@ -11,3 +11,4 @@
 
 galaxy_docker_test_upgrade: True
 galaxy_docker_run: True
+galaxy_docker_upgrade: True

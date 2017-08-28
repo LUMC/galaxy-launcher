@@ -78,12 +78,12 @@
   set_fact:
     ansible_selinux: False
   when:
-    - ansible_selinux
+    - ansible_selinux != False | bool
     - ansible_selinux.status == 'disabled'
 
 - name: show se linux
   debug:
-    var: ansible_selinux
+    var: ansible_selinux != False | bool
     verbosity: 1
 
 - name: install prerequisites for SElinux RedHat families
@@ -93,8 +93,8 @@
   with_items:
     - libselinux-python
     - libsemanage-python
-  when: 
-    - ansible_selinux
+  when:
+    - ansible_selinux != False | bool
     - ansible_os_family == 'RedHat'
 
 - name: install prerequisites for SElinux Debian families
@@ -106,12 +106,32 @@
     - libsemanage-common
     - python-semanage
   when:
-    - ansible_selinux
+    - ansible_selinux != False | bool
     - ansible_os_family == 'Debian'
 
 - name: Set SE boolean so nginx will work.
-  when: ansible_selinux
+  when: ansible_selinux != False | bool
   seboolean:
     name: httpd_can_network_connect
     persistent: yes
     state: yes
+
+- name: Add public web port to se_linux
+  when: ansible_selinux != False | bool
+  seport:
+    ports: "{{public_galaxy_web_port}}"
+    setype: http_port_t
+    proto: tcp
+    state: present
+    reload: True
+
+- name: Add public test upgrade web port to se_linux
+  when:
+    - ansible_selinux != False | bool
+    - galaxy_docker_test_upgrade
+  seport:
+    ports: "{{test_upgrade_settings.public_galaxy_web_port}}"
+    setype: http_port_t
+    proto: tcp
+    state: present
+    reload: True
