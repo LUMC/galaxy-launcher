@@ -14,12 +14,12 @@
 - name: create rsync script
   template:
     src: "rsyncscript.sh.j2"
-    dest: "{{backup_location}}/scripts/rsyncscript.sh"
+    dest: "{{galaxy_docker_backup_location}}/scripts/rsyncscript.sh"
     owner: "{{backup_user}}"
     group: "{{backup_user}}"
     mode: 0700
   vars:
-    src: "{{backup_location}}"
+    src: "{{galaxy_docker_backup_location}}"
     host: "{{item.host}}"
     dest: "{{item.dest}}"
     user: "{{item.user |default('')}}"
@@ -64,7 +64,7 @@
 
 - name: Set job in cron to rsync backups to a remote location
   cron:
-    job: "bash {{backup_location}}/scripts/rsyncscript.sh >> {{backup_location}}/logs/rsync.log 2>&1"
+    job: "bash {{galaxy_docker_backup_location}}/scripts/rsyncscript.sh >> {{galaxy_docker_backup_location}}/logs/rsync.log 2>&1"
     state: present
     user: "{{backup_user}}"
     backup: yes

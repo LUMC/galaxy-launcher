@@ -15,7 +15,6 @@
 ldap: "{{ ldap_defaults | combine(ldap_settings) }}"
 
 # vars for cronbackupdb
-zip_command: "pigz -{{compression_level}} -p {{compression_threads}}"
 backup_galaxy_rsync_settings: "{{ default_rsync_settings | combine(backup_rsync_settings)  }}"
 
 # vars for installtools:

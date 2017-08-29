@@ -63,6 +63,6 @@
 
 - name: delete backup files
   file:
-    path: "{{backup_location}}"
+    path: "{{galaxy_docker_backup_location}}"
     state: absent
   when: delete_backup_files

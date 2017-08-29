@@ -47,7 +47,6 @@ docker_environment_file_location | where the environment file is stored on the h
 docker_container_name | The name of the running container | galaxy
 backup_db_file | The name of the dump file. This is a temporary file | "galaxydb_backup-$(TZ='UTC' date + '%Z%Y%m%dT%H%M%S')"
 cronbackupdb_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"
-backup_user | Name of the backup user | galaxy_backup
 backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
 galaxy_user_in_container | the UID of the galaxy user in the container | 1450
 welcome_dir | the directory containing the welcome files. | {{playbook_dir}}/ files/{{inventory_hostname}}/welcome.html
@@ -59,7 +58,6 @@ public_galaxy_web_port | The port on which galaxy will be hosted. |80
 
 Variable | Function | Default
 ---|---|---
-zip_command | The command used to zip files. | "pigz -{{compression_level}} -p {{compression_threads}}"
 prerequisites | Contains the packages that are prerequisite for docker |
 pip-packages | Contains the prerequisite python packages |  docker-engine
 key | contains the docker repository key
@@ -74,7 +72,7 @@ Variable | Function
 ---|---
 docker_container_name | The name of the docker container
 docker_export_location | The export location for the galaxy container
-backup_location | The location where the backups and the logs will be stored
+galaxy_docker_backup_location | The location where the backups and the logs will be stored
 backupdb_cron_jobs | dictionary with al the settings for the cron jobs
 galaxy_web_urls | Nginx reroutes traffic coming from these urls to the galaxy server. You should put the registered domain name here.
 max_upload_size | The maximum sizes of files that can be uploaded.
@@ -97,8 +95,7 @@ backupdb_cron_jobs:
     timestamp: "-%Z%Y%m%dT%H%M%S" # Timestamp uses the "date" function. Check date --help on how to use the timestamp  
     filename: "galaxy-hourly-backup" # Archives are stored as filename.timestamp.gz  
     files_to_keep: 7 # How many backups of this job should be kept. Since this jobs runs daily, one week of backups is kept  
-    compression_level: 6 # Compression uses pigz. 6 is the default level.Level should be 1-9  
-    compression_threads: 4 # The number of threads pigz should use to compress the data  
+    compression_level: 6 # Compression uses gzip. 6 is the default level.Level should be 1-9  
     cron: # This is a dictionary that uses the same values as the ansible cron module(http://docs.ansible.com/ansible/cron_module.html)   
       special_time: "daily"  
   two_weekly_example:  
@@ -107,7 +104,6 @@ backupdb_cron_jobs:
     filename: "galaxy-fortnight-backup"  
     files_to_keep: 6  
     compression_level: 6  
-    compression_threads: 4  
     cron:
       month: *
       day: 1,15

@@ -82,7 +82,6 @@ ldap_defaults:
 # defaults for cronbackupdb
 db_export_location: postgresql
 cronbackupdb_log_timestamp: "TZ='UTC' date +'%Z %F %T >'"
-backup_user: galaxy_backup
 backup_ssh_key_file: ".ssh/id_rsa"
 default_rsync_settings:
   delete: True

@@ -11,7 +11,7 @@ Requirements
 ------------
 
 This role depends on the galaxy instance properly set up using the galaxy-docker-ansible
-scripts. 
+scripts.
 
 Role Variables
 --------------
@@ -22,23 +22,16 @@ Variable | Function | Default
 ---|---|---
 container_postgres_user | The uid of the postgres user used in the container | 1550
 container_database_name | The name of the database in the container | galaxy
-db_export_location | the folder within the /export/ location where the db is dumped to | postgresql 
+db_export_location | the folder within the /export/ location where the db is dumped to | postgresql
 backup_db_file | The name of the dump file. This is a temporary file | "galaxydb_backup-$(TZ='UTC' date + '%Z%Y%m%dT%H%M%S')"
 cronbackupdb_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"
-backup_user | Name of the backup user | galaxy_backup
 backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
-
-###Role vars
-
-Variable | Function | Default
----|---|---
-zip_command | The command used to zip files. | "pigz -{{compression_level}} -p {{compression_threads}}"
 
 ###Variables that should be fed into the role
 
 Variable | Function
 ---|---
-backup_location | The location where the backups and the logs will be stored 
+galaxy_docker_backup_location | The location where the backups and the logs will be stored
 backupdb_cron_jobs | dictionary with al the settings for the cron jobs
 
 
@@ -51,8 +44,7 @@ backupdb_cron_jobs:
     timestamp: "-%Z%Y%m%dT%H%M%S" # Timestamp uses the "date" function. Check date --help on how to use the timestamp  
     filename: "galaxy-hourly-backup" # Archives are stored as filename.timestamp.gz  
     files_to_keep: 7 # How many backups of this job should be kept. Since this jobs runs daily, one week of backups is kept  
-    compression_level: 6 # Compression uses pigz. 6 is the default level.Level should be 1-9  
-    compression_threads: 4 # The number of threads pigz should use to compress the data  
+    compression_level: 6 # Compression uses gzip. 6 is the default level.Level should be 1-9  
     cron: # This is a dictionary that uses the same values as the ansible cron module(http://docs.ansible.com/ansible/cron_module.html)   
       special_time: "daily"  
   two_weekly_example:  
@@ -61,22 +53,21 @@ backupdb_cron_jobs:
     filename: "galaxy-fortnight-backup"  
     files_to_keep: 6  
     compression_level: 6  
-    compression_threads: 4  
-    cron: 
-      month: * 
-      day: 1,15 
-      hour: 3 
+    cron:
+      month: *
+      day: 1,15
+      hour: 3
 ```
 ```YAML
 rsync_settings:  
   dest: "/destination/path/on/remote/host"   
-  host: "example.host.org" 
-  user: "user" # The user that is connected to. This key can be ommited 
+  host: "example.host.org"
+  user: "user" # The user that is connected to. This key can be ommited
   delete: True # Remove backups on the remote server if they are removed on the galaxy server. True is recommended.
-  compression_level: 0 # Can range from 0-9. Rsync compresses the data before transmission to save bandwith* 
+  compression_level: 0 # Can range from 0-9. Rsync compresses the data before transmission to save bandwith*
   cron:  How often the rsync to the remote host should be performed. Hourly is recommended.
-    special_time: hourly 
-    
+    special_time: hourly
+
  #* 0 is recommended because the archives are already compressed
 
 ```
@@ -94,4 +85,4 @@ Author Information
 ------------------
 
 Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
-Contact us at: sasc@lumc.nl 
+Contact us at: sasc@lumc.nl

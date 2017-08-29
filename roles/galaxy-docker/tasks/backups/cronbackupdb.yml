@@ -12,38 +12,40 @@
 # tasks file for cronbackupdb
 # This installs backup scripts in the backup folder and sets cron jobs to run those scripts
 
-# Setup installs pigz and creates a backup user and backup folder
-- include: setup.yml
+- name: create backup folder with logs and scripts subfolders
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: 0700
+  with_items:
+    - "{{galaxy_docker_backup_location}}"
+    - "{{galaxy_docker_backup_location}}/logs"
+    - "{{galaxy_docker_backup_location}}/scripts"
 
 - name: create folder for each job within the backup folder
   file:
-    path: "{{backup_location}}/{{item.key}}"
+    path: "{{galaxy_docker_backup_location}}/{{item.key}}"
     state: directory
-    owner: "{{backup_user}}"
-    group: "{{backup_user}}"
     mode: 0700
   with_dict: "{{ backupdb_cron_jobs }}"
 
 - name: Create backup scripts for each job
   template:
     src: "backupscript.sh.j2"
-    dest: "{{backup_location}}/scripts/{{item.key}}-backupscript.sh"
-    owner: "{{backup_user}}"
-    group: "{{backup_user}}"
+    dest: "{{galaxy_docker_backup_location}}/scripts/{{item.key}}-backupscript.sh"
     mode: 0700
   vars:
     backup_archive: "{{item.value.filename}}$(TZ='UTC' date +'{{item.value.timestamp}}').gz"
-    backup_db_location: "{{backup_location}}/{{item.key}}"
+    backup_db_location: "{{galaxy_docker_backup_location}}/{{item.key}}"
     backup_db_file: "galaxy-{{item.key}}-backup$(TZ='UTC' date +'%s.%N')"
     files_to_keep: "{{item.value.files_to_keep}}"
     compression_level: "{{item.value.compression_level | default(6)}}"
-    compression_threads: "{{item.value.compression_threads | default(4)}}"
     name: "{{item.key}}"
   with_dict: "{{ backupdb_cron_jobs }}"
 
 - name: set backup jobs in cron
   cron:
-    job: "bash {{backup_location}}/scripts/{{item.key}}-backupscript.sh >> {{log_file}} 2>&1"
+    job: "bash {{galaxy_docker_backup_location}}/scripts/{{item.key}}-backupscript.sh >> {{log_file}} 2>&1"
     state: present
     user: "{{backup_user}}"
     backup: yes
@@ -55,7 +57,7 @@
     minute: "{{item.value.cron.minute | default(omit)}}"
     special_time: "{{item.value.cron.special_time | default(omit)}}"
   vars:
-    log_file: "{{backup_location}}/logs/{{item.key}}.log"
+    log_file: "{{galaxy_docker_backup_location}}/logs/{{item.key}}.log"
   with_dict: "{{ backupdb_cron_jobs }}"
 
 # Sets up a rsync script to automatically synchronize the backups to a remote host.

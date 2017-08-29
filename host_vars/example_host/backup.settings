@@ -1,27 +1,23 @@
-backup_location: "/data/galaxy/backup"
-backup_user: "galaxy_backup"
 backup_rsync_remote_host: False
 
 backupdb_cron_jobs:
   hourly:
     description: "Hourly backup of the galaxy database"
-    timestamp: "-%Z%Y%m%dT%H%M%S" 
+    timestamp: "-%Z%Y%m%dT%H%M%S"
     filename: "galaxy-hourly-backup"
     files_to_keep: 24
     compression_level: 6
-    compression_threads: 4
     cron:
       special_time: "hourly"
-  daily: 
+  daily:
     description: "Daily backup of the galaxy database"
     timestamp: "-%Z%Y%m%dT%H%M"
     filename: "galaxy-daily-backup"
-    files_to_keep: 7 
+    files_to_keep: 7
     compression_level: 6
-    compression_threads: 4
     cron:
       special_time: daily
- 
+
 #Rsync settings
 backup_rsync_settings:
   dest: /big_volume/galaxy_remote_backups
@@ -30,7 +26,7 @@ backup_rsync_settings:
   delete: True
   compression_level: 0
   cron:
-    special_time: "hourly" 
+    special_time: "hourly"
 
 # Set compression level. This compresses the data before sending to save bandwith
 # This does not compress the files.

@@ -12,21 +12,6 @@
 # This installs pigz and creates a backup user and folder so regular backups
 # can be run via cron.
 
-- name: make sure pigz is  installed
-  package:
-    name: pigz
-    state: latest
-
-- name: Create backup user that has  access to the postgres database inside the container
-  user:
-    name: "{{backup_user}}"
-    generate_ssh_key: yes
-    uid: "{{container_postgres_user}}"
-    groups: docker
-    state: present
-    non_unique: yes #The UID should be set to that of the postgres container user, regardless of other UID's
-    ssh_key_file: "{{backup_ssh_key_file}}"
-
 - name: create backup folder with logs and scripts subfolders
   file:
     path: "{{item}}"
