@@ -21,6 +21,10 @@
   file:
     path: "/etc/ufw/applications.d/{{ufw_profile}}"
     state: absent
+  when: not delete_test_upgrade
+
+- include: ../prerequisites/nginxsettings.yml
+  when: not delete_test_upgrade
 
 - name: remove nginx profiles
   file:

@@ -33,7 +33,7 @@
   docker_container:
     volumes: "{{docker_export_location}}:/export/"
     image: "{{docker_image}}"
-    name: "{{docker_container_name}}"
+    name: "delete_galaxy"
     state: started
     command: rm -rf /export/* /export/.distribution_config
   when: delete_files
