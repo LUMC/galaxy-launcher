@@ -9,24 +9,6 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# This deletes the galaxy container and all remnants.
-
-- name: Set parameters for deleting the test upgrade container
-  set_fact:
-    "{{item.key}}" : "{{item.value}}"
-  with_dict: "{{test_upgrade_settings}}"
-  when: delete_test_upgrade
-
-- name: Remove docker container
-  docker_container:
-    name: "{{docker_container_name}}"
-    state: absent
-
-- name: Remove docker export volumes
-  file:
-    path: "{{docker_export_location}}"
-    state: absent
-  when: delete_files
 
 - name: remove firewall port exception
   ufw:
@@ -46,23 +28,3 @@
     state: absent
   with_dict: "{{nginx_sites}}"
   when: not delete_test_upgrade
-
-- name: remove cron jobs for backup scripts
-  cron:
-    state: absent
-    name: "{{item.value.description}}"
-    user: "{{backup_user}}"
-  with_dict: "{{ backupdb_cron_jobs }}"
-
-- name: remove cron jobs for rsync script
-  cron:
-    state: absent
-    name: "Rsync to the backup host"
-    user: "{{backup_user}}"
-  when:  backup_rsync_remote_host
-
-- name: delete backup files
-  file:
-    path: "{{galaxy_docker_backup_location}}"
-    state: absent
-  when: delete_backup_files

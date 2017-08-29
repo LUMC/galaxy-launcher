@@ -13,7 +13,7 @@
   docker_container:
     name: "{{docker_container_name}}"
     state: absent
-    keep_volumes: "{{ galaxy_docker_test_upgrade | ternary('False','True') }}"
+    keep_volumes: True
 
 - name: moving to another export folder for testing
   include: test.yml
