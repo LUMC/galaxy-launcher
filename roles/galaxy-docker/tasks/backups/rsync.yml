@@ -30,7 +30,7 @@
   user:
     name: "{{galaxy_docker_docker_user}}"
     generate_ssh_key: yes
-    
+
 - name: copy public key of backup user to ansible host
   fetch:
     dest: "{{ssh_dir}}/{{galaxy_docker_docker_user}}_public-key/id_rsa.pub"
@@ -42,8 +42,13 @@
   known_hosts:
     name: "{{backup_galaxy_rsync_settings.host}}"
     state: present
-    key: "{{lookup('file','{{ssh_dir}}/{{backup_galaxy_rsync_settings.host}}/public_key')}}"
-    hash_host: True
+    key: "{{backup_galaxy_rsync_settings.host}} {{backup_galaxy_rsync_settings.host_public_key}}"
+#    hash_host: True
+
+- name: Hash known_hosts file.
+  command: "ssh-keygen -Hf {{known_hosts}}"
+  vars:
+    known_hosts: "~/.ssh/known_hosts"
 
 - name: Set job in cron to rsync backups to a remote location
   cron:

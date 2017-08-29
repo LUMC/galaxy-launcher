@@ -12,13 +12,14 @@ backupdb_cron_jobs:
 
 #Rsync settings
 backup_rsync_settings:
-  dest: /big_volume/galaxy_remote_backups
-  host: example.backups.org
-  user: remotebackupuser
+  dest: /home/galaxy_docker/galaxy_remote_backups
+  host: 127.0.0.1
+  host_public_key: "ssh-rsa {{ansible_ssh_host_key_rsa_public}}"
+  user: galaxy_docker
   delete: True
-  compression_level: 0
+  compression_level: 3
   cron:
-    special_time: "hourly"
+    minute: "*/5"
 
 # Set compression level. This compresses the data before sending to save bandwith
 # This does not compress the files.
