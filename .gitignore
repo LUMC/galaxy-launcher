@@ -35,3 +35,4 @@ site/
 .vagrant/
 
 test/files/*/ssh/*
+test/files/*/database_extract/*
