@@ -80,7 +80,7 @@
     ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
 
 - include: backups/main.yml
-  when: galaxy_docker_backups
+  when: galaxy_docker_backup
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"
   vars:

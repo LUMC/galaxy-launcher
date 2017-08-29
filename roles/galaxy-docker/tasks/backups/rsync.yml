@@ -15,8 +15,6 @@
   template:
     src: "rsyncscript.sh.j2"
     dest: "{{galaxy_docker_backup_location}}/scripts/rsyncscript.sh"
-    owner: "{{backup_user}}"
-    group: "{{backup_user}}"
     mode: 0700
   vars:
     src: "{{galaxy_docker_backup_location}}"
@@ -28,45 +26,30 @@
   with_items:
     - "{{backup_galaxy_rsync_settings}}"
 
+- name: generate_ssh_key
+  user:
+    name: "{{galaxy_docker_docker_user}}"
+    generate_ssh_key: yes
+    
 - name: copy public key of backup user to ansible host
   fetch:
-    dest: "{{ssh_dir}}/{{backup_user}}_public-key/id_rsa.pub"
+    dest: "{{ssh_dir}}/{{galaxy_docker_docker_user}}_public-key/id_rsa.pub"
     flat: yes
-    src: "/home/{{backup_user}}/{{backup_ssh_key_file}}.pub"
+    src: "/home/{{galaxy_docker_docker_user}}/{{backup_ssh_key_file}}.pub"
     validate_checksum: yes
 
-- name: Delete known_hosts file # To prevent double hashing if host is already present in hosts file
-  become_user: "{{backup_user}}"
-  file:
-    path: "~/.ssh/known_hosts"
-    state: absent
-
-# This module can be used from ansible 2.3 onwards with hash_host
 - name: Add remote backup server to the known_hosts file
   known_hosts:
     name: "{{backup_galaxy_rsync_settings.host}}"
     state: present
     key: "{{lookup('file','{{ssh_dir}}/{{backup_galaxy_rsync_settings.host}}/public_key')}}"
-#    hash_host: True
-  become_user: "{{backup_user}}"
-
-- name: Hash known_hosts file.
-  become_user: "{{backup_user}}"
-  command: "ssh-keygen -Hf {{known_hosts}}"
-  vars:
-    known_hosts: "~/.ssh/known_hosts"
-
-- name: Delete known_hosts.old file
-  become_user: "{{backup_user}}"
-  file:
-    path: "~/.ssh/known_hosts.old"
-    state: absent
+    hash_host: True
 
 - name: Set job in cron to rsync backups to a remote location
   cron:
     job: "bash {{galaxy_docker_backup_location}}/scripts/rsyncscript.sh >> {{galaxy_docker_backup_location}}/logs/rsync.log 2>&1"
     state: present
-    user: "{{backup_user}}"
+    user: "{{galaxy_docker_docker_user}}"
     backup: yes
     name: "Rsync to the backup host"
     month: "{{item.cron.month | default(omit) }}"
@@ -77,6 +60,3 @@
     special_time: "{{item.cron.special_time | default(omit)}}"
   with_items:
     - "{{backup_galaxy_rsync_settings}}"
-
-
-

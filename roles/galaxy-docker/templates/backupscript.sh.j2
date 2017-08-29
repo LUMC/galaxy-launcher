@@ -17,34 +17,19 @@ timestamp(){
 
 echo "$(timestamp) === START {{name.upper()}} BACKUP OF GALAXY ==="
 
-container_postgres_user="{{container_postgres_user}}"
+galaxy_docker_database_user="{{galaxy_docker_database_user}}"
 docker_container_name="{{docker_container_name}}"
 container_database_name="{{container_database_name}}"
-db_export_location="{{db_export_location}}"
-backup_db_file="{{backup_db_file}}"
-docker_export_location="{{docker_export_location}}"
-db_export_location="{{db_export_location}}"
 backup_db_location="{{backup_db_location}}"
-backup_archive="{{backup_archive}}"
-zip_command="{{zip_command}}"
+backup_db_dump_file="{{backup_db_dump_file}}"
 files_to_keep="{{files_to_keep}}"
+compression_level="{{compression_level}}"
 
-echo -n "$(timestamp) Dump the databse to $docker_export_location/$db_export_location/$backup_db_file ... "
-touch $docker_export_location/$db_export_location/$backup_db_file
-chmod 0600 $docker_export_location/$db_export_location/$backup_db_file
-docker exec -u $container_postgres_user $docker_container_name \
-  bash -c "pg_dump $container_database_name >> /export/$db_export_location/$backup_db_file"
-echo "done"
-
-echo -n "$(timestamp) Archive the database to $backup_db_location/$backup_archive ... "
-touch $backup_db_location/$backup_archive
-chmod 0600 $backup_db_location/$backup_archive
-$zip_command -c < $docker_export_location/$db_export_location/$backup_db_file >> \
-  $backup_db_location/$backup_archive
-echo "done"
-
-echo -n "$(timestamp) Removing dump file $docker_export_location/$db_export_location/$backup_db_file ... "
-rm -f "$docker_export_location/$db_export_location/$backup_db_file"
+echo -n "$(timestamp) Dump the databse to $backup_db_location/$backup_db_dump_file ... "
+touch $backup_db_location/$backup_db_dump_file
+chmod 0600 $backup_db_location/$backup_db_dump_file
+docker exec -u $galaxy_docker_database_user $docker_container_name \
+  bash -c "pg_dump $container_database_name -F c -Z $compression_level" >> $backup_db_location/$backup_db_dump_file
 echo "done"
 
 echo "$(timestamp) A maximum of $files_to_keep files will be kept in $backup_db_location. Looking for redundant files."
@@ -52,7 +37,7 @@ echo "$(timestamp) A maximum of $files_to_keep files will be kept in $backup_db_
 old_files="$(ls -Atp $backup_db_location | grep -v '/$' | tail -n +$(($files_to_keep + 1)) )"
 number_of_files="$(ls -Atp $backup_db_location | grep -v '/$' | wc -l )"
 
-if [ "$(($number_of_files - $files_to_keep))" -gt "0" ] 
+if [ "$(($number_of_files - $files_to_keep))" -gt "0" ]
   then
     echo "$(timestamp) More than $files_to_keep files found. Oldest files will be removed."
     for file in $old_files

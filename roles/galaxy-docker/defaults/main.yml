@@ -15,6 +15,7 @@ galaxy_docker_remote_key_dir: /tmp/keys
 galaxy_docker_docker_user: galaxy_docker
 galaxy_docker_docker_user_private_key: "{{ssh_dir}}/{{galaxy_docker_docker_user}}"
 galaxy_docker_docker_user_virtualenv: "/home/{{galaxy_docker_docker_user}}/virtualenv"
+galaxy_docker_backup_location: "/home/{{galaxy_docker_docker_user}}/backups"
 
 galaxy_docker_database_user: postgres
 galaxy_docker_database_user_id: 1550
@@ -80,7 +81,6 @@ ldap_defaults:
 #  options: ""
 
 # defaults for cronbackupdb
-db_export_location: postgresql
 cronbackupdb_log_timestamp: "TZ='UTC' date +'%Z %F %T >'"
 backup_ssh_key_file: ".ssh/id_rsa"
 default_rsync_settings:
@@ -98,9 +98,7 @@ delete_test_upgrade: False
 delete_backup_files: False
 
 # defaults for extractdb
-backup_db_compression_level: 6
-backup_db_filename: "galaxy_database.{{ansible_date_time.iso8601}}.dump"
-exported_db_file: "postgresql/{{backup_db_filename}}"
+backup_db_compression_level: 3
 
 #defaults for importdb
 import_db_location: "database_import"
@@ -136,7 +134,7 @@ galaxy_docker_add_users: False
 galaxy_docker_add_user_ssh_keys: False
 galaxy_docker_install_packages: False
 galaxy_docker_create_export_folder: False
-galaxy_docker_backups: False
+galaxy_docker_backup: False
 galaxy_docker_cluster: False
 galaxy_docker_transfer_genomes: False
 galaxy_docker_change_uids: False
