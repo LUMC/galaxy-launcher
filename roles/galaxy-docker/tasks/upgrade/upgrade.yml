@@ -13,7 +13,7 @@
   docker_container:
     name: "{{docker_container_name}}"
     state: absent
-    keep_volumes: yes
+    keep_volumes: "{{ galaxy_docker_test_upgrade | ternary('False','True') }}"
 
 - name: moving to another export folder for testing
   include: test.yml
@@ -24,12 +24,14 @@
     ansible_user: "{{galaxy_docker_web_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
 
-- include: delete_distr_config.yml
-  become: "{{galaxy_docker_become}}"
-  become_user: "{{galaxy_docker_web_user}}"
-  vars:
-    ansible_user: "{{galaxy_docker_web_ssh_user}}"
-    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
+- name: delete .distribution_config folder
+  docker_container:
+    volumes: "{{docker_export_location}}:/export/"
+    image: "{{docker_image}}"
+    name: "{{docker_container_name}}"
+    state: started
+    command: rm -rf /export/.distribution_config
+  when: not galaxy_docker_test_upgrade
 
 - name: Start docker container
   docker_container:
@@ -53,7 +55,7 @@
     image: "{{docker_image}}"
     name: "{{docker_container_name}}"
     state: started
-    command: "bash -c 'sh $GALAXY_ROOT/manage_db.sh upgrades'"
+    command: "bash -c 'sh $GALAXY_ROOT/manage_db.sh upgrade'"
   register: migration_result
 
 - name: show migration results

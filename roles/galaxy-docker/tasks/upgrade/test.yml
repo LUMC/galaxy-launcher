@@ -17,14 +17,11 @@
 #  copy:
 #    remote_src: True
 
-- name: Create empty test location directory
+- name: Create test location directory
   file:
     path: "{{test_upgrade_settings.docker_export_location}}"
-    state: "{{item}}"
+    state: "directory"
     mode: "{{galaxy_docker_export_location_mode}}"
-  with_items:
-    - absent
-    - directory
 
 - name: create subfolders
   file:
