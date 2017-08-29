@@ -20,7 +20,7 @@
   register: docker_running
 
 - name: Show docker inspection results
-  debug: 
+  debug:
     var: docker_running
     verbosity: 1
 
@@ -32,12 +32,16 @@
     state: started
   when: not docker_running.stdout
 
+- name: Create folder to save database
+  file:
+    path: "{{galaxy_docker_extracted_db_location}}"
+    state: directory
+    mode: 0700
+
 - name: Create empty dump file on server
   file:
-    path: "{{docker_export_location}}/{{exported_db_file}}"
+    path: "{{galaxy_docker_extracted_db_location}}/{{galaxy_docker_extracted_db_filename}}"
     mode: 0600
-    owner: "{{container_postgres_user}}"
-    group: "{{container_postgres_user}}" 
     state: "{{item}}"
   with_items:
     - absent
@@ -50,11 +54,12 @@
   retries: 20
 
 - name: Dump database in export folder
-  command: "docker exec -u {{user}} {{name}} {{command}}"
+  shell: "docker exec -u {{user}} {{name}} {{command}} >> {{file}}"
   vars:
     name: "{{docker_container_name}}"
-    command: "pg_dump {{container_database_name}} -f /export/{{exported_db_file}}"
-    user: "{{container_postgres_user}}"
+    command: "pg_dump {{container_database_name}} -F c -Z {{galaxy_docker_extracted_db_compression_level}}"
+    user: "{{galaxy_docker_database_user}}"
+    file: "{{galaxy_docker_extracted_db_location}}/{{galaxy_docker_extracted_db_filename}}"
   register: output
   ignore_errors: true
 
@@ -62,14 +67,13 @@
   synchronize:
     perms: yes #file should not be world readable
     compress: yes
-    dest: "{{fetch_location}}"
-    src: "{{docker_export_location}}/{{exported_db_file}}"
+    dest: "{{galaxy_docker_extract_database_dir}}"
+    src: "{{galaxy_docker_extracted_db_location}}/{{galaxy_docker_extracted_db_filename}}"
     mode: pull
   vars:
     ansible_ssh_pipelining: False # Rscync does not work with ssh pipelining
-    
+
 - name: Delete dump file on server
   file:
-    path: "{{docker_export_location}}/{{exported_db_file}}"
+    path: "{{galaxy_docker_extracted_db_location}}/{{galaxy_docker_extracted_db_filename}}"
     state: absent
-
