@@ -18,7 +18,7 @@
     mode: 0700
   vars:
     src: "{{galaxy_docker_backup_location}}"
-    host: "{{item.host}}"
+    host_address: "{{item.host}}"
     dest: "{{item.dest}}"
     user: "{{item.user |default('')}}"
     compression_level: "{{item.compression_level}}"
