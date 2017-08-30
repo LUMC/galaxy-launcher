@@ -12,10 +12,12 @@
 # handlers file for galaxy_docker
 
 - name: restart galaxy in container
-  command: "docker exec {{docker_container_name}} {{command}}"
+  include: restart_galaxy_in_container.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
   vars:
-    command: "supervisorctl restart {{supervisorctl_galaxy | default('galaxy')}}:*"
-  notify: check if galaxy has started
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
 
 - name: check if galaxy has started
   uri:
