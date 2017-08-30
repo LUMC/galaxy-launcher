@@ -30,7 +30,7 @@
     image: "{{docker_image}}"
     name: "{{docker_container_name}}"
     state: started
-    command: rm -rf /export/.distribution_config
+    command: bash -c "rm -rf /export/.distribution_config"
   when: not galaxy_docker_test_upgrade
 
 - name: Start docker container

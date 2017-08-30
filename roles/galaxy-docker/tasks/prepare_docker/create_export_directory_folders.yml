@@ -20,3 +20,9 @@
   until: 'not folder_container_running.stdout | bool'
   retries: 10
   delay: 10
+
+- name: Remove config folder creator container
+  docker_container:
+    name: "{{config_folder_creator_name}}"
+    state: absent
+    keep_volumes: True
