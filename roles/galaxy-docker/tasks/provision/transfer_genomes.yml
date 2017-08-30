@@ -16,13 +16,6 @@
     path: "{{docker_export_location}}/genomes"
     state: directory
 
-- debug:
-    msg: "{{item}}"
-  with_items:
-    - Transferring genomes has een disbled because of issue 28551 in ansible
-    - See https://github.com/ansible/ansible/issues/28551
-    - Transferring genomes does work in release_0.1 branch, but requires running as a priviledged user.
-
 - name: Move genomes to the server using rsync
   synchronize:
     compress: yes #Necessary for big fasta files
