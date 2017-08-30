@@ -51,12 +51,8 @@ public_galaxy_web_port: 80
 galaxy_web_port: 8080
 galaxy_docker_provision_port: 8008
 # Bgruening container defaults
-container_postgres_user: 1550
-container_database_name: galaxy
-galaxy_user_in_container: 1450
-container_galaxy_user: 1450
-container_database_username: "galaxy"
-galaxy_uid: "1450"
+galaxy_docker_container_database_name: galaxy
+galaxy_docker_container_database_username: "galaxy"
 
 # File locations:
 welcome_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/welcome/"

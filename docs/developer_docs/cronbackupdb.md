@@ -20,8 +20,7 @@ Role Variables
 
 Variable | Function | Default
 ---|---|---
-container_postgres_user | The uid of the postgres user used in the container | 1550
-container_database_name | The name of the database in the container | galaxy
+galaxy_docker_container_database_name | The name of the database in the container | galaxy
 db_export_location | the folder within the /export/ location where the db is dumped to | postgresql
 backup_db_file | The name of the dump file. This is a temporary file | "galaxydb_backup-$(TZ='UTC' date + '%Z%Y%m%dT%H%M%S')"
 cronbackupdb_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"

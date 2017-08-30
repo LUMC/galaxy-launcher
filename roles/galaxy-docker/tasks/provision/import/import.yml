@@ -65,7 +65,7 @@
   command: "docker exec -u {{user}} {{name}} {{command}}"
   vars:
     name: "{{docker_container_name}}"
-    command: "psql -d {{container_database_name}} -f /database/{{galaxy_docker_imported_db}}"
+    command: "psql -d {{galaxy_docker_container_database_name}} -f /database/{{galaxy_docker_imported_db}}"
     user: "{{galaxy_docker_web_user}}"
 
 - name: stop container

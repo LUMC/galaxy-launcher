@@ -38,8 +38,7 @@ Role Variables
 
 Variable | Function | Default
 ---|---|---
-container_postgres_user | The uid of the postgres user used in the container | 1550
-container_database_name | The name of the database in the container | galaxy
+galaxy_docker_container_database_name | The name of the database in the container | galaxy
 docker_image |The docker image that is used | bgruening/galaxy-stable.
 docker_user | The user without sudo rights that runs the container. | galaxy
 db_export_location | the folder within the /export/ location where the db is dumped to | postgresql
@@ -48,7 +47,6 @@ docker_container_name | The name of the running container | galaxy
 backup_db_file | The name of the dump file. This is a temporary file | "galaxydb_backup-$(TZ='UTC' date + '%Z%Y%m%dT%H%M%S')"
 cronbackupdb_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"
 backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
-galaxy_user_in_container | the UID of the galaxy user in the container | 1450
 welcome_dir | the directory containing the welcome files. | {{playbook_dir}}/ files/{{inventory_hostname}}/welcome.html
 installdocker_default_location | Where the docker images are stored and run | /var/lib/docker
 galaxy_web_port | The port on which galaxy will be exposed to localhost. |8080

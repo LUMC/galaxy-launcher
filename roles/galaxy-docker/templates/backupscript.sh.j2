@@ -19,7 +19,7 @@ echo "$(timestamp) === START {{name.upper()}} BACKUP OF GALAXY ==="
 
 galaxy_docker_database_user="{{galaxy_docker_database_user}}"
 docker_container_name="{{docker_container_name}}"
-container_database_name="{{container_database_name}}"
+galaxy_docker_container_database_name="{{galaxy_docker_container_database_name}}"
 backup_db_location="{{backup_db_location}}"
 backup_db_dump_file="{{backup_db_dump_file}}"
 files_to_keep="{{files_to_keep}}"
@@ -29,7 +29,7 @@ echo -n "$(timestamp) Dump the databse to $backup_db_location/$backup_db_dump_fi
 touch $backup_db_location/$backup_db_dump_file
 chmod 0600 $backup_db_location/$backup_db_dump_file
 docker exec -u $galaxy_docker_database_user $docker_container_name \
-  bash -c "pg_dump $container_database_name -F c -Z $compression_level" >> $backup_db_location/$backup_db_dump_file
+  bash -c "pg_dump $galaxy_docker_container_database_name -F c -Z $compression_level" >> $backup_db_location/$backup_db_dump_file
 echo "done"
 
 echo "$(timestamp) A maximum of $files_to_keep files will be kept in $backup_db_location. Looking for redundant files."
