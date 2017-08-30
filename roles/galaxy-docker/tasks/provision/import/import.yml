@@ -87,11 +87,12 @@
     ansible_user: "{{galaxy_docker_database_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_database_user_private_key}}"
 
-
-
 - name: MSG make sure to upgrade the database
   debug:
     msg: Make sure to upgrade the database before running the container
 
-- name: Make sure to upgrade the database
+- name: Set upgrade database to true.
+  set_fact:
+    galaxy_docker_upgrade: True
+- name: Include upgrade procedure
   include: ../upgrade/main.yml

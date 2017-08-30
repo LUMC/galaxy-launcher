@@ -99,7 +99,7 @@ galaxy_docker_extracted_db_filename: "galaxy_database.{{ansible_date_time.iso860
 galaxy_docker_extracted_db_location: "/home/{{galaxy_docker_docker_user}}/database_extract"
 
 #defaults for importdb
-galaxy_docker_imported_db_location: "database_import"
+galaxy_docker_imported_db_location: "/home/{{galaxy_docker_web_user}}/database/"
 galaxy_docker_empty_database_script: "/home/{{galaxy_docker_database_user}}/new_empty_db"
 # defaults for installtools
 galaxy_docker_tool_dir: "/tmp/galaxy_tool_lists"

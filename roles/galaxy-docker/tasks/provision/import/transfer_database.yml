@@ -17,14 +17,8 @@
   synchronize:
     mode: push
     dest: "{{galaxy_docker_imported_db_location}}/{{galaxy_docker_imported_db}}"
-    src: "{{galaxy_docker_import_db_location}}/{{galaxy_docker_imported_db}}"
+    src: "{{galaxy_docker_import_db_dir}}/{{galaxy_docker_imported_db}}"
     perms: yes
     compress: yes
   vars:
     ansible_ssh_pipelining: False #otherwise synchronize does not work
-
-- name: Create script to delete old database and create new empty database
-  template:
-    src: new_empty_db.j2
-    dest: "{{galaxy_docker_import_db_location}}/new_empty_db"
-    mode: 0600
