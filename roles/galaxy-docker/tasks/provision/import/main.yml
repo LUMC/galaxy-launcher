@@ -15,7 +15,7 @@
 
 - name: Register the files that are copied
   find:
-    paths: "{{playbook_dir}}/files/{{import_db}}"
+    paths: "{{playbook_dir}}/files/{{galaxy_docker_import_db_location}}"
     patterns: "*"
   register: dump_file_list
   delegate_to: 127.0.0.1
@@ -27,15 +27,14 @@
     verbosity: 1
 
 - name: Fail when multiple files are found
-  fail: 
-    msg: "Multiple files in files/{{import_db}}"
+  fail:
+    msg: "Multiple files in files/{{galaxy_docker_import_db_location}}"
   when: "dump_file_list.matched > 1"
 
 - name: Display when no files are found
   debug:
-    msg: "No files in files/{{import_db}}. Skipping importdb role"
+    msg: "No files in files/{{galaxy_docker_import_db_location}}. Skipping importdb role"
   when: "dump_file_list.matched < 1"
 
-- include: import.yml 
+- include: import.yml
   when: "dump_file_list.matched == 1"
-

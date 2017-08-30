@@ -1,0 +1,4 @@
+- name: Delete temporary files
+  file:
+    path: "{{galaxy_docker_imported_db_location}}}"
+    state: absent

@@ -1,0 +1,4 @@
+- name: Create script to delete old database and create new empty database
+  file:
+    path: "{{galaxy_docker_empty_database_script}}"
+    state: absent

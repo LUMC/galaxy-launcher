@@ -9,24 +9,29 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- name: register dump_file
-  set_fact:
-    imported_db: "{{dump_file_list.files[0].path | basename }}"
+- include: transfer_database.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
 
-- name: show database name
-  debug:
-    var: imported_db
-    verbosity: 1
+- include: create_empty_db_script.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_database_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_database_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_database_user_private_key}}"
 
-- name: Make sure the export location is present
-  file:
-    path: "{{docker_export_location}}"
-    state: directory
+
 
 - name: Make sure the docker container is started
   docker_container:
     name: "{{docker_container_name}}"
-    volumes: "{{docker_export_location}}:/export/"
+    volumes:
+      - "{{docker_export_location}}:/export/"
+      - "{{galaxy_docker_empty_database_script}}:/database_scripts/new_empty_db"
+      - "{{galaxy_docker_imported_db_location}}:/database"
     image: "{{docker_image}}"
     state: started
     command: /usr/bin/startup
@@ -37,53 +42,19 @@
   until: '"online" in result.stdout'
   retries: 20
 
-- name: Create folder to import database into
-  file:
-    path: "{{docker_export_location}}/{{import_db_location}}"
-    state: directory
-    mode: 0700
-    owner: "{{galaxy_uid}}"
-    group: "{{galaxy_uid}}"
-
-- name: copy database files using rsync
-  synchronize:
-    mode: push
-    dest: "{{docker_export_location}}/{{import_db_location}}/{{imported_db}}"
-    src: "{{import_db}}/{{imported_db}}"
-    perms: yes
-    compress: yes
-  vars:
-    ansible_ssh_pipelining: False #otherwise synchronize does not work
-
-- name: Set file ownership
-  file:
-    path: "{{docker_export_location}}/{{import_db_location}}/{{imported_db}}"
-    mode: 0600
-    owner: "{{galaxy_uid}}"
-    group: "{{galaxy_uid}}"
-    state: file
-  register: debug_copy
-
 - name: stop galaxy service in container
   command: "docker exec {{name}} {{command}}"
   vars:
     name: "{{docker_container_name}}"
     command: "supervisorctl stop galaxy:*"
 
-- name: Create script to delete old database and create new empty database
-  template:
-    src: new_empty_db.j2
-    dest: "{{docker_export_location}}/new_empty_db"
-    mode: 0600
-    owner: "{{container_postgres_user}}"
-    group: "{{container_postgres_user}}"
 
 - name: Delete old database and create new_empty one
   command: "docker exec -u {{user}} {{name}} {{command}}"
   vars:
     name: "{{docker_container_name}}"
-    command: "psql -f /export/new_empty_db"
-    user: "{{container_postgres_user}}"
+    command: "psql -f /database_scripts/new_empty_db"
+    user: "{{galaxy_docker_database_user}}"
   register: database_created
 
 - name: Database deletion and creation results
@@ -94,26 +65,33 @@
   command: "docker exec -u {{user}} {{name}} {{command}}"
   vars:
     name: "{{docker_container_name}}"
-    command: "psql -d {{container_database_name}} -f /export/{{import_db_location}}/{{imported_db}}"
-    user: "{{galaxy_uid}}"
-
-- name: Delete temporary files
-  file:
-    path: "{{item}}"
-    state: absent
-  with_items:
-    - "{{docker_export_location}}/{{import_db_location}}"
-    - "{{docker_export_location}}/new_empty_db"
+    command: "psql -d {{container_database_name}} -f /database/{{galaxy_docker_imported_db}}"
+    user: "{{galaxy_docker_web_user}}"
 
 - name: stop container
   docker_container:
     name: "{{docker_container_name}}"
     state: stopped
 
+- include: delete_database_file.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
+
+- include: delete_empty_db_script.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_database_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_database_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_database_user_private_key}}"
+
+
+
 - name: MSG make sure to upgrade the database
   debug:
     msg: Make sure to upgrade the database before running the container
-
 
 - name: Make sure to upgrade the database
   include: ../upgrade/main.yml

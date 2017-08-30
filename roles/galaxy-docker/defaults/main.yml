@@ -60,7 +60,7 @@ galaxy_uid: "1450"
 
 # File locations:
 welcome_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/welcome/"
-import_db: "{{inventory_hostname}}/database_import/"
+galaxy_docker_import_db_location: "{{inventory_hostname}}/database_import/"
 tool_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/tools/"
 dbkeys_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/dbkeys/"
 genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
@@ -103,8 +103,8 @@ galaxy_docker_extracted_db_filename: "galaxy_database.{{ansible_date_time.iso860
 galaxy_docker_extracted_db_location: "/home/{{galaxy_docker_docker_user}}/database_extract"
 
 #defaults for importdb
-import_db_location: "database_import"
-
+galaxy_docker_imported_db_location: "database_import"
+galaxy_docker_empty_database_script: "/home/{{galaxy_docker_database_user}}/new_empty_db"
 # defaults for installtools
 galaxy_docker_tool_dir: "/tmp/galaxy_tool_lists"
 
