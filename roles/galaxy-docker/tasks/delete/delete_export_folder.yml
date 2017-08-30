@@ -1,0 +1,26 @@
+- name:  Remove docker export volumes
+  docker_container:
+    volumes: "{{docker_export_location}}:/export/"
+    image: "{{docker_image}}"
+    name: "delete_galaxy_{{ansible_date_time.epoch}}"
+    state: started
+    command: bash -c 'rm -rfv /export/* /export/.distribution_config'
+  register: docker_container
+
+- name: Save delete container name
+  set_fact:
+    galaxy_docker_delete_container: '{{docker_container.ansible_facts.docker_container.Name.replace("/","")}}'
+
+- name: register whether the folder creator container has finished
+  command: "docker inspect -f {{inspect}} {{galaxy_docker_delete_container}}"
+  vars:
+    inspect: !unsafe '{{.State.Running}}'
+  register: folder_container_running
+  until: 'not folder_container_running.stdout | bool'
+  retries: 10
+  delay: 10
+
+- name: Remove delete container
+  docker_container:
+    name: "{{galaxy_docker_delete_container}}"
+    state: absent
