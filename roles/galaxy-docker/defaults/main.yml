@@ -56,7 +56,7 @@ galaxy_docker_container_database_username: "galaxy"
 
 # File locations:
 welcome_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/welcome/"
-galaxy_docker_import_db_location: "{{inventory_hostname}}/database_import/"
+galaxy_docker_import_db_dir: "{{inventory_hostname}}/database_import/"
 tool_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/tools/"
 dbkeys_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/dbkeys/"
 genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
