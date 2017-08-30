@@ -35,8 +35,11 @@
     image: "{{docker_image}}"
     name: "delete_galaxy"
     state: started
-    command: rm -rf /export/* /export/.distribution_config
+    command: bash -c 'rm -rfv "{{item}}"'
   when: delete_files
+  with_items:
+    - /export/*
+    - /export/.distribution_config
 
 - include: delete_cron_jobs.yml
   when:

@@ -140,6 +140,8 @@ galaxy_docker_backup: False
 galaxy_docker_cluster: False
 galaxy_docker_transfer_genomes: False
 galaxy_docker_change_uids: False
+galaxy_docker_delete_system_files: False
+galaxy_docker_delete_cron_jobs: False
 installdocker: False
 importdb: False
 upgrade: False
