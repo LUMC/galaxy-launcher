@@ -27,9 +27,13 @@
   file:
     state: directory
     path: "{{test_upgrade_settings.docker_export_location}}/{{item.dest}}"
+    mode: "{{item.mode | default(omit)}}"
   with_items:
     - src: "galaxy-central/config"
       dest: "galaxy-central"
+    - src: "postgresql"
+      dest: ""
+      mode: "0775"
 
 - name: Copy running instance files to test location
   command: "cp -p -R {{src}} {{dest}}"

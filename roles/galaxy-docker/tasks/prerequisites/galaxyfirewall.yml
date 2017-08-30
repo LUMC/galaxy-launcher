@@ -24,6 +24,12 @@
     force: yes
     src: ufwgalaxyprofile.j2
 
+- name: Copy test_upgrade_galaxy profile to ufw firewall
+  template:
+    dest: "/etc/ufw/applications.d/{{galaxy_docker_test_ufw_profile}}"
+    force: yes
+    src: ufwtestgalaxyprofile.j2
+  when: galaxy_docker_test_upgrade
 # Apparently sshrules are removed if OpenSSH rule is not enabled on Ubuntu
 # The remote machine will become unmanagable because ssh port will be closed
 # This rule prevents this behaviour.
@@ -38,3 +44,10 @@
     name: "{{ufw_profile}}"
     rule: allow
     state: enabled
+
+- name: set the firewall open for testgalaxy
+  ufw:
+    name: "{{galaxy_docker_test_ufw_profile}}"
+    rule: allow
+    state: enabled
+  when: galaxy_docker_test_upgrade

@@ -9,14 +9,6 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- name: create subfolders
-  file:
-    state: directory
-    path: "{{test_upgrade_settings.docker_export_location}}/{{item.dest}}"
-  with_items:
-    - src: "postgresql"
-      dest: ""
-
 - name: Copy running instance files to test location
   command: "cp -p -R {{src}} {{dest}}"
   vars:
