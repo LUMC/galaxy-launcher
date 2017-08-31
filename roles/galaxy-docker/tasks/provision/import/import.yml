@@ -65,7 +65,7 @@
   command: "docker exec -u {{user}} {{name}} {{command}}"
   vars:
     name: "{{docker_container_name}}"
-    command: "{{galaxy_docker_db_restore_command}} -d {{galaxy_docker_container_database_name}} -f /database/{{galaxy_docker_imported_db}}"
+    command: "{{galaxy_docker_db_restore_command}} /database/{{galaxy_docker_imported_db}}"
     user: "{{galaxy_docker_web_user}}"
 
 - name: stop container
