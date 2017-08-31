@@ -48,7 +48,6 @@
     name: "{{docker_container_name}}"
     command: "supervisorctl stop galaxy:*"
 
-
 - name: Delete old database and create new_empty one
   command: "docker exec -u {{user}} {{name}} {{command}}"
   vars:
@@ -65,7 +64,7 @@
   command: "docker exec -u {{user}} {{name}} {{command}}"
   vars:
     name: "{{docker_container_name}}"
-    command: "{{galaxy_docker_db_restore_command}} /database/{{galaxy_docker_imported_db}}"
+    command: "{{galaxy_docker_db_restore_command}} -d {{galaxy_docker_container_database_name}} {{galaxy_docker_db_input_file_flag}} /database/{{galaxy_docker_imported_db}}"
     user: "{{galaxy_docker_web_user}}"
 
 - name: stop container
