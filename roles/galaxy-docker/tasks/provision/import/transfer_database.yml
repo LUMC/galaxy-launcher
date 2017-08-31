@@ -20,5 +20,5 @@
     src: "{{galaxy_docker_import_db_dir}}/{{galaxy_docker_imported_db}}"
     perms: yes
     compress: yes
-  vars:
-    ansible_ssh_pipelining: False #otherwise synchronize does not work
+#  vars:
+#    ansible_ssh_pipelining: False #otherwise synchronize does not work

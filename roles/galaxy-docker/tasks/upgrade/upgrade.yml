@@ -55,7 +55,7 @@
     image: "{{docker_image}}"
     name: "{{docker_container_name}}"
     state: started
-    command: "bash -c 'sh $GALAXY_ROOT/manage_db.sh upgrade'"
+    command: "bash -c 'bash $GALAXY_ROOT/manage_db.sh upgrade'"
   register: migration_result
 
 - name: show migration results

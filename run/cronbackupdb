@@ -8,5 +8,5 @@
 # For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
-
+galaxy_docker_backup: True
 cronbackupdb: True

@@ -24,12 +24,12 @@ backup_db_location="{{backup_db_location}}"
 backup_db_dump_file="{{backup_db_dump_file}}"
 files_to_keep="{{files_to_keep}}"
 compression_level="{{compression_level}}"
-
+db_format="{{galaxy_docker_db_format}}"
 echo -n "$(timestamp) Dump the databse to $backup_db_location/$backup_db_dump_file ... "
 touch $backup_db_location/$backup_db_dump_file
 chmod 0600 $backup_db_location/$backup_db_dump_file
 docker exec -u $galaxy_docker_database_user $docker_container_name \
-  bash -c "pg_dump $galaxy_docker_container_database_name -F c -Z $compression_level" >> $backup_db_location/$backup_db_dump_file
+  bash -c "pg_dump $galaxy_docker_container_database_name --format=$db_format -Z $compression_level" >> $backup_db_location/$backup_db_dump_file
 echo "done"
 
 echo "$(timestamp) A maximum of $files_to_keep files will be kept in $backup_db_location. Looking for redundant files."

@@ -93,14 +93,21 @@ delete_files: False
 delete_test_upgrade: False
 delete_backup_files: False
 
-# defaults for extractdb
-galaxy_docker_extracted_db_compression_level: 6
+# defaults for databases
+
+## Defaults are to use custom format. Which is compressed and uses pg_restore to recover.
+## If format is set to plain, it is by default not compressed and psql is used to recover.
+galaxy_docker_db_format: "custom" # other options 'plain' and 'tar'
+galaxy_docker_db_compression_level: "{{(galaxy_docker_db_format=='custom') | ternary('6','0')}}"
+galaxy_docker_db_restore_command: "{{(galaxy_docker_db_format=='plain') | ternary('psql','pg_restore -v')}}"
+
 galaxy_docker_extracted_db_filename: "galaxy_database.{{ansible_date_time.iso8601}}.dump"
 galaxy_docker_extracted_db_location: "/home/{{galaxy_docker_docker_user}}/database_extract"
 
-#defaults for importdb
 galaxy_docker_imported_db_location: "/home/{{galaxy_docker_web_user}}/database/"
 galaxy_docker_empty_database_script: "/home/{{galaxy_docker_database_user}}/new_empty_db"
+
+
 # defaults for installtools
 galaxy_docker_tool_dir: "/tmp/galaxy_tool_lists"
 
