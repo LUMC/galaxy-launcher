@@ -25,6 +25,7 @@
   when: ( installtools or installgenomes )
 
 - include: container_running_check.yml
+  when: ( installtools or installgenomes )
 
 - include: installtools.yml
   when: installtools
@@ -44,4 +45,6 @@
   docker_container:
     name: "{{docker_provision_container_name}}"
     state: absent
-  when: provision_container_running.stdout | bool
+  when:
+    - ( installtools or installgenomes )
+    - provision_container_running.stdout | bool
