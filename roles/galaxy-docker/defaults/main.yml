@@ -102,7 +102,7 @@ delete_backup_files: False
 galaxy_docker_db_format: "custom" # other options 'plain' and 'tar'
 galaxy_docker_db_compression_level: "{{(galaxy_docker_db_format=='custom') | ternary('6','0')}}"
 galaxy_docker_db_restore_command: "{{(galaxy_docker_db_format=='plain') | ternary('psql','pg_restore -v')}}"
-galaxy_docker_db_input_file_flag: "{(galaxy_docker_db_format=='plain') | ternary('-f','')}"
+galaxy_docker_db_input_file_flag: "{{(galaxy_docker_db_format=='plain') | ternary('-f','')}}"
 
 galaxy_docker_extracted_db_filename: "galaxy_database.{{ansible_date_time.iso8601}}.dump"
 galaxy_docker_extracted_db_location: "{{galaxy_docker_docker_user_home}}/database_extract"
