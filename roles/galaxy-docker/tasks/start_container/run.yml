@@ -54,6 +54,7 @@
     published_ports: "{{docker_published_ports}}"
     state: started
     restart: yes
+    recreate: yes
   notify: check if galaxy has started
 
 - name: remove docker environment file
