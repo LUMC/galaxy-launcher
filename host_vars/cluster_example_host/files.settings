@@ -1,9 +1,1 @@
-
-tool_list_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/tools/"
-backup_db_dir: "{{ inventory_hostname }}/backup_db"
-insert_db_dir: "{{ inventory_hostname }}/insert_db"
-ssh_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/ssh"
-welcome_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/welcome/"
-genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
-dbkeys_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/dbkeys/"
-docker_custom_image_dir: "files/{{inventory_hostname}}/docker_custom_image/"
+../example_host/files.settings
