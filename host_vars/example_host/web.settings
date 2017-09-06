@@ -12,3 +12,7 @@ public_galaxy_web_port: 80
 galaxy_web_port: 8080
 #galaxy_ftp_port: 8021
 #galaxy_sftp_port: 8022
+# By default ftp and sftp ports are only exposed to localhost.
+# Set below values to True to expose them to the internet.
+galaxy_docker_expose_ftp_port: False
+galaxy_docker_expose_sftp_port: False

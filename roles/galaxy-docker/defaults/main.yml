@@ -52,6 +52,8 @@ galaxy_docker_test_ufw_profile: testgalaxy
 public_galaxy_web_port: 80
 galaxy_web_port: 8080
 galaxy_docker_provision_port: 8008
+galaxy_docker_expose_ftp_port: False
+galaxy_docker_expose_sftp_port: False
 # Bgruening container defaults
 galaxy_docker_container_database_name: galaxy
 galaxy_docker_container_database_username: "galaxy"
