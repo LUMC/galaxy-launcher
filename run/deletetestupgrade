@@ -11,4 +11,4 @@
 
 delete_test_upgrade: True
 delete_files: True
-deletegalaxy: True
+galaxy_docker_delete: True

@@ -1,0 +1,83 @@
+---
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+- meta: flush_handlers
+
+- name: Create empty work directory
+  file:
+    path: "{{galaxy_docker_dbkeys_dir}}"
+    state: directory
+
+- name: Find yml files in tool list directory
+  find:
+    paths: "{{dbkeys_list_dir}}"
+    patterns:
+      - "*.yml"
+      - "*.yaml"
+  register: dbkeys
+  delegate_to: 127.0.0.1
+  become: no
+
+- name: Show which yamls will be transferred
+  debug:
+    var: dbkeys
+    verbosity: 1
+
+# This should be fed from the command line.
+- name: delete api key from files
+  lineinfile:
+    destfile: "{{item.path}}"
+    regexp: "api_key:.*"
+    state: absent
+  with_items:
+    - "{{dbkeys.files}}"
+  become: no
+  delegate_to: 127.0.0.1
+
+# It should be this instance. So no room for interpretation in the the yamls.
+- name: delete galaxy_instance from files
+  lineinfile:
+    destfile: "{{item.path}}"
+    regexp: "galaxy_instance:.*"
+    state: absent
+  with_items:
+    - "{{dbkeys.files}}"
+  become: no
+  delegate_to: 127.0.0.1
+
+- name: Move dbkeys to galaxy server
+  copy:
+    dest: "{{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
+    src: "{{item.path}}"
+    force: yes
+    mode: 0600
+  with_items:
+    - "{{dbkeys.files}}"
+
+- name: Use ephemeris run-data-managers to run data managers
+  command: "{{galaxy_docker_docker_user_virtualenv}}/bin/run-data-managers -g localhost:{{galaxy_docker_provision_port}} -a {{galaxy_admin_api_key}} --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}} -v"
+  with_items: "{{dbkeys.files}}"
+  ignore_errors: yes # If databases fail galaxy is still restarted so the ones that did not fail are available
+  register: result
+  notify: restart galaxy in container
+
+- name: Debug ephemeris output
+  debug:
+    var: result.stderr
+    verbosity: 1
+
+- name: remove added files
+  file:
+    path: "{{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
+    state: absent
+  with_items:
+   - "{{dbkeys.files}}"

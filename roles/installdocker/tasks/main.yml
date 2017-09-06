@@ -1,0 +1,53 @@
+---
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# This task decides wich sub-tasks should be run based on the boolean variables.
+# The order should represent the order in which tasks are ideally done.
+
+# tasks file for installdocker
+
+- name: Create docker default location
+  file:
+    state: directory
+    path: "{{ installdocker_default_location }}"
+
+- name: Set symbolic link for default location
+  file:
+    state: link
+    path: /var/lib/docker
+    src: "{{ installdocker_default_location }}"
+  when: "not installdocker_default_location=='/var/lib/docker'"
+
+# Distrospecific. Only disto.
+# ansible_distribution_version specific things should be handled down the line
+- include: "{{role_path}}/tasks/distributions/{{ansible_distribution}}.yml"
+
+
+# General postinstall
+- name: install required python_packages
+  package:
+    name: "{{installdocker_python_packages}}"
+    state: latest
+
+- name: Install required PIP packages
+  pip:
+    name: "{{ installdocker_pip_packages }}"
+    state: latest
+
+- name: start docker service
+  service:
+    name: docker
+    enabled: yes
+    state: started
+  notify: test docker service
+
+# Make sure docker installation is tested before other roles are started
+- meta: flush_handlers

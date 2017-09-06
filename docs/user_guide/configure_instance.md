@@ -25,7 +25,7 @@ Also tool lists can be added to install a set of tools.
 
 Variable | Function
 ---|---
-docker_default_location | Where docker stores the images and containers. Use a volume with ample disk space.
+installdocker_default_location | Where docker stores the images and containers. Use a volume with ample disk space.
 docker_image | The docker image. Defaults to "bgruening/galaxy-stable:latest" but it's better to tag it with a version number. (i.e. 17.01)
 docker_user | a user that will be created without sudo rights on the remote machine.
 docker_container_name | What name the container gets for easy access using docker commands. Default is "galaxy".
@@ -56,8 +56,8 @@ It is not recommended to touch the nginx settings unless you are familiar with c
 
 ### backup.settings
 
-backup_location: "backup/location/path"
-backup_user: "galaxy_backup_user"
+galaxy_docker_backup_location: "backup/location/path"
+
 backup_rsync_remote_host: True          # Enables or disables rsyncing all the backups to a remote host.
 
 ```YAML
@@ -68,8 +68,7 @@ backupdb_cron_jobs:
     timestamp: "-%Z%Y%m%dT%H%M%S" # Timestamp uses the "date" function. Check date --help on how to use the timestamp  
     filename: "galaxy-hourly-backup" # Archives are stored as filename.timestamp.gz  
     files_to_keep: 7 # How many backups of this job should be kept. Since this jobs runs daily, one week of backups is kept  
-    compression_level: 6 # Compression uses pigz. 6 is the default level.Level should be 1-9  
-    compression_threads: 4 # The number of threads pigz should use to compress the data  
+    compression_level: 6 # Compression uses gzip. 6 is the default level.Level should be 1-9  
     cron: # This is a dictionary that uses the same values as the ansible cron module(http://docs.ansible.com/ansible/cron_module.html)   
       special_time: "daily"  
   two_weekly_example:  
@@ -78,7 +77,6 @@ backupdb_cron_jobs:
     filename: "galaxy-fortnight-backup"  
     files_to_keep: 6  
     compression_level: 6  
-    compression_threads: 4  
     cron:
       month: *
       day: 1,15

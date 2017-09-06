@@ -1,0 +1,76 @@
+---
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+- name: Remove docker container before migrating
+  docker_container:
+    name: "{{docker_container_name}}"
+    state: absent
+    keep_volumes: True
+
+- name: moving to another export folder for testing
+  include: test.yml
+  when: galaxy_docker_test_upgrade
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
+
+- name: delete .distribution_config folder
+  docker_container:
+    volumes: "{{docker_export_location}}:/export/"
+    image: "{{docker_image}}"
+    name: "{{docker_container_name}}"
+    state: started
+    command: bash -c "rm -rf /export/.distribution_config"
+  when: not galaxy_docker_test_upgrade
+
+- name: Start docker container
+  docker_container:
+    volumes: "{{docker_export_location}}:/export/"
+    image: "{{docker_image}}"
+    name: "{{docker_container_name}}"
+    state: started
+    command: "/usr/bin/startup"
+    detach: True
+
+- name: Check if postgres is online
+  command: "docker exec {{docker_container_name}} service postgresql status"
+  register: result
+  until: '"online" in result.stdout'
+  retries: 20
+
+- name: upgrade the database on the export location
+  command: "docker exec {{name}} {{command}}"
+  vars:
+    volumes: "{{docker_export_location}}:/export/"
+    image: "{{docker_image}}"
+    name: "{{docker_container_name}}"
+    state: started
+    command: "bash -c 'bash $GALAXY_ROOT/manage_db.sh upgrade'"
+  register: migration_result
+
+- name: show migration results
+  debug:
+    var: migration_result.stdout
+    verbosity: 0
+
+- name: Stop docker container
+  docker_container:
+    name: "{{docker_container_name}}"
+    state: stopped
+
+- include: add_new_config.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"

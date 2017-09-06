@@ -33,3 +33,7 @@ roles/jdauphant.nginx
 
 site/
 .vagrant/
+
+test/files/*/ssh/*
+test/files/*/database_extract/*
+test/files/*/database_import/*

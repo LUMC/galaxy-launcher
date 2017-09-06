@@ -11,17 +11,28 @@
 
 # handlers file for galaxy_docker
 
+- name: restart galaxy in container
+  include: restart_galaxy_in_container.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
+
 - name: check if galaxy has started
   uri:
     url: "http://localhost:{{galaxy_web_port}}"
     return_content: yes
   register: result
-  until: 'galaxy_brand in result.content'  
-  retries: 20 
+  until: 'galaxy_brand in result.content'
+  retries: 20
   delay: 10
 
-- name: restart galaxy in container
-  command: "docker exec {{docker_container_name}} {{command}}"
-  vars:
-    command: "supervisorctl restart {{supervisorctl_galaxy | default('galaxy')}}:*"
-  notify: check if galaxy has started
+- name: check if provision galaxy has started
+  uri:
+    url: "http://localhost:{{galaxy_docker_provision_port}}"
+    return_content: yes
+  register: result
+  until: 'galaxy_brand in result.content'
+  retries: 20
+  delay: 10

@@ -1,0 +1,61 @@
+---
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# tasks file for galaxywelcome
+# This task:
+# - Deletes all existing welcome files from the export folder
+# - copies all new welcome html files to the export folder
+
+
+- name: Search old "welcome" files in the export folder
+  find:
+    paths: "{{docker_export_location}}"
+    patterns: "(?i)welcome.*"
+    use_regex: True
+    hidden: True
+    recurse: no
+  register: old_welcome_files
+
+- name: Show which welcome files will be deleted.
+  debug:
+    var: old_welcome_files
+    verbosity: 1
+
+- name: Delete old "welcome" files in the export folder
+  file:
+    path: "{{item.path}}"
+    state: absent
+  with_items:
+    -   "{{old_welcome_files.files}}"
+
+- name: Search new "welcome" files in the welcome folder
+  find:
+    paths: "{{welcome_dir}}"
+    patterns: "(?i)welcome.*"
+    use_regex: True
+    hidden: True
+    recurse: yes
+  delegate_to: 127.0.0.1
+  become: no
+  register: new_welcome_files
+
+- name: Show which welcome files will be copied
+  debug:
+    var: new_welcome_files
+    verbosity: 1
+
+- name: Copy welcome files
+  copy:
+    mode: 0644
+    dest: "{{docker_export_location}}/{{item.path | basename | lower}}"
+    src: "{{item.path}}"
+  with_items:
+    - "{{new_welcome_files.files}}"

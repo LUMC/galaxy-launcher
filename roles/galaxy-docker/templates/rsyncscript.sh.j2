@@ -18,11 +18,11 @@ timestamp(){
 echo "$(timestamp) === START RSYNCING BACKUP DATA ==="
 
 src={{src}}
-host={{host}}
+host={{host_address}}
 user={{user | default("")}}
 dest={{dest}}
-dest_string={{user | default("")}}{{ '@' if user != '' else '' }}{{host}}:{{dest}}
-flags="-v -a --compress-level={{compression_level | default('0')}} {{ '--delete' if delete else ''}}" 
+dest_string={{user | default("")}}{{ '@' if user != '' else '' }}{{host_address}}:{{dest}}
+flags="-v -a --compress-level={{compression_level | default('0')}} {{ '--delete' if delete else ''}} --delete-after"
 command="rsync $flags $src $dest_string"
 
 echo "$(timestamp) Source       = $src"
@@ -34,7 +34,7 @@ echo "$(timestamp) Remote_user  = $user"
 echo "$(timestamp) flags        = $flags"
 echo "$(timestamp) command      = $command"
 echo "$(timestamp) --- START SYNCING ---"
-stdbuf -oL -eL $command | 
+stdbuf -oL -eL $command |
 while IFS= read -r line
   do echo "$(timestamp) $line"
 done

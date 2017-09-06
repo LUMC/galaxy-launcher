@@ -1,0 +1,6 @@
+
+- name: Create script to delete old database and create new empty database
+  template:
+    src: new_empty_db.j2
+    dest: "{{galaxy_docker_empty_database_script}}"
+    mode: 0600

@@ -1,0 +1,25 @@
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+{% if galaxy_docker_change_uids | bool %}
+from {{docker_image_changed_uids}}
+{% else %}
+from bgruening/galaxy-stable:{{bgruening_galaxy_stable_version}}
+{% endif %}
+
+Maintainer ansible-generated
+
+{% if docker_custom_image_lines is defined %}
+{% for line in docker_custom_image_lines %}
+{{line}}
+{% endfor %}
+{% endif %}
+
+CMD ["/usr/bin/startup"]

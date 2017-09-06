@@ -1,0 +1,44 @@
+---
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+# A dual licensing mode is applied.
+# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
+# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+#
+# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# This deletes the galaxy container and all remnants.
+
+- include: delete_system_files.yml
+  when:
+    - galaxy_docker_delete_system_files
+    - galaxy_docker_run_privileged
+  become: yes
+  become_user: root
+
+- name: Set parameters for deleting the test upgrade container
+  set_fact:
+    "{{item.key}}" : "{{item.value}}"
+  with_dict: "{{test_upgrade_settings}}"
+  when: delete_test_upgrade
+
+- name: Remove docker container
+  docker_container:
+    name: "{{docker_container_name}}"
+    state: absent
+
+- include: delete_export_folder.yml
+  when: delete_files
+
+- include: delete_cron_jobs.yml
+  when:
+    - galaxy_docker_delete_cron_jobs
+    - not delete_test_upgrade
+
+- name: delete backup files
+  file:
+    path: "{{galaxy_docker_backup_location}}"
+    state: absent
+  when: delete_backup_files
