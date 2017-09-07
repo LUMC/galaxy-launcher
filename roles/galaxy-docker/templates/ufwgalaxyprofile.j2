@@ -11,4 +11,4 @@
 [{{ufw_profile}}]
 title={{ufw_profile}}
 description= This policy enables all ports that are opened in the galaxy application
-ports={{public_galaxy_web_port}}/tcp
+ports={{public_galaxy_web_port}}{% if galaxy_ftp_port is defined and galaxy_docker_expose_ftp_port %},{{galaxy_ftp_port}}{% endif %}{% if galaxy_sftp_port is defined and galaxy_docker_expose_sftp_port %},{{galaxy_sftp_port}}{% endif %}/tcp
