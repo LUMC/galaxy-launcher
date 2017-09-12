@@ -8,6 +8,7 @@ pages:
       - Configure a galaxy instance for running on a cluster: user_guide/configure_cluster_instance.md
       - Installing and administrating a galaxy instance: user_guide/install_administrate.md
       - Installing and administrating a galaxy instance on a cluster: user_guide/install_administrate_cluster.md
+  - Tutorial: tutorial/tutorial.md
   - Developer documentation:
     - Introduction: developer_docs/introduction.md
     - Install docker: developer_docs/installdocker.md
