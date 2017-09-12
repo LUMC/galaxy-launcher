@@ -21,7 +21,7 @@ Click on the task to get more information
 - [Add ldap authentication](docs/addldap.md). (addldap=true)
 - [create automated backup on the server](docs/galaxy_docker_backup_cron). (galaxy_docker_backup_cron=true)
 - [Install tools from the toolshed](docs/galaxy_docker_provision_tools.md). (galaxy_docker_provision_tools=true)
-- [Extract the database from the current instance](docs/extractdb.md). (extractdb=true)
+- [Extract the database from the current instance](docs/galaxy_docker_backup_extract_database.md). (galaxy_docker_backup_extract_database=true)
 - [Delete the galaxy instance](docs/deletegalaxy.md). (deletegalaxy=true)
 
 Requirements

@@ -9,7 +9,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# tasks file for extractdb
+# tasks file for galaxy_docker_backup_extract_database
 # This creates a database dump on the server and copies it to your
 # ansible control host
 

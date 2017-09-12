@@ -27,6 +27,6 @@
   when: galaxy_docker_cluster
 
 - include: setupsge.yml
-  when: setupsge
+  when: galaxy_docker_template_sge
 
 - include: report_user.yml

@@ -2,4 +2,4 @@
   when: galaxy_docker_backup_cron
 
 - include: extractdb.yml
-  when: extractdb
+  when: galaxy_docker_backup_extract_database

@@ -167,8 +167,7 @@ ansible_role_nginx: False
 galaxy_docker_firewall: False
 galaxy_docker_backup_cron: False
 galaxy_docker_provision_tools: False
-extractdb: False
-deletegalaxy: False
+galaxy_docker_backup_extract_database: False
 galaxy_docker_provision_genomes: False
-setupsge: False
-customimage: False
+galaxy_docker_template_sge: False
+galaxy_docker_custom_image: False
