@@ -9,24 +9,12 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- name: Register whether config folder is already created
-  stat:
-    path: "{{galaxy_docker_export_location}}/galaxy-central/config"
-  register: default_config_folder
-  until: default_config_folder.stat.exists
-  retries: 10
-  delay: 15
+galaxy_docker_prepare_docker: True
+galaxy_docker_template: True
+galaxy_docker_provision: True
+galaxy_docker_run: True
 
-- include: template_ldap.yml
-  when: galaxy_docker_template_ldap
-
-- include: galaxywelcome.yml
-  when: galaxy_docker_template_welcome
-
-- include: setup_cluster_general.yml
-  when: galaxy_docker_cluster
-
-- include: setupsge.yml
-  when: galaxy_docker_cluster == 'sge'
-
-- include: report_user.yml
+galaxy_docker_template_welcome: True
+galaxy_docker_provision_tools: True
+galaxy_docker_provision_genomes: True
+galaxy_docker_change_uids: True

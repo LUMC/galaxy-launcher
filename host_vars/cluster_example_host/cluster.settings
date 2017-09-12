@@ -1,3 +1,4 @@
+galaxy_docker_cluster: sge
 galaxy_docker_gridengine_master_host: "ogs-head"
 galaxy_docker_cluster_virtualenv: "{{galaxy_docker_shared_cluster_directory}}/galaxy_venv"
 #galaxy_docker_cluster_embed_metadata_in_job: False
@@ -7,3 +8,26 @@ galaxy_docker_shared_cluster_directory: "/exports/galaxy"
 
 galaxy_docker_cluster_registered_user_concurrent_jobs: 2
 galaxy_docker_cluster_anonymous_user_concurrent_jobs: 1
+
+# User settings
+
+## User that runs the docker container
+galaxy_docker_docker_user: galaxy_docker
+galaxy_docker_docker_user_private_key: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_docker_user}}"
+galaxy_docker_docker_user_virtualenv: "{{galaxy_docker_docker_user_home}}/virtualenv"
+galaxy_docker_docker_user_home: "/home/{{galaxy_docker_docker_user}}"
+
+## User that manages the database inside the docker container.
+galaxy_docker_database_user: postgres
+galaxy_docker_database_user_id: 1550
+galaxy_docker_database_group_id: 1550
+galaxy_docker_database_user_private_key: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_database_user}}"
+galaxy_docker_database_user_home: "/home/{{galaxy_docker_database_user}}"
+
+## The user that runs the web interfaces and submits the jobs to the cluster
+galaxy_docker_web_user: galaxy
+galaxy_docker_web_user_id: 1450
+galaxy_docker_web_group_id: 1450
+galaxy_docker_web_user_private_key: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_web_user}}"
+galaxy_docker_web_user_virtualenv: "{{galaxy_docker_web_user_home}}/virtualenv"
+galaxy_docker_web_user_home: "/home/{{galaxy_docker_web_user}}"

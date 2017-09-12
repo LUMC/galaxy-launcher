@@ -1,7 +1,7 @@
 
 galaxy_docker_tool_list_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/tools/"
 galaxy_docker_backup_db_dir: "{{ inventory_hostname }}/backup_db"
-galaxy_docker_import_db_dir: "{{ inventory_hostname }}/insert_db"
+galaxy_docker_import_db_dir: "{{ inventory_hostname }}/import_db"
 galaxy_docker_ssh_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/ssh"
 galaxy_docker_welcome_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/welcome/"
 galaxy_docker_genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"

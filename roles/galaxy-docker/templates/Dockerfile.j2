@@ -16,8 +16,8 @@ from bgruening/galaxy-stable:{{bgruening_galaxy_stable_version}}
 
 Maintainer ansible-generated
 
-{% if docker_custom_image_lines is defined %}
-{% for line in docker_custom_image_lines %}
+{% if galaxy_docker_custom_image_lines is defined %}
+{% for line in galaxy_docker_custom_image_lines %}
 {{line}}
 {% endfor %}
 {% endif %}
