@@ -39,7 +39,7 @@ galaxy_master_api_key | The master api key. Always set this value to something u
 galaxy_brand | The galaxy brand name
 galaxy_report_user | The user to access the reports section.
 galaxy_report_password | The password to access the reports section.
-optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
+galaxy_docker_optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
 
 ### web.settings
 
@@ -123,9 +123,9 @@ as `run-data-managers.yaml.sample`. Only .yml and .yaml files are copied to the 
 
 ### Configuring LDAP (optional)
 
-Add a  GALAXY_CONFIG_AUTH_CONFIG_FILE key to `optional_environment_settings` in `host_vars/HOSTNAME/galaxy.settings` :
+Add a  GALAXY_CONFIG_AUTH_CONFIG_FILE key to `galaxy_docker_optional_environment_settings` in `host_vars/HOSTNAME/galaxy.settings` :
 ```
-optional_environment_settings:
+galaxy_docker_optional_environment_settings:
   GALAXY_CONFIG_AUTH_CONFIG_FILE: "config/auth_conf.xml"
 ```
 

@@ -3,15 +3,15 @@
       path: "{{item}}"
       state: directory
   with_items:
-    - "{{optional_environment_settings.GALAXY_CONFIG_JOB_WORKING_DIRECTORY}}"
-    - "{{optional_environment_settings.GALAXY_CONFIG_FILE_PATH}}"
+    - "{{galaxy_docker_optional_environment_settings.GALAXY_CONFIG_JOB_WORKING_DIRECTORY}}"
+    - "{{galaxy_docker_optional_environment_settings.GALAXY_CONFIG_FILE_PATH}}"
   when:
-    - optional_environment_settings.GALAXY_CONFIG_JOB_WORKING_DIRECTORY is defined
-    - optional_environment_settings.GALAXY_CONFIG_FILE_PATH is defined
+    - galaxy_docker_optional_environment_settings.GALAXY_CONFIG_JOB_WORKING_DIRECTORY is defined
+    - galaxy_docker_optional_environment_settings.GALAXY_CONFIG_FILE_PATH is defined
 
 - name: Create cluster filesystem new file path
   file:
-    path: "{{optional_environment_settings.GALAXY_CONFIG_NEW_FILE_PATH}}"
+    path: "{{galaxy_docker_optional_environment_settings.GALAXY_CONFIG_NEW_FILE_PATH}}"
     state: directory
     mode: 01770
 

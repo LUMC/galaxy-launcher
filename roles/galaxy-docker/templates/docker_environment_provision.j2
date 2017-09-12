@@ -24,8 +24,8 @@ GALAXY_CONFIG_BRAND={{galaxy_brand}}
 #####
 ###Optional Section.
 #####
-{%if optional_environment_settings is defined %}
-{% for env_var, env_setting in optional_environment_settings.iteritems() %}
+{%if galaxy_docker_optional_environment_settings is defined %}
+{% for env_var, env_setting in galaxy_docker_optional_environment_settings.iteritems() %}
 {{env_var}}={{env_setting}}
 {% endfor %}
 {% endif %}

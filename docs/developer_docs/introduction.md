@@ -83,7 +83,7 @@ galaxy_master_api_key | The master api key. Always set this value to something u
 galaxy_brand | The galaxy brand name
 galaxy_report_user | The user to access the reports section.
 galaxy_report_password | The password to access the reports section.
-optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bjgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
+galaxy_docker_optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bjgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
 
 ### Examples for dictionary variables
 ```YAML

@@ -8,7 +8,7 @@
 # galaxy_report_password: admin
 
 # optional settings
-optional_environment_settings:
+galaxy_docker_optional_environment_settings:
   GALAXY_CONFIG_CONDA_AUTO_INSTALL: True
   GALAXY_CONFIG_CONDA_AUTO_INIT: True
   GALAXY_CONFIG_USE_CACHED_DEPENDENCY_MANAGER: True
