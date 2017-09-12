@@ -89,7 +89,7 @@ default_rsync_settings:
   cron:
     special_time: "hourly"
 
-backup_rsync_settings: {}
+galaxy_docker_backup_database_rsync_settings: {}
 backup_rsync_remote_host: False
 
 # defaults for deletegalaxy

@@ -62,7 +62,7 @@ backup_rsync_remote_host: True          # Enables or disables rsyncing all the b
 
 ```YAML
 
-backupdb_cron_jobs:  
+galaxy_docker_backup_database_cron_jobs:  
   daily: # The key is the "name" of the cron job  
     description: "Description of the cron job"  
     timestamp: "-%Z%Y%m%dT%H%M%S" # Timestamp uses the "date" function. Check date --help on how to use the timestamp  

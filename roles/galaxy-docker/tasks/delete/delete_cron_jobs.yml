@@ -14,7 +14,7 @@
     state: absent
     name: "{{item.value.description}}"
     user: "{{galaxy_docker_docker_user}}"
-  with_dict: "{{ backupdb_cron_jobs }}"
+  with_dict: "{{ galaxy_docker_backup_database_cron_jobs }}"
 
 - name: remove cron jobs for rsync script
   cron:

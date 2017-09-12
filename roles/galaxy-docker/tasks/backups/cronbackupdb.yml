@@ -27,7 +27,7 @@
     path: "{{galaxy_docker_backup_location}}/{{item.key}}"
     state: directory
     mode: 0700
-  with_dict: "{{ backupdb_cron_jobs }}"
+  with_dict: "{{ galaxy_docker_backup_database_cron_jobs }}"
 
 - name: Create backup scripts for each job
   template:
@@ -41,7 +41,7 @@
     files_to_keep: "{{item.value.files_to_keep}}"
     compression_level: "{{item.value.compression_level | default(galaxy_docker_db_compression_level)}}"
     name: "{{item.key}}"
-  with_dict: "{{ backupdb_cron_jobs }}"
+  with_dict: "{{ galaxy_docker_backup_database_cron_jobs }}"
 
 - name: set backup jobs in cron
   cron:
@@ -58,7 +58,7 @@
     special_time: "{{item.value.cron.special_time | default(omit)}}"
   vars:
     log_file: "{{galaxy_docker_backup_location}}/logs/{{item.key}}.log"
-  with_dict: "{{ backupdb_cron_jobs }}"
+  with_dict: "{{ galaxy_docker_backup_database_cron_jobs }}"
 
 # Sets up a rsync script to automatically synchronize the backups to a remote host.
 - include: rsync.yml

@@ -31,13 +31,13 @@ backup_rsync_remote_host| Whether the backups should be synced to a remote host|
 Variable | Function
 ---|---
 galaxy_docker_backup_location | The location where the backups and the logs will be stored
-backupdb_cron_jobs | dictionary with al the settings for the cron jobs
+galaxy_docker_backup_database_cron_jobs | dictionary with al the settings for the cron jobs
 
 
-#### backupdb_cron_jobs example
+#### galaxy_docker_backup_database_cron_jobs example
 
 ```YAML
-backupdb_cron_jobs:  
+galaxy_docker_backup_database_cron_jobs:  
   daily: # The key is the "name" of the cron job  
     description: "Description of the cron job"  
     timestamp: "-%Z%Y%m%dT%H%M%S" # Timestamp uses the "date" function. Check date --help on how to use the timestamp  

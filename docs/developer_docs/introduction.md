@@ -71,7 +71,7 @@ Variable | Function
 docker_container_name | The name of the docker container
 docker_export_location | The export location for the galaxy container
 galaxy_docker_backup_location | The location where the backups and the logs will be stored
-backupdb_cron_jobs | dictionary with al the settings for the cron jobs
+galaxy_docker_backup_database_cron_jobs | dictionary with al the settings for the cron jobs
 galaxy_web_urls | Nginx reroutes traffic coming from these urls to the galaxy server. You should put the registered domain name here.
 max_upload_size | The maximum sizes of files that can be uploaded.
 public_galaxy_web_port | default 80. The web port for the nginx server.
@@ -87,7 +87,7 @@ optional_environment_settings | This is a YAML dictionary that takes any docker 
 
 ### Examples for dictionary variables
 ```YAML
-backupdb_cron_jobs:  
+galaxy_docker_backup_database_cron_jobs:  
   daily: # The key is the "name" of the cron job  
     description: "Description of the cron job"  
     timestamp: "-%Z%Y%m%dT%H%M%S" # Timestamp uses the "date" function. Check date --help on how to use the timestamp  

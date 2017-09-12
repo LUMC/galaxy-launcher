@@ -15,7 +15,7 @@
 ldap: "{{ ldap_defaults | combine(ldap_settings) }}"
 
 # vars for cronbackupdb
-backup_galaxy_rsync_settings: "{{ default_rsync_settings | combine(backup_rsync_settings)  }}"
+backup_galaxy_rsync_settings: "{{ default_rsync_settings | combine(galaxy_docker_backup_database_rsync_settings)  }}"
 
 # vars for installtools:
 galaxy_docker_ephemeris_package: ephemeris
