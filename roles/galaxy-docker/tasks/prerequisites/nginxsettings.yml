@@ -9,7 +9,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# tasks file for nginxsettings
+# tasks file for galay_docker_nginx_settings
 # This sets a nginx settings file. Currently only one galaxy instance and one test upgrade instance is supported.
 # To install multiple galaxies in the same vm this needs to be changed.
 

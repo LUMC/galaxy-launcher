@@ -22,23 +22,23 @@
     ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
 
 - include: installephemeris.yml
-  when: ( installtools or installgenomes )
+  when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
 
 - include: container_running_check.yml
-  when: ( installtools or installgenomes )
+  when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
 
 - include: installtools.yml
-  when: installtools
+  when: galaxy_docker_provision_tools
 
 - include: installgenomes.yml
-  when: installgenomes
+  when: galaxy_docker_provision_genomes
 
 - name: register whether the docker provision container is running
   command: "docker inspect -f {{inspect}} {{galaxy_docker_provision_container_name}}"
   vars:
     inspect: !unsafe '{{.State.Running}}'
   register: provision_container_running
-  when: ( installtools or installgenomes )
+  when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
   ignore_errors: yes # If the container does not exist this will run.
 
 - name: Remove the docker provision container
@@ -46,5 +46,5 @@
     name: "{{galaxy_docker_provision_container_name}}"
     state: absent
   when:
-    - ( installtools or installgenomes )
+    - ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
     - provision_container_running.stdout | bool

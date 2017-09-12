@@ -16,7 +16,7 @@
   vars:
     inspect: !unsafe '{{.State.Running}}'
   register: production_container_running
-  when: ( installtools or installgenomes )
+  when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
   ignore_errors: yes # If the container does not exist this will run.
 
 - name: register whether the docker provision container is running
@@ -24,7 +24,7 @@
   vars:
     inspect: !unsafe '{{.State.Running}}'
   register: provision_container_running
-  when: ( installtools or installgenomes )
+  when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
   ignore_errors: yes # If the container does not exist this will run.
 
 - name: Show docker inspection results
@@ -64,14 +64,14 @@
   command: echo this always reports as changed
   notify: check if provision galaxy has started
   when:
-    - ( installtools or installgenomes )
+    - ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
     - not production_container_running.stdout | bool
 
 - name: Activate handler to check if production galaxy has a working galaxy
   command: echo this always reports as changed
   notify: check if galaxy has started
   when:
-    - ( installtools or installgenomes )
+    - ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
     - production_container_running.stdout | bool
 
 - meta: flush_handlers

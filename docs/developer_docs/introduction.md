@@ -146,7 +146,7 @@ Example Playbook
    	galaxy_brand: "my awesome galaxy brand"
 
    roles:
-         - { role: galaxydocker, installdocker: True,  nginxsettings: True, ansible_role_nginx: True, galaxyfirewall: True, rundockergalaxy: True, installtools: True}
+         - { role: galaxydocker, installdocker: True,  nginxsettings: True, ansible_role_nginx: True, galaxy_docker_firewall: True, rundockergalaxy: True, installtools: True}
 ```
 License
 -------

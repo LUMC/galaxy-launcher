@@ -80,7 +80,7 @@ galaxy_docker_ldap_defaults:
   email_suffix: ""
 #  options: ""
 
-# defaults for cronbackupdb
+# defaults for galaxy_docker_backup_cron
 galaxy_docker_backup_cron_log_timestamp: "TZ='UTC' date +'%Z %F %T >'"
 galaxy_docker_backup_rsync_ssh_key_file: ".ssh/id_rsa"
 galaxy_docker_backup_rsync_settings_default:
@@ -120,10 +120,10 @@ galaxy_docker_empty_database_script: "{{galaxy_docker_database_user_home}}/new_e
 
 galaxy_docker_backup_location: "{{galaxy_docker_docker_user_home}}/backups"
 
-# defaults for installtools
+# defaults for galaxy_docker_provision_tools
 galaxy_docker_tool_dir: "/tmp/galaxy_tool_lists"
 
-# defaults for installgenomes
+# defaults for galaxy_docker_provision_genomes
 galaxy_docker_dbkeys_dir: "/tmp/galaxy_dkeys_lists"
 galaxy_docker_genome_copy_links: yes
 galaxy_docker_genomes_dest: "{{galaxy_docker_export_location}}/genomes"
@@ -160,17 +160,15 @@ galaxy_docker_delete_cron_jobs: False
 galaxy_docker_delete: False
 installdocker: False
 galaxy_docker_import_database: False
-upgrade: False
 galaxy_docker_template_welcome: False
-addldap: False
-nginxsettings: False
+galaxy_docker_template_ldap: False
+galay_docker_nginx_settings: False
 ansible_role_nginx: False
-galaxyfirewall: False
-rundockergalaxy: False
-cronbackupdb: False
-installtools: False
+galaxy_docker_firewall: False
+galaxy_docker_backup_cron: False
+galaxy_docker_provision_tools: False
 extractdb: False
 deletegalaxy: False
-installgenomes: False
+galaxy_docker_provision_genomes: False
 setupsge: False
 customimage: False

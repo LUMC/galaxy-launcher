@@ -4,7 +4,7 @@
 # and installs the python ldap module in the container's virtual environment.
 - name: Show ldap variables
   debug:
-    var: ldap
+    var: galaxy_docker_ldap_config
     verbosity: 1
 
 - name: Create auth_conf.xml file in config folder

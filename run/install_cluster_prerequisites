@@ -12,6 +12,6 @@ galaxy_docker_run_privileged: True
 galaxy_docker_prerequisites: True
 galaxy_docker_install_packages: True
 installdocker: True
-nginxsettings: True
+galay_docker_nginx_settings: True
 ansible_role_nginx: True
-galaxyfirewall: True
+galaxy_docker_firewall: True

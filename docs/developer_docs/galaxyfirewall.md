@@ -1,4 +1,4 @@
-# Galaxyfirewall role
+# galaxy_docker_firewall role
 
 ## Function
 Sets ufw firewall to accept galaxy firewall ports by copying a ufwprofile into ufw directory.

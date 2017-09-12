@@ -15,5 +15,5 @@ galaxy_docker_provision: True
 galaxy_docker_run: True
 
 galaxy_docker_template_welcome: True
-installtools: True
-installgenomes: True
+galaxy_docker_provision_tools: True
+galaxy_docker_provision_genomes: True

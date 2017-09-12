@@ -10,4 +10,4 @@ This role deletes the galaxy instance created using the settings from galaxydock
 4. Removes the firewall profile
 
 ## Variables
-Same as the rundockergalaxy and galaxyfirewall role.
+Same as the rundockergalaxy and galaxy_docker_firewall role.

@@ -15,12 +15,12 @@ Click on the task to get more information
 - [Install docker](docs/installdocker.md). (installdocker=true)
 - [Import an existing database](docs/galaxy_docker_import_database.md). (galaxy_docker_import_database=true)
 - [Set galaxy's welcome page](docs/galaxy_docker_template_welcome.md). (galaxy_docker_template_welcome=true)
-- [Set the required nginx settings](docs/nginxsettings.md). (nginxsettings=true)
+- [Set the required nginx settings](docs/galay_docker_nginx_settings.md). (galay_docker_nginx_settings=true)
 - Run jdpauphant.nginx role when (ansible_role_nginx=true)
 - [Start up a galaxy instance](docs/rundockergalaxy.md). (rundockergalaxy=true)
 - [Add ldap authentication](docs/addldap.md). (addldap=true)
-- [create automated backup on the server](docs/cronbackupdb). (cronbackupdb=true)
-- [Install tools from the toolshed](docs/installtools.md). (installtools=true)
+- [create automated backup on the server](docs/galaxy_docker_backup_cron). (galaxy_docker_backup_cron=true)
+- [Install tools from the toolshed](docs/galaxy_docker_provision_tools.md). (galaxy_docker_provision_tools=true)
 - [Extract the database from the current instance](docs/extractdb.md). (extractdb=true)
 - [Delete the galaxy instance](docs/deletegalaxy.md). (deletegalaxy=true)
 
@@ -144,7 +144,7 @@ Example Playbook
    	galaxy_brand: "my awesome galaxy brand"
 
    roles:
-         - { role: galaxydocker, installdocker: True,  nginxsettings: True, ansible_role_nginx: True, galaxyfirewall: True, rundockergalaxy: True, installtools: True}
+         - { role: galaxydocker, installdocker: True,  galay_docker_nginx_settings: True, ansible_role_nginx: True, galaxy_docker_firewall: True, rundockergalaxy: True, galaxy_docker_provision_tools: True}
 ```
 License
 -------
