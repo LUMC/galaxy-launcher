@@ -23,8 +23,8 @@ Variable | Function | Default
 galaxy_docker_container_database_name | The name of the database in the container | galaxy
 db_export_location | the folder within the /export/ location where the db is dumped to | postgresql
 backup_db_file | The name of the dump file. This is a temporary file | "galaxydb_backup-$(TZ='UTC' date + '%Z%Y%m%dT%H%M%S')"
-cronbackupdb_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"
-backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
+galaxy_docker_backup_cron_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"
+galaxy_docker_backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
 
 ###Variables that should be fed into the role
 

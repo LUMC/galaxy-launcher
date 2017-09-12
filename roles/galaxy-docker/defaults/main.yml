@@ -36,18 +36,18 @@ galaxy_docker_provision_key: admin
 # docker defaults
 galaxy_docker_docker_user_groups: docker
 galaxy_docker_docker_image: bgruening/galaxy-stable
-docker_environment_file_location: "{{galaxy_docker_docker_user_home}}/galaxydocker.env"
+galaxy_docker_environment_file_location: "{{galaxy_docker_docker_user_home}}/galaxydocker.env"
 galaxy_docker_export_location: "/data/galaxy/galaxy_storage"
 galaxy_galaxy_docker_export_location_mode: "0755" # If not accessible for all users (--x) then postgres does not work.
 galaxy_docker_container_name: galaxy
-docker_provision_container_name: galaxy-provision
+galaxy_docker_provision_container_name: galaxy-provision
 galaxy_docker_container_hostname: galaxy-docker
 galaxy_docker_extra_volumes: ""
-docker_build_dir: "{{galaxy_docker_docker_user_home}}/docker_build/"
+galaxy_docker_docker_build_dir: "{{galaxy_docker_docker_user_home}}/docker_build/"
 bgruening_galaxy_stable_version: latest
 galaxy_docker_docker_image_changed_uids: "galaxy_stable_changed_uids:{{bgruening_galaxy_stable_version}}"
 # firewall, nginx and ports
-ufw_profile: galaxy
+galaxy_docker_ufw_profile: galaxy
 galaxy_docker_test_ufw_profile: testgalaxy
 galaxy_docker_web_port_public: 80
 galaxy_docker_web_port: 8080
@@ -67,11 +67,11 @@ galaxy_docker_genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genome
 galaxy_docker_extract_database_dir: "files/{{inventory_hostname}}/database_extract/"
 galaxy_docker_custom_image_dir: "files/{{inventory_hostname}}/docker_custom_image/"
 
-ansible_generated_vars_dir: "/tmp/ansible_generated_vars/{{ansible_hostname}}/"
+galaxy_docker_ansible_generated_vars_dir: "/tmp/ansible_generated_vars/{{ansible_hostname}}/"
 galaxy_docker_ssh_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/ssh"
 
 # defaults for addldap
-ldap_defaults:
+galaxy_docker_ldap_defaults:
   login_use_username: True
   allow_password_change: False
   allow_register: False
@@ -81,21 +81,21 @@ ldap_defaults:
 #  options: ""
 
 # defaults for cronbackupdb
-cronbackupdb_log_timestamp: "TZ='UTC' date +'%Z %F %T >'"
-backup_ssh_key_file: ".ssh/id_rsa"
-default_rsync_settings:
+galaxy_docker_backup_cron_log_timestamp: "TZ='UTC' date +'%Z %F %T >'"
+galaxy_docker_backup_rsync_ssh_key_file: ".ssh/id_rsa"
+galaxy_docker_backup_rsync_settings_default:
   delete: True
   compression_level: 0
   cron:
     special_time: "hourly"
 
 galaxy_docker_backup_database_rsync_settings: {}
-backup_rsync_remote_host: False
+galaxy_docker_backup_rsync_remote_host: False
 
 # defaults for deletegalaxy
-delete_files: False
-delete_test_upgrade: False
-delete_backup_files: False
+galaxy_docker_delete_files: False
+galaxy_docker_delete_test_upgrade: False
+galaxy_docker_delete_backup_files: False
 
 # Cluster defaults
 galaxy_docker_cluster_registered_user_concurrent_jobs: 2
@@ -132,7 +132,7 @@ galaxy_docker_genomes_dest: "{{galaxy_docker_export_location}}/genomes"
 galaxy_docker_ephemeris_repo: "https://github.com/galaxyproject/ephemeris.git"
 galaxy_docker_ephemeris_branch: "master"
 galaxy_docker_ephemeris_dir: "{{galaxy_docker_docker_user_home}}/ephemeris"
-ephemeris_from_git: False
+galaxy_docker_ephemeris_from_git: False
 
 #defaults for upgrade
 galaxy_docker_test_upgrade: False
@@ -143,7 +143,7 @@ galaxy_docker_run_privileged: True
 # Run
 galaxy_docker_prepare_docker: False
 galaxy_docker_prerequisites: False
-galaxy_docker_template_galaxy_settings: False
+galaxy_docker_template: False
 galaxy_docker_upgrade: False
 galaxy_docker_provision: False
 galaxy_docker_run: False
@@ -159,9 +159,9 @@ galaxy_docker_delete_system_files: False
 galaxy_docker_delete_cron_jobs: False
 galaxy_docker_delete: False
 installdocker: False
-importdb: False
+galaxy_docker_import_database: False
 upgrade: False
-galaxywelcome: False
+galaxy_docker_template_welcome: False
 addldap: False
 nginxsettings: False
 ansible_role_nginx: False

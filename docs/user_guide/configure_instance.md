@@ -58,7 +58,7 @@ It is not recommended to touch the nginx settings unless you are familiar with c
 
 galaxy_docker_backup_location: "backup/location/path"
 
-backup_rsync_remote_host: True          # Enables or disables rsyncing all the backups to a remote host.
+galaxy_docker_backup_rsync_remote_host: True          # Enables or disables rsyncing all the backups to a remote host.
 
 ```YAML
 

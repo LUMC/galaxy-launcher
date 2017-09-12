@@ -11,7 +11,7 @@
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 - include: import/main.yml
-  when: importdb
+  when: galaxy_docker_import_database
 
 - include: transfer_genomes.yml
   when: galaxy_docker_transfer_genomes
@@ -34,7 +34,7 @@
   when: installgenomes
 
 - name: register whether the docker provision container is running
-  command: "docker inspect -f {{inspect}} {{docker_provision_container_name}}"
+  command: "docker inspect -f {{inspect}} {{galaxy_docker_provision_container_name}}"
   vars:
     inspect: !unsafe '{{.State.Running}}'
   register: provision_container_running
@@ -43,7 +43,7 @@
 
 - name: Remove the docker provision container
   docker_container:
-    name: "{{docker_provision_container_name}}"
+    name: "{{galaxy_docker_provision_container_name}}"
     state: absent
   when:
     - ( installtools or installgenomes )

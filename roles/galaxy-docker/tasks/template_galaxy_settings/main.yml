@@ -17,11 +17,11 @@
   retries: 10
   delay: 15
 
-- include: addldap.yml
-  when: addldap
+- include: template.yml
+  when: galaxy_docker_template_ldap
 
-- include: galaxywelcome.yml
-  when: galaxywelcome
+- include: galaxy_docker_template_welcome.yml
+  when: galaxy_docker_template_welcome
 
 - include: setup_cluster_general.yml
   when: galaxy_docker_cluster

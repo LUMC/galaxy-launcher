@@ -87,5 +87,5 @@ ansible-playbook main.yml -e "host=HOSTNAME run=extractdb"
 + removes the firewall exception and removes the profile
 + removes the cron jobs
 
-If `delete_files=True` is added then it will also delete the export folder
-If `delete_backup_files=True` is added then it will also delete the backup folder.
+If `galaxy_docker_delete_files=True` is added then it will also delete the export folder
+If `galaxy_docker_delete_backup_files=True` is added then it will also delete the backup folder.

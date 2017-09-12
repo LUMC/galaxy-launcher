@@ -15,8 +15,8 @@ This role consists of several task files each of which can be included by settin
 Click on the task to get more information
 
 - [Install docker](installdocker.md). (installdocker=true)
-- [Import an existing database](importdb.md). (importdb=true)
-- [Set galaxy's welcome page](galaxywelcome.md). (galaxywelcome=true)
+- [Import an existing database](galaxy_docker_import_database.md). (galaxy_docker_import_database=true)
+- [Set galaxy's welcome page](galaxy_docker_template_welcome.md). (galaxy_docker_template_welcome=true)
 - [Set the required nginx settings](nginxsettings.md). (nginxsettings=true)
 - Run jdpauphant.nginx role when (ansible_role_nginx=true)
 - [Start up a galaxy instance](rundockergalaxy.md). (rundockergalaxy=true)
@@ -42,11 +42,11 @@ galaxy_docker_container_database_name | The name of the database in the containe
 galaxy_docker_docker_image |The docker image that is used | bgruening/galaxy-stable.
 docker_user | The user without sudo rights that runs the container. | galaxy
 db_export_location | the folder within the /export/ location where the db is dumped to | postgresql
-docker_environment_file_location | where the environment file is stored on the host | home/{{docker_user}}/galaxydocker.env
+galaxy_docker_environment_file_location | where the environment file is stored on the host | home/{{docker_user}}/galaxydocker.env
 galaxy_docker_container_name | The name of the running container | galaxy
 backup_db_file | The name of the dump file. This is a temporary file | "galaxydb_backup-$(TZ='UTC' date + '%Z%Y%m%dT%H%M%S')"
-cronbackupdb_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"
-backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
+galaxy_docker_backup_cron_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"
+galaxy_docker_backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
 galaxy_docker_welcome_dir | the directory containing the welcome files. | {{playbook_dir}}/ files/{{inventory_hostname}}/welcome.html
 installdocker_default_location | Where the docker images are stored and run | /var/lib/docker
 galaxy_docker_web_port | The port on which galaxy will be exposed to localhost. |8080

@@ -62,4 +62,4 @@
 
 # Sets up a rsync script to automatically synchronize the backups to a remote host.
 - include: rsync.yml
-  when: backup_rsync_remote_host
+  when: galaxy_docker_backup_rsync_remote_host

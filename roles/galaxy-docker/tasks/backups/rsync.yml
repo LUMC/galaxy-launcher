@@ -35,7 +35,7 @@
   fetch:
     dest: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_docker_user}}_public-key/id_rsa.pub"
     flat: yes
-    src: "/home/{{galaxy_docker_docker_user}}/{{backup_ssh_key_file}}.pub"
+    src: "/home/{{galaxy_docker_docker_user}}/{{galaxy_docker_backup_rsync_ssh_key_file}}.pub"
     validate_checksum: yes
 
 - name: Add remote backup server to the known_hosts file

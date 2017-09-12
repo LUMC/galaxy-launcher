@@ -20,7 +20,7 @@
   ignore_errors: yes # If the container does not exist this will run.
 
 - name: register whether the docker provision container is running
-  command: "docker inspect -f {{inspect}} {{docker_provision_container_name}}"
+  command: "docker inspect -f {{inspect}} {{galaxy_docker_provision_container_name}}"
   vars:
     inspect: !unsafe '{{.State.Running}}'
   register: provision_container_running

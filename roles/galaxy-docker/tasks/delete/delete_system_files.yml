@@ -11,23 +11,23 @@
 
 - name: remove firewall port exception
   ufw:
-    name: "{{ufw_profile}}"
+    name: "{{galaxy_docker_ufw_profile}}"
     rule: allow
     delete: yes
     state: reloaded
 
 - name: remove firewall profile
   file:
-    path: "/etc/ufw/applications.d/{{ufw_profile}}"
+    path: "/etc/ufw/applications.d/{{galaxy_docker_ufw_profile}}"
     state: absent
-  when: not delete_test_upgrade
+  when: not galaxy_docker_delete_test_upgrade
 
 - include: ../prerequisites/nginxsettings.yml
-  when: not delete_test_upgrade
+  when: not galaxy_docker_delete_test_upgrade
 
 - name: remove nginx profiles
   file:
     path: "/etc/nginx/sites-available/{{item.key}}.conf"
     state: absent
   with_dict: "{{nginx_sites}}"
-  when: not delete_test_upgrade
+  when: not galaxy_docker_delete_test_upgrade

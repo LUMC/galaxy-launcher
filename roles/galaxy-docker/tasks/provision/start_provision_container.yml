@@ -13,21 +13,21 @@
 
 - name: Create directory for ansible_generated vars
   file:
-    path: "{{ansible_generated_vars_dir}}"
+    path: "{{galaxy_docker_ansible_generated_vars_dir}}"
     state: directory
   become: no
   delegate_to: 127.0.0.1
 
 - name: Create file with volume settings
   template:
-    dest: "{{ansible_generated_vars_dir}}/docker_volumes_provision.yml"
+    dest: "{{galaxy_docker_ansible_generated_vars_dir}}/docker_volumes_provision.yml"
     src: "docker_volumes_provision.yml.j2"
     force: yes
   become: no
   delegate_to: 127.0.0.1
 
 - name: Include port and volume settings
-  include_vars: "{{ansible_generated_vars_dir}}/docker_volumes_provision.yml"
+  include_vars: "{{galaxy_docker_ansible_generated_vars_dir}}/docker_volumes_provision.yml"
 
 - name: Show volumes
   debug:
@@ -37,15 +37,15 @@
 - name: Update docker environment file
   template:
     src: docker_environment_provision.j2
-    dest: "{{docker_environment_file_location}}"
+    dest: "{{galaxy_docker_environment_file_location}}"
     mode: 0600
 
 - name: Start the docker provision container
   docker_container:
-    env_file: "{{docker_environment_file_location}}"
+    env_file: "{{galaxy_docker_environment_file_location}}"
     volumes: "{{docker_mounted_volumes}}"
     image: "{{galaxy_docker_docker_image}}"
-    name: "{{docker_provision_container_name}}"
+    name: "{{galaxy_docker_provision_container_name}}"
     hostname: "{{galaxy_docker_container_hostname}}"
     published_ports: "127.0.0.1:{{galaxy_docker_provision_port}}:80"
     state: started
@@ -55,4 +55,4 @@
 - name: remove docker environment file
   file:
     state: absent
-    path: "{{docker_environment_file_location}}"
+    path: "{{galaxy_docker_environment_file_location}}"

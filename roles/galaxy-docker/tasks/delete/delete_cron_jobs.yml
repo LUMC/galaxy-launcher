@@ -21,4 +21,4 @@
     state: absent
     name: "Rsync to the backup host"
     user: "{{galaxy_docker_docker_user}}"
-  when:  backup_rsync_remote_host
+  when:  galaxy_docker_backup_rsync_remote_host

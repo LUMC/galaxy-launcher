@@ -15,7 +15,7 @@ The rundockergalaxy role does the following.
 ---|---
 docker_user | The user without sudo rights that runs the container. (Default = Galaxy)
 galaxy_docker_docker_image |The docker image that is used. The default is bgruening/galaxy-stable. This should be tagged as a best practice, for example bgruening/galaxy-stable:17.01.
-docker_environment_file_location | where the environment file is stored on the host.
+galaxy_docker_environment_file_location | where the environment file is stored on the host.
 galaxy_docker_export_location | Where the galaxy database will be exported to (Default = /home/docker_user)
 galaxy_docker_container_name | The name of the running container (default = galaxy)
 galaxy_docker_web_port | The port on which galaxy will be hosted. (Default 8080)

@@ -9,7 +9,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# tasks file for galaxywelcome
+# tasks file for galaxy_docker_template_welcome
 # This task:
 # - Deletes all existing welcome files from the export folder
 # - copies all new welcome html files to the export folder

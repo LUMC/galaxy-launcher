@@ -1,4 +1,4 @@
-backup_rsync_remote_host: False
+galaxy_docker_backup_rsync_remote_host: False
 
 galaxy_docker_backup_database_cron_jobs:
   hourly:

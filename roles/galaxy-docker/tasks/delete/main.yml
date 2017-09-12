@@ -22,7 +22,7 @@
   set_fact:
     "{{item.key}}" : "{{item.value}}"
   with_dict: "{{galaxy_docker_upgrade_test_settings}}"
-  when: delete_test_upgrade
+  when: galaxy_docker_delete_test_upgrade
 
 - name: Remove docker container
   docker_container:
@@ -30,15 +30,15 @@
     state: absent
 
 - include: delete_export_folder.yml
-  when: delete_files
+  when: galaxy_docker_delete_files
 
 - include: delete_cron_jobs.yml
   when:
     - galaxy_docker_delete_cron_jobs
-    - not delete_test_upgrade
+    - not galaxy_docker_delete_test_upgrade
 
 - name: delete backup files
   file:
     path: "{{galaxy_docker_backup_location}}"
     state: absent
-  when: delete_backup_files
+  when: galaxy_docker_delete_backup_files
