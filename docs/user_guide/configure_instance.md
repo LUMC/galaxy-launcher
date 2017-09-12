@@ -1,4 +1,4 @@
-# Configuring galaxy instance
+# Configuring galaxy instance for a vm
 
 On this page you can find all information on configuring the galaxy instance.
 

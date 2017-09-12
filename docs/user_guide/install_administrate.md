@@ -30,6 +30,8 @@ ansible-playbook main.yml -e "host=HOSTNAME run=install_galaxy"
 ```bash
 ansible-playbook main.yml -e "host=HOSTNAME run=start_container"   
 ```
+With ldap:
+ansible-playbook main.yml -e "host=HOSTNAME run=['start_container','enable_ldap']
 
 ### Install tool lists on the galaxy instance
 ```bash
@@ -43,7 +45,7 @@ ansible-playbook main.yml -e "host=HOSTNAME run=install_genomes galaxy_admin_api
 
 ### Install LDAP
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=addldap"   
+ansible-playbook main.yml -e "host=HOSTNAME run=enable_ldap"   
 ```
 !WARNING! This will restart the galaxy instance within the container
 
@@ -52,7 +54,7 @@ ansible-playbook main.yml -e "host=HOSTNAME run=addldap"
 If bgruening updates the docker image to a newer version than this can be tested as follows:
 1. Open the `host_vars/HOSTNAME/upgrade.settings` file
 2. Set the settings for the test instance in the galaxy_docker_upgrade_test_settings dictionary. Make sure the port mappings don't overlap with the running instance. Additional settings can be added to the dictionary.
-3. Run `ansible-playbook main.yml -e "host=HOSTNAME run=testupgrade"`
+3. Run `ansible-playbook main.yml -e "host=HOSTNAME run=upgrade_test"`
 4. Check if the galaxy instance is running properly and if history is kept.
 (Tools won't run and data will not be included)
 5. Settings are stored in `/export/galaxy-central/config`, any new config files are automatically copied to this directory if these do not yet exist.
@@ -60,7 +62,7 @@ Existing files are not replaced. To check for any new features you can diff `/ex
 
 To remove the upgrade test instance run:
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=deletetestupgrade"
+ansible-playbook main.yml -e "host=HOSTNAME run=delete_upgrade_test"
 ```
 
 ## Upgrade the running instance to a new image
@@ -81,12 +83,12 @@ This path can be changed in `files.settings`. If you want to change the filename
 To backup the database run:
 
 ```
-ansible-playbook main.yml -e "host=HOSTNAME run=extractdb"
+ansible-playbook main.yml -e "host=HOSTNAME run=extract_database"
 ```
 
 ## Removing the galaxy docker instance.
 
-`ansible-playbook main.yml -e "host=HOSTNAME run=deletegalaxy` does the following things:
+`ansible-playbook main.yml -e "host=HOSTNAME run=delete_galaxy` does the following things:
 + deletes the container
 + removes the firewall exception and removes the profile
 + removes the cron jobs
