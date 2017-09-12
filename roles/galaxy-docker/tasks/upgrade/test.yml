@@ -21,7 +21,7 @@
   file:
     path: "{{galaxy_docker_upgrade_test_settings.galaxy_docker_export_location}}"
     state: "directory"
-    mode: "{{galaxy_galaxy_docker_export_location_mode}}"
+    mode: "{{galaxy_docker_export_location_mode}}"
 
 - name: create subfolders
   file:

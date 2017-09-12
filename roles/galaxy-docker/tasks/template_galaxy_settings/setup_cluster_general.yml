@@ -19,7 +19,7 @@
   file:
     path: "{{galaxy_docker_cluster_virtualenv}}"
     state: directory
-    mode: "{{galaxy_galaxy_docker_export_location_mode}}"
+    mode: "{{galaxy_docker_export_location_mode}}"
   when: galaxy_docker_cluster_virtualenv is defined
 
 - name: Create virtualenv
