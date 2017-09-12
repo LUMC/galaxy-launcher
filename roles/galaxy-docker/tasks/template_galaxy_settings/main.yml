@@ -11,22 +11,22 @@
 
 - name: Register whether config folder is already created
   stat:
-    path: "{{docker_export_location}}/galaxy-central/config"
+    path: "{{galaxy_docker_export_location}}/galaxy-central/config"
   register: default_config_folder
   until: default_config_folder.stat.exists
   retries: 10
   delay: 15
 
-- include: addldap.yml
-  when: addldap
+- include: template_ldap.yml
+  when: galaxy_docker_template_ldap
 
 - include: galaxywelcome.yml
-  when: galaxywelcome
+  when: galaxy_docker_template_welcome
 
 - include: setup_cluster_general.yml
   when: galaxy_docker_cluster
 
 - include: setupsge.yml
-  when: setupsge
+  when: galaxy_docker_template_sge
 
 - include: report_user.yml

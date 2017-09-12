@@ -1,7 +1,7 @@
 - name:  Remove docker export volumes
   docker_container:
-    volumes: "{{docker_export_location}}:/export/"
-    image: "{{docker_image}}"
+    volumes: "{{galaxy_docker_export_location}}:/export/"
+    image: "{{galaxy_docker_docker_image}}"
     name: "delete_galaxy_{{ansible_date_time.epoch}}"
     state: started
     command: bash -c 'rm -rfv /export/* /export/.distribution_config'

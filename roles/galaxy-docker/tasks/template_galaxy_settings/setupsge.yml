@@ -14,5 +14,5 @@
 
 - name: create act_qmaster file
   template:
-    dest: "{{docker_export_location}}/act_qmaster"
+    dest: "{{galaxy_docker_export_location}}/act_qmaster"
     src: "act_qmaster.j2"

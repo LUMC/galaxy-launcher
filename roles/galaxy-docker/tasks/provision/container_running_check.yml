@@ -12,19 +12,19 @@
 # this task installs ephemeris. It is used for installing tools and genomes.
 
 - name: register whether the production container is running
-  command: "docker inspect -f {{inspect}} {{docker_container_name}}"
+  command: "docker inspect -f {{inspect}} {{galaxy_docker_container_name}}"
   vars:
     inspect: !unsafe '{{.State.Running}}'
   register: production_container_running
-  when: ( installtools or installgenomes )
+  when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
   ignore_errors: yes # If the container does not exist this will run.
 
 - name: register whether the docker provision container is running
-  command: "docker inspect -f {{inspect}} {{docker_provision_container_name}}"
+  command: "docker inspect -f {{inspect}} {{galaxy_docker_provision_container_name}}"
   vars:
     inspect: !unsafe '{{.State.Running}}'
   register: provision_container_running
-  when: ( installtools or installgenomes )
+  when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
   ignore_errors: yes # If the container does not exist this will run.
 
 - name: Show docker inspection results
@@ -55,7 +55,7 @@
 
 - name: Use public web port for provisioning when running production container
   set_fact:
-    galaxy_docker_provision_port: "{{galaxy_web_port}}"
+    galaxy_docker_provision_port: "{{galaxy_docker_web_port}}"
   when:
     - production_container_running is defined
     - production_container_running.stdout | bool
@@ -64,14 +64,14 @@
   command: echo this always reports as changed
   notify: check if provision galaxy has started
   when:
-    - ( installtools or installgenomes )
+    - ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
     - not production_container_running.stdout | bool
 
 - name: Activate handler to check if production galaxy has a working galaxy
   command: echo this always reports as changed
   notify: check if galaxy has started
   when:
-    - ( installtools or installgenomes )
+    - ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
     - production_container_running.stdout | bool
 
 - meta: flush_handlers

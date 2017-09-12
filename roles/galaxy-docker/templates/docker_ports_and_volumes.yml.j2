@@ -13,36 +13,36 @@
 
 # galaxy-docker-ansible generates these values to run the docker container.
 
-docker_published_ports:
-{% if galaxy_web_port is defined and galaxy_web_port !='' %}
-  - "127.0.0.1:{{galaxy_web_port}}:80"
+galaxy_docker_published_ports:
+{% if galaxy_docker_web_port is defined and galaxy_docker_web_port !='' %}
+  - "127.0.0.1:{{galaxy_docker_web_port}}:80"
   {% endif %}
-  {% if galaxy_ftp_port is defined and galaxy_ftp_port !='' %}
-  - "{% if not galaxy_docker_expose_ftp_port %}127.0.0.1:{% endif %}{{galaxy_ftp_port}}:21"
+  {% if galaxy_docker_ftp_port is defined and galaxy_docker_ftp_port !='' %}
+  - "{% if not galaxy_docker_ftp_port_expose %}127.0.0.1:{% endif %}{{galaxy_docker_ftp_port}}:21"
   {% endif %}
-  {% if galaxy_sftp_port is defined and galaxy_sftp_port !='' %}
-  - "{% if not galaxy_docker_expose_sftp_port %}127.0.0.1:{% endif %}{{galaxy_sftp_port}}:22"
+  {% if galaxy_docker_sftp_port is defined and galaxy_docker_sftp_port !='' %}
+  - "{% if not galaxy_docker_sftp_port_expose %}127.0.0.1:{% endif %}{{galaxy_docker_sftp_port}}:22"
   {% endif %}
-  {% if docker_extra_ports is defined and docker_extra_ports !='' %}
-  {% for extra_port in docker_extra_ports %}
+  {% if galaxy_docker_extra_ports is defined and galaxy_docker_extra_ports !='' %}
+  {% for extra_port in galaxy_docker_extra_ports %}
   - "{{extra_port}}"
   {% endfor %}
   {% endif %}
 docker_mounted_volumes:
-  - "{{docker_export_location}}:/export/"
-  {% if galaxy_shared_cluster_directory is defined%}
-  - "{{galaxy_shared_cluster_directory}}:{{galaxy_shared_cluster_directory}}"
+  - "{{galaxy_docker_export_location}}:/export/"
+  {% if galaxy_docker_shared_cluster_directory is defined%}
+  - "{{galaxy_docker_shared_cluster_directory}}:{{galaxy_docker_shared_cluster_directory}}"
   {% endif %}
-  {% if docker_extra_volumes is defined and docker_extra_volumes !='' %}
-  {% for extra_volume in docker_extra_volumes %}
+  {% if galaxy_docker_extra_volumes is defined and galaxy_docker_extra_volumes !='' %}
+  {% for extra_volume in galaxy_docker_extra_volumes %}
   - "{{extra_volume}}"
   {% endfor %}
   {% endif %}
-#  {% if galaxy_cluster_virtualenv is defined%}
-#  - "{{galaxy_cluster_virtualenv}}:/galaxy_venv"
-#  - "{{galaxy_cluster_virtualenv}}:{{galaxy_cluster_virtualenv}}"
+#  {% if galaxy_docker_cluster_virtualenv is defined%}
+#  - "{{galaxy_docker_cluster_virtualenv}}:/galaxy_venv"
+#  - "{{galaxy_docker_cluster_virtualenv}}:{{galaxy_docker_cluster_virtualenv}}"
 #  {% endif %}
-#  {% if optional_environment_settings.SGE_ROOT is defined%}
-#  - "{{optional_environment_settings.SGE_ROOT}}:{{optional_environment_settings.SGE_ROOT}}"
+#  {% if galaxy_docker_optional_environment_settings.SGE_ROOT is defined%}
+#  - "{{galaxy_docker_optional_environment_settings.SGE_ROOT}}:{{galaxy_docker_optional_environment_settings.SGE_ROOT}}"
 #  {% endif %}
 ...

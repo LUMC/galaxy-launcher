@@ -1,10 +1,10 @@
 - name: Overwrite old config files?
   set_fact:
     no_overwrite: ""
-  when: overwrite_config_files
+  when: galaxy_docker_upgrade_overwrite_config_files
 
 - name: Add new config files
   command: "rsync -p -r {{no_overwrite | default('--ignore-existing')}} {{src}} {{dest}}"
   vars:
-    src: "{{docker_export_location}}/.distribution_config/"
-    dest: "{{docker_export_location}}/galaxy-central/config"
+    src: "{{galaxy_docker_export_location}}/.distribution_config/"
+    dest: "{{galaxy_docker_export_location}}/galaxy-central/config"

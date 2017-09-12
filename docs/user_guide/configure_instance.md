@@ -26,9 +26,9 @@ Also tool lists can be added to install a set of tools.
 Variable | Function
 ---|---
 installdocker_default_location | Where docker stores the images and containers. Use a volume with ample disk space.
-docker_image | The docker image. Defaults to "bgruening/galaxy-stable:latest" but it's better to tag it with a version number. (i.e. 17.01)
+galaxy_docker_docker_image | The docker image. Defaults to "bgruening/galaxy-stable:latest" but it's better to tag it with a version number. (i.e. 17.01)
 docker_user | a user that will be created without sudo rights on the remote machine.
-docker_container_name | What name the container gets for easy access using docker commands. Default is "galaxy".
+galaxy_docker_container_name | What name the container gets for easy access using docker commands. Default is "galaxy".
 
 ### galaxy.settings
 
@@ -39,18 +39,18 @@ galaxy_master_api_key | The master api key. Always set this value to something u
 galaxy_brand | The galaxy brand name
 galaxy_report_user | The user to access the reports section.
 galaxy_report_password | The password to access the reports section.
-optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
+galaxy_docker_optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
 
 ### web.settings
 
 Variable | Function
 ---|---
-galaxy_web_urls | Nginx reroutes traffic coming from these urls to the galaxy server. You should put the registered domain name here.
+galaxy_docker_web_urls | Nginx reroutes traffic coming from these urls to the galaxy server. You should put the registered domain name here.
 max_upload_size | The maximum sizes of files that can be uploaded.
-public_galaxy_web_port | default 80. The web port for the nginx server.
-galaxy_web_port | default 8080. This port is only exposed to localhost and not accessible from the web.
-galaxy_ftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
-galaxy_sftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
+galaxy_docker_web_port_public | default 80. The web port for the nginx server.
+galaxy_docker_web_port | default 8080. This port is only exposed to localhost and not accessible from the web.
+galaxy_docker_ftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
+galaxy_docker_sftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
 
 It is not recommended to touch the nginx settings unless you are familiar with configuring [ansible-role-nginx](https://github.com/jdauphant/ansible-role-nginx).
 
@@ -58,11 +58,11 @@ It is not recommended to touch the nginx settings unless you are familiar with c
 
 galaxy_docker_backup_location: "backup/location/path"
 
-backup_rsync_remote_host: True          # Enables or disables rsyncing all the backups to a remote host.
+galaxy_docker_backup_rsync_remote_host: True          # Enables or disables rsyncing all the backups to a remote host.
 
 ```YAML
 
-backupdb_cron_jobs:  
+galaxy_docker_backup_database_cron_jobs:  
   daily: # The key is the "name" of the cron job  
     description: "Description of the cron job"  
     timestamp: "-%Z%Y%m%dT%H%M%S" # Timestamp uses the "date" function. Check date --help on how to use the timestamp  
@@ -102,7 +102,7 @@ Welcome files can be placed in `files\HOSTNAME\welcome`. This path can be change
 
 ### Extra tools (optional)
 
-Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `tool_list_dir` in `files.settings`
+Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `galaxy_docker_tool_list_dir` in `files.settings`
 An example tool list can be found in `files/example_host/tools`.
 If no tool lists are present, this step will be automatically skipped. Only .yml and .yaml files are copied to the server.
 
@@ -123,14 +123,14 @@ as `run-data-managers.yaml.sample`. Only .yml and .yaml files are copied to the 
 
 ### Configuring LDAP (optional)
 
-Add a  GALAXY_CONFIG_AUTH_CONFIG_FILE key to `optional_environment_settings` in `host_vars/HOSTNAME/galaxy.settings` :
+Add a  GALAXY_CONFIG_AUTH_CONFIG_FILE key to `galaxy_docker_optional_environment_settings` in `host_vars/HOSTNAME/galaxy.settings` :
 ```
-optional_environment_settings:
+galaxy_docker_optional_environment_settings:
   GALAXY_CONFIG_AUTH_CONFIG_FILE: "config/auth_conf.xml"
 ```
 
 In `host_vars/HOSTNAME/ldap.settings`
-set the following keys in ldap_settings:
+set the following keys in galaxy_docker_ldap_settings:
 #### Keys required
 
 Key | Function
@@ -153,7 +153,7 @@ email_suffix | The e-mail - suffix  (@example.com). All users with such an addre
 
 #### Example
 ```YAML
-ldap_settings:
+galaxy_docker_ldap_settings:
   server: "ldap://dc1.example.com"
   search_base: "dc=dc1,dc=example,dc=com"
   search_user: "ldapsearch"
@@ -165,5 +165,5 @@ ldap_settings:
 ### Database (optional)
 
 If you wish to use a postgresql database of another galaxy instance, make a dump of the instance.
-Put the dump file in `files/HOSTNAME/database_import`. Alternatively you can specify the location by changing `insert_db_dir` in `files.settings`
+Put the dump file in `files/HOSTNAME/database_import`. Alternatively you can specify the location by changing `galaxy_docker_import_db_dir` in `files.settings`
 If no database is added, a new empty DB will be created.

@@ -23,21 +23,21 @@ Variable | Function | Default
 galaxy_docker_container_database_name | The name of the database in the container | galaxy
 db_export_location | the folder within the /export/ location where the db is dumped to | postgresql
 backup_db_file | The name of the dump file. This is a temporary file | "galaxydb_backup-$(TZ='UTC' date + '%Z%Y%m%dT%H%M%S')"
-cronbackupdb_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"
-backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
+galaxy_docker_backup_cron_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"
+galaxy_docker_backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
 
 ###Variables that should be fed into the role
 
 Variable | Function
 ---|---
 galaxy_docker_backup_location | The location where the backups and the logs will be stored
-backupdb_cron_jobs | dictionary with al the settings for the cron jobs
+galaxy_docker_backup_database_cron_jobs | dictionary with al the settings for the cron jobs
 
 
-#### backupdb_cron_jobs example
+#### galaxy_docker_backup_database_cron_jobs example
 
 ```YAML
-backupdb_cron_jobs:  
+galaxy_docker_backup_database_cron_jobs:  
   daily: # The key is the "name" of the cron job  
     description: "Description of the cron job"  
     timestamp: "-%Z%Y%m%dT%H%M%S" # Timestamp uses the "date" function. Check date --help on how to use the timestamp  
@@ -74,8 +74,8 @@ rsync_settings:
 #### Common galaxy-docker-ansible variables
 Variable | Function
 ---|---
-docker_container_name | The name of the docker container
-docker_export_location | The export location for the galaxy container
+galaxy_docker_container_name | The name of the docker container
+galaxy_docker_export_location | The export location for the galaxy container
 
 
 

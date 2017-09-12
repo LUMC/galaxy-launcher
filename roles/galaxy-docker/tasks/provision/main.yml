@@ -11,7 +11,7 @@
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 - include: import/main.yml
-  when: importdb
+  when: galaxy_docker_import_database
 
 - include: transfer_genomes.yml
   when: galaxy_docker_transfer_genomes
@@ -22,29 +22,29 @@
     ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
 
 - include: installephemeris.yml
-  when: ( installtools or installgenomes )
+  when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
 
 - include: container_running_check.yml
-  when: ( installtools or installgenomes )
+  when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
 
 - include: installtools.yml
-  when: installtools
+  when: galaxy_docker_provision_tools
 
 - include: installgenomes.yml
-  when: installgenomes
+  when: galaxy_docker_provision_genomes
 
 - name: register whether the docker provision container is running
-  command: "docker inspect -f {{inspect}} {{docker_provision_container_name}}"
+  command: "docker inspect -f {{inspect}} {{galaxy_docker_provision_container_name}}"
   vars:
     inspect: !unsafe '{{.State.Running}}'
   register: provision_container_running
-  when: ( installtools or installgenomes )
+  when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
   ignore_errors: yes # If the container does not exist this will run.
 
 - name: Remove the docker provision container
   docker_container:
-    name: "{{docker_provision_container_name}}"
+    name: "{{galaxy_docker_provision_container_name}}"
     state: absent
   when:
-    - ( installtools or installgenomes )
+    - ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
     - provision_container_running.stdout | bool

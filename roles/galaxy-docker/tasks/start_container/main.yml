@@ -13,4 +13,4 @@
   when: galaxy_docker_run
 
 - include: install_python_dependencies.yml
-  when: addldap
+  when: galaxy_docker_template_ldap

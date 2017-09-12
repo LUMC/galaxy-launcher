@@ -20,7 +20,7 @@
 
 - name: Copy profile to ufw firewall
   template:
-    dest: "/etc/ufw/applications.d/{{ufw_profile}}"
+    dest: "/etc/ufw/applications.d/{{galaxy_docker_ufw_profile}}"
     force: yes
     src: ufwgalaxyprofile.j2
 
@@ -41,7 +41,7 @@
 
 - name: set the firewall open for Galaxy
   ufw:
-    name: "{{ufw_profile}}"
+    name: "{{galaxy_docker_ufw_profile}}"
     rule: allow
     state: enabled
 

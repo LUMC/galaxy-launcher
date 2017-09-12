@@ -11,14 +11,14 @@
 
 - name: Create directory for ansible_generated vars
   file:
-    path: "{{ansible_generated_vars_dir}}"
+    path: "{{galaxy_docker_ansible_generated_vars_dir}}"
     state: directory
   become: no
   delegate_to: 127.0.0.1
 
 - name: Create file with port and volume settings
   template:
-    dest: "{{ansible_generated_vars_dir}}/docker_ports_and_volumes.yml"
+    dest: "{{galaxy_docker_ansible_generated_vars_dir}}/docker_ports_and_volumes.yml"
     src: "docker_ports_and_volumes.yml.j2"
     force: yes
   become: no
@@ -26,11 +26,11 @@
 #  ansible_connection: local
 
 - name: Include port and volume settings
-  include_vars: "{{ansible_generated_vars_dir}}/docker_ports_and_volumes.yml"
+  include_vars: "{{galaxy_docker_ansible_generated_vars_dir}}/docker_ports_and_volumes.yml"
 
 - name: Show docker published ports
   debug:
-    var: docker_published_ports
+    var: galaxy_docker_published_ports
     verbosity: 1
 
 - name: Show volumes
@@ -41,17 +41,17 @@
 - name: Update docker environment file
   template:
     src: docker_environment_dict.j2
-    dest: "{{docker_environment_file_location}}"
+    dest: "{{galaxy_docker_environment_file_location}}"
     mode: 0600
 
 - name: Restart the docker container
   docker_container:
-    env_file: "{{docker_environment_file_location}}"
+    env_file: "{{galaxy_docker_environment_file_location}}"
     volumes: "{{docker_mounted_volumes}}"
-    image: "{{docker_image}}"
-    name: "{{docker_container_name}}"
-    hostname: "{{docker_container_hostname}}"
-    published_ports: "{{docker_published_ports}}"
+    image: "{{galaxy_docker_docker_image}}"
+    name: "{{galaxy_docker_container_name}}"
+    hostname: "{{galaxy_docker_container_hostname}}"
+    published_ports: "{{galaxy_docker_published_ports}}"
     state: started
     restart: yes
     recreate: yes
@@ -60,4 +60,4 @@
 - name: remove docker environment file
   file:
     state: absent
-    path: "{{docker_environment_file_location}}"
+    path: "{{galaxy_docker_environment_file_location}}"

@@ -20,4 +20,4 @@
     crypt_scheme: sha512_crypt #Other secure choices: https://passlib.readthedocs.io/en/stable/narr/quickstart.html#recommended-hashes
     name: "{{galaxy_report_user}}"
     password: "{{galaxy_report_password}}"
-    path: "{{docker_export_location}}/reports_htpasswd"
+    path: "{{galaxy_docker_export_location}}/reports_htpasswd"

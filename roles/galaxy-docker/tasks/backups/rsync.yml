@@ -24,7 +24,7 @@
     compression_level: "{{item.compression_level}}"
     delete: "{{item.delete}}"
   with_items:
-    - "{{backup_galaxy_rsync_settings}}"
+    - "{{galaxy_docker_backup_database_rsync_configuration}}"
 
 - name: generate_ssh_key
   user:
@@ -33,16 +33,16 @@
 
 - name: copy public key of backup user to ansible host
   fetch:
-    dest: "{{ssh_dir}}/{{galaxy_docker_docker_user}}_public-key/id_rsa.pub"
+    dest: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_docker_user}}_public-key/id_rsa.pub"
     flat: yes
-    src: "/home/{{galaxy_docker_docker_user}}/{{backup_ssh_key_file}}.pub"
+    src: "/home/{{galaxy_docker_docker_user}}/{{galaxy_docker_backup_rsync_ssh_key_file}}.pub"
     validate_checksum: yes
 
 - name: Add remote backup server to the known_hosts file
   known_hosts:
-    name: "{{backup_galaxy_rsync_settings.host}}"
+    name: "{{galaxy_docker_backup_database_rsync_configuration.host}}"
     state: present
-    key: "{{backup_galaxy_rsync_settings.host}} {{backup_galaxy_rsync_settings.host_public_key}}"
+    key: "{{galaxy_docker_backup_database_rsync_configuration.host}} {{galaxy_docker_backup_database_rsync_configuration.host_public_key}}"
 #    hash_host: True
 
 - name: Hash known_hosts file.
@@ -64,4 +64,4 @@
     minute: "{{item.cron.minute | default(omit)}}"
     special_time: "{{item.cron.special_time | default(omit)}}"
   with_items:
-    - "{{backup_galaxy_rsync_settings}}"
+    - "{{galaxy_docker_backup_database_rsync_configuration}}"

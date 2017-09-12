@@ -11,7 +11,7 @@
 
 - name: Remove docker container before migrating
   docker_container:
-    name: "{{docker_container_name}}"
+    name: "{{galaxy_docker_container_name}}"
     state: absent
     keep_volumes: True
 
@@ -26,24 +26,24 @@
 
 - name: delete .distribution_config folder
   docker_container:
-    volumes: "{{docker_export_location}}:/export/"
-    image: "{{docker_image}}"
-    name: "{{docker_container_name}}"
+    volumes: "{{galaxy_docker_export_location}}:/export/"
+    image: "{{galaxy_docker_docker_image}}"
+    name: "{{galaxy_docker_container_name}}"
     state: started
     command: bash -c "rm -rf /export/.distribution_config"
   when: not galaxy_docker_test_upgrade
 
 - name: Start docker container
   docker_container:
-    volumes: "{{docker_export_location}}:/export/"
-    image: "{{docker_image}}"
-    name: "{{docker_container_name}}"
+    volumes: "{{galaxy_docker_export_location}}:/export/"
+    image: "{{galaxy_docker_docker_image}}"
+    name: "{{galaxy_docker_container_name}}"
     state: started
     command: "/usr/bin/startup"
     detach: True
 
 - name: Check if postgres is online
-  command: "docker exec {{docker_container_name}} service postgresql status"
+  command: "docker exec {{galaxy_docker_container_name}} service postgresql status"
   register: result
   until: '"online" in result.stdout'
   retries: 20
@@ -51,9 +51,9 @@
 - name: upgrade the database on the export location
   command: "docker exec {{name}} {{command}}"
   vars:
-    volumes: "{{docker_export_location}}:/export/"
-    image: "{{docker_image}}"
-    name: "{{docker_container_name}}"
+    volumes: "{{galaxy_docker_export_location}}:/export/"
+    image: "{{galaxy_docker_docker_image}}"
+    name: "{{galaxy_docker_container_name}}"
     state: started
     command: "bash -c 'bash $GALAXY_ROOT/manage_db.sh upgrade'"
   register: migration_result
@@ -65,7 +65,7 @@
 
 - name: Stop docker container
   docker_container:
-    name: "{{docker_container_name}}"
+    name: "{{galaxy_docker_container_name}}"
     state: stopped
 
 - include: add_new_config.yml

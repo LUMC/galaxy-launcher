@@ -12,7 +12,7 @@
 set -eu -o pipefail
 
 timestamp(){
-{{cronbackupdb_log_timestamp}}
+{{galaxy_docker_backup_cron_log_timestamp}}
 }
 
 echo "$(timestamp) === START RSYNCING BACKUP DATA ==="

@@ -15,8 +15,8 @@ This role consists of several task files each of which can be included by settin
 Click on the task to get more information
 
 - [Install docker](installdocker.md). (installdocker=true)
-- [Import an existing database](importdb.md). (importdb=true)
-- [Set galaxy's welcome page](galaxywelcome.md). (galaxywelcome=true)
+- [Import an existing database](galaxy_docker_import_database.md). (galaxy_docker_import_database=true)
+- [Set galaxy's welcome page](galaxy_docker_template_welcome.md). (galaxy_docker_template_welcome=true)
 - [Set the required nginx settings](nginxsettings.md). (nginxsettings=true)
 - Run jdpauphant.nginx role when (ansible_role_nginx=true)
 - [Start up a galaxy instance](rundockergalaxy.md). (rundockergalaxy=true)
@@ -39,18 +39,18 @@ Role Variables
 Variable | Function | Default
 ---|---|---
 galaxy_docker_container_database_name | The name of the database in the container | galaxy
-docker_image |The docker image that is used | bgruening/galaxy-stable.
+galaxy_docker_docker_image |The docker image that is used | bgruening/galaxy-stable.
 docker_user | The user without sudo rights that runs the container. | galaxy
 db_export_location | the folder within the /export/ location where the db is dumped to | postgresql
-docker_environment_file_location | where the environment file is stored on the host | home/{{docker_user}}/galaxydocker.env
-docker_container_name | The name of the running container | galaxy
+galaxy_docker_environment_file_location | where the environment file is stored on the host | home/{{docker_user}}/galaxydocker.env
+galaxy_docker_container_name | The name of the running container | galaxy
 backup_db_file | The name of the dump file. This is a temporary file | "galaxydb_backup-$(TZ='UTC' date + '%Z%Y%m%dT%H%M%S')"
-cronbackupdb_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"
-backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
-welcome_dir | the directory containing the welcome files. | {{playbook_dir}}/ files/{{inventory_hostname}}/welcome.html
+galaxy_docker_backup_cron_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"
+galaxy_docker_backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
+galaxy_docker_welcome_dir | the directory containing the welcome files. | {{playbook_dir}}/ files/{{inventory_hostname}}/welcome.html
 installdocker_default_location | Where the docker images are stored and run | /var/lib/docker
-galaxy_web_port | The port on which galaxy will be exposed to localhost. |8080
-public_galaxy_web_port | The port on which galaxy will be hosted. |80
+galaxy_docker_web_port | The port on which galaxy will be exposed to localhost. |8080
+galaxy_docker_web_port_public | The port on which galaxy will be hosted. |80
 
 ### Role vars
 
@@ -68,26 +68,26 @@ These variables should be defined by the user.
 
 Variable | Function
 ---|---
-docker_container_name | The name of the docker container
-docker_export_location | The export location for the galaxy container
+galaxy_docker_container_name | The name of the docker container
+galaxy_docker_export_location | The export location for the galaxy container
 galaxy_docker_backup_location | The location where the backups and the logs will be stored
-backupdb_cron_jobs | dictionary with al the settings for the cron jobs
-galaxy_web_urls | Nginx reroutes traffic coming from these urls to the galaxy server. You should put the registered domain name here.
+galaxy_docker_backup_database_cron_jobs | dictionary with al the settings for the cron jobs
+galaxy_docker_web_urls | Nginx reroutes traffic coming from these urls to the galaxy server. You should put the registered domain name here.
 max_upload_size | The maximum sizes of files that can be uploaded.
-public_galaxy_web_port | default 80. The web port for the nginx server.
-galaxy_web_port | default 8080. This port is only exposed to localhost and not accessible from the web.
-galaxy_ftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
-galaxy_sftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
+galaxy_docker_web_port_public | default 80. The web port for the nginx server.
+galaxy_docker_web_port | default 8080. This port is only exposed to localhost and not accessible from the web.
+galaxy_docker_ftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
+galaxy_docker_sftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
 galaxy_admin_user | e-mail address of the admin user. This variable is obligatory
 galaxy_master_api_key | The master api key. Always set this value to something unique.
 galaxy_brand | The galaxy brand name
 galaxy_report_user | The user to access the reports section.
 galaxy_report_password | The password to access the reports section.
-optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bjgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
+galaxy_docker_optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bjgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
 
 ### Examples for dictionary variables
 ```YAML
-backupdb_cron_jobs:  
+galaxy_docker_backup_database_cron_jobs:  
   daily: # The key is the "name" of the cron job  
     description: "Description of the cron job"  
     timestamp: "-%Z%Y%m%dT%H%M%S" # Timestamp uses the "date" function. Check date --help on how to use the timestamp  
@@ -122,7 +122,7 @@ rsync_settings:
 ```
 
 ```YAML
-ldap_settings:
+galaxy_docker_ldap_settings:
   server: "ldap://dc1.example.com"
   search_base: "dc=dc1,dc=example,dc=com"
   search_user: "ldapsearch"
@@ -146,7 +146,7 @@ Example Playbook
    	galaxy_brand: "my awesome galaxy brand"
 
    roles:
-         - { role: galaxydocker, installdocker: True,  nginxsettings: True, ansible_role_nginx: True, galaxyfirewall: True, rundockergalaxy: True, installtools: True}
+         - { role: galaxydocker, installdocker: True,  nginxsettings: True, ansible_role_nginx: True, galaxy_docker_firewall: True, rundockergalaxy: True, installtools: True}
 ```
 License
 -------

@@ -1,6 +1,6 @@
-backup_rsync_remote_host: False
+galaxy_docker_backup_rsync_remote_host: False
 
-backupdb_cron_jobs:
+galaxy_docker_backup_database_cron_jobs:
   5minutely:
     description: "lots of backups for testing"
     timestamp: "-%Z%Y%m%dT%H%M%S"
@@ -11,7 +11,7 @@ backupdb_cron_jobs:
       minute: "*/5"
 
 #Rsync settings
-backup_rsync_settings:
+galaxy_docker_backup_database_rsync_settings:
   dest: /home/galaxy_docker/galaxy_remote_backups
   host: 127.0.0.1
   host_public_key: "ssh-rsa {{ansible_ssh_host_key_rsa_public}}"

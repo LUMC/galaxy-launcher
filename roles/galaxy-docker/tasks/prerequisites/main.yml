@@ -26,11 +26,11 @@
   when: galaxy_docker_create_export_folder
 
 - include: nginxsettings.yml
-  when: nginxsettings
+  when: galay_docker_nginx_settings
 
 - include_role:
     name: jdauphant.nginx
   when: ansible_role_nginx
 
 - include: galaxyfirewall.yml
-  when: galaxyfirewall
+  when: galaxy_docker_firewall

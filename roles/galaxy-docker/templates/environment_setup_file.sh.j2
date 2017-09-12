@@ -1,7 +1,7 @@
 #!/bin/bash
-GALAXY_VIRTUAL_ENV={{galaxy_cluster_virtualenv | default('/galaxy_venv')}}
-GALAXY_ROOT_DIR={{docker_export_location}}/galaxy-central
-GALAXY_LIB={{docker_export_location}}/galaxy-central/lib
+GALAXY_VIRTUAL_ENV={{galaxy_docker_cluster_virtualenv | default('/galaxy_venv')}}
+GALAXY_ROOT_DIR={{galaxy_docker_export_location}}/galaxy-central
+GALAXY_LIB={{galaxy_docker_export_location}}/galaxy-central/lib
 export GALAXY_VIRTUAL_ENV
 export GALAXY_ROOT_DIR
 export GALAXY_LIB

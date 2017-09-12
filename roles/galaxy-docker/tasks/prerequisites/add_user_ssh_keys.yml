@@ -55,7 +55,7 @@
 - name: Copy key to ansible host
   synchronize:
     mode: pull
-    dest: "{{ssh_dir}}/"
+    dest: "{{galaxy_docker_ssh_dir}}/"
     src: "{{galaxy_docker_remote_key_dir}}/{{item}}"
     perms: yes
   vars:

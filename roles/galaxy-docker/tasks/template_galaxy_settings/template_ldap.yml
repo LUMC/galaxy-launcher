@@ -1,15 +1,15 @@
 ---
-# tasks file for addldap
+# tasks file for galaxy_docker_template_ldap
 # This task writes an auth.conf.xml file to the galaxy settings directory
 # and installs the python ldap module in the container's virtual environment.
 - name: Show ldap variables
   debug:
-    var: ldap
+    var: galaxy_docker_ldap_config
     verbosity: 1
 
 - name: Create auth_conf.xml file in config folder
   template:
-    dest: "{{docker_export_location}}/galaxy-central/config/auth_conf.xml"
+    dest: "{{galaxy_docker_export_location}}/galaxy-central/config/auth_conf.xml"
     force: yes
     src: auth_conf.xml.j2
     mode: 0700

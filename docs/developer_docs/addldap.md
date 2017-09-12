@@ -16,7 +16,7 @@ scripts.
 Role Variables
 --------------
 
-ldap_settings is a variable that is set by the user. ldap_defaults is in the role. These are merged (with defaults overwritten)
+galaxy_docker_ldap_settings is a variable that is set by the user. galaxy_docker_ldap_defaults is in the role. These are merged (with defaults overwritten)
 in ldap. ldap is a dictionary with the following keys:
 
 ###Default keys
@@ -41,8 +41,8 @@ search_password | ldapsearch's password
 #### Common galaxy-docker-ansible variables
 Variable | Function
 ---|---
-docker_container_name | The name of the docker container
-docker_export_location | The export location for the galaxy container
+galaxy_docker_container_name | The name of the docker container
+galaxy_docker_export_location | The export location for the galaxy container
 
 
 Author Information

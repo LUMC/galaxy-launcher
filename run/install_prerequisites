@@ -14,7 +14,7 @@ galaxy_docker_prerequisites: True
 galaxy_docker_install_packages: True
 galaxy_docker_create_export_folder: True
 installdocker: True
-nginxsettings: True
+galay_docker_nginx_settings: True
 ansible_role_nginx: True
-galaxyfirewall: True
+galaxy_docker_firewall: True
 galaxy_docker_add_users: True

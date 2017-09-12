@@ -19,14 +19,14 @@
 
 - name: Create test location directory
   file:
-    path: "{{test_upgrade_settings.docker_export_location}}"
+    path: "{{galaxy_docker_upgrade_test_settings.galaxy_docker_export_location}}"
     state: "directory"
-    mode: "{{galaxy_docker_export_location_mode}}"
+    mode: "{{galaxy_galaxy_docker_export_location_mode}}"
 
 - name: create subfolders
   file:
     state: directory
-    path: "{{test_upgrade_settings.docker_export_location}}/{{item.dest}}"
+    path: "{{galaxy_docker_upgrade_test_settings.galaxy_docker_export_location}}/{{item.dest}}"
     mode: "{{item.mode | default(omit)}}"
   with_items:
     - src: "galaxy-central/config"
@@ -38,8 +38,8 @@
 - name: Copy running instance files to test location
   command: "cp -p -R {{src}} {{dest}}"
   vars:
-    src: "{{docker_export_location}}/{{item.src}}"
-    dest: "{{test_upgrade_settings.docker_export_location}}/{{item.dest}}"
+    src: "{{galaxy_docker_export_location}}/{{item.src}}"
+    dest: "{{galaxy_docker_upgrade_test_settings.galaxy_docker_export_location}}/{{item.dest}}"
   with_items:
     - src: "galaxy-central/config"
       dest: "galaxy-central"
@@ -54,7 +54,7 @@
 - name: Set test upgrade parameters for the docker container
   set_fact:
     "{{item.key}}" : "{{item.value}}"
-  with_dict: "{{test_upgrade_settings}}"
+  with_dict: "{{galaxy_docker_upgrade_test_settings}}"
 
 - name: Set container defaults succesfull?
   debug:

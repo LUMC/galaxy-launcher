@@ -12,8 +12,8 @@
 - name: Copy running instance files to test location
   command: "cp -p -R {{src}} {{dest}}"
   vars:
-    src: "{{docker_export_location}}/{{item.src}}"
-    dest: "{{test_upgrade_settings.docker_export_location}}/{{item.dest}}"
+    src: "{{galaxy_docker_export_location}}/{{item.src}}"
+    dest: "{{galaxy_docker_upgrade_test_settings.galaxy_docker_export_location}}/{{item.dest}}"
   with_items:
     - src: "postgresql"
       dest: ""

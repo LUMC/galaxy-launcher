@@ -1,7 +1,7 @@
 - name: Create config folder
   docker_container:
-    volumes: "{{docker_export_location}}:/export/"
-    image: "{{docker_image}}"
+    volumes: "{{galaxy_docker_export_location}}:/export/"
+    image: "{{galaxy_docker_docker_image}}"
     name: "export_folder_creator_{{ansible_date_time.epoch}}"
     state: started
     user: "{{galaxy_docker_web_user_id}}"

@@ -47,7 +47,7 @@ ansible-playbook main.yml -e "host=HOSTNAME run=addldap"
 
 If bgruening updates the docker image to a newer version than this can be tested as follows:
 1. Open the `host_vars/HOSTNAME/upgrade.settings` file
-2. Set the settings for the test instance in the test_upgrade_settings dictionary. Make sure the port mappings don't overlap with the running instance. Additional settings can be added to the dictionary.
+2. Set the settings for the test instance in the galaxy_docker_upgrade_test_settings dictionary. Make sure the port mappings don't overlap with the running instance. Additional settings can be added to the dictionary.
 3. Run `ansible-playbook main.yml -e "host=HOSTNAME run=testupgrade"`
 4. Check if the galaxy instance is running properly and if history is kept.
 (Tools won't run and data will not be included)
@@ -62,10 +62,10 @@ ansible-playbook main.yml -e "host=HOSTNAME run=deletetestupgrade"
 ## Upgrade the running instance to a new image
 
 1. Make sure there are no jobs running on your instance. As an admin you can hold all new jobs so they will wait until the image is upgraded.
-2. Update the version tag of docker_image in `host_vars\HOSTNAME\docker.settings`
+2. Update the version tag of galaxy_docker_docker_image in `host_vars\HOSTNAME\docker.settings`
 3. run `ansible-playbook main.yml -e "host=HOSTNAME run=upgrade"`
 
-There is a setting overwrite_config_files in migrate.settings. Default is False.
+There is a setting galaxy_docker_upgrade_overwrite_config_files in migrate.settings. Default is False.
 If set to True this will overwrite all your config files with the .distribution_config files.
 
 ## Backing up the database
@@ -87,5 +87,5 @@ ansible-playbook main.yml -e "host=HOSTNAME run=extractdb"
 + removes the firewall exception and removes the profile
 + removes the cron jobs
 
-If `delete_files=True` is added then it will also delete the export folder
-If `delete_backup_files=True` is added then it will also delete the backup folder.
+If `galaxy_docker_delete_files=True` is added then it will also delete the export folder
+If `galaxy_docker_delete_backup_files=True` is added then it will also delete the backup folder.
