@@ -37,5 +37,5 @@ The `galaxy_docker_extra_volumes` variable allows you to mount extra volumes to 
 
 The `galaxy_docker_extra_ports` variable allows you to open extra ports on your container.
 
-The `galaxy_docker_custom_image_lines` variable allows you to add extra lines to the docker file before the custom image for your cluster is build. You can add lines such as `run apt get install sssd` or `add sssd.conf /etc/sssd/sssd.conf`. You can add files to
+The `galaxy_docker_custom_image_lines` variable allows you to add extra lines to the docker file before the custom image for your cluster is build. You can add lines such as `RUN apt get install sssd` or `ADD sssd.conf /etc/sssd/sssd.conf`. You can add files to
 `files/HOSTNAME/docker_custom_image` if you want to use this functionality.
