@@ -49,11 +49,11 @@ galaxy_docker_docker_image_changed_uids: "galaxy_stable_changed_uids:{{bgruening
 # firewall, nginx and ports
 ufw_profile: galaxy
 galaxy_docker_test_ufw_profile: testgalaxy
-public_galaxy_web_port: 80
-galaxy_web_port: 8080
+galaxy_docker_web_port_public: 80
+galaxy_docker_web_port: 8080
 galaxy_docker_provision_port: 8008
-galaxy_docker_expose_ftp_port: False
-galaxy_docker_expose_sftp_port: False
+galaxy_docker_ftp_port_expose: False
+galaxy_docker_sftp_port_expose: False
 # Bgruening container defaults
 galaxy_docker_container_database_name: galaxy
 galaxy_docker_container_database_username: "galaxy"

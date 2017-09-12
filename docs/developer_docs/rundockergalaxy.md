@@ -18,6 +18,6 @@ galaxy_docker_docker_image |The docker image that is used. The default is bgruen
 docker_environment_file_location | where the environment file is stored on the host.
 galaxy_docker_export_location | Where the galaxy database will be exported to (Default = /home/docker_user)
 galaxy_docker_container_name | The name of the running container (default = galaxy)
-galaxy_web_port | The port on which galaxy will be hosted. (Default 8080)
-galaxy_ftp_port | (Default = 8021)
-galaxy_sftp_port | (Default = 8022)
+galaxy_docker_web_port | The port on which galaxy will be hosted. (Default 8080)
+galaxy_docker_ftp_port | (Default = 8021)
+galaxy_docker_sftp_port | (Default = 8022)

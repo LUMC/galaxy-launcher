@@ -21,7 +21,7 @@
 
 - name: check if galaxy has started
   uri:
-    url: "http://localhost:{{galaxy_web_port}}"
+    url: "http://localhost:{{galaxy_docker_web_port}}"
     return_content: yes
   register: result
   until: 'galaxy_brand in result.content'

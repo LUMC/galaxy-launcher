@@ -14,10 +14,10 @@ Role Variables
 
 variable | function
 --- | ---
-galaxy_web_port | The internally exposed web port. Default: 8080
+galaxy_docker_web_port | The internally exposed web port. Default: 8080
 galaxy_public_web_port | The externally exposed web port. Default: 80
 max_upload_size | specifies the maximum upload size. Default: 50g
-galaxy_web_urls | a list of web urls  (server aliases)
+galaxy_docker_web_urls | a list of web urls  (server aliases)
 
 Dependencies
 ------------

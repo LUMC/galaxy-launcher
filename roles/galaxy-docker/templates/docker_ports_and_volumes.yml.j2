@@ -14,14 +14,14 @@
 # galaxy-docker-ansible generates these values to run the docker container.
 
 docker_published_ports:
-{% if galaxy_web_port is defined and galaxy_web_port !='' %}
-  - "127.0.0.1:{{galaxy_web_port}}:80"
+{% if galaxy_docker_web_port is defined and galaxy_docker_web_port !='' %}
+  - "127.0.0.1:{{galaxy_docker_web_port}}:80"
   {% endif %}
-  {% if galaxy_ftp_port is defined and galaxy_ftp_port !='' %}
-  - "{% if not galaxy_docker_expose_ftp_port %}127.0.0.1:{% endif %}{{galaxy_ftp_port}}:21"
+  {% if galaxy_docker_ftp_port is defined and galaxy_docker_ftp_port !='' %}
+  - "{% if not galaxy_docker_ftp_port_expose %}127.0.0.1:{% endif %}{{galaxy_docker_ftp_port}}:21"
   {% endif %}
-  {% if galaxy_sftp_port is defined and galaxy_sftp_port !='' %}
-  - "{% if not galaxy_docker_expose_sftp_port %}127.0.0.1:{% endif %}{{galaxy_sftp_port}}:22"
+  {% if galaxy_docker_sftp_port is defined and galaxy_docker_sftp_port !='' %}
+  - "{% if not galaxy_docker_sftp_port_expose %}127.0.0.1:{% endif %}{{galaxy_docker_sftp_port}}:22"
   {% endif %}
   {% if galaxy_docker_extra_ports is defined and galaxy_docker_extra_ports !='' %}
   {% for extra_port in galaxy_docker_extra_ports %}

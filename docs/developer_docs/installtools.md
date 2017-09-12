@@ -19,7 +19,7 @@ The role:
 
 variable | function | default
 --|--|--
-galaxy_web_port | the port to connect to on localhost | 8080
+galaxy_docker_web_port | the port to connect to on localhost | 8080
 galaxy_docker_tool_dir | Location where yaml files are temporarily stored | /tmp/galaxy_tool_lists
 galaxy_docker_tool_list_dir | The tool lists directory on the ansible control host | "{{playbook_dir}}/files/{{inventory_hostname}}/tools"
 galaxy_docker_ephemeris_package | The pip package name of ephemeris | ephemeris

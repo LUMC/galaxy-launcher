@@ -45,12 +45,12 @@ galaxy_docker_optional_environment_settings | This is a YAML dictionary that tak
 
 Variable | Function
 ---|---
-galaxy_web_urls | Nginx reroutes traffic coming from these urls to the galaxy server. You should put the registered domain name here.
+galaxy_docker_web_urls | Nginx reroutes traffic coming from these urls to the galaxy server. You should put the registered domain name here.
 max_upload_size | The maximum sizes of files that can be uploaded.
-public_galaxy_web_port | default 80. The web port for the nginx server.
-galaxy_web_port | default 8080. This port is only exposed to localhost and not accessible from the web.
-galaxy_ftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
-galaxy_sftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
+galaxy_docker_web_port_public | default 80. The web port for the nginx server.
+galaxy_docker_web_port | default 8080. This port is only exposed to localhost and not accessible from the web.
+galaxy_docker_ftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
+galaxy_docker_sftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
 
 It is not recommended to touch the nginx settings unless you are familiar with configuring [ansible-role-nginx](https://github.com/jdauphant/ansible-role-nginx).
 

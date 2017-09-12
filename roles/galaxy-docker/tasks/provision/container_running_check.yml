@@ -55,7 +55,7 @@
 
 - name: Use public web port for provisioning when running production container
   set_fact:
-    galaxy_docker_provision_port: "{{galaxy_web_port}}"
+    galaxy_docker_provision_port: "{{galaxy_docker_web_port}}"
   when:
     - production_container_running is defined
     - production_container_running.stdout | bool

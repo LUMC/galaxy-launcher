@@ -47,8 +47,8 @@ cronbackupdb_log_timestamp | This is a date command for the timestamp. | "TZ='UT
 backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
 galaxy_docker_welcome_dir | the directory containing the welcome files. | {{playbook_dir}}/ files/{{inventory_hostname}}/welcome.html
 installdocker_default_location | Where the docker images are stored and run | /var/lib/docker
-galaxy_web_port | The port on which galaxy will be exposed to localhost. |8080
-public_galaxy_web_port | The port on which galaxy will be hosted. |80
+galaxy_docker_web_port | The port on which galaxy will be exposed to localhost. |8080
+galaxy_docker_web_port_public | The port on which galaxy will be hosted. |80
 
 ### Role vars
 
@@ -70,12 +70,12 @@ galaxy_docker_container_name | The name of the docker container
 galaxy_docker_export_location | The export location for the galaxy container
 galaxy_docker_backup_location | The location where the backups and the logs will be stored
 galaxy_docker_backup_database_cron_jobs | dictionary with al the settings for the cron jobs
-galaxy_web_urls | Nginx reroutes traffic coming from these urls to the galaxy server. You should put the registered domain name here.
+galaxy_docker_web_urls | Nginx reroutes traffic coming from these urls to the galaxy server. You should put the registered domain name here.
 max_upload_size | The maximum sizes of files that can be uploaded.
-public_galaxy_web_port | default 80. The web port for the nginx server.
-galaxy_web_port | default 8080. This port is only exposed to localhost and not accessible from the web.
-galaxy_ftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
-galaxy_sftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
+galaxy_docker_web_port_public | default 80. The web port for the nginx server.
+galaxy_docker_web_port | default 8080. This port is only exposed to localhost and not accessible from the web.
+galaxy_docker_ftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
+galaxy_docker_sftp_port | By default this variable is not set and port is unaccessible. This port is only exposed to localhost and not accessible from the web.
 galaxy_admin_user | e-mail address of the admin user. This variable is obligatory
 galaxy_master_api_key | The master api key. Always set this value to something unique.
 galaxy_brand | The galaxy brand name
