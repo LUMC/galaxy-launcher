@@ -12,7 +12,7 @@
 # this task installs ephemeris. It is used for installing tools and genomes.
 
 - name: register whether the production container is running
-  command: "docker inspect -f {{inspect}} {{docker_container_name}}"
+  command: "docker inspect -f {{inspect}} {{galaxy_docker_container_name}}"
   vars:
     inspect: !unsafe '{{.State.Running}}'
   register: production_container_running

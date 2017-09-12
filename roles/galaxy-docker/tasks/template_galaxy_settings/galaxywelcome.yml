@@ -17,7 +17,7 @@
 
 - name: Search old "welcome" files in the export folder
   find:
-    paths: "{{docker_export_location}}"
+    paths: "{{galaxy_docker_export_location}}"
     patterns: "(?i)welcome.*"
     use_regex: True
     hidden: True
@@ -55,7 +55,7 @@
 - name: Copy welcome files
   copy:
     mode: 0644
-    dest: "{{docker_export_location}}/{{item.path | basename | lower}}"
+    dest: "{{galaxy_docker_export_location}}/{{item.path | basename | lower}}"
     src: "{{item.path}}"
   with_items:
     - "{{new_welcome_files.files}}"

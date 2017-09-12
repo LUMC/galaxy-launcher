@@ -19,7 +19,7 @@
   file:
     path: "{{galaxy_docker_cluster_virtualenv}}"
     state: directory
-    mode: "{{galaxy_docker_export_location_mode}}"
+    mode: "{{galaxy_galaxy_docker_export_location_mode}}"
   when: galaxy_docker_cluster_virtualenv is defined
 
 - name: Create virtualenv
@@ -30,7 +30,7 @@
 
 - name: Install pinned-requirements
   pip:
-    requirements: "{{docker_export_location}}/galaxy-central/lib/galaxy/dependencies/pinned-requirements.txt"
+    requirements: "{{galaxy_docker_export_location}}/galaxy-central/lib/galaxy/dependencies/pinned-requirements.txt"
     virtualenv: "{{galaxy_docker_cluster_virtualenv}}"
     extra_args: --index-url https://wheels.galaxyproject.org/simple --only-binary all
   when: galaxy_docker_cluster_virtualenv is defined
@@ -49,7 +49,7 @@
 
 - name: Create job_conf.xml
   template:
-    dest: "{{docker_export_location}}/galaxy-central/config/job_conf.xml"
+    dest: "{{galaxy_docker_export_location}}/galaxy-central/config/job_conf.xml"
     src: "job_conf.xml.j2"
     force: yes
 
@@ -59,11 +59,11 @@
     backup: yes
     state: present
     regexp: '(<toolbox tool_path=")(.*)(">)'
-    line: '\1{{docker_export_location}}/shed_tools\3'
-    path: "{{docker_export_location}}/galaxy-central/config/shed_tool_conf.xml"
+    line: '\1{{galaxy_docker_export_location}}/shed_tools\3'
+    path: "{{galaxy_docker_export_location}}/galaxy-central/config/shed_tool_conf.xml"
 
 - name: Create environment setup file
   template:
-    dest: "{{docker_export_location}}/environment_setup_file.sh"
+    dest: "{{galaxy_docker_export_location}}/environment_setup_file.sh"
     src: "environment_setup_file.sh.j2"
     force: yes

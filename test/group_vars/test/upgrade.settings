@@ -1,9 +1,9 @@
 overwrite_config_files: False
 
 test_upgrade_settings:
-  docker_image: "bgruening/galaxy-stable:17.05"
-  docker_container_name: test_upgrade_galaxy
-  docker_export_location: "/data/galaxy/test_upgrade_galaxy/galaxy_storage"
+  galaxy_docker_docker_image: "bgruening/galaxy-stable:17.05"
+  galaxy_docker_container_name: test_upgrade_galaxy
+  galaxy_docker_export_location: "/data/galaxy/test_upgrade_galaxy/galaxy_storage"
   ufw_profile: test_upgrade_galaxy
   galaxy_web_port: 8888
   public_galaxy_web_port: 8880

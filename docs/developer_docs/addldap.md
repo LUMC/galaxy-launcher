@@ -41,8 +41,8 @@ search_password | ldapsearch's password
 #### Common galaxy-docker-ansible variables
 Variable | Function
 ---|---
-docker_container_name | The name of the docker container
-docker_export_location | The export location for the galaxy container
+galaxy_docker_container_name | The name of the docker container
+galaxy_docker_export_location | The export location for the galaxy container
 
 
 Author Information

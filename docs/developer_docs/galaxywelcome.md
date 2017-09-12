@@ -11,7 +11,7 @@ Role Variables
 
 variable | description | default
 ---|---|---
-docker_export_location | The location where all galaxy files and the database is stored |
+galaxy_docker_export_location | The location where all galaxy files and the database is stored |
 welcome_dir | the directory containing the welcome files. | {{playbook_dir}}/ files/{{inventory_hostname}}/welcome.html
 
 Dependencies

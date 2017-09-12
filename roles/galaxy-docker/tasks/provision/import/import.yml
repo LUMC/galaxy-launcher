@@ -27,17 +27,17 @@
 
 - name: Make sure the docker container is started
   docker_container:
-    name: "{{docker_container_name}}"
+    name: "{{galaxy_docker_container_name}}"
     volumes:
-      - "{{docker_export_location}}:/export/"
+      - "{{galaxy_docker_export_location}}:/export/"
       - "{{galaxy_docker_empty_database_script}}:/database_scripts/new_empty_db"
       - "{{galaxy_docker_imported_db_location}}:/database"
-    image: "{{docker_image}}"
+    image: "{{galaxy_docker_docker_image}}"
     state: started
     command: /usr/bin/startup
 
 - name: Check if postgres is online
-  command: "docker exec {{docker_container_name}} service postgresql status"
+  command: "docker exec {{galaxy_docker_container_name}} service postgresql status"
   register: result
   until: '"online" in result.stdout'
   retries: 20
@@ -45,13 +45,13 @@
 - name: stop galaxy service in container
   command: "docker exec {{name}} {{command}}"
   vars:
-    name: "{{docker_container_name}}"
+    name: "{{galaxy_docker_container_name}}"
     command: "supervisorctl stop galaxy:*"
 
 - name: Delete old database and create new_empty one
   command: "docker exec -u {{user}} {{name}} {{command}}"
   vars:
-    name: "{{docker_container_name}}"
+    name: "{{galaxy_docker_container_name}}"
     command: "psql -f /database_scripts/new_empty_db"
     user: "{{galaxy_docker_database_user}}"
   register: database_created
@@ -63,13 +63,13 @@
 - name: Import new database in galaxy container
   command: "docker exec -u {{user}} {{name}} {{command}}"
   vars:
-    name: "{{docker_container_name}}"
+    name: "{{galaxy_docker_container_name}}"
     command: "{{galaxy_docker_db_restore_command}} -d {{galaxy_docker_container_database_name}} {{galaxy_docker_db_input_file_flag}} /database/{{galaxy_docker_imported_db}}"
     user: "{{galaxy_docker_web_user}}"
 
 - name: stop container
   docker_container:
-    name: "{{docker_container_name}}"
+    name: "{{galaxy_docker_container_name}}"
     state: stopped
 
 - include: delete_database_file.yml

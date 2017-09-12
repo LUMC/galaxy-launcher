@@ -1,13 +1,13 @@
 installdocker_default_location: "/data/docker"
-docker_image: "cluster-galaxy-stable:17.05"
+galaxy_docker_docker_image: "cluster-galaxy-stable:17.05"
 docker_user: "galaxy"
-docker_export_location: "{{galaxy_docker_shared_cluster_directory}}/galaxy_storage"
-docker_container_name: "galaxy"
-docker_container_hostname: "galaxy-docker"
+galaxy_docker_export_location: "{{galaxy_docker_shared_cluster_directory}}/galaxy_storage"
+galaxy_docker_container_name: "galaxy"
+galaxy_docker_container_hostname: "galaxy-docker"
 
-#docker_extra_volumes:
+#galaxy_docker_extra_volumes:
 # - /tmp/:/tmp/:rw # Use docker CLI-style syntax: /host:/container[:mode]. You can specify a read mode for the mount with either ro or rw.
 
-docker_extra_ports:
+galaxy_docker_extra_ports:
   - "6444:6444"
   - "6445:6445"

@@ -11,7 +11,7 @@
 
 - name: Register whether config folder is already created
   stat:
-    path: "{{docker_export_location}}/galaxy-central/config"
+    path: "{{galaxy_docker_export_location}}/galaxy-central/config"
   register: default_config_folder
   until: default_config_folder.stat.exists
   retries: 10

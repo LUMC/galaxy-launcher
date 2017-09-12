@@ -35,17 +35,17 @@ galaxy_docker_provision_key: admin
 
 # docker defaults
 galaxy_docker_docker_user_groups: docker
-docker_image: bgruening/galaxy-stable
+galaxy_docker_docker_image: bgruening/galaxy-stable
 docker_environment_file_location: "{{galaxy_docker_docker_user_home}}/galaxydocker.env"
-docker_export_location: "/data/galaxy/galaxy_storage"
-galaxy_docker_export_location_mode: "0755" # If not accessible for all users (--x) then postgres does not work.
-docker_container_name: galaxy
+galaxy_docker_export_location: "/data/galaxy/galaxy_storage"
+galaxy_galaxy_docker_export_location_mode: "0755" # If not accessible for all users (--x) then postgres does not work.
+galaxy_docker_container_name: galaxy
 docker_provision_container_name: galaxy-provision
-docker_container_hostname: galaxy-docker
-docker_extra_volumes: ""
+galaxy_docker_container_hostname: galaxy-docker
+galaxy_docker_extra_volumes: ""
 docker_build_dir: "{{galaxy_docker_docker_user_home}}/docker_build/"
 bgruening_galaxy_stable_version: latest
-docker_image_changed_uids: "galaxy_stable_changed_uids:{{bgruening_galaxy_stable_version}}"
+galaxy_docker_docker_image_changed_uids: "galaxy_stable_changed_uids:{{bgruening_galaxy_stable_version}}"
 # firewall, nginx and ports
 ufw_profile: galaxy
 galaxy_docker_test_ufw_profile: testgalaxy
@@ -126,7 +126,7 @@ galaxy_docker_tool_dir: "/tmp/galaxy_tool_lists"
 # defaults for installgenomes
 galaxy_docker_dbkeys_dir: "/tmp/galaxy_dkeys_lists"
 galaxy_docker_genome_copy_links: yes
-galaxy_docker_genomes_dest: "{{docker_export_location}}/genomes"
+galaxy_docker_genomes_dest: "{{galaxy_docker_export_location}}/genomes"
 
 # Ephemeris can be installed from git if extra functionality is needed which is not in the pypi package yet.
 galaxy_docker_ephemeris_repo: "https://github.com/galaxyproject/ephemeris.git"

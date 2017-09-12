@@ -18,7 +18,7 @@ timestamp(){
 echo "$(timestamp) === START {{name.upper()}} BACKUP OF GALAXY ==="
 
 galaxy_docker_database_user="{{galaxy_docker_database_user}}"
-docker_container_name="{{docker_container_name}}"
+galaxy_docker_container_name="{{galaxy_docker_container_name}}"
 galaxy_docker_container_database_name="{{galaxy_docker_container_database_name}}"
 backup_db_location="{{backup_db_location}}"
 backup_db_dump_file="{{backup_db_dump_file}}"
@@ -28,7 +28,7 @@ db_format="{{galaxy_docker_db_format}}"
 echo -n "$(timestamp) Dump the databse to $backup_db_location/$backup_db_dump_file ... "
 touch $backup_db_location/$backup_db_dump_file
 chmod 0600 $backup_db_location/$backup_db_dump_file
-docker exec -u $galaxy_docker_database_user $docker_container_name \
+docker exec -u $galaxy_docker_database_user $galaxy_docker_container_name \
   bash -c "pg_dump $galaxy_docker_container_database_name --format=$db_format -Z $compression_level" >> $backup_db_location/$backup_db_dump_file
 echo "done"
 

@@ -39,11 +39,11 @@ Role Variables
 Variable | Function | Default
 ---|---|---
 galaxy_docker_container_database_name | The name of the database in the container | galaxy
-docker_image |The docker image that is used | bgruening/galaxy-stable.
+galaxy_docker_docker_image |The docker image that is used | bgruening/galaxy-stable.
 docker_user | The user without sudo rights that runs the container. | galaxy
 db_export_location | the folder within the /export/ location where the db is dumped to | postgresql
 docker_environment_file_location | where the environment file is stored on the host | home/{{docker_user}}/galaxydocker.env
-docker_container_name | The name of the running container | galaxy
+galaxy_docker_container_name | The name of the running container | galaxy
 backup_db_file | The name of the dump file. This is a temporary file | "galaxydb_backup-$(TZ='UTC' date + '%Z%Y%m%dT%H%M%S')"
 cronbackupdb_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"
 backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
@@ -68,8 +68,8 @@ These variables should be defined by the user.
 
 Variable | Function
 ---|---
-docker_container_name | The name of the docker container
-docker_export_location | The export location for the galaxy container
+galaxy_docker_container_name | The name of the docker container
+galaxy_docker_export_location | The export location for the galaxy container
 galaxy_docker_backup_location | The location where the backups and the logs will be stored
 galaxy_docker_backup_database_cron_jobs | dictionary with al the settings for the cron jobs
 galaxy_web_urls | Nginx reroutes traffic coming from these urls to the galaxy server. You should put the registered domain name here.

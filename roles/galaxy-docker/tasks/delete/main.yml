@@ -26,7 +26,7 @@
 
 - name: Remove docker container
   docker_container:
-    name: "{{docker_container_name}}"
+    name: "{{galaxy_docker_container_name}}"
     state: absent
 
 - include: delete_export_folder.yml

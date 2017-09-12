@@ -23,18 +23,18 @@ docker_published_ports:
   {% if galaxy_sftp_port is defined and galaxy_sftp_port !='' %}
   - "{% if not galaxy_docker_expose_sftp_port %}127.0.0.1:{% endif %}{{galaxy_sftp_port}}:22"
   {% endif %}
-  {% if docker_extra_ports is defined and docker_extra_ports !='' %}
-  {% for extra_port in docker_extra_ports %}
+  {% if galaxy_docker_extra_ports is defined and galaxy_docker_extra_ports !='' %}
+  {% for extra_port in galaxy_docker_extra_ports %}
   - "{{extra_port}}"
   {% endfor %}
   {% endif %}
 docker_mounted_volumes:
-  - "{{docker_export_location}}:/export/"
+  - "{{galaxy_docker_export_location}}:/export/"
   {% if galaxy_docker_shared_cluster_directory is defined%}
   - "{{galaxy_docker_shared_cluster_directory}}:{{galaxy_docker_shared_cluster_directory}}"
   {% endif %}
-  {% if docker_extra_volumes is defined and docker_extra_volumes !='' %}
-  {% for extra_volume in docker_extra_volumes %}
+  {% if galaxy_docker_extra_volumes is defined and galaxy_docker_extra_volumes !='' %}
+  {% for extra_volume in galaxy_docker_extra_volumes %}
   - "{{extra_volume}}"
   {% endfor %}
   {% endif %}

@@ -48,9 +48,9 @@
   docker_container:
     env_file: "{{docker_environment_file_location}}"
     volumes: "{{docker_mounted_volumes}}"
-    image: "{{docker_image}}"
-    name: "{{docker_container_name}}"
-    hostname: "{{docker_container_hostname}}"
+    image: "{{galaxy_docker_docker_image}}"
+    name: "{{galaxy_docker_container_name}}"
+    hostname: "{{galaxy_docker_container_hostname}}"
     published_ports: "{{docker_published_ports}}"
     state: started
     restart: yes

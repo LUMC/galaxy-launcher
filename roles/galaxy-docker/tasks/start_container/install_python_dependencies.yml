@@ -10,7 +10,7 @@
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 - name: register whether the container is running
-  command: "docker inspect -f {{inspect}} {{docker_container_name}}"
+  command: "docker inspect -f {{inspect}} {{galaxy_docker_container_name}}"
   vars:
     inspect: !unsafe '{{.State.Running}}'
   register: docker_running
@@ -22,14 +22,14 @@
 
 - name: Make sure the docker container is started
   docker_container:
-    name: "{{docker_container_name}}"
+    name: "{{galaxy_docker_container_name}}"
     state: started
   when: not docker_running.stdout | bool
 
 - name: install python_ldap in docker container
   command: "docker exec {{name}} {{command}}"
   vars:
-    name: "{{docker_container_name}}"
+    name: "{{galaxy_docker_container_name}}"
     command: /galaxy_venv/bin/pip install python-ldap -i https://wheels.galaxyproject.org
   register: ldap_python_install
   notify: restart galaxy in container
