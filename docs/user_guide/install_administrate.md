@@ -47,7 +47,7 @@ ansible-playbook main.yml -e "host=HOSTNAME run=addldap"
 
 If bgruening updates the docker image to a newer version than this can be tested as follows:
 1. Open the `host_vars/HOSTNAME/upgrade.settings` file
-2. Set the settings for the test instance in the test_upgrade_settings dictionary. Make sure the port mappings don't overlap with the running instance. Additional settings can be added to the dictionary.
+2. Set the settings for the test instance in the galaxy_docker_upgrade_test_settings dictionary. Make sure the port mappings don't overlap with the running instance. Additional settings can be added to the dictionary.
 3. Run `ansible-playbook main.yml -e "host=HOSTNAME run=testupgrade"`
 4. Check if the galaxy instance is running properly and if history is kept.
 (Tools won't run and data will not be included)
@@ -65,7 +65,7 @@ ansible-playbook main.yml -e "host=HOSTNAME run=deletetestupgrade"
 2. Update the version tag of galaxy_docker_docker_image in `host_vars\HOSTNAME\docker.settings`
 3. run `ansible-playbook main.yml -e "host=HOSTNAME run=upgrade"`
 
-There is a setting overwrite_config_files in migrate.settings. Default is False.
+There is a setting galaxy_docker_upgrade_overwrite_config_files in migrate.settings. Default is False.
 If set to True this will overwrite all your config files with the .distribution_config files.
 
 ## Backing up the database

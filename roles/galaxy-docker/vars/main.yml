@@ -12,7 +12,7 @@
 # vars file for galaxy-docker
 
 # vars for addldap
-ldap: "{{ ldap_defaults | combine(ldap_settings) }}"
+ldap: "{{ ldap_defaults | combine(galaxy_docker_ldap_settings) }}"
 
 # vars for cronbackupdb
 backup_galaxy_rsync_settings: "{{ default_rsync_settings | combine(galaxy_docker_backup_database_rsync_settings)  }}"

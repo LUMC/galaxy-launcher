@@ -13,7 +13,7 @@
   command: "cp -p -R {{src}} {{dest}}"
   vars:
     src: "{{galaxy_docker_export_location}}/{{item.src}}"
-    dest: "{{test_upgrade_settings.galaxy_docker_export_location}}/{{item.dest}}"
+    dest: "{{galaxy_docker_upgrade_test_settings.galaxy_docker_export_location}}/{{item.dest}}"
   with_items:
     - src: "postgresql"
       dest: ""

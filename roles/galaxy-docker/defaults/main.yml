@@ -136,7 +136,7 @@ ephemeris_from_git: False
 
 #defaults for upgrade
 galaxy_docker_test_upgrade: False
-overwrite_config_files: False #Overwrites old config files with new distribution_config files
+galaxy_docker_upgrade_overwrite_config_files: False #Overwrites old config files with new distribution_config files
 
 
 galaxy_docker_run_privileged: True

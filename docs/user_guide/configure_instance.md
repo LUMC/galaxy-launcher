@@ -130,7 +130,7 @@ galaxy_docker_optional_environment_settings:
 ```
 
 In `host_vars/HOSTNAME/ldap.settings`
-set the following keys in ldap_settings:
+set the following keys in galaxy_docker_ldap_settings:
 #### Keys required
 
 Key | Function
@@ -153,7 +153,7 @@ email_suffix | The e-mail - suffix  (@example.com). All users with such an addre
 
 #### Example
 ```YAML
-ldap_settings:
+galaxy_docker_ldap_settings:
   server: "ldap://dc1.example.com"
   search_base: "dc=dc1,dc=example,dc=com"
   search_user: "ldapsearch"

@@ -1,7 +1,7 @@
 - name: Overwrite old config files?
   set_fact:
     no_overwrite: ""
-  when: overwrite_config_files
+  when: galaxy_docker_upgrade_overwrite_config_files
 
 - name: Add new config files
   command: "rsync -p -r {{no_overwrite | default('--ignore-existing')}} {{src}} {{dest}}"

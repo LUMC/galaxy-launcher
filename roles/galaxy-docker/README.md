@@ -120,7 +120,7 @@ rsync_settings:
 ```
 
 ```YAML
-ldap_settings:
+galaxy_docker_ldap_settings:
   server: "ldap://dc1.example.com"
   search_base: "dc=dc1,dc=example,dc=com"
   search_user: "ldapsearch"

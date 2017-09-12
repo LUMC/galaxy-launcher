@@ -16,7 +16,7 @@ scripts.
 Role Variables
 --------------
 
-ldap_settings is a variable that is set by the user. ldap_defaults is in the role. These are merged (with defaults overwritten)
+galaxy_docker_ldap_settings is a variable that is set by the user. ldap_defaults is in the role. These are merged (with defaults overwritten)
 in ldap. ldap is a dictionary with the following keys:
 
 ###Default keys

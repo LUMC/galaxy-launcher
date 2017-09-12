@@ -1,6 +1,6 @@
 - name: Setting new docker container for the test upgrade.
   set_fact:
-    galaxy_docker_container_name: "{{test_upgrade_settings.galaxy_docker_container_name}}"
+    galaxy_docker_container_name: "{{galaxy_docker_upgrade_test_settings.galaxy_docker_container_name}}"
   when: galaxy_docker_test_upgrade
 
 - include: upgrade.yml
