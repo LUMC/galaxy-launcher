@@ -17,10 +17,10 @@
   retries: 10
   delay: 15
 
-- include: template.yml
+- include: template_ldap.yml
   when: galaxy_docker_template_ldap
 
-- include: galaxy_docker_template_welcome.yml
+- include: galaxywelcome.yml
   when: galaxy_docker_template_welcome
 
 - include: setup_cluster_general.yml

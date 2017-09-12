@@ -46,7 +46,7 @@
       line: '\1$GALAXY_USER'
 
 - name: Build docker image with changed_uids
-  galaxy_docker_docker_image:
+  docker_image:
     name: "{{galaxy_docker_docker_image_changed_uids}}"
     path: "{{galaxy_docker_docker_build_dir}}/change_uid/galaxy"
     pull: True

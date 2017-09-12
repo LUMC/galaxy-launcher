@@ -23,7 +23,7 @@
     force: yes
 
 - name: Build custom docker image
-  galaxy_docker_docker_image:
+  docker_image:
     name: "{{galaxy_docker_docker_image}}"
     path: "{{galaxy_docker_docker_build_dir}}/custom_image"
     force: yes
