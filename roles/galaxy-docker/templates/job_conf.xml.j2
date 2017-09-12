@@ -13,16 +13,16 @@
  </handlers>
  <destinations default="cluster">
    <destination id="cluster" runner="sge">
-     <env file="{{galaxy_cluster_virtualenv | default('/galaxy_venv')}}/bin/activate"/>
+     <env file="{{galaxy_docker_cluster_virtualenv | default('/galaxy_venv')}}/bin/activate"/>
      <env id="GALAXY_ROOT_DIR">{{docker_export_location}}/galaxy-central</env>
      <env id="GALAXY_LIB">{{docker_export_location}}/galaxy-central/lib</env>
      <env id="PYTHONPATH">{{docker_export_location}}/galaxy-central/lib</env>
-     {%if cluster_environment_variables is defined %}
-     {% for env_var, env_setting in cluster_environment_variables.iteritems() %}
+     {%if galaxy_docker_cluster_environment_variables is defined %}
+     {% for env_var, env_setting in galaxy_docker_cluster_environment_variables.iteritems() %}
      <env id="{{env_var}}">{{env_setting}}</env>
      {% endfor %}
      {% endif %}
-     <param id="embed_metadata_in_job">{{cluster_embed_metadata_in_job | default ('True')}}</param>
+     <param id="embed_metadata_in_job">{{galaxy_docker_cluster_embed_metadata_in_job | default ('True')}}</param>
    </destination>
    <destination id="local_no_container" runner="local">
      <env file="/galaxy_venv/bin/activate"/>
@@ -32,7 +32,7 @@
    <tool id="upload1" destination="local_no_container"/>
  </tools>
  <limits>
-   <limit type="registered_user_concurrent_jobs">{{galaxy_cluster_registered_user_concurrent_jobs | default("2")}}</limit>
-   <limit type="anonymous_user_concurrent_jobs">{{galaxy_cluster_anonymous_user_concurrent_jobs | default ("1")}}</limit>
+   <limit type="registered_user_concurrent_jobs">{{galaxy_docker_cluster_registered_user_concurrent_jobs | default("2")}}</limit>
+   <limit type="anonymous_user_concurrent_jobs">{{galaxy_docker_cluster_anonymous_user_concurrent_jobs | default ("1")}}</limit>
  </limits>
 </job_conf>

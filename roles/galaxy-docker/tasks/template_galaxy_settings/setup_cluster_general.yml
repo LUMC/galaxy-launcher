@@ -17,35 +17,35 @@
 
 - name: make sure galaxy_venv directory exists
   file:
-    path: "{{galaxy_cluster_virtualenv}}"
+    path: "{{galaxy_docker_cluster_virtualenv}}"
     state: directory
     mode: "{{galaxy_docker_export_location_mode}}"
-  when: galaxy_cluster_virtualenv is defined
+  when: galaxy_docker_cluster_virtualenv is defined
 
 - name: Create virtualenv
   pip:
     name: "pip>=8.1"
-    virtualenv: "{{galaxy_cluster_virtualenv}}"
-  when: galaxy_cluster_virtualenv is defined
+    virtualenv: "{{galaxy_docker_cluster_virtualenv}}"
+  when: galaxy_docker_cluster_virtualenv is defined
 
 - name: Install pinned-requirements
   pip:
     requirements: "{{docker_export_location}}/galaxy-central/lib/galaxy/dependencies/pinned-requirements.txt"
-    virtualenv: "{{galaxy_cluster_virtualenv}}"
+    virtualenv: "{{galaxy_docker_cluster_virtualenv}}"
     extra_args: --index-url https://wheels.galaxyproject.org/simple --only-binary all
-  when: galaxy_cluster_virtualenv is defined
+  when: galaxy_docker_cluster_virtualenv is defined
 
 - name: Add some conditional-requirements.
   pip:
     name: "{{item}}"
-    virtualenv: "{{galaxy_cluster_virtualenv}}"
+    virtualenv: "{{galaxy_docker_cluster_virtualenv}}"
     extra_args: --index-url https://wheels.galaxyproject.org/simple --only-binary all
   with_items:
     - "psycopg2==2.6.1"
     - "drmaa"
     - "uWSGI"
     - "watchdog"
-  when: galaxy_cluster_virtualenv is defined
+  when: galaxy_docker_cluster_virtualenv is defined
 
 - name: Create job_conf.xml
   template:

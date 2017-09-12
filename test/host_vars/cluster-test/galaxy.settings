@@ -22,10 +22,10 @@ optional_environment_settings:
   GALAXY_CONFIG_OUTPUTS_TO_WORKING_DIRECTORY: True
   GALAXY_CONFIG_RETRY_JOB_OUTPUT_COLLECTION: 5
   # Set directories to cluster file system
-  GALAXY_CONFIG_CLUSTER_FILES_DIRECTORY: "{{galaxy_shared_cluster_directory}}/job_scripts"
-  GALAXY_CONFIG_NEW_FILE_PATH: "{{galaxy_shared_cluster_directory}}/tmp"
+  GALAXY_CONFIG_CLUSTER_FILES_DIRECTORY: "{{galaxy_docker_shared_cluster_directory}}/job_scripts"
+  GALAXY_CONFIG_NEW_FILE_PATH: "{{galaxy_docker_shared_cluster_directory}}/tmp"
   GALAXY_CONFIG_TOOL_DEPENDENCY_DIR: "{{docker_export_location}}/tool_deps"
-  GALAXY_CONFIG_CONDA_PREFIX: "{{galaxy_shared_cluster_directory}}/_conda"
+  GALAXY_CONFIG_CONDA_PREFIX: "{{galaxy_docker_shared_cluster_directory}}/_conda"
   GALAXY_CONFIG_TOOL_DEPENDENCY_CACHE_DIR: "{{docker_export_location}}/tool_deps/_cache"
   GALAXY_CONFIG_JOB_WORKING_DIRECTORY: "{{docker_export_location}}/galaxy-central/database/job_working_directory"
   GALAXY_CONFIG_FILE_PATH: "{{docker_export_location}}/galaxy-central/database/files"
