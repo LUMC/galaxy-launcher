@@ -78,7 +78,7 @@ If set to True this will overwrite all your config files with the .distribution_
 
 This extracts the database of the running instance to `files/HOSTNAME/backupdb`.
 This path can be changed in `files.settings`. If you want to change the filename of the backup you can add
-`galaxy_docker_backup_db_filename: yourprefferedfilename` to `files.settings`
+`galaxy_docker_extracted_db_filename: yourprefferedfilename` to `files.settings`
 
 To backup the database run:
 

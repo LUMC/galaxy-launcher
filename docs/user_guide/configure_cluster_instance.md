@@ -1,4 +1,4 @@
-# Configuring galaxy instance for a cluster
+# Configuring galaxy instance on a vm connected to a cluster
 
 Configuring a cluster instance is similar to installing galaxy on a vm in the cloud, but requires some tricks to make it work.
 
@@ -13,6 +13,16 @@ Also, the job is submitted with the name and uid of the main galaxy user. Your c
 In `host_vars/cluster_example_host/cluster.settings` there is a section on how to set UIDs and names to already existing users on your cluster. In this way you can use service accounts on your cluster to run galaxy.
 
 In order to do this galaxy-docker-ansible has to build a custom image with the right UIDs. You can set the base version of this image by using the `bgruening_galaxy_stable_version` variable.
+
+## Setting up ssh key pairs for galaxy users
+Galaxy-docker-ansible uses three users to run the playbook
+* `galaxy_docker_docker_user` which runs the docker container.
+* `galaxy_docker_web_user` which runs the web application and submits jobs to the cluster
+* `galaxy_docker_database_user` which manipulates the database
+
+When the playbook is run on the vm with a user that has sudo rights, the playbook will use sudo to switch users.
+
+There is also an option to run without sudo. To do this ssh key pairs need to be set up for all three users. The path to the private keys can be set by `galaxy_docker_web_user_private_key`, `galaxy_docker_docker_user_private_key` and `galaxy_docker_database_user_private_key`.
 
 ## Integrating with the filesystem
 There are certain quirks to using the galaxy-stable image on a cluster. Internally most paths route to either `/export` and `/galaxy-central` these paths do not exist on the cluster.
