@@ -47,7 +47,7 @@ galaxy_docker_container_name | The name of the running container | galaxy
 backup_db_file | The name of the dump file. This is a temporary file | "galaxydb_backup-$(TZ='UTC' date + '%Z%Y%m%dT%H%M%S')"
 cronbackupdb_log_timestamp | This is a date command for the timestamp. | "TZ='UTC' date + '%Z %F %T >'"
 backup_rsync_remote_host| Whether the backups should be synced to a remote host| False
-welcome_dir | the directory containing the welcome files. | {{playbook_dir}}/ files/{{inventory_hostname}}/welcome.html
+galaxy_docker_welcome_dir | the directory containing the welcome files. | {{playbook_dir}}/ files/{{inventory_hostname}}/welcome.html
 installdocker_default_location | Where the docker images are stored and run | /var/lib/docker
 galaxy_web_port | The port on which galaxy will be exposed to localhost. |8080
 public_galaxy_web_port | The port on which galaxy will be hosted. |80

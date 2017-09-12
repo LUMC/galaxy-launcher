@@ -38,7 +38,7 @@
 
 - name: Search new "welcome" files in the welcome folder
   find:
-    paths: "{{welcome_dir}}"
+    paths: "{{galaxy_docker_welcome_dir}}"
     patterns: "(?i)welcome.*"
     use_regex: True
     hidden: True

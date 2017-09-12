@@ -11,7 +11,7 @@
 
 - name: Copy files to docker build directory
   copy:
-    src: "{{docker_custom_image_dir}}"
+    src: "{{galaxy_docker_custom_image_dir}}"
     dest: "{{docker_build_dir}}/custom_image"
     mode: 0600
 

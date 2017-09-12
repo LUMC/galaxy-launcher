@@ -19,7 +19,7 @@
 
 - name: Find yml files in tool list directory
   find:
-    paths: "{{dbkeys_list_dir}}"
+    paths: "{{galaxy_docker_dbkeys_list_dir}}"
     patterns:
       - "*.yml"
       - "*.yaml"

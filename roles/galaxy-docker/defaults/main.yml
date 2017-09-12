@@ -13,20 +13,20 @@
 galaxy_docker_remote_key_dir: /tmp/keys
 #users
 galaxy_docker_docker_user: galaxy_docker
-galaxy_docker_docker_user_private_key: "{{ssh_dir}}/{{galaxy_docker_docker_user}}"
+galaxy_docker_docker_user_private_key: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_docker_user}}"
 galaxy_docker_docker_user_virtualenv: "{{galaxy_docker_docker_user_home}}/virtualenv"
 galaxy_docker_docker_user_home: "/home/{{galaxy_docker_docker_user}}"
 
 galaxy_docker_database_user: postgres
 galaxy_docker_database_user_id: 1550
 galaxy_docker_database_group_id: 1550
-galaxy_docker_database_user_private_key: "{{ssh_dir}}/{{galaxy_docker_database_user}}"
+galaxy_docker_database_user_private_key: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_database_user}}"
 galaxy_docker_database_user_home: "/home/{{galaxy_docker_database_user}}"
 
 galaxy_docker_web_user: galaxy
 galaxy_docker_web_user_id: 1450
 galaxy_docker_web_group_id: 1450
-galaxy_docker_web_user_private_key: "{{ssh_dir}}/{{galaxy_docker_web_user}}"
+galaxy_docker_web_user_private_key: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_web_user}}"
 galaxy_docker_web_user_virtualenv: "{{galaxy_docker_web_user_home}}/virtualenv"
 galaxy_docker_web_user_home: "/home/{{galaxy_docker_web_user}}"
 
@@ -59,16 +59,16 @@ galaxy_docker_container_database_name: galaxy
 galaxy_docker_container_database_username: "galaxy"
 
 # File locations:
-welcome_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/welcome/"
-galaxy_docker_import_db_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/database_import/"
-tool_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/tools/"
-dbkeys_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/dbkeys/"
-genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
+galaxy_docker_welcome_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/welcome/"
+galaxy_docker_galaxy_docker_import_db_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/database_import/"
+galaxy_docker_tool_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/tools/"
+galaxy_docker_dbkeys_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/dbkeys/"
+galaxy_docker_genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
 galaxy_docker_extract_database_dir: "files/{{inventory_hostname}}/database_extract/"
-docker_custom_image_dir: "files/{{inventory_hostname}}/docker_custom_image/"
+galaxy_docker_custom_image_dir: "files/{{inventory_hostname}}/docker_custom_image/"
 
 ansible_generated_vars_dir: "/tmp/ansible_generated_vars/{{ansible_hostname}}/"
-ssh_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/ssh"
+galaxy_docker_ssh_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/ssh"
 
 # defaults for addldap
 ldap_defaults:

@@ -102,7 +102,7 @@ Welcome files can be placed in `files\HOSTNAME\welcome`. This path can be change
 
 ### Extra tools (optional)
 
-Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `tool_list_dir` in `files.settings`
+Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `galaxy_docker_tool_list_dir` in `files.settings`
 An example tool list can be found in `files/example_host/tools`.
 If no tool lists are present, this step will be automatically skipped. Only .yml and .yaml files are copied to the server.
 
@@ -165,5 +165,5 @@ ldap_settings:
 ### Database (optional)
 
 If you wish to use a postgresql database of another galaxy instance, make a dump of the instance.
-Put the dump file in `files/HOSTNAME/database_import`. Alternatively you can specify the location by changing `insert_db_dir` in `files.settings`
+Put the dump file in `files/HOSTNAME/database_import`. Alternatively you can specify the location by changing `galaxy_docker_import_db_dir` in `files.settings`
 If no database is added, a new empty DB will be created.
