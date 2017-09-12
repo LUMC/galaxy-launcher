@@ -4,37 +4,41 @@ This page contains the commands needed to run and administrate a galaxy instance
 
 ## Set up the docker container with one command
 
-To install docker, fetch the image, run it, add the database and install all the tools run:
+To install docker, fetch the image, run it, add the database install all the tools, and set automatic backup of the database run:
 
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=install"   
+ansible-playbook main.yml -e "host=HOSTNAME run=install_complete"   
 ```
 If you also want to activate ldap:
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=install addldap=True"   
+ansible-playbook main.yml -e "host=HOSTNAME run=['install_complete','enable_ldap']"  
 ```
 Alternatively you can set up your machine step by step.
 
 ## Set up the docker container step by step
 
-### Install docker on the remote machine
+### Install docker and required packages on the remote machine
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=installdocker"   
+ansible-playbook main.yml -e "host=HOSTNAME run=install_prerequisites"   
 ```
 
-### Run the galaxy docker image
+### Provision galaxy and template all settings files
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=rundockergalaxy"   
+ansible-playbook main.yml -e "host=HOSTNAME run=install_galaxy"   
+```
+### (Re)start your galaxy instance
+```bash
+ansible-playbook main.yml -e "host=HOSTNAME run=start_container"   
 ```
 
 ### Install tool lists on the galaxy instance
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=installtools"   
+ansible-playbook main.yml -e "host=HOSTNAME run=install_tools"   
 ```
 
 ### Install genomes on the galaxy instance
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=installgenomes galaxy_docker_admin_api_key=YOURADMINAPIKEY" #This is not equal to the master api key   
+ansible-playbook main.yml -e "host=HOSTNAME run=install_genomes galaxy_admin_api_key=YOURADMINAPIKEY" #This is not equal to the master api key   
 ```
 
 ### Install LDAP

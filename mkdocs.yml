@@ -5,6 +5,7 @@ pages:
   - User guide:
       - Installing galaxy-docker-ansible: user_guide/installation.md
       - Configuring a galaxy instance: user_guide/configure_instance.md
+      - Configure a galaxy instance for running on a cluster: user_guide/configure_cluster_instance.md
       - Installing and administrating a galaxy instance: user_guide/install_administrate.md
   - Developer documentation:
     - Introduction: developer_docs/introduction.md

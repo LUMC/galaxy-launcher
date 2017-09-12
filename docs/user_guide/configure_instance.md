@@ -83,7 +83,7 @@ galaxy_docker_backup_database_cron_jobs:
       hour: 3
 ```
 ```YAML
-rsync_settings:  
+galaxy_docker_backup_database_rsync_settings:  
   dest: "/destination/path/on/remote/host"   
   host: "example.host.org"
   user: "user" # The user that is connected to. This key can be ommited
