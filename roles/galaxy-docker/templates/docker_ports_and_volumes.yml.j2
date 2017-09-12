@@ -13,7 +13,7 @@
 
 # galaxy-docker-ansible generates these values to run the docker container.
 
-docker_published_ports:
+galaxy_docker_published_ports:
 {% if galaxy_docker_web_port is defined and galaxy_docker_web_port !='' %}
   - "127.0.0.1:{{galaxy_docker_web_port}}:80"
   {% endif %}

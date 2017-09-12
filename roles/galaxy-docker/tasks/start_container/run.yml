@@ -30,7 +30,7 @@
 
 - name: Show docker published ports
   debug:
-    var: docker_published_ports
+    var: galaxy_docker_published_ports
     verbosity: 1
 
 - name: Show volumes
@@ -51,7 +51,7 @@
     image: "{{galaxy_docker_docker_image}}"
     name: "{{galaxy_docker_container_name}}"
     hostname: "{{galaxy_docker_container_hostname}}"
-    published_ports: "{{docker_published_ports}}"
+    published_ports: "{{galaxy_docker_published_ports}}"
     state: started
     restart: yes
     recreate: yes

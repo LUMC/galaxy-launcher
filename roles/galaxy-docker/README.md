@@ -59,7 +59,7 @@ pip-packages | Contains the prerequisite python packages |  docker-engine
 key | contains the docker repository key
 repo | the docker repo
 bioblend_packages | packages needed to install tools | bioblend
-docker_published_ports | published ports are appended in the tasks file | ""
+galaxy_docker_published_ports | published ports are appended in the tasks file | ""
 
 ### User defined vars
 These variables should be defined by the user.

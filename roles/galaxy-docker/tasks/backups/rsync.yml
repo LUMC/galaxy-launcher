@@ -24,7 +24,7 @@
     compression_level: "{{item.compression_level}}"
     delete: "{{item.delete}}"
   with_items:
-    - "{{backup_galaxy_rsync_settings}}"
+    - "{{galaxy_docker_backup_database_rsync_configuration}}"
 
 - name: generate_ssh_key
   user:
@@ -40,9 +40,9 @@
 
 - name: Add remote backup server to the known_hosts file
   known_hosts:
-    name: "{{backup_galaxy_rsync_settings.host}}"
+    name: "{{galaxy_docker_backup_database_rsync_configuration.host}}"
     state: present
-    key: "{{backup_galaxy_rsync_settings.host}} {{backup_galaxy_rsync_settings.host_public_key}}"
+    key: "{{galaxy_docker_backup_database_rsync_configuration.host}} {{galaxy_docker_backup_database_rsync_configuration.host_public_key}}"
 #    hash_host: True
 
 - name: Hash known_hosts file.
@@ -64,4 +64,4 @@
     minute: "{{item.cron.minute | default(omit)}}"
     special_time: "{{item.cron.special_time | default(omit)}}"
   with_items:
-    - "{{backup_galaxy_rsync_settings}}"
+    - "{{galaxy_docker_backup_database_rsync_configuration}}"

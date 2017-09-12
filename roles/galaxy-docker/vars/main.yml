@@ -15,11 +15,11 @@
 galaxy_docker_ldap_config: "{{ galaxy_docker_ldap_defaults | combine(galaxy_docker_ldap_settings) }}"
 
 # vars for galaxy_docker_backup_cron
-backup_galaxy_rsync_settings: "{{ galaxy_docker_backup_rsync_settings_default | combine(galaxy_docker_backup_database_rsync_settings)  }}"
+galaxy_docker_backup_database_rsync_configuration: "{{ galaxy_docker_backup_rsync_settings_default | combine(galaxy_docker_backup_database_rsync_settings)  }}"
 
 # vars for galaxy_docker_provision_tools:
 galaxy_docker_ephemeris_package: ephemeris
 galaxy_docker_ephemeris_version: 0.7.0
 
 # vars for rundockergalaxy
-docker_published_ports: ""
+galaxy_docker_published_ports: ""
