@@ -11,7 +11,7 @@ pages:
   - Developer documentation:
     - Introduction: developer_docs/introduction.md
     - Install docker: developer_docs/installdocker.md
-    - Galaxy welcome: developer_docs/galaxy_docker_template_welcome.md
+    - Galaxy welcome: developer_docs/galaxywelcome.md
     - Nginx settings: developer_docs/nginxsettings.md
     - Run docker galaxy: developer_docs/rundockergalaxy.md
     - Add ldap: developer_docs/addldap.md

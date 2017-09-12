@@ -15,11 +15,11 @@ This role consists of several task files each of which can be included by settin
 Click on the task to get more information
 
 - [Install docker](installdocker.md). (installdocker=true)
-- [Import an existing database](galaxy_docker_import_database.md). (galaxy_docker_import_database=true)
-- [Set galaxy's welcome page](galaxy_docker_template_welcome.md). (galaxy_docker_template_welcome=true)
+- [Import an existing database](importdb.md). (galaxy_docker_import_database=true)
+- [Set galaxy's welcome page](galaxywelcome.md). (galaxy_docker_template_welcome=true)
 - [Set the required nginx settings](nginxsettings.md). (nginxsettings=true)
 - Run jdpauphant.nginx role when (ansible_role_nginx=true)
-- [Start up a galaxy instance](rundockergalaxy.md). (rundockergalaxy=true)
+- [Start up a galaxy instance](rundockergalaxy.md). (start_container=true)
 - [Add ldap authentication](addldap.md). (addldap=true)
 - [create automated backup on the server](cronbackupdb). (cronbackupdb=true)
 - [Install tools from the toolshed](installtools.md). (installtools=true)
