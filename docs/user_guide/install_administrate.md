@@ -54,7 +54,7 @@ ansible-playbook main.yml -e "host=HOSTNAME run=enable_ldap"
 If bgruening updates the docker image to a newer version than this can be tested as follows:
 1. Open the `host_vars/HOSTNAME/upgrade.settings` file
 2. Set the settings for the test instance in the galaxy_docker_upgrade_test_settings dictionary. Make sure the port mappings don't overlap with the running instance. Additional settings can be added to the dictionary.
-3. Run `ansible-playbook main.yml -e "host=HOSTNAME run=upgrade_test"`
+3. Run `ansible-playbook main.yml -e "host=HOSTNAME run=['install_prerequisites','upgrade_test']"` (install prerequisites opens the firewall for the test upgrade instance)
 4. Check if the galaxy instance is running properly and if history is kept.
 (Tools won't run and data will not be included)
 5. Settings are stored in `/export/galaxy-central/config`, any new config files are automatically copied to this directory if these do not yet exist.

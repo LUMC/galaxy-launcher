@@ -22,6 +22,12 @@
     state: absent
   when: not galaxy_docker_delete_test_upgrade
 
+- name: remove firewall profile
+  file:
+    path: "/etc/ufw/applications.d/{{galaxy_docker_test_ufw_profile}}"
+    state: absent
+  when: galaxy_docker_delete_test_upgrade
+
 - include: ../prerequisites/nginxsettings.yml
   when: not galaxy_docker_delete_test_upgrade
 

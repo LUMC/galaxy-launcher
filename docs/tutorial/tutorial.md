@@ -31,3 +31,17 @@ Exercise: Set up your own hosts file. Use `test/hosts` as an example.
 ## Provision your galaxy
 
 ### Tools
+Exercise: go to `files/example_host/tool/tool_list.yaml.sample` and use this as an example to create your own `tool_list.yaml`. Include at least one data manager tool.
+
+Tools can be installed by running `ansible-playbook main.yml -e "host=HOSTNAME run=install_tools"`.
+
+### Genomes
+Exercise: go to `files/example_host/dbkeys/dbkeys.yaml.sample` and use this as an example to create your own `dbkeys.yaml`.
+
+Genomes can be installed by running `ansible-playbook main.yml -e "host=HOSTNAME run=install_genomes galaxy_admin_api_key=YOURADMINAPIKEY"`. You have to create an api key yourself first in the galaxy instance. Make sure it is mapped to a user with admin rights.
+
+## Upgrading your galaxy
+Exercise:  
+Using the manual:
+* See if you can start a new fresh galaxy instance with an older bgruening/galaxy-stable version.
+* Upgrade this to a newer version of bgruening/galaxy-stable.
