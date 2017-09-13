@@ -24,4 +24,4 @@ galaxy_docker_dbkeys_dir | Location where yaml files are temporarily stored | /t
 galaxy_docker_dbkeys_list_dir | The tool lists directory on the ansible control host | "{{playbook_dir}}/files/{{inventory_hostname}}/dbkeys"
 galaxy_docker_ephemeris_package | The pip package name of ephemeris | ephemeris
 galaxy_docker_ephemeris_version | ephemeris version | 0.6.2
-galaxy_docker_admin_api_key | the api key used to install tools | user-defined
+galaxy_admin_api_key | the api key used to install tools | user-defined

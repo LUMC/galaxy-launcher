@@ -38,13 +38,13 @@ galaxy_docker_docker_user_groups: docker
 galaxy_docker_docker_image: bgruening/galaxy-stable
 galaxy_docker_environment_file_location: "{{galaxy_docker_docker_user_home}}/galaxydocker.env"
 galaxy_docker_export_location: "/data/galaxy/galaxy_storage"
-galaxy_galaxy_docker_export_location_mode: "0755" # If not accessible for all users (--x) then postgres does not work.
+galaxy_docker_export_location_mode: "0755" # If not accessible for all users (--x) then postgres does not work.
 galaxy_docker_container_name: galaxy
 galaxy_docker_provision_container_name: galaxy-provision
 galaxy_docker_container_hostname: galaxy-docker
 galaxy_docker_extra_volumes: ""
 galaxy_docker_docker_build_dir: "{{galaxy_docker_docker_user_home}}/docker_build/"
-bgruening_galaxy_stable_version: latest
+bgruening_galaxy_stable_version: dev
 galaxy_docker_docker_image_changed_uids: "galaxy_stable_changed_uids:{{bgruening_galaxy_stable_version}}"
 # firewall, nginx and ports
 galaxy_docker_ufw_profile: galaxy

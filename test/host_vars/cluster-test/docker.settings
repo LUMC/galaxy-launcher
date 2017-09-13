@@ -11,3 +11,7 @@ galaxy_docker_container_hostname: "galaxy-docker"
 galaxy_docker_extra_ports:
   - "6444:6444"
   - "6445:6445"
+
+bgruening_galaxy_stable_version: 17.05
+galaxy_docker_custom_image_lines:
+  - RUN sed -i '3iecho "192.168.99.100 ogs-head" >> /etc/hosts' /usr/bin/startup

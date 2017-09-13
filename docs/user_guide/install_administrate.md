@@ -4,42 +4,48 @@ This page contains the commands needed to run and administrate a galaxy instance
 
 ## Set up the docker container with one command
 
-To install docker, fetch the image, run it, add the database and install all the tools run:
+To install docker, fetch the image, run it, add the database install all the tools, and set automatic backup of the database run:
 
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=install"   
+ansible-playbook main.yml -e "host=HOSTNAME run=install_complete"   
 ```
 If you also want to activate ldap:
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=install addldap=True"   
+ansible-playbook main.yml -e "host=HOSTNAME run=['install_complete','enable_ldap']"  
 ```
 Alternatively you can set up your machine step by step.
 
 ## Set up the docker container step by step
 
-### Install docker on the remote machine
+### Install docker and required packages on the remote machine
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=installdocker"   
+ansible-playbook main.yml -e "host=HOSTNAME run=install_prerequisites"   
 ```
 
-### Run the galaxy docker image
+### Provision galaxy and template all settings files
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=rundockergalaxy"   
+ansible-playbook main.yml -e "host=HOSTNAME run=install_galaxy"   
 ```
+### (Re)start your galaxy instance
+```bash
+ansible-playbook main.yml -e "host=HOSTNAME run=start_container"   
+```
+With ldap:
+ansible-playbook main.yml -e "host=HOSTNAME run=['start_container','enable_ldap']
 
 ### Install tool lists on the galaxy instance
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=installtools"   
+ansible-playbook main.yml -e "host=HOSTNAME run=install_tools"   
 ```
 
 ### Install genomes on the galaxy instance
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=installgenomes galaxy_docker_admin_api_key=YOURADMINAPIKEY" #This is not equal to the master api key   
+ansible-playbook main.yml -e "host=HOSTNAME run=install_genomes galaxy_admin_api_key=YOURADMINAPIKEY" #This is not equal to the master api key   
 ```
 
 ### Install LDAP
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=addldap"   
+ansible-playbook main.yml -e "host=HOSTNAME run=enable_ldap"   
 ```
 !WARNING! This will restart the galaxy instance within the container
 
@@ -48,7 +54,7 @@ ansible-playbook main.yml -e "host=HOSTNAME run=addldap"
 If bgruening updates the docker image to a newer version than this can be tested as follows:
 1. Open the `host_vars/HOSTNAME/upgrade.settings` file
 2. Set the settings for the test instance in the galaxy_docker_upgrade_test_settings dictionary. Make sure the port mappings don't overlap with the running instance. Additional settings can be added to the dictionary.
-3. Run `ansible-playbook main.yml -e "host=HOSTNAME run=testupgrade"`
+3. Run `ansible-playbook main.yml -e "host=HOSTNAME run=['install_prerequisites','upgrade_test']"` (install prerequisites opens the firewall for the test upgrade instance)
 4. Check if the galaxy instance is running properly and if history is kept.
 (Tools won't run and data will not be included)
 5. Settings are stored in `/export/galaxy-central/config`, any new config files are automatically copied to this directory if these do not yet exist.
@@ -56,7 +62,7 @@ Existing files are not replaced. To check for any new features you can diff `/ex
 
 To remove the upgrade test instance run:
 ```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=deletetestupgrade"
+ansible-playbook main.yml -e "host=HOSTNAME run=delete_upgrade_test"
 ```
 
 ## Upgrade the running instance to a new image
@@ -72,17 +78,17 @@ If set to True this will overwrite all your config files with the .distribution_
 
 This extracts the database of the running instance to `files/HOSTNAME/backupdb`.
 This path can be changed in `files.settings`. If you want to change the filename of the backup you can add
-`backup_db_filename: yourprefferedfilename` to `files.settings`
+`galaxy_docker_extracted_db_filename: yourprefferedfilename` to `files.settings`
 
 To backup the database run:
 
 ```
-ansible-playbook main.yml -e "host=HOSTNAME run=extractdb"
+ansible-playbook main.yml -e "host=HOSTNAME run=extract_database"
 ```
 
 ## Removing the galaxy docker instance.
 
-`ansible-playbook main.yml -e "host=HOSTNAME run=deletegalaxy` does the following things:
+`ansible-playbook main.yml -e "host=HOSTNAME run=delete_galaxy` does the following things:
 + deletes the container
 + removes the firewall exception and removes the profile
 + removes the cron jobs

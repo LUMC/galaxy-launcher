@@ -1,3 +1,4 @@
+---
 # Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
 # Contact us at: sasc@lumc.nl
 #
@@ -8,18 +9,6 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-{% if galaxy_docker_change_uids | bool %}
-from {{galaxy_docker_docker_image_changed_uids}}
-{% else %}
-from bgruening/galaxy-stable:{{bgruening_galaxy_stable_version}}
-{% endif %}
-
-Maintainer ansible-generated
-
-{% if galaxy_docker_custom_image_lines is defined %}
-{% for line in galaxy_docker_custom_image_lines %}
-{{line}}
-{% endfor %}
-{% endif %}
-
-CMD ["/usr/bin/startup"]
+galaxy_docker_delete: True
+galaxy_docker_delete_backup_files: True
+galaxy_docker_delete_files: True
