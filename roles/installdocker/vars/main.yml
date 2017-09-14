@@ -6,6 +6,7 @@ installdocker_prerequisites:
 
 installdocker_python_packages:
   - python-pip
+  - python-setuptools
 installdocker_pip_packages:
   - docker-py
 installdocker_gpg_key: "https://download.docker.com/linux/{{ansible_distribution | lower}}/gpg"
