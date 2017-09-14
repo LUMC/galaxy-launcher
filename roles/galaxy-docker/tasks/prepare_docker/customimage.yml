@@ -12,13 +12,13 @@
   file:
     path: "{{galaxy_docker_docker_build_dir}}/custom_image"
     state: directory
-    mode: 0600
+    mode: 0700
 
 - name: Copy files to docker build directory
   copy:
     src: "{{galaxy_docker_custom_image_dir}}"
     dest: "{{galaxy_docker_docker_build_dir}}/custom_image"
-    mode: 0600
+    mode: 0700
 
 - name: Template the Dockerfile
   template:
