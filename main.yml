@@ -12,8 +12,9 @@
 # Playbook that contains all roles.
 
 - hosts: "{{ host }}"
-  become: no
+  become: "{{ galaxy_docker_run_privileged }}"
   become_method: sudo
+  become_user: root
   gather_facts: yes
   pre_tasks:
   - include_vars:
