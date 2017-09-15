@@ -6,7 +6,7 @@ data_managers:
         - 'dbkey_source|dbkey_source_selector': 'new'
         - 'dbkey_source|dbkey': 'RhinoVirusA'
         - 'dbkey_source|dbkey_name': 'RhinoVirus A (NC_001617.1)'
-        - 'sequence_name': '{{ item.name }}'
+        - 'sequence_name': 'RhinoVirus A (NC_001617.1)'
         - 'sequence_id': 'RhinoVirusA'
         - 'reference_source|reference_source_selector': 'ncbi'
         - 'reference_source|requested_identifier': 'NC_001617.1'
