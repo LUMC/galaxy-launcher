@@ -1,0 +1,24 @@
+- include: installephemeris.yml
+  when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
+
+- include: container_running_check.yml
+
+- include: installtools.yml
+  when: galaxy_docker_provision_tools
+
+- include: installgenomes.yml
+  when: galaxy_docker_provision_genomes
+
+- name: register whether the docker provision container is running
+  command: "docker inspect -f {{inspect}} {{galaxy_docker_provision_container_name}}"
+  vars:
+    inspect: !unsafe '{{.State.Running}}'
+  register: provision_container_running
+  ignore_errors: yes # If the container does not exist this will run.
+
+- name: Remove the docker provision container
+  docker_container:
+    name: "{{galaxy_docker_provision_container_name}}"
+    state: absent
+  when:
+    - provision_container_running.stdout | bool
