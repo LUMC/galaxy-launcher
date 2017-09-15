@@ -1,5 +1,4 @@
 - include: installephemeris.yml
-  when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
 
 - include: container_running_check.yml
 
