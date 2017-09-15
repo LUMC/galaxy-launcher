@@ -12,3 +12,4 @@
 galaxy_docker_delete: True
 galaxy_docker_delete_backup_files: True
 galaxy_docker_delete_files: True
+galaxy_docker_delete_system_files: True
