@@ -11,8 +11,7 @@
 
 # handlers file for galaxy_docker
 
-- name: restart galaxy in container
-  include: restart_galaxy_in_container.yml
+- include: restart_galaxy_in_container.yml
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"
   vars:

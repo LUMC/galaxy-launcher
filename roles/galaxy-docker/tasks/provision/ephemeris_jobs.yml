@@ -5,6 +5,22 @@
 - include: installtools.yml
   when: galaxy_docker_provision_tools
 
+- name: register whether the docker provision container is running
+  command: "docker inspect -f {{inspect}} {{galaxy_docker_provision_container_name}}"
+  vars:
+    inspect: !unsafe '{{.State.Running}}'
+  register: provision_container_running
+  ignore_errors: yes # If the container does not exist this will run.
+
+#- name: Restart galaxy in provision container before installing genomes
+#  command: echo "this always reports as changed."
+#  when:
+#    - provision_container_running.stdout | bool
+#    - galaxy_docker_provision_genomes
+#  notify: restart provision galaxy in container
+#
+#- meta: flush_handlers
+
 - include: installgenomes.yml
   when: galaxy_docker_provision_genomes
 
