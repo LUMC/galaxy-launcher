@@ -17,12 +17,12 @@
 - name: Run as passwordless sudo user
   set_fact:
     galaxy_docker_become: yes
-    galaxy_docker_docker_ssh_user: "{{ansible_user}}"
-    galaxy_docker_web_ssh_user: "{{ansible_user}}"
-    galaxy_docker_database_ssh_user: "{{ansible_user}}"
-    galaxy_docker_database_user_private_key: "{{ansible_ssh_private_key_file}}"
-    galaxy_docker_docker_user_private_key: "{{ansible_ssh_private_key_file}}"
-    galaxy_docker_web_user_private_key: "{{ansible_ssh_private_key_file}}"
+    galaxy_docker_docker_ssh_user: "{{ansible_user | default(omit)}}"
+    galaxy_docker_web_ssh_user: "{{ansible_user | default(omit)}}"
+    galaxy_docker_database_ssh_user: "{{ansible_user | default(omit)}}"
+    galaxy_docker_database_user_private_key: "{{ansible_ssh_private_key_file | default(omit)}}"
+    galaxy_docker_docker_user_private_key: "{{ansible_ssh_private_key_file | default(omit)}}"
+    galaxy_docker_web_user_private_key: "{{ansible_ssh_private_key_file | default(omit)}}"
   when: galaxy_docker_run_privileged | bool
 
 # Starts a new ssh connection as an unpriviledged user for each section of the role

@@ -48,8 +48,3 @@ tools:
   - b1bc53e9bbc5
   install_tool_dependencies: True
   install_repository_dependencies: True
-- name: bedtools
-  owner: iuc
-  tool_panel_section_label: 'BED tools'
-  revisions:
-  - 2cd7e321d259

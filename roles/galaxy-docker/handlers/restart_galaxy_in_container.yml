@@ -14,3 +14,9 @@
   vars:
     command: "supervisorctl restart {{supervisorctl_galaxy | default('galaxy')}}:*"
   notify: check if galaxy has started
+
+- name: restart provision galaxy in container
+  command: "docker exec {{galaxy_docker_provision_container_name}} {{command}}"
+  vars:
+    command: "supervisorctl restart {{supervisorctl_galaxy | default('galaxy')}}:*"
+  notify: check if provision galaxy has started

@@ -15,10 +15,10 @@ Using the docker-galaxy-stable image simplifies running a galaxy server. However
 Galaxy-docker-ansible uses the power of ansible to set up a galaxy instance using the docker-galaxy-stable image. It allows you to set all the necessary variables and start the galaxy instance with just one command.
 
 ## Features
-* Complete deployment of a galaxy instance with just one command.
+* Complete deployment of a galaxy instance with just two commands.
 * Configuration in easy to understand yaml files.
 * Use the example host files to quickly get started
 * Use the cluster example host to get the image running on your cluster
 * Install prerequisites including docker on a Ubuntu or CentOS server
 * Automatic provisioning
-* Running the script as a non-privileged user
+* Running the deployment script as a non-privileged user (root required for prerequisites script)

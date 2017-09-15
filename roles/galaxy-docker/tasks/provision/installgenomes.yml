@@ -9,9 +9,6 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
-- meta: flush_handlers
-
 - name: Create empty work directory
   file:
     path: "{{galaxy_docker_dbkeys_dir}}"

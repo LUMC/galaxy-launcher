@@ -12,20 +12,12 @@
 # this task installs ephemeris. It is used for installing tools and genomes.
 
 - name: register whether the production container is running
-  command: "docker inspect -f {{inspect}} {{galaxy_docker_container_name}}"
-  vars:
-    inspect: !unsafe '{{.State.Running}}'
+  command: "docker ps -q -f name={{galaxy_docker_container_name}}$"
   register: production_container_running
-  when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
-  ignore_errors: yes # If the container does not exist this will run.
 
 - name: register whether the docker provision container is running
-  command: "docker inspect -f {{inspect}} {{galaxy_docker_provision_container_name}}"
-  vars:
-    inspect: !unsafe '{{.State.Running}}'
+  command: "docker ps -q -f name={{galaxy_docker_provision_container_name}}$"
   register: provision_container_running
-  when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
-  ignore_errors: yes # If the container does not exist this will run.
 
 - name: Show docker inspection results
   debug:
@@ -64,14 +56,12 @@
   command: echo this always reports as changed
   notify: check if provision galaxy has started
   when:
-    - ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
     - not production_container_running.stdout | bool
 
 - name: Activate handler to check if production galaxy has a working galaxy
   command: echo this always reports as changed
   notify: check if galaxy has started
   when:
-    - ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
     - production_container_running.stdout | bool
 
 - meta: flush_handlers

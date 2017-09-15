@@ -1,31 +1,23 @@
 # Install and administer a galaxy instance.
 
-This page contains the commands needed to run and administrate a galaxy instance.
-
-## Set up the docker container with one command
-
-To install docker, fetch the image, run it, add the database install all the tools, and set automatic backup of the database run:
-
-```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=install_complete"   
-```
-If you also want to activate ldap:
-```bash
-ansible-playbook main.yml -e "host=HOSTNAME run=['install_complete','enable_ldap']"  
-```
-Alternatively you can set up your machine step by step.
-
-## Set up the docker container step by step
+## Installation
 
 ### Install docker and required packages on the remote machine
 ```bash
 ansible-playbook main.yml -e "host=HOSTNAME run=install_prerequisites"   
 ```
 
-### Provision galaxy and template all settings files
+### Provision galaxy, template all settings files and start the instance
 ```bash
 ansible-playbook main.yml -e "host=HOSTNAME run=install_galaxy"   
 ```
+
+To start with ldap support:
+```bash
+ansible-playbook main.yml -e "host=HOSTNAME run=['install_galaxy','enable_ldap']"   
+```
+## Administration
+
 ### (Re)start your galaxy instance
 ```bash
 ansible-playbook main.yml -e "host=HOSTNAME run=start_container"   
