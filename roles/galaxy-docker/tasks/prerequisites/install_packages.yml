@@ -29,3 +29,8 @@
   pip:
     name: "passlib"
     state: latest
+
+- name: install access control lists to allow user switching during playbook.
+  package:
+    name: acl
+    state: present
