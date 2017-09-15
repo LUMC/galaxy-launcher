@@ -9,15 +9,6 @@
   command: "docker ps -f name={{galaxy_docker_provision_container_name}}$"
   register: provision_container_running
 
-#- name: Restart galaxy in provision container before installing genomes
-#  command: echo "this always reports as changed."
-#  when:
-#    - provision_container_running.stdout | bool
-#    - galaxy_docker_provision_genomes
-#  notify: restart provision galaxy in container
-#
-#- meta: flush_handlers
-
 - include: installgenomes.yml
   when: galaxy_docker_provision_genomes
 
