@@ -14,9 +14,7 @@
 # ansible control host
 
 - name: register whether the container is running
-  command: "docker inspect -f {{inspect}} {{galaxy_docker_container_name}}"
-  vars:
-    inspect: !unsafe '{{.State.Running}}'
+  command: "docker ps -a -f name={{galaxy_docker_container_name}}$"
   register: docker_running
 
 - name: Show docker inspection results
