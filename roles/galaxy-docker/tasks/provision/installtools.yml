@@ -9,10 +9,6 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- name: check if provision galaxy has started
-  command: echo this always reports as changed
-  notify: check if provision galaxy has started
-
 - name: Make sure tool directory exists
   file:
     path: "{{galaxy_docker_tool_dir}}"
