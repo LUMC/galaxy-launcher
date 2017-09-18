@@ -35,33 +35,33 @@
   when:
     - production_container_running is defined
     - provision_container_running is defined
-    - not production_container_running.stdout | bool
-    - not provision_container_running.stdout | bool
+    - production_container_running.stdout == ''
+    - provision_container_running.stdout == ''
 
 - name: Set provision key when starting provision container
   set_fact:
     galaxy_admin_api_key: "{{galaxy_docker_provision_key}}"
   when:
     - production_container_running is defined
-    - not production_container_running.stdout | bool
+    - not production_container_running.stdout !=''
 
 - name: Use public web port for provisioning when running production container
   set_fact:
     galaxy_docker_provision_port: "{{galaxy_docker_web_port}}"
   when:
     - production_container_running is defined
-    - production_container_running.stdout | bool
+    - production_container_running.stdout !=''
 
 - name: Activate handler to check if provision galaxy has started
   command: echo this always reports as changed
   notify: check if provision galaxy has started
   when:
-    - not production_container_running.stdout | bool
+    - not production_container_running.stdout !=''
 
 - name: Activate handler to check if production galaxy has a working galaxy
   command: echo this always reports as changed
   notify: check if galaxy has started
   when:
-    - production_container_running.stdout | bool
+    - production_container_running.stdout !=''
 
 - meta: flush_handlers
