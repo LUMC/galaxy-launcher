@@ -6,14 +6,14 @@
   when: galaxy_docker_provision_tools
 
 - name: register whether the docker provision container is running
-  command: "docker ps -f name={{galaxy_docker_provision_container_name}}$"
+  command: "docker ps -q -f name={{galaxy_docker_provision_container_name}}$"
   register: provision_container_running
 
 - include: installgenomes.yml
   when: galaxy_docker_provision_genomes
 
 - name: register whether the docker provision container is running
-  command: "docker ps -f name={{galaxy_docker_provision_container_name}}$"
+  command: "docker ps -q -f name={{galaxy_docker_provision_container_name}}$"
   register: provision_container_running
 
 - name: Remove the docker provision container
@@ -21,4 +21,4 @@
     name: "{{galaxy_docker_provision_container_name}}"
     state: absent
   when:
-    - provision_container_running.stdout | bool
+    - provision_container_running.stdout !=''
