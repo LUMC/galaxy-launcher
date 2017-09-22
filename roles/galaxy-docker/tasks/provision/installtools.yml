@@ -29,32 +29,28 @@
     var: tools
     verbosity: 1
 
-- name: delete api key from files
-  lineinfile:
-    destfile: "{{item.path}}"
-    regexp: "api_key:.*"
-    state: absent
-  with_items:
-    - "{{tools.files}}"
-  become: no
-  delegate_to: 127.0.0.1
-
-- name: delete galaxy_instance from files
-  lineinfile:
-    destfile: "{{item.path}}"
-    regexp: "galaxy_instance:.*"
-    state: absent
-  with_items:
-    - "{{tools.files}}"
-  become: no
-  delegate_to: 127.0.0.1
-
 - name: Move tools to galaxy server
   copy:
     dest: "{{galaxy_docker_tool_dir}}/{{item.path | basename}}"
     src: "{{item.path}}"
     force: yes
     mode: 0600
+  with_items:
+    - "{{tools.files}}"
+
+- name: delete api key from files
+  lineinfile:
+    destfile: "{{galaxy_docker_tool_dir}}/{{item.path | basename}}"
+    regexp: "api_key:.*"
+    state: absent
+  with_items:
+    - "{{tools.files}}"
+
+- name: delete galaxy_instance from files
+  lineinfile:
+    destfile: "{{galaxy_docker_tool_dir}}/{{item.path | basename}}"
+    regexp: "galaxy_instance:.*"
+    state: absent
   with_items:
     - "{{tools.files}}"
 
