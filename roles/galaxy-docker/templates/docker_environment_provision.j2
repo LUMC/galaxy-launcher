@@ -18,7 +18,8 @@
 #####
 #
 GALAXY_CONFIG_ADMIN_USERS={{galaxy_docker_provision_user}}
-GALAXY_CONFIG_MASTER_API_KEY={{galaxy_docker_provision_key}}
+#Master API KEY should not be the same as admin api key of provision user.
+GALAXY_CONFIG_MASTER_API_KEY=NOT{{galaxy_docker_provision_key}}
 GALAXY_CONFIG_BRAND={{galaxy_brand}}
 #
 #####
