@@ -15,7 +15,7 @@
 
 - name: Save config folder creator container name
   set_fact:
-    config_folder_creator_name: '{{docker_container.ansible_facts.docker_container.Name.replace("/","")}}'
+    config_folder_creator_name: '{{docker_container.Name.replace("/","")}}'
 
 - name: register whether the folder creator container has finished
   command: "docker inspect -f {{inspect}} {{config_folder_creator_name}}"
