@@ -31,7 +31,7 @@
     verbosity: 1
   when: provision_container_running
 
-- include: start_provision_container.yml
+- include_tasks: start_provision_container.yml
   when:
     - production_container_running is defined
     - provision_container_running is defined

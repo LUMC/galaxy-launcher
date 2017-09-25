@@ -34,12 +34,12 @@
     galaxy_docker_database_ssh_user: "{{galaxy_docker_database_user}}"
   when: not galaxy_docker_run_privileged | bool
 
-- include: prerequisites/main.yml
+- include_tasks: prerequisites/main.yml
   when: galaxy_docker_prerequisites
   become: yes
   become_user: root
 
-- include: prepare_docker/main.yml
+- include_tasks: prepare_docker/main.yml
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"
   vars:
@@ -47,7 +47,7 @@
     ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
   when: galaxy_docker_prepare_docker
 
-- include: upgrade/main.yml
+- include_tasks: upgrade/main.yml
   when: galaxy_docker_upgrade
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"
@@ -55,7 +55,7 @@
     ansible_user: "{{galaxy_docker_docker_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
 
-- include: template_galaxy_settings/main.yml
+- include_tasks: template_galaxy_settings/main.yml
   when: galaxy_docker_template
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_web_user}}"
@@ -63,7 +63,7 @@
     ansible_user: "{{galaxy_docker_web_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
 
-- include: provision/main.yml
+- include_tasks: provision/main.yml
   when: galaxy_docker_provision
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"
@@ -71,7 +71,7 @@
     ansible_user: "{{galaxy_docker_docker_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
 
-- include: start_container/main.yml
+- include_tasks: start_container/main.yml
   when: galaxy_docker_run
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"
@@ -79,7 +79,7 @@
     ansible_user: "{{galaxy_docker_docker_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
 
-- include: backups/main.yml
+- include_tasks: backups/main.yml
   when: galaxy_docker_backup
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"
@@ -87,7 +87,7 @@
     ansible_user: "{{galaxy_docker_docker_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
 
-- include: delete/main.yml
+- include_tasks: delete/main.yml
   when: galaxy_docker_delete
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_docker_user}}"

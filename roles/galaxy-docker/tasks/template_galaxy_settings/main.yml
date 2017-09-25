@@ -17,16 +17,16 @@
   retries: 10
   delay: 15
 
-- include: template_ldap.yml
+- include_tasks: template_ldap.yml
   when: galaxy_docker_template_ldap
 
-- include: galaxywelcome.yml
+- include_tasks: galaxywelcome.yml
   when: galaxy_docker_template_welcome
 
-- include: setup_cluster_general.yml
+- include_tasks: setup_cluster_general.yml
   when: galaxy_docker_cluster | bool
 
-- include: setupsge.yml
+- include_tasks: setupsge.yml
   when: galaxy_docker_cluster == 'sge'
 
-- include: report_user.yml
+- include_tasks: report_user.yml
