@@ -1,15 +1,15 @@
-- include_tasks: installephemeris.yml
+- import_tasks: installephemeris.yml
 
-- include_tasks: container_running_check.yml
+- import_tasks: container_running_check.yml
 
-- include_tasks: installtools.yml
+- import_tasks: installtools.yml
   when: galaxy_docker_provision_tools
 
 - name: register whether the docker provision container is running
   command: "docker ps -q -f name={{galaxy_docker_provision_container_name}}$"
   register: provision_container_running
 
-- include_tasks: installgenomes.yml
+- import_tasks: installgenomes.yml
   when: galaxy_docker_provision_genomes
 
 - name: register whether the docker provision container is running

@@ -3,5 +3,5 @@
     galaxy_docker_container_name: "{{galaxy_docker_upgrade_test_settings.galaxy_docker_container_name}}"
   when: galaxy_docker_test_upgrade
 
-- include_tasks: upgrade.yml
+- import_tasks: upgrade.yml
   when: galaxy_docker_upgrade or galaxy_docker_test_upgrade

@@ -36,5 +36,5 @@
     msg: "No files in {{galaxy_docker_import_db_dir}}. Skipping galaxy_docker_import_database role"
   when: "dump_file_list.matched < 1"
 
-- include_tasks: import.yml
+- import_tasks: import.yml
   when: "dump_file_list.matched == 1"

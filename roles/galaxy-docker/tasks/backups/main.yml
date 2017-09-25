@@ -1,5 +1,5 @@
-- include_tasks: cronbackupdb.yml
+- import_tasks: cronbackupdb.yml
   when: galaxy_docker_backup_cron
 
-- include_tasks: extractdb.yml
+- import_tasks: extractdb.yml
   when: galaxy_docker_backup_extract_database

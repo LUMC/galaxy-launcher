@@ -13,24 +13,24 @@
     name: installdocker
   when: installdocker
 
-- include_tasks: install_packages.yml
+- import_tasks: install_packages.yml
   when: galaxy_docker_install_packages
 
-- include_tasks: add_users.yml
+- import_tasks: add_users.yml
   when: galaxy_docker_add_users
 
-- include_tasks: add_user_ssh_keys.yml
+- import_tasks: add_user_ssh_keys.yml
   when: galaxy_docker_add_user_ssh_keys
 
-- include_tasks: create_export_folder.yml
+- import_tasks: create_export_folder.yml
   when: galaxy_docker_create_export_folder
 
-- include_tasks: nginxsettings.yml
+- import_tasks: nginxsettings.yml
   when: galay_docker_nginx_settings
 
 - include_role:
     name: jdauphant.nginx
   when: ansible_role_nginx
 
-- include_tasks: galaxyfirewall.yml
+- import_tasks: galaxyfirewall.yml
   when: galaxy_docker_firewall

@@ -10,10 +10,10 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- include_tasks: import/main.yml
+- import_tasks: import/main.yml
   when: galaxy_docker_import_database
 
-- include_tasks: transfer_genomes.yml
+- import_tasks: transfer_genomes.yml
   when: galaxy_docker_transfer_genomes
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_web_user}}"
@@ -21,5 +21,5 @@
     ansible_user: "{{galaxy_docker_web_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
 
-- include_tasks: ephemeris_jobs.yml
+- import_tasks: ephemeris_jobs.yml
   when: ( galaxy_docker_provision_tools or galaxy_docker_provision_genomes )
