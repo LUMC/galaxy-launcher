@@ -18,10 +18,10 @@ Settings files are located in `host_vars/HOSTNAME`. These files are all read by 
 
 ## Configuring your installation.
 
-Settings files are located in `host_vars/HOSTNAME`. `docker.settings`, `galaxy.settings` and `port.settings` should be checked and if necessary changed.
+Settings files are located in `host_vars/HOSTNAME`. `docker_settings.yml`, `galaxy_settings.yml` and `port_settings.yml` should be checked and if necessary changed.
 Also tool lists can be added to install a set of tools.
 
-### docker.settings
+### docker_settings.yml
 
 Variable | Function
 ---|---
@@ -30,7 +30,7 @@ galaxy_docker_docker_image | The docker image. Defaults to "bgruening/galaxy-sta
 docker_user | a user that will be created without sudo rights on the remote machine.
 galaxy_docker_container_name | What name the container gets for easy access using docker commands. Default is "galaxy".
 
-### galaxy.settings
+### galaxy_settings.yml
 
 Variable | Function
 ---|---
@@ -41,7 +41,7 @@ galaxy_report_user | The user to access the reports section.
 galaxy_report_password | The password to access the reports section.
 galaxy_docker_optional_environment_settings | This is a YAML dictionary that takes any docker environment values. See the documentation of [bgruening/docker-galaxy-stable](https://github.com/bgruening/docker-galaxy-stable/blob/master/README.md) which options are available.
 
-### web.settings
+### web_settings.yml
 
 Variable | Function
 ---|---
@@ -54,7 +54,7 @@ galaxy_docker_sftp_port | By default this variable is not set and port is unacce
 
 It is not recommended to touch the nginx settings unless you are familiar with configuring [ansible-role-nginx](https://github.com/jdauphant/ansible-role-nginx).
 
-### backup.settings
+### backup_settings.yml
 
 galaxy_docker_backup_location: "backup/location/path"
 
@@ -98,11 +98,11 @@ galaxy_docker_backup_database_rsync_settings:
 
 See [bgruening/docker-galaxy-stable documentation](https://github.com/bgruening/docker-galaxy-stable#Personalize-your-Galaxy).
 
-Welcome files can be placed in `files\HOSTNAME\welcome`. This path can be changed in `files.settings`.
+Welcome files can be placed in `files\HOSTNAME\welcome`. This path can be changed in `files_settings.yml`.
 
 ### Extra tools (optional)
 
-Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `galaxy_docker_tool_list_dir` in `files.settings`
+Tool lists can be added to `files/HOSTNAME/tools`. To change this directory change `galaxy_docker_tool_list_dir` in `files_settings.yml`
 An example tool list can be found in `files/example_host/tools`.
 If no tool lists are present, this step will be automatically skipped. Only .yml and .yaml files are copied to the server.
 
@@ -114,7 +114,7 @@ If no tool lists are present, this step will be automatically skipped. Only .yml
 4. Create an admin api key by logging in as the admin user and creating an API key.
 Because an admin api key is needed, this task cannot be completed during the `run=install` step.
 5. [Run the installgenomes task](#install-genomes-on-the-galaxy-instance).
-Reference genomes can be added to `files/HOSTNAME/genomes`. To change this directory change `genome_dir` in `files.settings`.  
+Reference genomes can be added to `files/HOSTNAME/genomes`. To change this directory change `genome_dir` in `files_settings.yml`.  
 The genomes are copied to the server using rsync. Ownership information will not be kept and genomes will be world-readable.
 
 In order to install the genomes a YAML file specifying the data managers that
@@ -123,13 +123,13 @@ as `run-data-managers.yaml.sample`. Only .yml and .yaml files are copied to the 
 
 ### Configuring LDAP (optional)
 
-Add a  GALAXY_CONFIG_AUTH_CONFIG_FILE key to `galaxy_docker_optional_environment_settings` in `host_vars/HOSTNAME/galaxy.settings` :
+Add a  GALAXY_CONFIG_AUTH_CONFIG_FILE key to `galaxy_docker_optional_environment_settings` in `host_vars/HOSTNAME/galaxy_settings.yml` :
 ```
 galaxy_docker_optional_environment_settings:
   GALAXY_CONFIG_AUTH_CONFIG_FILE: "config/auth_conf.xml"
 ```
 
-In `host_vars/HOSTNAME/ldap.settings`
+In `host_vars/HOSTNAME/ldap_settings.yml`
 set the following keys in galaxy_docker_ldap_settings:
 #### Keys required
 
@@ -165,5 +165,5 @@ galaxy_docker_ldap_settings:
 ### Database (optional)
 
 If you wish to use a postgresql database of another galaxy instance, make a dump of the instance.
-Put the dump file in `files/HOSTNAME/database_import`. Alternatively you can specify the location by changing `galaxy_docker_import_db_dir` in `files.settings`
+Put the dump file in `files/HOSTNAME/database_import`. Alternatively you can specify the location by changing `galaxy_docker_import_db_dir` in `files_settings.yml`
 If no database is added, a new empty DB will be created.
