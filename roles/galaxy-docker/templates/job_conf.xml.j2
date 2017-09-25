@@ -3,16 +3,19 @@
 <job_conf>
  <plugins workers="{{galaxy_job_workers | default("2")}}">
    <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner"/>
-   <plugin id="sge" type="runner" load="galaxy.jobs.runners.drmaa:DRMAAJobRunner">
+   {% if galaxy_docker_cluster == 'sge' %}
+   <plugin id="{{galaxy_docker_cluster}}" type="runner" load="galaxy.jobs.runners.drmaa:DRMAAJobRunner">
      <param id="drmaa_library_path">/usr/lib/gridengine-drmaa/lib/libdrmaa.so.1.0</param>
    </plugin>
+   {% endif %}
  </plugins>
  <handlers default_from_environ="GALAXY_HANDLERS_DEFAULT" default="handlers">
    <handler id="handler0" tags="handlers"/>
    <handler id="handler1" tags="handlers"/>
  </handlers>
- <destinations default="cluster">
-   <destination id="cluster" runner="sge">
+ <destinations default="{{galaxy_docker_cluster_default_destination}}">
+   {% for destination, settings in galaxy_docker_cluster_destinations %}
+   <destination id="{{destination}}" runner="{{galaxy_docker_cluster}}">
      <env file="{{galaxy_docker_cluster_virtualenv | default('/galaxy_venv')}}/bin/activate"/>
      <env id="GALAXY_ROOT_DIR">{{galaxy_docker_export_location}}/galaxy-central</env>
      <env id="GALAXY_LIB">{{galaxy_docker_export_location}}/galaxy-central/lib</env>
@@ -23,7 +26,11 @@
      {% endfor %}
      {% endif %}
      <param id="embed_metadata_in_job">{{galaxy_docker_cluster_embed_metadata_in_job | default ('True')}}</param>
+     {% if galaxy_docker_cluster == 'sge' %}
+     <param id="nativeSpecification">-l h_vmem={{settings.memory}} -pe BWA {{cpu_count}}</param>
+     {% endif %}
    </destination>
+   {% endfor %}
    <destination id="local_no_container" runner="local">
      <env file="/galaxy_venv/bin/activate"/>
    </destination>
