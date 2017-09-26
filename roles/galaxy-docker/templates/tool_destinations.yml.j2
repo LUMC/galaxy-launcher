@@ -25,9 +25,6 @@ tools:
   {% endif %}
 {% if galaxy_docker_cluster_user_destinations %}
 users:
-{% for user_email, values in galaxy_docker_cluster_user_destinations.iteritems() %}
-  {{user_email}}:
-    priority: {{values.priority}}
-{% endfor %}
+  {{ galaxy_docker_cluster_user_destinations | to_nice_yaml }}
 {% endif %}
 verbose: True
