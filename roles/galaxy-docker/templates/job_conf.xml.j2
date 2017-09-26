@@ -1,4 +1,15 @@
 #jinja2: trim_blocks:False
+{# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center #}
+{# Contact us at: sasc@lumc.nl #}
+{# #}
+{# This file is part of galaxy-docker-ansible. #}
+{# A dual licensing mode is applied. #}
+{# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license. #}
+{# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license. #}
+{# #}
+{# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>. #}
+{# #}
+<!-- {{ ansible_managed }} -->
 <?xml version="1.0" encoding="UTF-8"?>
 <job_conf>
  <plugins workers="{{galaxy_job_workers | default("2")}}">
@@ -35,9 +46,11 @@
      <env file="/galaxy_venv/bin/activate"/>
    </destination>
  </destinations>
+ <!-- This should be managed in tool_destinations.yml.j2
  <tools>
    <tool id="upload1" destination="local_no_container"/>
  </tools>
+ -->
  <limits>
    <limit type="registered_user_concurrent_jobs">{{galaxy_docker_cluster_registered_user_concurrent_jobs | default("2")}}</limit>
    <limit type="anonymous_user_concurrent_jobs">{{galaxy_docker_cluster_anonymous_user_concurrent_jobs | default ("1")}}</limit>

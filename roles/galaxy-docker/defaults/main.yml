@@ -114,7 +114,13 @@ galaxy_docker_cluster_destinations:
     cpu_count: 1
     memory: 16G
     extra_options: ""
-
+galaxy_docker_cluster_tool_destinations:
+  cluster_low: []
+  cluster_low_high_mem: []
+galaxy_docker_cluster_tool_destination_configuration: {}
+galaxy_docker_cluster_user_destinations:
+  admin@galaxy.org:
+    priority: med
 # defaults for databases
 
 ## Defaults are to use custom format. Which is compressed and uses pg_restore to recover.
