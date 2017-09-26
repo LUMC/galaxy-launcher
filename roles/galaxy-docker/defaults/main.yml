@@ -103,19 +103,17 @@ galaxy_docker_cluster_anonymous_user_concurrent_jobs: 1
 galaxy_docker_cluster_embed_metadata_in_job: True
 galaxy_docker_cluster_environment_variables: {}
 galaxy_docker_cluster_default_destination: cluster_low
+galaxy_docker_cluster_sge_parallel_environment: threads
+galaxy_docker_cluster_sge_extra_options: ""
 galaxy_docker_cluster_destinations:
   cluster_low:
     cpu_count: 1
     memory: 4G
+    extra_options: ""
   cluster_low_high_mem:
     cpu_count: 1
     memory: 16G
-  cluster_med:
-    cpu_count: 2
-    memory: 8G
-  cluster_high:
-    cpu_count: 8
-    memory: 32G
+    extra_options: ""
 
 # defaults for databases
 
@@ -166,12 +164,12 @@ galaxy_docker_add_user_ssh_keys: False
 galaxy_docker_install_packages: False
 galaxy_docker_create_export_folder: False
 galaxy_docker_backup: False
-galaxy_docker_cluster: False
 galaxy_docker_transfer_genomes: False
 galaxy_docker_change_uids: False
 galaxy_docker_delete_system_files: False
 galaxy_docker_delete_cron_jobs: False
 galaxy_docker_delete: False
+galaxy_docker_cluster: False
 installdocker: False
 galaxy_docker_import_database: False
 galaxy_docker_template_welcome: False
