@@ -21,7 +21,7 @@ tools:
   {% endfor %}
   {% endfor %}
   {% if galaxy_docker_cluster_tool_destination_configuration %}
-  {{ galaxy_docker_cluster_tool_destination_configuration | to_yaml}}
+  {{ galaxy_docker_cluster_tool_destination_configuration | to_nice_yaml}}
   {% endif %}
 {% if galaxy_docker_cluster_user_destinations %}
 users:

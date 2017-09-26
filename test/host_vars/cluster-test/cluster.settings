@@ -22,15 +22,18 @@ galaxy_docker_cluster_destinations:
     memory: 16G
     extra_options: ""
 galaxy_docker_cluster_tool_destinations:
-  cluster_low: Filter1
-  cluster_low_high_mem: ChangeCase
+  cluster_low:
+    - Filter1
+    - ucsc_table_direct1
+  cluster_low_high_mem:
+    - ChangeCase
 galaxy_docker_cluster_tool_destination_configuration:
   trimmer:
     rules:
       - rule_type: file_size
         nice_value: 0
         lower_bound: 0
-        upper bound: 512 KB
+        upper_bound: 512 KB
         destination: local
       - rule_type: file_size
         nice_value: 0
