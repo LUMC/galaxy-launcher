@@ -27,6 +27,6 @@
   when: galaxy_docker_cluster | bool
 
 - include: setupsge.yml
-  when: galaxy_docker_cluster == 'sge'
+  when: galaxy_docker_cluster_type == 'sge'
 
 - include: report_user.yml

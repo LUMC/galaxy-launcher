@@ -101,8 +101,18 @@ galaxy_docker_delete_backup_files: False
 galaxy_docker_cluster_registered_user_concurrent_jobs: 2
 galaxy_docker_cluster_anonymous_user_concurrent_jobs: 1
 galaxy_docker_cluster_embed_metadata_in_job: True
-#galaxy_docker_cluster_environment_variables: {}
-
+galaxy_docker_cluster_environment_variables: {}
+galaxy_docker_cluster_default_destination: cluster
+galaxy_docker_cluster_sge_parallel_environment: make
+galaxy_docker_cluster_sge_extra_options: ""
+galaxy_docker_cluster_destinations:
+  cluster:
+    cpu_count: 1
+    memory: 4G
+    extra_options: ""
+galaxy_docker_cluster_tool_destinations: {}
+galaxy_docker_cluster_tool_destination_configuration: {}
+galaxy_docker_cluster_user_destinations: {}
 # defaults for databases
 
 ## Defaults are to use custom format. Which is compressed and uses pg_restore to recover.
@@ -152,12 +162,12 @@ galaxy_docker_add_user_ssh_keys: False
 galaxy_docker_install_packages: False
 galaxy_docker_create_export_folder: False
 galaxy_docker_backup: False
-galaxy_docker_cluster: False
 galaxy_docker_transfer_genomes: False
 galaxy_docker_change_uids: False
 galaxy_docker_delete_system_files: False
 galaxy_docker_delete_cron_jobs: False
 galaxy_docker_delete: False
+galaxy_docker_cluster: False
 installdocker: False
 galaxy_docker_import_database: False
 galaxy_docker_template_welcome: False
