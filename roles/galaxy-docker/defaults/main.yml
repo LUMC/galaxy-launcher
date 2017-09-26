@@ -117,7 +117,7 @@ galaxy_docker_cluster_destinations:
 galaxy_docker_cluster_tool_destinations:
   cluster_low: []
   cluster_low_high_mem: []
-galaxy_docker_cluster_tool_destination_configuration: {}
+galaxy_docker_cluster_tool_destination_configuration: omit
 galaxy_docker_cluster_user_destinations:
   admin@galaxy.org:
     priority: med

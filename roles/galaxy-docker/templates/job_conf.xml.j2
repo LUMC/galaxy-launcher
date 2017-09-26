@@ -9,8 +9,8 @@
 {# #}
 {# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>. #}
 {# #}
-<!-- {{ ansible_managed }} -->
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- {{ ansible_managed }} -->
 <job_conf>
  <plugins workers="{{galaxy_job_workers | default("2")}}">
    <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner"/>
@@ -25,7 +25,7 @@
    <handler id="handler1" tags="handlers"/>
  </handlers>
  <destinations default="{{galaxy_docker_cluster_default_destination}}">
-   {% for destination, settings in galaxy_docker_cluster_destinations %}
+   {% for destination, settings in galaxy_docker_cluster_destinations.iteritems() %}
    <destination id="{{destination}}" runner="{{galaxy_docker_cluster_type}}">
      <env file="{{galaxy_docker_cluster_virtualenv | default('/galaxy_venv')}}/bin/activate"/>
      <env id="GALAXY_ROOT_DIR">{{galaxy_docker_export_location}}/galaxy-central</env>
@@ -42,13 +42,13 @@
      {% endif %}
    </destination>
    {% endfor %}
-   <destination id="local_no_container" runner="local">
+   <destination id="local" runner="local">
      <env file="/galaxy_venv/bin/activate"/>
    </destination>
  </destinations>
  <!-- This should be managed in tool_destinations.yml.j2
  <tools>
-   <tool id="upload1" destination="local_no_container"/>
+   <tool id="upload1" destination="local"/>
  </tools>
  -->
  <limits>

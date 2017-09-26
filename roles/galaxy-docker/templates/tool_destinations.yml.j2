@@ -9,20 +9,22 @@
 {# #}
 {# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>. #}
 {# #}
-# ((ansible_managed))
+# {{ansible_managed}}
 default_destination: {{galaxy_docker_cluster_default_destination}}
 tools:
   upload1:
     default_destination: local
-  {% for destination in galaxy_docker_cluster_tool_destinations %}
-  {% for tool in destination %}
+  {% for destination, tool_list in galaxy_docker_cluster_tool_destinations.iteritems() %}
+  {% for tool in tool_list %}
   {{tool}}:
     default_destination: {{destination}}
   {% endfor %}
   {% endfor %}
+  {% if galaxy_docker_cluster_tool_destination_configuration is defined %}
   {{ galaxy_docker_cluster_tool_destination_configuration | to_nice_yaml}}
+  {% endif %}
 users:
-{% for user_email, values in galaxy_docker_cluster_user_destinations %}
+{% for user_email, values in galaxy_docker_cluster_user_destinations.iteritems() %}
   {{user_email}}:
     priority: {{values.priority}}
 {% endfor %}
