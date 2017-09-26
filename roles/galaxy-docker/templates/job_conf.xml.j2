@@ -24,7 +24,15 @@
    <handler id="handler0" tags="handlers"/>
    <handler id="handler1" tags="handlers"/>
  </handlers>
- <destinations default="{{galaxy_docker_cluster_default_destination}}">
+ <destinations default="dtd_destination">
+   <!-- The dynamic runner is set as default -->
+   <destination id="dtd_destination" runner="dynamic">
+     <param id="type">dtd</param>
+   </destination>
+   <!-- add local runner for jobs that should not be run on the cluster -->
+   <destination id="local" runner="local">
+     <env file="/galaxy_venv/bin/activate"/>
+   </destination>
    {% for destination, settings in galaxy_docker_cluster_destinations.iteritems() %}
    <destination id="{{destination}}" runner="{{galaxy_docker_cluster_type}}">
      <env file="{{galaxy_docker_cluster_virtualenv | default('/galaxy_venv')}}/bin/activate"/>
@@ -42,9 +50,6 @@
      {% endif %}
    </destination>
    {% endfor %}
-   <destination id="local" runner="local">
-     <env file="/galaxy_venv/bin/activate"/>
-   </destination>
  </destinations>
  <!-- This should be managed in tool_destinations.yml.j2
  <tools>
