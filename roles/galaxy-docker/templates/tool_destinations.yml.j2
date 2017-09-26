@@ -20,12 +20,13 @@ tools:
     default_destination: {{destination}}
   {% endfor %}
   {% endfor %}
-  {% if galaxy_docker_cluster_tool_destination_configuration is defined %}
-  {{ galaxy_docker_cluster_tool_destination_configuration | to_nice_yaml}}
+  {% if galaxy_docker_cluster_tool_destination_configuration %}
+  {{ galaxy_docker_cluster_tool_destination_configuration | to_yaml}}
   {% endif %}
 users:
 {% for user_email, values in galaxy_docker_cluster_user_destinations.iteritems() %}
   {{user_email}}:
     priority: {{values.priority}}
 {% endfor %}
+
 verbose: True

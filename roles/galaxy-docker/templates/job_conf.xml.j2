@@ -1,4 +1,6 @@
 #jinja2: trim_blocks:False
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- {{ ansible_managed }} -->
 {# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center #}
 {# Contact us at: sasc@lumc.nl #}
 {# #}
@@ -9,8 +11,6 @@
 {# #}
 {# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>. #}
 {# #}
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- {{ ansible_managed }} -->
 <job_conf>
  <plugins workers="{{galaxy_job_workers | default("2")}}">
    <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner"/>
