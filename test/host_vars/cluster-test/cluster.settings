@@ -22,9 +22,21 @@ galaxy_docker_cluster_destinations:
     memory: 16G
     extra_options: ""
 galaxy_docker_cluster_tool_destinations:
-  cluster_low: []
-  cluster_low_high_mem: []
-galaxy_docker_cluster_tool_destination_configuration: ''
+  cluster_low: Filter1
+  cluster_low_high_mem: ChangeCase
+galaxy_docker_cluster_tool_destination_configuration:
+  trimmer:
+    rules:
+      - rule_type: file_size
+        nice_value: 0
+        lower_bound: 0
+        upper bound: 512 KB
+        destination: local
+      - rule_type: file_size
+        nice_value: 0
+        lower_bound: 4 MB
+        upper_bound: infinity
+        destination: cluster_low_high_mem
 galaxy_docker_cluster_user_destinations:
   admin@galaxy.org:
     priority: med
