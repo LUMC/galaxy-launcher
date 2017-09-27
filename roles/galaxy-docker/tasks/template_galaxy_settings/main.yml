@@ -24,9 +24,11 @@
   when: galaxy_docker_template_welcome
 
 - include: setup_cluster_general.yml
-  when: galaxy_docker_cluster | bool
+  when: galaxy_docker_cluster
 
 - include: setupsge.yml
-  when: galaxy_docker_cluster_type == 'sge'
+  when:
+    - galaxy_docker_cluster_type == 'sge'
+    - galaxy_docker_cluster
 
 - include: report_user.yml
