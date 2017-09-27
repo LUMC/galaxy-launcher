@@ -63,13 +63,13 @@
 
 - name: rsync exported db to ansible host
   synchronize:
-    perms: yes #file should not be world readable
+    perms: yes  #file should not be world readable
     compress: yes
     dest: "{{galaxy_docker_extract_database_dir}}"
     src: "{{galaxy_docker_extracted_db_location}}/{{galaxy_docker_extracted_db_filename}}"
     mode: pull
   vars:
-    ansible_ssh_pipelining: False # Rscync does not work with ssh pipelining
+    ansible_ssh_pipelining: False  # Rscync does not work with ssh pipelining
 
 - name: Delete dump file on server
   file:

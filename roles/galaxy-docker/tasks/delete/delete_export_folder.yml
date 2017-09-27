@@ -1,4 +1,4 @@
-- name:  Remove docker export volumes
+- name: Remove docker export volumes
   docker_container:
     volumes: "{{galaxy_docker_export_location}}:/export/"
     image: "{{galaxy_docker_docker_image}}"
