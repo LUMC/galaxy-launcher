@@ -159,7 +159,7 @@ galaxy_docker_upgrade: False
 galaxy_docker_provision: False
 galaxy_docker_run: False
 galaxy_docker_add_users: False
-galaxy_docker_add_user_ssh_keys: False
+galaxy_docker_create_user_ssh_keys: False
 galaxy_docker_install_packages: False
 galaxy_docker_create_export_folder: False
 galaxy_docker_backup: False
