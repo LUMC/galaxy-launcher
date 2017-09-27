@@ -9,7 +9,7 @@ git:
 install:
   - pip install mkdocs yamllint
 script:
-  - project_yamls=$(git ls-files | grep  -E ".*\.ya?ml")
+  - project_yamls=$(git ls-files | grep  -E ".*\.ya?ml$")
   - project_setting_files=$(git ls-files | grep  -E ".*\.settings$")
   - yamllint -f parsable -c .yamllint.yml $project_yamls
   - yamllint -f parsable -c .yamllint.yml $project_setting_files
