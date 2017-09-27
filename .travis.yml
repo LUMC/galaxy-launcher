@@ -1,0 +1,12 @@
+language: python
+sudo: false
+matrix:
+  include: 
+    - python: 2.7
+      TOX_ENV=py27-yamllint
+    - python: 2.7
+      TOX_ENV=py27-mkdocs
+  install:
+    - pip install tox
+  script
+    - tox -e $TOX_ENV
