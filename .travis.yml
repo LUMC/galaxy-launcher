@@ -8,11 +8,10 @@ matrix:
     - python: 2.7
       env:
         TESTCOMMAND: mkdocs build --clean
-  install:
-    - apt install git
-    - pip install mkdocs yamllint
   script:
     - $TESTCOMMAND
 # Submodules required for integration testing with vagrant only
 git:
   submodules: false
+install:
+  - pip install mkdocs yamllint
