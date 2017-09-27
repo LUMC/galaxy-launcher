@@ -11,6 +11,6 @@ install:
 script:
   - project_yamls=$(git ls-files | grep  -E ".*\.ya?ml")
   - project_setting_files=$(git ls-files | grep  -E ".*\.settings$")
-  - yamllint -c .yamllint.yml $project_yamls
-  - yamllint -c .yamllint.yml $project_setting_files
+  - yamllint -f parsable -c .yamllint.yml $project_yamls
+  - yamllint -f parsable -c .yamllint.yml $project_setting_files
   - mkdocs build --clean
