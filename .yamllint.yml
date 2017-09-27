@@ -3,10 +3,10 @@
 # http://yamllint.readthedocs.io/en/latest/rules.html
 
 rules:
-  # "{{ var }}" for variables. "{}" for empty dictionaries.
+  # "{{var}}" for variables. "{}" for empty dictionaries.
   braces:
-    min-spaces-inside: 1
-    max-spaces-inside: 1
+    min-spaces-inside: 0
+    max-spaces-inside: 0
     min-spaces-inside-empty: 0
     max-spaces-inside-empty: 0
   # Lists as [ 1, 2, 3, 4, 5 ] empty lists as []

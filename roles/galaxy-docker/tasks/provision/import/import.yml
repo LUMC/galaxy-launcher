@@ -59,10 +59,11 @@
     var: database_created.stdout
 
 - name: Import new database in galaxy container
-  command: "docker exec -u {{user}} {{name}} {{command}}"
+  command: "docker exec -u {{user}} {{name}} {{galaxy_docker_db_restore_command}} {{flags}}"
   vars:
     name: "{{galaxy_docker_container_name}}"
-    command: "{{galaxy_docker_db_restore_command}} -d {{galaxy_docker_container_database_name}} {{galaxy_docker_db_input_file_flag}} /database/{{galaxy_docker_imported_db}}"
+
+    flags: -d {{galaxy_docker_container_database_name}} {{galaxy_docker_db_input_file_flag}} /database/{{galaxy_docker_imported_db}}"
     user: "{{galaxy_docker_web_user}}"
 
 - name: stop container
