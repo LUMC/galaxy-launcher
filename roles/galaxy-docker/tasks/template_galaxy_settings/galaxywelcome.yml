@@ -34,7 +34,7 @@
     path: "{{item.path}}"
     state: absent
   with_items:
-    -   "{{old_welcome_files.files}}"
+    - "{{old_welcome_files.files}}"
 
 - name: Search new "welcome" files in the welcome folder
   find:

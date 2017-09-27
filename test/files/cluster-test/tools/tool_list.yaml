@@ -40,16 +40,16 @@
 #                                through a resolver (e.g Conda). (default: False)
 
 tools:
-- name: data_manager_fetch_genome_dbkeys_all_fasta
-  owner: devteam
-  tool_shed_url: https://toolshed.g2.bx.psu.edu
-  revisions:
-  - 16ab4dd6a0e5
-  - b1bc53e9bbc5
-  install_tool_dependencies: True
-  install_repository_dependencies: True
-- name: bedtools
-  owner: iuc
-  tool_panel_section_label: 'BED tools'
-  revisions:
-  - 2cd7e321d259
+  - name: data_manager_fetch_genome_dbkeys_all_fasta
+    owner: devteam
+    tool_shed_url: https://toolshed.g2.bx.psu.edu
+    revisions:
+      - 16ab4dd6a0e5
+      - b1bc53e9bbc5
+    install_tool_dependencies: True
+    install_repository_dependencies: True
+  - name: bedtools
+    owner: iuc
+    tool_panel_section_label: 'BED tools'
+    revisions:
+      - 2cd7e321d259

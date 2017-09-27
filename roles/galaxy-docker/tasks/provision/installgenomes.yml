@@ -59,7 +59,7 @@
 - name: Use ephemeris run-data-managers to run data managers
   command: "{{galaxy_docker_docker_user_virtualenv}}/bin/run-data-managers -g localhost:{{galaxy_docker_provision_port}} -a {{galaxy_admin_api_key}} --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}} -v"
   with_items: "{{dbkeys.files}}"
-  ignore_errors: yes # If databases fail galaxy is still restarted so the ones that did not fail are available
+  ignore_errors: yes  # If databases fail galaxy is still restarted so the ones that did not fail are available
   register: result
 
 - name: Debug ephemeris output
@@ -72,4 +72,4 @@
     path: "{{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
     state: absent
   with_items:
-   - "{{dbkeys.files}}"
+    - "{{dbkeys.files}}"

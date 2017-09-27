@@ -1,7 +1,7 @@
 - name: Create cluster filesystem folders
   file:
-      path: "{{item}}"
-      state: directory
+    path: "{{item}}"
+    state: directory
   with_items:
     - "{{galaxy_docker_optional_environment_settings.GALAXY_CONFIG_JOB_WORKING_DIRECTORY}}"
     - "{{galaxy_docker_optional_environment_settings.GALAXY_CONFIG_FILE_PATH}}"
