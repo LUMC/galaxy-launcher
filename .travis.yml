@@ -14,3 +14,7 @@ script:
   - yamllint -f parsable -c .yamllint.yml $project_yamls
   - yamllint -f parsable -c .yamllint.yml $project_setting_files
   - mkdocs build -s --clean
+
+# Keep inboxes nice and clean.
+notifications:
+  email: false
