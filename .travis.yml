@@ -13,3 +13,6 @@ matrix:
     - pip install mkdocs yamllint
   script:
     - $TESTCOMMAND
+# Submodules required for integration testing with vagrant only
+git:
+  submodules: false
