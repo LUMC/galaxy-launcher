@@ -13,4 +13,4 @@ script:
   - project_setting_files=$(git ls-files | grep  -E ".*\.settings$")
   - yamllint -f parsable -c .yamllint.yml $project_yamls
   - yamllint -f parsable -c .yamllint.yml $project_setting_files
-  - mkdocs build --clean
+  - mkdocs build -s --clean
