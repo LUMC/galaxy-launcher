@@ -6,3 +6,4 @@ galaxy_docker_welcome_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/welc
 galaxy_docker_genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
 galaxy_docker_dbkeys_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/dbkeys/"
 galaxy_docker_custom_image_dir: "files/{{inventory_hostname}}/docker_custom_image/"
+galaxy_docker_extract_database_dir: "files/{{inventory_hostname}}/database_extract/"
