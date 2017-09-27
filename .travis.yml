@@ -3,15 +3,12 @@ sudo: false
 matrix:
   include:
     - python: 2.7
-      env:
-        TESTCOMMAND: yamllint -c .yamllint.yml $(git ls-files | grep  -e ".*.ya?ml") $(git ls-files | grep  -e ".*.settings")
-    - python: 2.7
-      env:
-        TESTCOMMAND: mkdocs build --clean
-script:
-  - $TESTCOMMAND
-# Submodules required for integration testing with vagrant only
+# Submodules required for integration testing with vagrant only, which is not supported by travis.
 git:
   submodules: false
 install:
   - pip install mkdocs yamllint
+script:
+  - yamllint -c .yamllint.yml $(git ls-files | grep  -e ".*.ya?ml")
+  - yamllint -c .yamllint.yml $(git ls-files | grep  -e ".*.settings")
+  - mkdocs build --clean
