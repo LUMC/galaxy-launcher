@@ -4,7 +4,7 @@ matrix:
   include:
     - python: 2.7
       env:
-        TESTCOMMAND: yamllint -c .yamllint.yml $(git ls-files | grep  -e ".*.ya?ml")
+        TESTCOMMAND: yamllint -c .yamllint.yml $(git ls-files | grep  -e ".*.ya?ml") $(git ls-files | grep  -e ".*.settings")
     - python: 2.7
       env:
         TESTCOMMAND: mkdocs build --clean
