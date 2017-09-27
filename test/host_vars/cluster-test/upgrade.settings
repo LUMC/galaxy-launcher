@@ -8,4 +8,3 @@ galaxy_docker_upgrade_test_settings:
   galaxy_docker_web_port: 8888
   galaxy_docker_web_port_public: 8880
   galaxy_brand: "Test upgrade of Galaxy to 17.05"
-
