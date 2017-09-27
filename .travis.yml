@@ -1,12 +1,15 @@
 language: python
 sudo: false
 matrix:
-  include: 
+  include:
     - python: 2.7
-      TOX_ENV=py27-yamllint
+      env:
+        TESTCOMMAND: yamllint -c .yamllint.yml $(git ls-files | grep  -e ".*.ya?ml")
     - python: 2.7
-      TOX_ENV=py27-mkdocs
+      env:
+        TESTCOMMAND: mkdocs build --clean
   install:
-    - pip install tox
-  script
-    - tox -e $TOX_ENV
+    - apt install git
+    - pip install mkdocs yamllint
+  script:
+    - $TESTCOMMAND
