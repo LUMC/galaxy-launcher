@@ -8,8 +8,8 @@ matrix:
     - python: 2.7
       env:
         TESTCOMMAND: mkdocs build --clean
-  script:
-    - $TESTCOMMAND
+script:
+  - $TESTCOMMAND
 # Submodules required for integration testing with vagrant only
 git:
   submodules: false
