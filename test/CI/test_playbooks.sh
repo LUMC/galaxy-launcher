@@ -9,6 +9,7 @@ vagrant_cluster_galaxy=$project_root/test/vagrant/cluster-test
 vagrant_cluster=$project_root/test/vagrant/virtual-clusters/ogs-for-galaxy
 vagrant_machines=($vagrant_ubuntu $vagrant_centos $vagrant_cluster $vagrant_cluster_galaxy )
 
+privileged=$1
 
 function exit_on_failure {
   if [ $? -ne 0 ]
@@ -18,9 +19,6 @@ function exit_on_failure {
     exit 1
   fi
 }
-
-
-
 echo "Destroy machines if already present"
 for vagrant_machine in $vagrant_machines
 do
