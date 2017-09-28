@@ -7,7 +7,7 @@ vagrant_ubuntu=$project_root/test/vagrant/ubuntu-16.04
 vagrant_centos=$project_root/test/vagrant/centos-7.2
 vagrant_cluster_galaxy=$project_root/test/vagrant/cluster-test
 vagrant_cluster=$project_root/test/vagrant/virtual-clusters/ogs-for-galaxy
-vagrant_machines=($vagrant_ubuntu $vagrant_centos $vagrant_cluster $vagrant_cluster_galaxy )
+vagrant_machines="$vagrant_ubuntu $vagrant_centos $vagrant_cluster $vagrant_cluster_galaxy"
 
 privileged=$1
 
@@ -23,6 +23,12 @@ echo "Destroy machines if already present"
 for vagrant_machine in $vagrant_machines
 do
   VAGRANT_CWD=$vagrant_machine vagrant destroy -f
+done
+
+echo "Update boxes"
+for vagrant_machine in $vagrant_machines
+do
+  VAGRANT_CWD=$vagrant_machine vagrant box update
 done
 
 echo "Start machines"
