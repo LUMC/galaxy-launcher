@@ -56,7 +56,7 @@ exit_on_failure
 
 echo "Run playbook to install galaxy on cluster VM"
 ansible-playbook -i test/hosts main.yml \
--e "host=test \
+-e "host=cluster-test \
 run=install_galaxy_cluster \
 galaxy_docker_run_privileged=$privileged"
 exit_on_failure
