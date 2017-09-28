@@ -4,7 +4,7 @@ set -eu -o pipefail
 project_root=$(git rev-parse --show-toplevel)
 
 vagrant_ubuntu=$project_root/test/vagrant/ubuntu-16.04
-vagrant_centos=$project_root/test/vagrant/centos-7.2
+vagrant_centos=$project_root/test/vagrant/centos-7
 vagrant_cluster_galaxy=$project_root/test/vagrant/cluster-test
 vagrant_cluster=$project_root/test/vagrant/virtual-clusters/ogs-for-galaxy
 vagrant_machines="$vagrant_ubuntu $vagrant_centos $vagrant_cluster $vagrant_cluster_galaxy"
@@ -85,7 +85,7 @@ galaxy_docker_run_privileged=$privileged"
 exit_on_failure
 
 echo "create directories for database operations"
-for host in ('ubuntu-16.04' 'centos-7.2' 'cluster-test')
+for host in ('ubuntu-16.04' 'centos-7' 'cluster-test')
 do
   mkdir -p $project_root/test/CI/files/$host
 done
