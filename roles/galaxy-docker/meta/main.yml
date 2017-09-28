@@ -8,17 +8,16 @@ galaxy_info:
   min_ansible_version: 2.3
 
   platforms:
-  - name: Ubuntu
-    versions:
-      - 16.04
+    - name: Ubuntu
+      versions:
+        - 16.04
 
-  galaxy_tags: 
+  galaxy_tags:
     - galaxy
     - docker
     - bgruening
     - galaxyproject
     - lumc
 
-#dependencies: 
+#dependencies:
 #  - { role: jdauphant.nginx, nginx_sites: "{{nginx_sites}}" }
-

@@ -20,7 +20,7 @@
   when: galaxy_docker_add_users
 
 - include: add_user_ssh_keys.yml
-  when: galaxy_docker_add_user_ssh_keys
+  when: galaxy_docker_create_user_ssh_keys
 
 - include: create_export_folder.yml
   when: galaxy_docker_create_export_folder

@@ -20,7 +20,7 @@
 
 - name: Set parameters for deleting the test upgrade container
   set_fact:
-    "{{item.key}}" : "{{item.value}}"
+    "{{item.key}}": "{{item.value}}"
   with_dict: "{{galaxy_docker_upgrade_test_settings}}"
   when: galaxy_docker_delete_test_upgrade
 
