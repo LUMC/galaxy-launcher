@@ -3,7 +3,7 @@ FROM ubuntu:16.04
 
 ENV SSH_USER=galaxy_ssh
 
-RUN apt-get update && apt-get install -y openssh-server python
+RUN apt-get update && apt-get install -y openssh-server python sudo
 RUN mkdir /var/run/sshd
 RUN echo 'root:screencast' | chpasswd
 ADD files/sshd_config /etc/ssh/sshd_config
@@ -15,14 +15,15 @@ ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 
 # Add passwordless sudo user.
+RUN groupadd passwordless
 RUN useradd -d /home/$SSH_USER -m -p $SSH_USER -G sudo,passwordless -s /bin/bash $SSH_USER
-RUN echo '%passwordless         ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
+RUN echo "%passwordless         ALL = (ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 USER $SSH_USER
 RUN mkdir $HOME/.ssh
 RUN chmod 700 $HOME/.ssh
-ADD files/galaxy_ssh.pub $HOME/galaxy_ssh.pub
-RUN cat $HOME/galaxy_ssh.pub >> .ssh/authorized_keys
+ADD files/galaxy_ssh.pub /home/$SSH_USER/galaxy_ssh.pub
+RUN cat $HOME/galaxy_ssh.pub >> $HOME/.ssh/authorized_keys
 RUN chmod 600 $HOME/.ssh/authorized_keys
 
 
