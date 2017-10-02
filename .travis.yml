@@ -3,7 +3,29 @@ sudo: false
 matrix:
   include:
     - python: 2.7
-      env: TOX_ENV=py27-lint
+      env:
+        TOX_ENV: py27-lint
+    - python: 2.7
+      env:
+        TOX_ENV: playbook-test
+        test_hostname: centos-7
+        privileged: True
+    - python: 2.7
+      env:
+        TOX_ENV: playbook-test
+        test_hostname: centos-7
+        privileged: False
+    - python: 2.7
+      env:
+        TOX_ENV: playbook-test
+        test_hostname: ubuntu-16.04
+        privileged: True
+    - python: 2.7
+      env:
+        TOX_ENV: playbook-test
+        test_hostname: ubuntu-16.04
+        privileged: True
+
 # Submodules required for integration testing with vagrant only, which is not supported by travis.
 git:
   submodules: false
