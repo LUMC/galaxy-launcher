@@ -10,8 +10,11 @@ ssh_user="galaxy_ssh"
 
 echo "Build docker image with ssh access"
 docker build -t $image_name $project_root/test/docker/$hostname
-CONTAINER_NAME=`docker run -d -v /var/run/docker.sock:/var/run/docker.sock $image_name`
+CONTAINER_NAME=`docker run --cap-add=NET_ADMIN -d -v /var/run/docker.sock:/var/run/docker.sock $image_name`
 CONTAINER_IP=`docker inspect -f {{.NetworkSettings.IPAddress}} $CONTAINER_NAME`
+
+echo "Make sure private key has right permissions"
+chmod 600 $project_root/test/docker/$hostname/files/$ssh_user
 
 echo "Create ansible hosts file"
 echo "[test]" > $hosts_file
@@ -26,8 +29,7 @@ ansible-playbook -i $hosts_file main.yml \
 -e "host=$hostname \
 galaxy_docker_container_name=galaxy_$hostname \
 run=install_prerequisites \
-galaxy_docker_create_user_ssh_keys=true \
-galaxy_docker_run_privileged=$privileged"
+galaxy_docker_create_user_ssh_keys=true"
 exit_on_failure
 
 echo "Run playbook to install galaxy on standalone VM\'s"
