@@ -3,14 +3,13 @@ sudo: false
 matrix:
   include:
     - python: 2.7
+      env: TOX_ENV=py27-lint
 # Submodules required for integration testing with vagrant only, which is not supported by travis.
 git:
   submodules: false
-install:
-  - pip install mkdocs yamllint
+
 script:
-  - bash test/yamllinting.sh
-  - bash test/mkdocs.sh
+  - tox -e $TOX_ENV
 
 # Keep inboxes nice and clean.
 notifications:
