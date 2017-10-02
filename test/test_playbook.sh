@@ -8,6 +8,15 @@ hosts_file=$project_root/test/ci_hosts
 image_name="image"
 ssh_user="galaxy_ssh"
 
+
+function exit_on_failure {
+  if [ $? -ne 0 ]
+  then
+    echo "Error when executing playbook"
+    exit 1
+  fi
+}
+
 echo "Build docker image with ssh access"
 docker build -t $image_name $project_root/test/docker/$hostname
 CONTAINER_NAME=`docker run --cap-add=NET_ADMIN -d -v /var/run/docker.sock:/var/run/docker.sock $image_name`
