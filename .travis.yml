@@ -1,5 +1,7 @@
 language: python
 sudo: false
+services:
+  - docker
 matrix:
   include:
     - python: 2.7
@@ -7,22 +9,22 @@ matrix:
         TOX_ENV: py27-lint
     - python: 2.7
       env:
-        TOX_ENV: playbook-test
+        TOX_ENV: playbook
         test_hostname: centos-7
         privileged: True
     - python: 2.7
       env:
-        TOX_ENV: playbook-test
+        TOX_ENV: playbook
         test_hostname: centos-7
         privileged: False
     - python: 2.7
       env:
-        TOX_ENV: playbook-test
+        TOX_ENV: playbook
         test_hostname: ubuntu-16.04
         privileged: True
     - python: 2.7
       env:
-        TOX_ENV: playbook-test
+        TOX_ENV: playbook
         test_hostname: ubuntu-16.04
         privileged: True
 
