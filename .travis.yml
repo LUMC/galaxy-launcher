@@ -8,6 +8,9 @@ matrix:
 git:
   submodules: false
 
+install:
+  - pip install tox
+
 script:
   - tox -e $TOX_ENV
 
