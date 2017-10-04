@@ -8,12 +8,13 @@ hosts_file=$project_root/test/ci_hosts
 image_name="image"
 ssh_user="galaxy_ssh"
 
-export_volume=$project_root/test/CI/files/$hostname
-export_folder=$export_volume/export
+export_volume="$project_root/test/CI/files/$hostname"
+export_folder="$export_volume/export"
 ansible_playbook_extra_settings="\
 galaxy_docker_container_name=galaxy_${hostname} \
 galaxy_docker_extract_database_dir=${project_root}/test/CI/files/{{inventory_hostname}} \
-galaxy_docker_import_db_dir=${project_root}/test/CI/files/{{inventory_hostname}}
+galaxy_docker_import_db_dir=${project_root}/test/CI/files/{{inventory_hostname}} \
+galaxy_docker_export_location=${export_folder}
 "
 ansible_playbook_run_commands="\
 install_galaxy \
@@ -27,13 +28,6 @@ delete_upgrade_test \
 upgrade \
 delete_galaxy_complete \
 "
-function exit_on_failure {
-  if [ $? -ne 0 ]
-  then
-    echo "Error when executing playbook"
-    exit 1
-  fi
-}
 
 echo "Build docker image with ssh access"
 docker build -t $image_name $project_root/test/docker/$hostname
@@ -58,7 +52,7 @@ mkdir -p $project_root/test/CI/files/$hostname
 echo "Run playbook to install prerequisites"
 ansible-playbook -i $hosts_file main.yml \
 -e "host=$hostname \
-galaxy_docker_container_name=galaxy_$hostname \
+${ansible_playbook_extra_settings} \
 run=install_prerequisites \
 galaxy_docker_create_user_ssh_keys=true"
 
