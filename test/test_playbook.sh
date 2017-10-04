@@ -8,7 +8,8 @@ hosts_file=$project_root/test/ci_hosts
 image_name="image"
 ssh_user="galaxy_ssh"
 
-export_folder=$project_root/test/CI/files/$hostname/export
+export_volume=$project_root/test/CI/files/$hostname
+export_folder=$export_volume/export
 ansible_playbook_extra_settings="\
 galaxy_docker_container_name=galaxy_${hostname} \
 galaxy_docker_extract_database_dir=${project_root}/test/CI/files/{{inventory_hostname}} \
@@ -36,7 +37,7 @@ function exit_on_failure {
 
 echo "Build docker image with ssh access"
 docker build -t $image_name $project_root/test/docker/$hostname
-CONTAINER_NAME=`docker run -d --cap-add=NET_ADMIN -v /var/run/docker.sock:/var/run/docker.sock -v ${export_folder}:${export_folder} $image_name`
+CONTAINER_NAME=`docker run -d --cap-add=NET_ADMIN -v /var/run/docker.sock:/var/run/docker.sock -v ${export_volume}:${export_volume} $image_name`
 CONTAINER_IP=`docker inspect -f {{.NetworkSettings.IPAddress}} $CONTAINER_NAME`
 
 echo "Make sure private key has right permissions"
@@ -60,7 +61,6 @@ ansible-playbook -i $hosts_file main.yml \
 galaxy_docker_container_name=galaxy_$hostname \
 run=install_prerequisites \
 galaxy_docker_create_user_ssh_keys=true"
-exit_on_failure
 
 echo "Run playbook run commands"
 for run_command in $ansible_playbook_run_commands
@@ -71,7 +71,6 @@ do
   ${ansible_playbook_extra_settings} \
   run=${run_command} \
   galaxy_docker_run_privileged=$privileged"
-  exit_on_failure
 done
 
 echo "Remove directories"
