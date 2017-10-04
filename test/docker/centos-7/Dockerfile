@@ -14,6 +14,8 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 
+# Add host keys
+RUN for type in rsa ecdsa ed25519 dsa ; do ssh-keygen -f "/etc/ssh/ssh_host_${type}_key" -N '' -t $type ; done
 # Add passwordless sudo user.
 RUN groupadd passwordless && groupadd sudo
 RUN useradd -d /home/$SSH_USER -m -p $SSH_USER -G sudo,passwordless -s /bin/bash $SSH_USER
@@ -33,4 +35,3 @@ USER root
 
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
-
