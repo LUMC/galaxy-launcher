@@ -7,16 +7,16 @@ matrix:
     - python: 2.7
       env:
         TOX_ENV: py27-lint
-    - python: 2.7
-      env:
-        TOX_ENV: playbook
-        test_hostname: centos-7
-        privileged: True
-    - python: 2.7
-      env:
-        TOX_ENV: playbook
-        test_hostname: centos-7
-        privileged: False
+#    - python: 2.7
+#      env:
+#        TOX_ENV: playbook
+#        test_hostname: centos-7
+#        privileged: True
+#    - python: 2.7
+#      env:
+#        TOX_ENV: playbook
+#        test_hostname: centos-7
+#        privileged: False
     - python: 2.7
       env:
         TOX_ENV: playbook
