@@ -17,8 +17,8 @@ RUN echo "export VISIBLE=now" >> /etc/profile
 # Add host keys
 RUN for type in rsa ecdsa ed25519 dsa ; do ssh-keygen -f "/etc/ssh/ssh_host_${type}_key" -N '' -t $type ; done
 # Add passwordless sudo user.
-RUN groupadd passwordless && groupadd sudo
-RUN useradd -d /home/$SSH_USER -m -p $SSH_USER -G sudo,passwordless -s /bin/bash $SSH_USER
+RUN groupadd passwordless
+RUN useradd -d /home/$SSH_USER -m -p $SSH_USER -G wheel,passwordless -s /bin/bash $SSH_USER
 RUN echo "%passwordless         ALL = (ALL) NOPASSWD: ALL" >> /etc/sudoers
 RUN echo "%sudo   ALL=(ALL:ALL) ALL" >> /etc/sudoers
 USER $SSH_USER
