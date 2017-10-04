@@ -37,3 +37,4 @@ test/files/*/ssh/*
 test/files/*/database_extract/*
 test/files/*/database_import/*
 test/ci_hosts
+test/CI/files
