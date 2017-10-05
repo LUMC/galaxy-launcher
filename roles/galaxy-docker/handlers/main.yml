@@ -20,7 +20,7 @@
 
 - name: check if galaxy has started
   uri:
-    url: "http://{{galaxy_docker_localhost}}:{{galaxy_docker_web_port}}"
+    url: "http://localhost:{{galaxy_docker_web_port}}"
     return_content: yes
   register: result
   until: 'galaxy_brand in result.content'
@@ -29,7 +29,7 @@
 
 - name: check if provision galaxy has started
   uri:
-    url: "http://{{galaxy_docker_localhost}}:{{galaxy_docker_provision_port}}"
+    url: "http://localhost:{{galaxy_docker_provision_port}}"
     return_content: yes
   register: result
   until: 'galaxy_brand in result.content'

@@ -55,7 +55,6 @@ galaxy_docker_provision_port: 8008
 galaxy_docker_web_port_expose: False
 galaxy_docker_ftp_port_expose: False
 galaxy_docker_sftp_port_expose: False
-galaxy_docker_localhost: localhost
 # Bgruening container defaults
 galaxy_docker_container_database_name: galaxy
 galaxy_docker_container_database_username: "galaxy"

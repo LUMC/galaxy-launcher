@@ -23,7 +23,7 @@
         - "client_max_body_size {{max_upload_size}}"
     nginx_configs:
       upstream:
-        - "upstream galaxy { server {{galaxy_docker_localhost}}:{{galaxy_docker_web_port}}; }"
+        - "upstream galaxy { server localhost:{{galaxy_docker_web_port}}; }"
       proxy:
         - "proxy_set_header X-Real-IP $remote_addr"
         - "proxy_set_header X-Forwarded-Host $host"
@@ -56,7 +56,7 @@
     nginx_configs_test_upgrade:
       upstream:
         - "{{nginx_configs.upstream[0]}}"
-        - "upstream test_upgrade_galaxy { server {{galaxy_docker_localhost}}:{{galaxy_docker_upgrade_test_settings.galaxy_docker_web_port}}; }"
+        - "upstream test_upgrade_galaxy { server localhost:{{galaxy_docker_upgrade_test_settings.galaxy_docker_web_port}}; }"
   when: galaxy_docker_test_upgrade
 
 - name: combine test upgrade profile with regular galaxy profile
