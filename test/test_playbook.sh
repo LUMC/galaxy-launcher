@@ -104,4 +104,5 @@ do
 done
 
 echo "Remove directories"
-rm -f $project_root/test/CI/files/$hostname
+docker run -v $project_root/test/CI/files:$project_root/test/CI/files $image_name \
+rm -rf $export_volume
