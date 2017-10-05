@@ -12,8 +12,8 @@ export_volume="$project_root/test/CI/files/$hostname"
 export_folder="$export_volume/export"
 ansible_playbook_extra_settings="\
 galaxy_docker_container_name=galaxy_${hostname} \
-galaxy_docker_extract_database_dir=${project_root}/test/CI/files/{{inventory_hostname}} \
-galaxy_docker_import_db_dir=${project_root}/test/CI/files/{{inventory_hostname}} \
+galaxy_docker_extract_database_dir=${project_root}/test/CI/files/{{inventory_hostname}}/import_db \
+galaxy_docker_import_db_dir=${project_root}/test/CI/files/{{inventory_hostname}}/import_db \
 galaxy_docker_export_location=${export_folder} \
 galaxy_docker_web_port_public=8081 \
 galaxy_docker_web_port=8080 \
@@ -63,7 +63,6 @@ ansible_user=$ssh_user \
 ansible_port=8822 \
 ansible_ssh_private_key_file=$project_root/test/docker/$hostname/files/$ssh_user" >> $hosts_file
 echo "[all:vars]" >> $hosts_file
-echo "ansible_connection=ssh" >> $hosts_file
 echo 'ansible_ssh_extra_args="-o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"' >> $hosts_file
 
 
