@@ -25,9 +25,7 @@
     force: yes
   become: no
   delegate_to: 127.0.0.1
-  vars:
-    ansible_ssh_pipelining: False
-    
+
 - name: Include port and volume settings
   include_vars: "{{galaxy_docker_ansible_generated_vars_dir}}/docker_volumes_provision.yml"
 
