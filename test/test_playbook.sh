@@ -14,8 +14,10 @@ ansible_playbook_extra_settings="\
 galaxy_docker_container_name=galaxy_${hostname} \
 galaxy_docker_extract_database_dir=${project_root}/test/CI/files/{{inventory_hostname}} \
 galaxy_docker_import_db_dir=${project_root}/test/CI/files/{{inventory_hostname}} \
-galaxy_docker_export_location=${export_folder}
-galaxy_docker_provision=false
+galaxy_docker_export_location=${export_folder} \
+galaxy_docker_web_port_public=8081 \
+galaxy_docker_web_port=8080 \
+galaxy_docker_provision_port=8082 \
 "
 ansible_playbook_run_commands="\
 install_galaxy \
@@ -36,16 +38,21 @@ echo "start docker container"
 tmpdir="$(mktemp -d)"
 CONTAINER_NAME=`docker run -d \
 --cap-add=NET_ADMIN \
+--network=host \
 -v /var/run/docker.sock:/var/run/docker.sock \
 -v ${export_volume}:${export_volume} $image_name`
-CONTAINER_IP=`docker inspect -f {{.NetworkSettings.IPAddress}} $CONTAINER_NAME`
+#CONTAINER_IP=`docker inspect -f {{.NetworkSettings.IPAddress}} $CONTAINER_NAME`
+CONTAINER_IP=127.0.0.1
 sleep 5
 echo "Make sure private key has right permissions"
 chmod 600 $project_root/test/docker/$hostname/files/$ssh_user
 
 echo "Create ansible hosts file"
 echo "[test]" > $hosts_file
-echo "$hostname ansible_host=$CONTAINER_IP ansible_user=$ssh_user \
+echo "$hostname \
+ansible_host=$CONTAINER_IP \
+ansible_user=$ssh_user \
+ansible_port=8822 \
 ansible_ssh_private_key_file=$project_root/test/docker/$hostname/files/$ssh_user" >> $hosts_file
 echo "[all:vars]" >> $hosts_file
 echo "ansible_connection=ssh" >> $hosts_file

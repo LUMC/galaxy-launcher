@@ -31,6 +31,5 @@ RUN chmod 600 $HOME/.ssh/authorized_keys
 
 USER root
 
-EXPOSE 22
+EXPOSE 8822
 CMD ["/usr/sbin/sshd", "-D"]
-
