@@ -14,8 +14,8 @@ vars_file=$export_volume/vars_file.yml
 
 ansible_playbook_extra_settings="\
 galaxy_docker_container_name: galaxy_${hostname}
-galaxy_docker_extract_database_dir: ${export_volume}/import_db
-galaxy_docker_import_db_dir: ${export_volume}/import_db
+galaxy_docker_extract_database_dir: ${export_volume}/import_db/
+galaxy_docker_import_db_dir: ${export_volume}/import_db/
 galaxy_docker_export_location: ${export_folder}
 galaxy_docker_web_port_public: 8081
 galaxy_docker_web_port: 8080
@@ -27,7 +27,7 @@ galaxy_docker_upgrade_test_settings:
   galaxy_docker_ufw_profile: test_upgrade_galaxy
   galaxy_docker_web_port: 8888
   galaxy_docker_web_port_public: 8880
-  galaxy_docker_sftp_port: 8822
+  galaxy_docker_sftp_port: 8823
   galaxy_brand: Test upgrade of Galaxy to 17.05
 "
 echo $ansible_playbook_extra_settings
@@ -55,6 +55,8 @@ docker run -v $project_root/test/CI/files:$project_root/test/CI/files $image_nam
 mkdir -p $export_volume
 docker run -v $project_root/test/CI/files:$project_root/test/CI/files $image_name \
 chmod 777 $export_volume
+echo "create database operations folder."
+mkdir ${export_volume}/import_db
 
 echo "start docker container"
 CONTAINER_NAME=`docker run -d \
