@@ -22,11 +22,13 @@ matrix:
         TOX_ENV: playbook
         test_hostname: ubuntu-16.04
         privileged: True
+        TRAVIS: True
     - python: 2.7
       env:
         TOX_ENV: playbook
         test_hostname: ubuntu-16.04
         privileged: False
+        TRAVIS: True
 # Submodules required for integration testing with vagrant only, which is not supported by travis.
 git:
   submodules: false
