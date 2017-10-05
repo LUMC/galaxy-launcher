@@ -43,10 +43,10 @@ echo "Build docker image with ssh access"
 docker build -t $image_name $project_root/test/docker/$hostname
 
 echo "create empty test directory"
-docker run -v $project_root/test/CI/files:$project_root/test/CI/files $image_name \
-rm -rf $export_volume
 mkdir -p $export_volume
 chmod 777 $export_volume
+docker run -v $project_root/test/CI/files:$project_root/test/CI/files $image_name \
+rm -rf $export_volume
 
 
 
