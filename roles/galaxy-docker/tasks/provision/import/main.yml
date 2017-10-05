@@ -28,7 +28,7 @@
 
 - name: Fail when multiple files are found
   fail:
-    msg: "Multiple files in {}{galaxy_docker_import_db_dir}}"
+    msg: "Multiple files in {{galaxy_docker_import_db_dir}}"
   when: "dump_file_list.matched > 1"
 
 - name: Display when no files are found
