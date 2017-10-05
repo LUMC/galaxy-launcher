@@ -22,11 +22,17 @@ matrix:
         TOX_ENV: playbook
         test_hostname: ubuntu-16.04
         privileged: True
+        DEFAULT_REMOTE_TMP: /tmp/.ansible
+        ANSIBLE_REMOTE_TMP: /tmp/.ansible
+        ANSIBLE_LOCAL_TMP: /tmp/.ansible
     - python: 2.7
       env:
         TOX_ENV: playbook
         test_hostname: ubuntu-16.04
         privileged: False
+        DEFAULT_REMOTE_TMP: /tmp/.ansible
+        ANSIBLE_REMOTE_TMP: /tmp/.ansible
+        ANSIBLE_LOCAL_TMP: /tmp/.ansible
 # Submodules required for integration testing with vagrant only, which is not supported by travis.
 git:
   submodules: false
