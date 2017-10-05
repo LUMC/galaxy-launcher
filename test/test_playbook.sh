@@ -17,7 +17,7 @@ galaxy_docker_import_db_dir=${project_root}/test/CI/files/{{inventory_hostname}}
 galaxy_docker_export_location=${export_folder} \
 galaxy_docker_web_port_public=8081 \
 galaxy_docker_web_port=8080 \
-galaxy_docker_provision_port=8082 \
+galaxy_docker_ansible_generated_vars_dir=${project_root}/test/CI/files/{{inventory_hostname}} \
 "
 ansible_playbook_run_commands="\
 install_galaxy \
@@ -34,8 +34,16 @@ delete_galaxy_complete \
 
 echo "Build docker image with ssh access"
 docker build -t $image_name $project_root/test/docker/$hostname
+
+echo "create empty test directory"
+docker run -v $project_root/test/CI/files:$project_root/test/CI/files $image_name \
+rm -rf $export_volume
+mkdir -p $export_volume
+chmod 777 $export_volume
+
+
+
 echo "start docker container"
-tmpdir="$(mktemp -d)"
 CONTAINER_NAME=`docker run -d \
 --cap-add=NET_ADMIN \
 --network=host \
@@ -57,9 +65,6 @@ ansible_ssh_private_key_file=$project_root/test/docker/$hostname/files/$ssh_user
 echo "[all:vars]" >> $hosts_file
 echo "ansible_connection=ssh" >> $hosts_file
 echo 'ansible_ssh_extra_args="-o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"' >> $hosts_file
-
-echo "create directories for database operations"
-mkdir -p $project_root/test/CI/files/$hostname
 
 
 echo "Run playbook to install prerequisites"
