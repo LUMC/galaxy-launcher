@@ -2,6 +2,12 @@ language: python
 sudo: required
 services:
   - docker
+env:
+  DEFAULT_REMOTE_TMP: /tmp/.ansible
+  ANSIBLE_REMOTE_TMP: /tmp/.ansible
+  ANSIBLE_LOCAL_TMP: /tmp/.ansible
+
+
 matrix:
   include:
     - python: 2.7
