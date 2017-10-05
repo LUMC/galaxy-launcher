@@ -18,6 +18,13 @@ galaxy_docker_export_location=${export_folder} \
 galaxy_docker_web_port_public=8081 \
 galaxy_docker_web_port=8080 \
 galaxy_docker_ansible_generated_vars_dir=${project_root}/test/CI/files/{{inventory_hostname}} \
+galaxy_docker_upgrade_test_settings={\
+'galaxy_docker_docker_image':'bgruening/galaxy-stable:17.05',\
+'galaxy_docker_container_name':'test_upgrade_galaxy',\
+'galaxy_docker_web_port':'8888',\
+'galaxy_docker_web_port_public':'8880',\
+'galaxy_docker_sftp_port':'8222'\
+}
 "
 ansible_playbook_run_commands="\
 install_galaxy \
