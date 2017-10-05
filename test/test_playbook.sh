@@ -15,6 +15,7 @@ vars_file=$export_volume/vars_file.yml
 
 ansible_playbook_extra_settings="\
 remote_tmp: /tmp/.ansible/tmp
+local_tmp: /tmp/.ansible/tmp
 galaxy_docker_container_name: galaxy_${hostname}
 galaxy_docker_extract_database_dir: ${export_volume}/import_db/
 galaxy_docker_import_db_dir: ${export_volume}/import_db/
