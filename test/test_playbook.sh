@@ -14,8 +14,6 @@ export_folder="$export_volume/export"
 vars_file=$export_volume/vars_file.yml
 
 ansible_playbook_extra_settings="\
-remote_tmp: /tmp/.ansible/tmp
-local_tmp: /tmp/.ansible/tmp
 galaxy_docker_container_name: galaxy_${hostname}
 galaxy_docker_extract_database_dir: ${export_volume}/import_db/
 galaxy_docker_import_db_dir: ${export_volume}/import_db/
@@ -99,7 +97,7 @@ echo "Run playbook run commands"
 for run_command in $ansible_playbook_run_commands
 do
   echo "Running: ${run_command}"
-  ansible-playbook -i $hosts_file main.yml \
+  ANSIBLE_REMOTE_TMP=/tmp/.ansible ansible-playbook -i $hosts_file main.yml \
   -e "host=$hostname \
   run=${run_command} \
   galaxy_docker_run_privileged=$privileged" \
