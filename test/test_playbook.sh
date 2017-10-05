@@ -93,6 +93,12 @@ run=install_prerequisites \
 galaxy_docker_create_user_ssh_keys=true" \
 --extra-vars @$vars_file $verbosity
 
+if [[ -v TRAVIS ]]
+then
+  echo "Changing ansible temp directories for travis"
+  echo $'remote_tmp     = /tmp/$USER/.ansible \n  local_tmp     = /tmp/$USER/.ansible' >> $project_root/ansible.cfg
+fi
+
 echo "Run playbook run commands"
 for run_command in $ansible_playbook_run_commands
 do
