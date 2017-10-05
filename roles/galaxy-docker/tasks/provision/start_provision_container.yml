@@ -20,14 +20,19 @@
 
 - name: Create file with volume settings
   template:
-    dest: "{{galaxy_docker_ansible_generated_vars_dir}}/docker_volumes_provision.yml"
-    src: "docker_volumes_provision.yml.j2"
+    dest: "{{galaxy_docker_ansible_generated_vars_dir}}/docker_ports_and_volumes_provision.yml"
+    src: "docker_ports_and_volumes_provision.yml.j2"
     force: yes
   become: no
   delegate_to: 127.0.0.1
 
 - name: Include port and volume settings
-  include_vars: "{{galaxy_docker_ansible_generated_vars_dir}}/docker_volumes_provision.yml"
+  include_vars: "{{galaxy_docker_ansible_generated_vars_dir}}/docker_ports_and_volumes_provision.yml"
+
+- name: Show docker published ports
+  debug:
+    var: galaxy_docker_published_ports
+    verbosity: 1
 
 - name: Show volumes
   debug:
@@ -47,7 +52,7 @@
     image: "{{galaxy_docker_docker_image}}"
     name: "{{galaxy_docker_provision_container_name}}"
     hostname: "{{galaxy_docker_container_hostname}}"
-    published_ports: "127.0.0.1:{{galaxy_docker_provision_port}}:80"
+    published_ports: "{{galaxy_docker_published_ports}}"
     state: started
     restart: yes
   notify: check if provision galaxy has started

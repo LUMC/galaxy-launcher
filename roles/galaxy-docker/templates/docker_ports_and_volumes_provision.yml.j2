@@ -12,7 +12,10 @@
 {{ansible_managed | comment}}
 
 # galaxy-docker-ansible generates these values to run the docker container.
-
+galaxy_docker_published_ports:
+{% if galaxy_docker_web_port is defined and galaxy_docker_web_port !='' %}
+  - "{% if not galaxy_docker_web_port_expose %}127.0.0.1:{% endif %}{{galaxy_docker_provision_port}}:80"
+  {% endif %}
 docker_mounted_volumes:
   - "{{galaxy_docker_export_location}}:/export/"
   {% if galaxy_docker_shared_cluster_directory is defined%}
