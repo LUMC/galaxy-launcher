@@ -7,7 +7,7 @@ privileged=$2
 hosts_file=$project_root/test/ci_hosts
 image_name="image"
 ssh_user="galaxy_ssh"
-verbosity="-vvv"
+verbosity=""
 
 export_volume="$project_root/test/CI/files/$hostname"
 export_folder="$export_volume/export"
