@@ -7,6 +7,7 @@ privileged=$2
 hosts_file=$project_root/test/ci_hosts
 image_name="image"
 ssh_user="galaxy_ssh"
+verbosity="-vvv"
 
 export_volume="$project_root/test/CI/files/$hostname"
 export_folder="$export_volume/export"
@@ -90,7 +91,7 @@ ansible-playbook -i $hosts_file main.yml \
 -e "host=$hostname \
 run=install_prerequisites \
 galaxy_docker_create_user_ssh_keys=true" \
---extra-vars @$vars_file
+--extra-vars @$vars_file $verbosity
 
 echo "Run playbook run commands"
 for run_command in $ansible_playbook_run_commands
@@ -100,7 +101,7 @@ do
   -e "host=$hostname \
   run=${run_command} \
   galaxy_docker_run_privileged=$privileged" \
-  --extra-vars @$vars_file
+  --extra-vars @$vars_file $verbosity
 done
 
 echo "Remove directories"
