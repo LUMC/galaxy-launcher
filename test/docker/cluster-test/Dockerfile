@@ -26,11 +26,14 @@ COPY files/galaxy_ssh.pub /home/$SSH_USER/galaxy_ssh.pub
 RUN cat $HOME/galaxy_ssh.pub >> $HOME/.ssh/authorized_keys
 RUN chmod 600 $HOME/.ssh/authorized_keys
 
-
-
-
+# Add gridengine
 USER root
-
-EXPOSE 22
+ENV SGE_ROOT=/var/lib/gridengine
+RUN apt install -y gridengine-client gridengine-master gridengine-exec gridengine-drmaa1.0
+RUN echo localhost > "$SGE_ROOT/default/common/act_qmaster"
+RUN sge_qmaster
+RUN sge_execd
+EXPOSE 6444
+EXPOSE 6445
+EXPOSE 8822
 CMD ["/usr/sbin/sshd", "-D"]
-
