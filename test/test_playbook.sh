@@ -20,6 +20,8 @@ galaxy_docker_export_location: ${export_folder}
 galaxy_docker_web_port_public: 8081
 galaxy_docker_web_port: 8080
 galaxy_docker_ansible_generated_vars_dir: ${export_volume}
+galaxy_docker_empty_database_script: ${export_volume}/new_empty_db
+galaxy_docker_imported_db_location: ${export_volume}/database/
 galaxy_docker_upgrade_test_settings:
   galaxy_docker_docker_image: 'bgruening/galaxy-stable:17.05'
   galaxy_docker_container_name: test_upgrade_galaxy
