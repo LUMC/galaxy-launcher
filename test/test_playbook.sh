@@ -18,14 +18,15 @@ galaxy_docker_export_location=${export_folder} \
 galaxy_docker_web_port_public=8081 \
 galaxy_docker_web_port=8080 \
 galaxy_docker_ansible_generated_vars_dir=${project_root}/test/CI/files/{{inventory_hostname}} \
-galaxy_docker_upgrade_test_settings={\
-'galaxy_docker_docker_image':'bgruening/galaxy-stable:17.05',\
-'galaxy_docker_container_name':'test_upgrade_galaxy',\
-'galaxy_docker_web_port':'8888',\
-'galaxy_docker_web_port_public':'8880',\
-'galaxy_docker_sftp_port':'8222'\
-}
+galaxy_docker_upgrade_test_settings='{\
+\"galaxy_docker_docker_image\":\"bgruening/galaxy-stable:17.05\",\
+\"galaxy_docker_container_name\":\"test_upgrade_galaxy\",\
+\"galaxy_docker_web_port\":\"8888\",\
+\"galaxy_docker_web_port_public\":\"8880\",\
+\"galaxy_docker_sftp_port\":\"8222\"\
+}'\
 "
+echo $ansible_playbook_extra_settings
 ansible_playbook_run_commands="\
 install_galaxy \
 ['install_tools','install_genomes'] \
@@ -43,11 +44,13 @@ echo "Build docker image with ssh access"
 docker build -t $image_name $project_root/test/docker/$hostname
 
 echo "create empty test directory"
-mkdir -p $export_volume
-chmod 777 $export_volume
+
 docker run -v $project_root/test/CI/files:$project_root/test/CI/files $image_name \
 rm -rf $export_volume
-
+docker run -v $project_root/test/CI/files:$project_root/test/CI/files $image_name \
+mkdir -p $export_volume
+docker run -v $project_root/test/CI/files:$project_root/test/CI/files $image_name \
+chmod 777 $export_volume
 
 
 echo "start docker container"
