@@ -86,6 +86,7 @@ echo 'ansible_ssh_extra_args="-o IdentitiesOnly=yes -o StrictHostKeyChecking=no 
 echo "create vars file"
 echo "$ansible_playbook_extra_settings" > $vars_file
 
+echo "\$TRAVIS: $TRAVIS"
 if [[ -z TRAVIS ]]
 then
   echo "Changing ansible temp directories for travis"

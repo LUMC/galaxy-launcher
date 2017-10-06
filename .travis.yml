@@ -35,7 +35,6 @@ install:
   - pip install tox
 
 script:
-  - echo "\$TRAVIS: $TRAVIS"
   - tox -e $TOX_ENV
 
 # Keep inboxes nice and clean.
