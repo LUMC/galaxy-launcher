@@ -57,8 +57,6 @@ enable_ldap \
 cron_database_backup \
 extract_database \
 import_database \
-upgrade_test \
-delete_upgrade_test \
 upgrade \
 delete_galaxy_complete \
 "
