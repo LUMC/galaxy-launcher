@@ -18,7 +18,7 @@ chmod 775  $script_dir/setup.sh
 echo "start cluster container"
 cluster_image_name=cluster
 docker build -t $cluster_image_name $project_root/test/docker/gridengine-cluster
-CLUSTER_ID=`docker run -d -v ${script_dir}:/scripts  $cluster_image_name`
+CLUSTER_ID=`docker run -d -v ${script_dir}:/scripts -v $export_folder:$export_folder $cluster_image_name`
 CLUSTER_IP=`docker inspect -f {{.NetworkSettings.IPAddress}} $CLUSTER_ID`
 CLUSTER_NAME=`docker exec $CLUSTER_ID cat /etc/hostname`
 sleep 15
@@ -36,9 +36,9 @@ galaxy_docker_empty_database_script: ${export_volume}/new_empty_db
 galaxy_docker_imported_db_location: ${export_volume}/database/
 galaxy_docker_container_hostname: $galaxy_hostname
 galaxy_docker_upgrade_test_settings:
-  galaxy_docker_docker_image: 'bgruening/galaxy-stable:17.05'
+  galaxy_docker_docker_image: 'cluster-galaxy-stable:17.05'
   galaxy_docker_container_name: test_upgrade_galaxy
-  galaxy_docker_export_location: ${export_volume}/test_upgrade
+  galaxy_docker_shared_cluster_directory: ${export_volume}/test_upgrade
   galaxy_docker_ufw_profile: test_upgrade_galaxy
   galaxy_docker_web_port: 8888
   galaxy_docker_web_port_public: 8880
