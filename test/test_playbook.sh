@@ -86,7 +86,7 @@ echo 'ansible_ssh_extra_args="-o IdentitiesOnly=yes -o StrictHostKeyChecking=no 
 echo "create vars file"
 echo "$ansible_playbook_extra_settings" > $vars_file
 
-if [[ -n "$TRAVIS" ]]
+if [[ -z TRAVIS ]]
 then
   echo "Changing ansible temp directories for travis"
   echo $'remote_tmp     = /tmp/$USER/.ansible \nlocal_tmp     = /tmp/$USER/.ansible' >> $project_root/ansible.cfg
