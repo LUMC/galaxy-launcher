@@ -1,5 +1,5 @@
 # Adapted from https://docs.docker.com/engine/examples/running_ssh_service/
-FROM lumc/ubuntu-gridengine-drmaa
+FROM ubuntu:16.04
 
 ENV SSH_USER=galaxy_ssh
 
