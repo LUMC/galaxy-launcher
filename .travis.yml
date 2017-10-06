@@ -33,6 +33,7 @@ git:
 
 install:
   - pip install tox
+  - apt install source
 
 script:
   - tox -e $TOX_ENV
