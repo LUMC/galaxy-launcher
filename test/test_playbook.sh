@@ -87,7 +87,7 @@ echo "create vars file"
 echo "$ansible_playbook_extra_settings" > $vars_file
 
 echo "\$TRAVIS: $TRAVIS"
-if [[ -z TRAVIS ]]
+if [[ -v TRAVIS ]]
 then
   echo "Changing ansible temp directories for travis"
   echo $'remote_tmp     = /tmp/$USER/.ansible \nlocal_tmp     = /tmp/$USER/.ansible' >> $project_root/ansible.cfg
