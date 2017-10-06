@@ -6,7 +6,7 @@ mkdir -p $script_dir
 
 echo "create config script"
 galaxy_hostname=galaxy-docker
-galaxy_ip=172.17.0.3
+galaxy_ip=172.17.0.3 #Very ugly. But the container IP needs to be guessed.
 echo "
 #!/bin/bash
 echo $galaxy_ip $galaxy_hostname >> /etc/hosts
@@ -20,7 +20,7 @@ cluster_image_name=cluster
 docker build -t $cluster_image_name $project_root/test/docker/gridengine-cluster
 CLUSTER_ID=`docker run -d -v ${script_dir}:/scripts  $cluster_image_name`
 CLUSTER_IP=`docker inspect -f {{.NetworkSettings.IPAddress}} $CLUSTER_ID`
-CLUSTER_NAME="ogs_head"
+CLUSTER_NAME=`docker exec $CLUSTER_ID cat /etc/hostname`
 sleep 15
 docker exec $CLUSTER_ID bash /scripts/setup.sh
 
