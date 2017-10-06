@@ -2,10 +2,6 @@ language: python
 sudo: false
 services:
   - docker
-addons:
-  apt:
-    packages:
-      - source
 matrix:
   include:
     - python: 2.7
