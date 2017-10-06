@@ -20,11 +20,11 @@ docker build -t $image_name $project_root/test/docker/$hostname
 
 echo "create empty test directory"
 
-docker run -v $project_root/test/CI/files:$project_root/test/CI/files $image_name \
+docker run -v $project_root/test/CI/files:$project_root/test/CI/files alpine \
 rm -rf $export_volume
-docker run -v $project_root/test/CI/files:$project_root/test/CI/files $image_name \
+docker run -v $project_root/test/CI/files:$project_root/test/CI/files alpine \
 mkdir -p $export_volume
-docker run -v $project_root/test/CI/files:$project_root/test/CI/files $image_name \
+docker run -v $project_root/test/CI/files:$project_root/test/CI/files alpine \
 chmod 777 $export_volume
 echo "create database operations folder."
 mkdir ${export_volume}/import_db
@@ -37,7 +37,7 @@ CONTAINER_NAME=`docker run -d \
 -v ${export_volume}:${export_volume} $image_name`
 #CONTAINER_IP=`docker inspect -f {{.NetworkSettings.IPAddress}} $CONTAINER_NAME`
 CONTAINER_IP=127.0.0.1
-sleep 5
+sleep 15
 echo "Make sure private key has right permissions"
 chmod 600 $project_root/test/docker/$hostname/files/$ssh_user
 
@@ -81,5 +81,5 @@ do
 done
 
 echo "Remove directories"
-docker run -v $project_root/test/CI/files:$project_root/test/CI/files $image_name \
+docker run -v $project_root/test/CI/files:$project_root/test/CI/files alpine \
 rm -rf $export_volume
