@@ -13,7 +13,7 @@
   yum:
     update_cache: yes
     pkg: "{{ item }}"
-    state: latest
+    state: present
   with_items:
     - yum-utils
     - device-mapper-persistent-data
@@ -23,10 +23,16 @@
 # No ansible module available
 - name: Enable extras repository
   command: yum-config-manager --enable extras
+  tags:
+    - skip_ansible_lint  # Does not create a file?
 
 # An attempt was made to install the repository using yum_repository but this failed.
 - name: install repository using yum-config-manager
-  command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  command: "yum-config-manager --add-repo {{repo_url}}"
+  args:
+    creates: "/etc/yum.repos.d/{{repo_url | basename}}"
+  vars:
+    repo_url: https://download.docker.com/linux/centos/docker-ce.repo
 
 - name: Install gpg key
   rpm_key:
@@ -46,6 +52,6 @@
 - name: Install Docker packages
   yum:
     pkg: "{{ installdocker_packages }}"
-    state: latest
+    state: present
     update_cache: yes
   notify: test docker service
