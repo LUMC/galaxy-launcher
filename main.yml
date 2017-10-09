@@ -17,7 +17,8 @@
   become_user: root
   gather_facts: yes
   pre_tasks:
-    - include_vars:
+    - name: Include run variables
+      include_vars:
         file: "run/{{item}}"
       with_items:
         - "{{run | default('[]')}}"
