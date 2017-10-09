@@ -58,14 +58,14 @@
 
 - name: Dump database in export folder
   shell: "docker exec -u {{user}} {{name}} {{command}} >> {{file}}"
-  args:
-    creates: "{{file}}"
   vars:
     name: "{{galaxy_docker_container_name}}"
     command: "pg_dump {{galaxy_docker_container_database_name}} --format={{galaxy_docker_db_format}} -Z {{galaxy_docker_db_compression_level}}"
     user: "{{galaxy_docker_database_user}}"
     file: "{{galaxy_docker_extracted_db_location}}/{{galaxy_docker_extracted_db_filename}}"
   ignore_errors: true
+  tags:
+    - skip_ansible_lint  # does not create a file. File already created.
 
 - name: rsync exported db to ansible host
   synchronize:
