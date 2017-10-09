@@ -65,7 +65,7 @@
   ignore_errors: yes  # If databases fail galaxy is still restarted so the ones that did not fail are available
   register: result
   tags:
-    - skip_ansible_lint # does not create files.
+    - skip_ansible_lint  # does not create files.
 
 - name: Debug ephemeris output
   debug:

@@ -15,13 +15,13 @@
   command: "docker ps -q -f name={{galaxy_docker_container_name}}$"
   register: production_container_running
   tags:
-  - skip_ansible_lint # https://github.com/willthames/ansible-lint/pull/292
+    - skip_ansible_lint  # https://github.com/willthames/ansible-lint/pull/292
 
 - name: register whether the docker provision container is running
   command: "docker ps -q -f name={{galaxy_docker_provision_container_name}}$"
   register: provision_container_running
   tags:
-  - skip_ansible_lint # https://github.com/willthames/ansible-lint/pull/292
+    - skip_ansible_lint  # https://github.com/willthames/ansible-lint/pull/292
 
 - name: Show docker inspection results
   debug:

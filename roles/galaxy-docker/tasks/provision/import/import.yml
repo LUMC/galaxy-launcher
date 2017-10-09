@@ -40,7 +40,7 @@
   until: '"online" in result.stdout'
   retries: 20
   tags:
-  - skip_ansible_lint # https://github.com/willthames/ansible-lint/pull/292
+    - skip_ansible_lint  # https://github.com/willthames/ansible-lint/pull/292
 
 - name: stop galaxy service in container
   command: "docker exec {{name}} {{command}}"
@@ -48,7 +48,7 @@
     name: "{{galaxy_docker_container_name}}"
     command: "supervisorctl stop galaxy:*"
   tags:
-  - skip_ansible_lint # Does not create files
+    - skip_ansible_lint  # Does not create files
 
 - name: Delete old database and create new_empty one
   command: "docker exec -u {{user}} {{name}} {{command}}"
@@ -70,7 +70,7 @@
     flags: "-d {{galaxy_docker_container_database_name}} {{galaxy_docker_db_input_file_flag}} /database/{{galaxy_docker_imported_db}}"
     user: "{{galaxy_docker_web_user}}"
   tags:
-  - skip_ansible_lint # Does not create files
+    - skip_ansible_lint  # Does not create files
 
 - name: stop container
   docker_container:

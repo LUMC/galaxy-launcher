@@ -63,7 +63,7 @@
   with_items: "{{tools.files}}"
   ignore_errors: yes
   tags:
-    - skip_ansible_lint # does not create files.
+    - skip_ansible_lint  # does not create files.
 
 - name: remove added files
   file:

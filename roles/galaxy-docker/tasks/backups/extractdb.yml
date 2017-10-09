@@ -18,7 +18,7 @@
   register: docker_running
   changed_when: docker_running is defined
   tags:
-  - skip_ansible_lint # https://github.com/willthames/ansible-lint/pull/292
+    - skip_ansible_lint  # https://github.com/willthames/ansible-lint/pull/292
 
 - name: Show docker inspection results
   debug:
@@ -54,7 +54,7 @@
   until: '"online" in result.stdout'
   retries: 20
   tags:
-  - skip_ansible_lint # https://github.com/willthames/ansible-lint/pull/292
+    - skip_ansible_lint  # https://github.com/willthames/ansible-lint/pull/292
 
 - name: Dump database in export folder
   shell: "docker exec -u {{user}} {{name}} {{command}} >> {{file}}"
