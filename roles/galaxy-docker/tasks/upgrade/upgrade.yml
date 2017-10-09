@@ -47,6 +47,8 @@
   register: result
   until: '"online" in result.stdout'
   retries: 20
+  tags:
+  - skip_ansible_lint # https://github.com/willthames/ansible-lint/pull/292
 
 - name: upgrade the database on the export location
   command: "docker exec {{name}} {{command}}"
@@ -57,7 +59,8 @@
     state: started
     command: "bash -c 'bash $GALAXY_ROOT/manage_db.sh upgrade'"
   register: migration_result
-
+  tags:
+  - skip_ansible_lint # Does not create files
 - name: show migration results
   debug:
     var: migration_result.stdout

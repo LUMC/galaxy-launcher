@@ -16,7 +16,7 @@
 - name: Install ufw firewall.
   package:
     name: ufw
-    state: latest
+    state: present
 
 - name: Copy profile to ufw firewall
   template:

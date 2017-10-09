@@ -9,7 +9,8 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- include_role:
+- name: Start docker installation
+  include_role:
     name: installdocker
   when: installdocker
 
@@ -28,7 +29,8 @@
 - include: nginxsettings.yml
   when: galay_docker_nginx_settings
 
-- include_role:
+- name: Start nginx installation
+  include_role:
     name: jdauphant.nginx
   when: ansible_role_nginx
 

@@ -17,14 +17,20 @@
 - name: Get docker user public key
   command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_docker_user}}.pub
   register: galaxy_docker_docker_user_public_key
+  tags:
+  - skip_ansible_lint # https://github.com/willthames/ansible-lint/pull/292
 
 - name: Get web user public key
   command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_web_user}}.pub
   register: galaxy_docker_web_user_public_key
+  tags:
+  - skip_ansible_lint # https://github.com/willthames/ansible-lint/pull/292
 
 - name: Get database user public key
   command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_database_user}}.pub
   register: galaxy_docker_database_user_public_key
+  tags:
+  - skip_ansible_lint # https://github.com/willthames/ansible-lint/pull/292
 
 - name: Add keys to authorized key files
   authorized_key:

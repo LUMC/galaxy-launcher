@@ -29,6 +29,8 @@
   pip:
     name: "passlib"
     state: latest
+  tags:
+  - skip_ansible_lint # This is a security library. This using latest is warranted.
 
 - name: install access control lists to allow user switching during playbook.
   package:
