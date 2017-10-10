@@ -62,6 +62,8 @@
     api_key: "{{galaxy_admin_api_key | default(galaxy_master_api_key)}}"
   with_items: "{{tools.files}}"
   ignore_errors: yes
+  tags:
+    - skip_ansible_lint  # does not create files.
 
 - name: remove added files
   file:

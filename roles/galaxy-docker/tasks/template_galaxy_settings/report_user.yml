@@ -9,7 +9,8 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- fail:
+- name: Fail when report user and password are not defined
+  fail:
     msg: "galaxy_report_user and galaxy_report_password should be defined!"
   when: (galaxy_report_password is not defined) or (galaxy_report_user is not defined)
 

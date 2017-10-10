@@ -1,0 +1,7 @@
+# A file to ansible-lint any skipped files.
+
+- host: test
+  tasks:
+    # Skipped due to being part of a dynamic include using ansible facts
+    - include: ../roles/installdocker/tasks/distributions/CentOS.yml
+    - include: ../roles/installdocker/tasks/distributions/Ubuntu.yml

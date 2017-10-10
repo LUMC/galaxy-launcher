@@ -49,6 +49,8 @@
   command: "ssh-keygen -Hf {{known_hosts}}"
   vars:
     known_hosts: "~/.ssh/known_hosts"
+  register: known_hosts_hashed
+  changed_when: '"~/.ssh/known_hosts updated" in known_hosts_hashed.stdout'
 
 - name: Set job in cron to rsync backups to a remote location
   cron:

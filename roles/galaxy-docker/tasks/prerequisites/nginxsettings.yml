@@ -89,7 +89,7 @@
 - name: install prerequisites for SElinux RedHat families
   yum:
     pkg: "{{item}}"
-    state: latest
+    state: present
   with_items:
     - libselinux-python
     - libsemanage-python
@@ -100,7 +100,7 @@
 - name: install prerequisites for SElinux Debian families
   apt:
     pkg: "{{item}}"
-    state: latest
+    state: present
   with_items:
     - python-selinux
     - libsemanage-common

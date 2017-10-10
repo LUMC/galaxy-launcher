@@ -12,7 +12,7 @@
   apt:
     update_cache: yes
     pkg: "{{ item }}"
-    state: latest
+    state: present
   with_items:
     - apt-transport-https
     - ca-certificates
@@ -31,6 +31,6 @@
 - name: Install Docker packages on Ubuntu
   apt:
     pkg: "{{ installdocker_packages }}"
-    state: latest
+    state: present
     update_cache: yes
   notify: test docker service
