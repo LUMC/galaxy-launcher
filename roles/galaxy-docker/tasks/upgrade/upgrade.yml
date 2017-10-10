@@ -47,8 +47,7 @@
   register: result
   until: '"online" in result.stdout'
   retries: 20
-  tags:
-    - skip_ansible_lint  # https://github.com/willthames/ansible-lint/pull/292
+  changed_when: false
 
 - name: upgrade the database on the export location
   command: "docker exec {{name}} {{command}}"

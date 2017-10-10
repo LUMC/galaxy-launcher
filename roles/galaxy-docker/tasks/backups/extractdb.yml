@@ -16,9 +16,7 @@
 - name: register whether the container is running
   command: "docker ps -a -f name={{galaxy_docker_container_name}}$"
   register: docker_running
-  changed_when: docker_running is defined
-  tags:
-    - skip_ansible_lint  # https://github.com/willthames/ansible-lint/pull/292
+  changed_when: false
 
 - name: Show docker inspection results
   debug:
@@ -53,8 +51,7 @@
   register: result
   until: '"online" in result.stdout'
   retries: 20
-  tags:
-    - skip_ansible_lint  # https://github.com/willthames/ansible-lint/pull/292
+  changed_when: false
 
 - name: Dump database in export folder
   shell: "docker exec -u {{user}} {{name}} {{command}} >> {{file}}"

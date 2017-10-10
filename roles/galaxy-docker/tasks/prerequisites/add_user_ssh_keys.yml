@@ -13,24 +13,23 @@
     - "{{galaxy_docker_web_user}}"
     - "{{galaxy_docker_database_user}}"
 
-# Weird ansible limtitation initiated shannanigans
+# Weird ansible limtitation initiated shannanigans:
+# - Can not read variable from file on the remote server.
+# - Can not specify a public key file in authorized_key
 - name: Get docker user public key
   command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_docker_user}}.pub
   register: galaxy_docker_docker_user_public_key
-  tags:
-    - skip_ansible_lint  # https://github.com/willthames/ansible-lint/pull/292
+  changed_when: false
 
 - name: Get web user public key
   command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_web_user}}.pub
   register: galaxy_docker_web_user_public_key
-  tags:
-    - skip_ansible_lint  # https://github.com/willthames/ansible-lint/pull/292
+  changed_when: false
 
 - name: Get database user public key
   command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_database_user}}.pub
   register: galaxy_docker_database_user_public_key
-  tags:
-    - skip_ansible_lint  # https://github.com/willthames/ansible-lint/pull/292
+  changed_when: false
 
 - name: Add keys to authorized key files
   authorized_key:
@@ -46,7 +45,6 @@
   authorized_key:
     key: "{{galaxy_docker_database_user_public_key.stdout}}"
     user: "{{galaxy_docker_database_user}}"
-
 
 # The proper way! But does not work.
 #- name: Add keys to authorized key files

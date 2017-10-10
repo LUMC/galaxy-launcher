@@ -8,8 +8,7 @@
 - name: register whether the docker provision container is running
   command: "docker ps -q -f name={{galaxy_docker_provision_container_name}}$"
   register: provision_container_running
-  tags:
-    - skip_ansible_lint  # https://github.com/willthames/ansible-lint/pull/292
+  changed_when: false
 
 - include: installgenomes.yml
   when: galaxy_docker_provision_genomes
@@ -17,8 +16,7 @@
 - name: register whether the docker provision container is running
   command: "docker ps -q -f name={{galaxy_docker_provision_container_name}}$"
   register: provision_container_running
-  tags:
-    - skip_ansible_lint  # https://github.com/willthames/ansible-lint/pull/292
+  changed_when: false
 
 - name: Remove the docker provision container
   docker_container:
