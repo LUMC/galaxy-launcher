@@ -27,6 +27,9 @@
   when: galaxy_docker_cluster
 
 - import_tasks: setupsge.yml
-  when: galaxy_docker_cluster_type == 'sge'
+  when:
+    - galaxy_docker_cluster
+    - galaxy_docker_cluster_type == 'sge'
+
 
 - import_tasks: report_user.yml
