@@ -9,7 +9,7 @@
 
 - name: Save delete container name
   set_fact:
-    galaxy_docker_delete_container: '{{docker_container.ansible_facts.docker_container.Name.replace("/","")}}'
+    galaxy_docker_delete_container: '{{docker_container.Name.replace("/","")}}'
 
 - name: register whether the delete export container has finished
   command: "docker inspect -f {{inspect}} {{galaxy_docker_delete_container}}"

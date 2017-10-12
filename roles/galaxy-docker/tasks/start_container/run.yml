@@ -23,7 +23,6 @@
     force: yes
   become: no
   delegate_to: 127.0.0.1
-#  ansible_connection: local
 
 - name: Include port and volume settings
   include_vars: "{{galaxy_docker_ansible_generated_vars_dir}}/docker_ports_and_volumes.yml"

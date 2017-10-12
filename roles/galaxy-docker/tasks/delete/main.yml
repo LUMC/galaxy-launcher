@@ -11,7 +11,7 @@
 
 # This deletes the galaxy container and all remnants.
 
-- include: delete_system_files.yml
+- import_tasks: delete_system_files.yml
   when:
     - galaxy_docker_delete_system_files
     - galaxy_docker_run_privileged
@@ -29,10 +29,10 @@
     name: "{{galaxy_docker_container_name}}"
     state: absent
 
-- include: delete_export_folder.yml
+- import_tasks: delete_export_folder.yml
   when: galaxy_docker_delete_files
 
-- include: delete_cron_jobs.yml
+- import_tasks: delete_cron_jobs.yml
   when:
     - galaxy_docker_delete_cron_jobs
     - not galaxy_docker_delete_test_upgrade

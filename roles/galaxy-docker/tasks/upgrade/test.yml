@@ -46,7 +46,7 @@
     - src: "galaxy-central/config"
       dest: "galaxy-central"
 
-- include: copy_database.yml
+- import_tasks: copy_database.yml
   become: "{{galaxy_docker_become}}"
   become_user: "{{galaxy_docker_database_user}}"
   vars:

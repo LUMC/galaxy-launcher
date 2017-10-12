@@ -6,5 +6,4 @@ centos-7 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=2202 ansible_s
 
 [all:vars]
 ansible_ssh_pipelining=yes
-ansible_connection=ssh
 ansible_ssh_extra_args="-o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"

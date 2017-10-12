@@ -5,7 +5,7 @@ galaxy_info:
 
   license: APGLv3 for non-commercial use.
 
-  min_ansible_version: 2.3
+  min_ansible_version: 2.4
 
   platforms:
     - name: Ubuntu

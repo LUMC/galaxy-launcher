@@ -1,8 +1,8 @@
-- include: installephemeris.yml
+- import_tasks: installephemeris.yml
 
-- include: container_running_check.yml
+- import_tasks: container_running_check.yml
 
-- include: installtools.yml
+- import_tasks: installtools.yml
   when: galaxy_docker_provision_tools
 
 - name: register whether the docker provision container is running
@@ -10,7 +10,7 @@
   register: provision_container_running
   changed_when: false
 
-- include: installgenomes.yml
+- import_tasks: installgenomes.yml
   when: galaxy_docker_provision_genomes
 
 - name: register whether the docker provision container is running

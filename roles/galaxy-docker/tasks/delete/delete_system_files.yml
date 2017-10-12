@@ -28,7 +28,7 @@
     state: absent
   when: galaxy_docker_delete_test_upgrade
 
-- include: ../prerequisites/nginxsettings.yml
+- import_tasks: ../prerequisites/nginxsettings.yml
   when: not galaxy_docker_delete_test_upgrade
 
 - name: remove nginx profiles
