@@ -20,6 +20,7 @@ pages:
       - Install tools: developer_docs/installtools.md
       - Install genomes: developer_docs/installgenomes.md
       - Delete galaxy: developer_docs/deletegalaxy.md
+  - Known issues: known_issues.md
   - About:
       - Contributing: about/contributing.md
       - Author: about/author.md
