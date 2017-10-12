@@ -5,8 +5,6 @@
 *.pyc
 *.log
 
-*travis.yml
-
 /hosts
 
 licenses/license_header
@@ -30,6 +28,7 @@ files/*
 roles/jdauphant.nginx
 
 .venv
+.tox 
 
 site/
 .vagrant/
@@ -37,3 +36,5 @@ site/
 test/files/*/ssh/*
 test/files/*/database_extract/*
 test/files/*/database_import/*
+test/ci_hosts
+test/CI/files

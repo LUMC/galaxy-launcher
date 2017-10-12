@@ -37,6 +37,8 @@
 
 - name: Copy running instance files to test location
   command: "cp -p -R {{src}} {{dest}}"
+  args:
+    creates: "{{dest}}"
   vars:
     src: "{{galaxy_docker_export_location}}/{{item.src}}"
     dest: "{{galaxy_docker_upgrade_test_settings.galaxy_docker_export_location}}/{{item.dest}}"
@@ -53,7 +55,7 @@
 
 - name: Set test upgrade parameters for the docker container
   set_fact:
-    "{{item.key}}" : "{{item.value}}"
+    "{{item.key}}": "{{item.value}}"
   with_dict: "{{galaxy_docker_upgrade_test_settings}}"
 
 - name: Set container defaults succesfull?

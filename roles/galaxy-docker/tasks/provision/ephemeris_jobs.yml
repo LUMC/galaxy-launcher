@@ -8,6 +8,7 @@
 - name: register whether the docker provision container is running
   command: "docker ps -q -f name={{galaxy_docker_provision_container_name}}$"
   register: provision_container_running
+  changed_when: false
 
 - import_tasks: installgenomes.yml
   when: galaxy_docker_provision_genomes
@@ -15,6 +16,7 @@
 - name: register whether the docker provision container is running
   command: "docker ps -q -f name={{galaxy_docker_provision_container_name}}$"
   register: provision_container_running
+  changed_when: false
 
 - name: Remove the docker provision container
   docker_container:

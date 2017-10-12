@@ -11,6 +11,8 @@
 
 - name: Copy running instance files to test location
   command: "cp -p -R {{src}} {{dest}}"
+  args:
+    creates: "{{dest}}"
   vars:
     src: "{{galaxy_docker_export_location}}/{{item.src}}"
     dest: "{{galaxy_docker_upgrade_test_settings.galaxy_docker_export_location}}/{{item.dest}}"

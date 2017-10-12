@@ -2,6 +2,8 @@
 
 This is the same as managing it on a vm that is not connected to a cluster. Except that some cluster settings need to be templated out to galaxy and you may not want to run the playbook as a sudo user on the remote host.
 
+Check out the `cluster.settings` example for cluster settings examples.
+
 ## Root required parts
 ### Install docker and required packages on the remote machine
 This does not create the users. As it assumes that the users are already present on the cluster.

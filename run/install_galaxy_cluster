@@ -18,3 +18,4 @@ galaxy_docker_template_welcome: True
 galaxy_docker_provision_tools: True
 galaxy_docker_provision_genomes: True
 galaxy_docker_change_uids: True
+galaxy_docker_cluster: True

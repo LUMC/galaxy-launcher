@@ -35,12 +35,12 @@
 - name: install required python_packages
   package:
     name: "{{installdocker_python_packages}}"
-    state: latest
+    state: present
 
 - name: Install required PIP packages
   pip:
     name: "{{ installdocker_pip_packages }}"
-    state: latest
+    state: present
 
 - name: start docker service
   service:

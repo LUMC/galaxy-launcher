@@ -38,7 +38,7 @@ galaxy_docker_docker_user_groups: docker
 galaxy_docker_docker_image: bgruening/galaxy-stable
 galaxy_docker_environment_file_location: "{{galaxy_docker_docker_user_home}}/galaxydocker.env"
 galaxy_docker_export_location: "/data/galaxy/galaxy_storage"
-galaxy_docker_export_location_mode: "0755" # If not accessible for all users (--x) then postgres does not work.
+galaxy_docker_export_location_mode: "0755"  # If not accessible for all users (--x) then postgres does not work.
 galaxy_docker_container_name: galaxy
 galaxy_docker_provision_container_name: galaxy-provision
 galaxy_docker_container_hostname: galaxy-docker
@@ -98,16 +98,27 @@ galaxy_docker_delete_test_upgrade: False
 galaxy_docker_delete_backup_files: False
 
 # Cluster defaults
+galaxy_docker_cluster_type: sge
 galaxy_docker_cluster_registered_user_concurrent_jobs: 2
 galaxy_docker_cluster_anonymous_user_concurrent_jobs: 1
 galaxy_docker_cluster_embed_metadata_in_job: True
-#galaxy_docker_cluster_environment_variables: {}
-
+galaxy_docker_cluster_environment_variables: {}
+galaxy_docker_cluster_default_destination: cluster
+galaxy_docker_cluster_sge_parallel_environment: make
+galaxy_docker_cluster_sge_extra_options: ""
+galaxy_docker_cluster_destinations:
+  cluster:
+    cpu_count: 1
+    memory: 4G
+    extra_options: ""
+galaxy_docker_cluster_tool_destinations: {}
+galaxy_docker_cluster_tool_destination_configuration: {}
+galaxy_docker_cluster_user_destinations: {}
 # defaults for databases
 
 ## Defaults are to use custom format. Which is compressed and uses pg_restore to recover.
 ## If format is set to plain, it is by default not compressed and psql is used to recover.
-galaxy_docker_db_format: "custom" # other options 'plain' and 'tar'
+galaxy_docker_db_format: "custom"  # other options 'plain' and 'tar'
 galaxy_docker_db_compression_level: "{{(galaxy_docker_db_format=='custom') | ternary('6','0')}}"
 galaxy_docker_db_restore_command: "{{(galaxy_docker_db_format=='plain') | ternary('psql','pg_restore -v')}}"
 galaxy_docker_db_input_file_flag: "{{(galaxy_docker_db_format=='plain') | ternary('-f','')}}"
@@ -136,7 +147,7 @@ galaxy_docker_ephemeris_from_git: False
 
 #defaults for upgrade
 galaxy_docker_test_upgrade: False
-galaxy_docker_upgrade_overwrite_config_files: False #Overwrites old config files with new distribution_config files
+galaxy_docker_upgrade_overwrite_config_files: False  #Overwrites old config files with new distribution_config files
 
 
 galaxy_docker_run_privileged: True
@@ -148,16 +159,16 @@ galaxy_docker_upgrade: False
 galaxy_docker_provision: False
 galaxy_docker_run: False
 galaxy_docker_add_users: False
-galaxy_docker_add_user_ssh_keys: False
+galaxy_docker_create_user_ssh_keys: False
 galaxy_docker_install_packages: False
 galaxy_docker_create_export_folder: False
 galaxy_docker_backup: False
-galaxy_docker_cluster: False
 galaxy_docker_transfer_genomes: False
 galaxy_docker_change_uids: False
 galaxy_docker_delete_system_files: False
 galaxy_docker_delete_cron_jobs: False
 galaxy_docker_delete: False
+galaxy_docker_cluster: False
 installdocker: False
 galaxy_docker_import_database: False
 galaxy_docker_template_welcome: False

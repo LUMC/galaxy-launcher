@@ -9,7 +9,8 @@
 #
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- include_role:
+- name: Start docker installation
+  include_role:
     name: installdocker
   when: installdocker
 
@@ -20,7 +21,7 @@
   when: galaxy_docker_add_users
 
 - import_tasks: add_user_ssh_keys.yml
-  when: galaxy_docker_add_user_ssh_keys
+  when: galaxy_docker_create_user_ssh_keys
 
 - import_tasks: create_export_folder.yml
   when: galaxy_docker_create_export_folder
@@ -28,7 +29,8 @@
 - import_tasks: nginxsettings.yml
   when: galay_docker_nginx_settings
 
-- include_role:
+- name: Start nginx installation
+  include_role:
     name: jdauphant.nginx
   when: ansible_role_nginx
 

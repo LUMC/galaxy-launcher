@@ -8,9 +8,9 @@ galaxy_docker_container_hostname: "galaxy-docker"
 #galaxy_docker_extra_volumes:
 # - /tmp/:/tmp/:rw # Use docker CLI-style syntax: /host:/container[:mode]. You can specify a read mode for the mount with either ro or rw.
 
-galaxy_docker_extra_ports:
-  - "6444:6444"
-  - "6445:6445"
+#galaxy_docker_extra_ports:
+#  - "6444:6444"
+#  - "6445:6445"
 
 bgruening_galaxy_stable_version: 17.05
 galaxy_docker_custom_image_lines:

@@ -8,3 +8,5 @@
   vars:
     src: "{{galaxy_docker_export_location}}/.distribution_config/"
     dest: "{{galaxy_docker_export_location}}/galaxy-central/config"
+  tags:
+    - skip_ansible_lint  # Synchronize module does not support copying on the same host.

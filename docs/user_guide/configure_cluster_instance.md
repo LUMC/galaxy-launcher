@@ -3,7 +3,7 @@
 Configuring a cluster instance is similar to installing galaxy on a vm in the cloud, but requires some tricks to make it work.
 
 ## Setting the cluster type
-In `host_vars/cluster_example_host/cluster_settings.yml` set your cluster type with `galaxy_docker_cluster`. Currently only `sge` is supported, but the ansible role can be very easily expanded to other clusters. Open an issue or create a pull request on
+In `host_vars/cluster_example_host/cluster.settings` set your cluster type with `galaxy_docker_cluster_type`. Currently only `sge` is supported, but the ansible role can be very easily expanded to other clusters. Open an issue or create a pull request on
 
 ## Integrating with the user management system on the cluster.
 Docker containers can be run by root and users in the docker group. Docker has root rights by default and this manifests to the mounted filesystems. The UIDs in the docker container are used to create the files on the mounted filesystem and these probably do not match with users on the cluster.
