@@ -24,7 +24,7 @@
   when: galaxy_docker_template_welcome
 
 - import_tasks: setup_cluster_general.yml
-  when: galaxy_docker_cluste
+  when: galaxy_docker_cluster
 
 - import_tasks: setupsge.yml
   when: galaxy_docker_cluster_type == 'sge'
