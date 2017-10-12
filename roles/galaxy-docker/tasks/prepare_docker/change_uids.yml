@@ -52,5 +52,3 @@
     pull: True
     force: yes
     state: present
-  vars:
-    ansible_connection: smart  #solves a weird connection error. But unclear why.
