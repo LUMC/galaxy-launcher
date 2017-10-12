@@ -5,4 +5,3 @@ example_host ansible_host=example_host.example_domain.tld ansible_user=remote_us
 
 [all:vars]
 ansible_ssh_pipelining=yes
-ansible_connection=ssh
