@@ -8,13 +8,14 @@
 {# #}
 {# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>. #}
 
+{# Using advice from http://container-solutions.com/running-docker-containers-with-systemd/#}
+
 [Unit]
-Description=Starts the galaxy docker container
-BindsTo=docker.service
+Description=galaxy docker container
+Requires=docker.service
+After=docker.service
 
 [Service]
-Type=oneshot
+Type=forking
 ExecStart=/usr/bin/docker restart {{galaxy_docker_container_name}}
-ExecStop=/usr/bin/docker stop {{galaxy_docker_container_name}}
-Restart=no
 TimeoutSec=120
