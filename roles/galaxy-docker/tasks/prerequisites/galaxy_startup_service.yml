@@ -32,3 +32,6 @@
   systemd:
     enabled: yes
     name: galaxy.service
+    state: started
+    masked: no
+    daemon_reload: yes
