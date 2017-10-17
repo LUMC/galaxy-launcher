@@ -7,3 +7,17 @@
 {# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license. #}
 {# #}
 {# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>. #}
+
+[Unit]
+Description=Starts the galaxy docker container
+BindsTo=docker.service
+
+[Install]
+Alias=galaxy.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/docker restart {{galaxy_docker_container_name}}
+ExecStop=/usr/bin/docker stop {{galaxy_docker_container_name}}
+Restart=no
+TimeoutSec=120
