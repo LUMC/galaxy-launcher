@@ -15,10 +15,18 @@
     src: galaxy.service.j2
     force: yes
 
+- name: register if a galaxy container exists
+  command: "docker ps -aq -f name={{galaxy_docker_container_name}}$"
+  register: galaxy_container_exists
+  changed_when: false
+
 - name: Start a dummy container
   docker_container:
     name: "{{galaxy_docker_container_name}}"
     image: hello-world
+  when:
+    - galaxy_container_exists is defined
+    - galaxy_container_exists.stdout ==''
 
 - name: Galaxy should be started on reboot.
   systemd:
