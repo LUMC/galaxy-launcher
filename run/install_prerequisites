@@ -18,3 +18,4 @@ galay_docker_nginx_settings: True
 ansible_role_nginx: True
 galaxy_docker_firewall: True
 galaxy_docker_add_users: True
+galaxy_docker_prerequisites_startup_service: True

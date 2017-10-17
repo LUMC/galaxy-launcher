@@ -152,6 +152,7 @@ galaxy_docker_upgrade_overwrite_config_files: False  #Overwrites old config file
 
 galaxy_docker_run_privileged: True
 # Run
+galaxy_docker_prerequisites_startup_service: False
 galaxy_docker_prepare_docker: False
 galaxy_docker_prerequisites: False
 galaxy_docker_template: False
