@@ -15,7 +15,12 @@
     src: galaxy.service.j2
     force: yes
 
+- name: Start a dummy container
+  docker_container:
+    name: "{{galaxy_docker_container_name}}"
+    image: hello-world
+
 - name: Galaxy should be started on reboot.
   systemd:
     enabled: yes
-    name: galaxy
+    name: galaxy.service

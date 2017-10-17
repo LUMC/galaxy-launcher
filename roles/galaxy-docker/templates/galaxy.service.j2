@@ -12,9 +12,6 @@
 Description=Starts the galaxy docker container
 BindsTo=docker.service
 
-[Install]
-Alias=galaxy.service
-
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/docker restart {{galaxy_docker_container_name}}
