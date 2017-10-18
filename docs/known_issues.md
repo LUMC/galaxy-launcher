@@ -15,3 +15,7 @@ The solution is to rename \*.settings files to \*.yml files.
 
 ## SSH connections fail during playbook.
 In older versions of galaxy-docker-ansible `ansible_connection=ssh` was included in the host file as an example variable. Removing this variable should fix the issue. (Ansible's default is `ansible_connection=smart`)
+
+## Galaxy does not automatically restart when the VM restarts
+The VM needs to be restarted at least once before this works. Simply restart the VM again
+and the galaxy docker container should be launched.
