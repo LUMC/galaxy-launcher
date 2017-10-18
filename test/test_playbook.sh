@@ -65,7 +65,7 @@ ansible-playbook -i $hosts_file main.yml \
 -e "host=$hostname \
 run=install_prerequisites \
 galaxy_docker_create_user_ssh_keys=true \
-galaxy_docker_prerequisites_startup_service=False" \
+galaxy_docker_prerequisites_startup_service=false" \
 --extra-vars @$vars_file $verbosity
 
 echo "Run playbook run commands"
