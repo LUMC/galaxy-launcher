@@ -19,7 +19,6 @@ After=docker.service
 WantedBy=multi-user.target
 
 [Service]
-Type=forking
+Type=oneshot
 ExecStart=/usr/bin/docker restart {{galaxy_docker_container_name}}
 TimeoutSec=120
-Restart=on-abort
