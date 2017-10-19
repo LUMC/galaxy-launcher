@@ -1,3 +1,3 @@
 [submodule "test/vagrant/virtual-clusters"]
 	path = test/vagrant/virtual-clusters
-	url = git@github.com:rhpvorderman/virtual-clusters.git
+	url = https://github.com/rhpvorderman/virtual-clusters.git
