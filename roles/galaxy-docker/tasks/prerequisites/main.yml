@@ -23,6 +23,9 @@
 - import_tasks: add_user_ssh_keys.yml
   when: galaxy_docker_create_user_ssh_keys
 
+- import_tasks: galaxy_startup_service.yml
+  when: galaxy_docker_prerequisites_startup_service
+
 - import_tasks: create_export_folder.yml
   when: galaxy_docker_create_export_folder
 

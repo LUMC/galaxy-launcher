@@ -21,4 +21,5 @@ Galaxy-docker-ansible uses the power of ansible to set up a galaxy instance usin
 * Use the cluster example host to get the image running on your cluster
 * Install prerequisites including docker on a Ubuntu or CentOS server
 * Automatic provisioning
+* The galaxy docker container is restarted on reboot of the system (requires restart, check known issues)
 * Running the deployment script as a non-privileged user (root required for prerequisites script)

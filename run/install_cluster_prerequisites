@@ -15,3 +15,4 @@ installdocker: True
 galay_docker_nginx_settings: True
 ansible_role_nginx: True
 galaxy_docker_firewall: True
+galaxy_docker_prerequisites_startup_service: True
