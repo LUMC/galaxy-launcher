@@ -11,6 +11,8 @@ pages:
   - Tutorial: tutorial/tutorial.md
   - Developer documentation:
       - Introduction: developer_docs/introduction.md
+      - The galaxy-docker role: developer_docs/galaxy-docker.md
+      - The installdocker role: developer_docs/installdocker.md
   - Known issues: known_issues.md
   - About:
       - Contributing: about/contributing.md
