@@ -27,11 +27,6 @@
     state: started
   when: not docker_running.stdout | bool
 
-- name: pause for automated dependency installation
-  when: galaxy_docker_optional_environment_settings.LOAD_GALAXY_CONDITIONAL_DEPENDENCIES == True
-  pause:
-    seconds: 20
-
 - name: install python_ldap in docker container
   command: "docker exec -u {{user}} {{name}} {{command}}"
   vars:
