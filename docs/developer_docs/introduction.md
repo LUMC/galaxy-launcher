@@ -14,12 +14,13 @@ their own function.
 * A `roles/` folder containing the roles where the action happens.
 
 It contains some other files such as:
-  * `.git*` files for git functionality
-  * `.yamllint.yml` specifies the yamllint settings.
-  * `.travis.yml` and `tox.ini` for the tests.
-  * `ansible.cfg` configuration for ansible.
-  * `hosts.sample` example hosts file.
-  * `requirements.yml` with ansible role dependencies.
+
+* `.git*` files for git functionality
+* `.yamllint.yml` specifies the yamllint settings.
+* `.travis.yml` and `tox.ini` for the tests.
+* `ansible.cfg` configuration for ansible.
+* `hosts.sample` example hosts file.
+* `requirements.yml` with ansible role dependencies.
 
 ## The installdocker role
 This is a very straightforward and simple role that follows the instructions on
