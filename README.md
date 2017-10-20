@@ -23,3 +23,7 @@ Galaxy-docker-ansible uses the power of ansible to set up a galaxy instance usin
 * Automatic provisioning
 * The galaxy docker container is restarted on reboot of the system (requires restart, check known issues)
 * Running the deployment script as a non-privileged user (root required for prerequisites script)
+
+## Report issues
+Issues can be reported to our [github issue tracker](https://github.com/LUMC/galaxy-docker-ansible/issues).
+Please check our known issues page first.

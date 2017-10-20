@@ -3,6 +3,7 @@
 ## Galaxy-docker-ansible structure
 Galaxy-docker-ansible consists of multiple files and directories. Each with
 their own function.
+
 * A `docs/` folder which contains the documentation. The documentation is automatically created using mkdocs. The structure is defined in `mkdocs.yml`.
 * A `main.yml` that is the main playbook for running galaxy-docker-ansible.
 * A `files/` folder that contains the files to customize the galaxy instances
@@ -11,7 +12,8 @@ their own function.
 * A `run/` folder that contains the yaml files needed for running galaxy-docker-ansible
 * A `test/` folder containing the tests.
 * A `roles/` folder containing the roles where the action happens.
-* It contains some other files such as:
+
+It contains some other files such as:
   * `.git*` files for git functionality
   * `.yamllint.yml` specifies the yamllint settings.
   * `.travis.yml` and `tox.ini` for the tests.
