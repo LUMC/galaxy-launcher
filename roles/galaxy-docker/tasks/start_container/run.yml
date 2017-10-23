@@ -23,6 +23,7 @@
     dest: "{{galaxy_docker_ansible_generated_vars_dir}}/docker_ports_and_volumes.yml"
     src: "docker_ports_and_volumes.yml.j2"
     force: yes
+    trim_blocks: False
   become: no
   delegate_to: 127.0.0.1
 

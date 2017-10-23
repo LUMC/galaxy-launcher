@@ -25,3 +25,4 @@
     force: yes
     src: auth_conf.xml.j2
     mode: 0700
+    trim_blocks: False

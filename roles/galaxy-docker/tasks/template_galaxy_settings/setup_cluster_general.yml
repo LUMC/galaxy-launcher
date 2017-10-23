@@ -65,12 +65,14 @@
     dest: "{{galaxy_docker_export_location}}/galaxy-central/config/job_conf.xml"
     src: "job_conf.xml.j2"
     force: yes
+    trim_blocks: False
 
 - name: Create tool_destinations.yml
   template:
     dest: "{{galaxy_docker_export_location}}/galaxy-central/config/tool_destinations.yml"
     src: "tool_destinations.yml.j2"
     force: yes
+    trim_blocks: False
 
 - name: Edit shed_tool_conf.xml to contain the right tool shed location
   lineinfile:
