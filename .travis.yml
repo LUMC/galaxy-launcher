@@ -2,46 +2,47 @@ language: python
 sudo: false
 services:
   - docker
-matrix:
-  include:
-    - python: 2.7
-      env:
-        TOX_ENV: py27-lint
-    # CentOS-7 disabled because container can not run services.
-    #- python: 2.7
-    #  env:
-    #    TOX_ENV: playbook
-    #    test_hostname: centos-7
-    #    privileged: True
-    #- python: 2.7
-    #  env:
-    #    TOX_ENV: playbook
-    #    test_hostname: centos-7
-    #    privileged: False
-    - python: 2.7
-      env:
-        TOX_ENV: playbook
-        test_hostname: ubuntu-16.04
-        privileged: True
-    - python: 2.7
-      env:
-        TOX_ENV: playbook
-        test_hostname: ubuntu-16.04
-        privileged: False
-    - python: 2.7
-      env:
-        TOX_ENV: playbook
-        test_hostname: cluster-test
-        privileged: False
-# Submodules required for integration testing with vagrant only, which is not supported by travis.
+python: 2.7
 git:
   submodules: false
+matrix:
+  include:
 
-install:
-  - pip install tox
+    - env:
+        Lint: True
+      install:
+        - pip install mkdocs yamllint ansible-lint
+      script:
+        - bash test/yamllinting.sh
+        - bash test/ansiblelinting.sh
+        - bash test/mkdocs.sh
 
-script:
-  - tox -e $TOX_ENV
+    - env:
+        test_hostname: ubuntu-16.04
+        privileged: True
+      install:
+        - pip install ansible=2.4.0
+      script:
+        - ansible-galaxy install -r requirements.yml
+        - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
+
+    - env:
+        test_hostname: ubuntu-16.04
+        privileged: False
+      install:
+        - pip install ansible=2.4.0
+      script:
+        - ansible-galaxy install -r requirements.yml
+        - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
+
+    - env:
+        test_hostname: cluster-test
+        privileged: False
+      install:
+        - pip install ansible=2.4.0
+      script:
+        - ansible-galaxy install -r requirements.yml
+        - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
 
 # Keep inboxes nice and clean.
 notifications:
