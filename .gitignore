@@ -7,8 +7,6 @@
 
 /hosts
 
-licenses/license_header
-
 deprecated/
 
 !host_vars/
