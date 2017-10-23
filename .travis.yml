@@ -16,6 +16,10 @@ matrix:
         - bash test/yamllinting.sh
         - bash test/ansiblelinting.sh
         - bash test/mkdocs.sh
+    - env:
+        Test_licenses: True
+      script:
+        - bash test/licensetest.sh
 
     - env:
         test_hostname: ubuntu-16.04
