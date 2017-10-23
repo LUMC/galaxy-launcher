@@ -26,7 +26,6 @@ files/*
 roles/jdauphant.nginx
 
 .venv
-.tox 
 
 site/
 .vagrant/

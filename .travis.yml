@@ -21,7 +21,7 @@ matrix:
         test_hostname: ubuntu-16.04
         privileged: True
       install:
-        - pip install ansible=2.4.0
+        - pip install ansible==2.4.0
       script:
         - ansible-galaxy install -r requirements.yml
         - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
@@ -30,7 +30,7 @@ matrix:
         test_hostname: ubuntu-16.04
         privileged: False
       install:
-        - pip install ansible=2.4.0
+        - pip install ansible==2.4.0
       script:
         - ansible-galaxy install -r requirements.yml
         - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
@@ -39,7 +39,7 @@ matrix:
         test_hostname: cluster-test
         privileged: False
       install:
-        - pip install ansible=2.4.0
+        - pip install ansible==2.4.0
       script:
         - ansible-galaxy install -r requirements.yml
         - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
