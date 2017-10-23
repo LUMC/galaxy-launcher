@@ -1,4 +1,14 @@
 #jinja2: trim_blocks:False
+{# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center #}
+{# Contact us at: sasc@lumc.nl #}
+{# #}
+{# This file is part of galaxy-docker-ansible. #}
+{# A dual licensing mode is applied. #}
+{# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license. #}
+{# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license. #}
+{# #}
+{# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>. #}
+
 <?xml version="1.0"?>
 <auth>
     <authenticator>
@@ -6,11 +16,11 @@
         <filter>'{email}'.endswith('{{ galaxy_docker_ldap_config.email_suffix | default('')}}')</filter>
         <options>
             <allow-register>{{galaxy_docker_ldap_config.allow_register | default('True')}}</allow-register>
-            <auto-register>{{galaxy_docker_ldap_config.auto_register|default('False')}}</auto-register> 
+            <auto-register>{{galaxy_docker_ldap_config.auto_register|default('False')}}</auto-register>
             <allow-password-change>{{galaxy_docker_ldap_config.allow_password_change|default('False')}}</allow-password-change>
 
             <server>{{galaxy_docker_ldap_config.server}}</server>
-            {% if galaxy_docker_ldap_config.options is defined %}   
+            {% if galaxy_docker_ldap_config.options is defined %}
             <ldap-options>{{galaxy_docker_ldap_config.options}}</ldap-options>
             {% endif %}
             <login-use-username>{{galaxy_docker_ldap_config.login_use_username| default('False')}}</login-use-username>
@@ -28,7 +38,7 @@
 
             <search-user>{{galaxy_docker_ldap_config.search_user}}@{{galaxy_docker_ldap_config.server | regex_replace('(ldap:\/\/)([a-zA-Z0-9.\/]*)(:?[0-9]*)','\\2')}}</search-user>
             <search-password>{{galaxy_docker_ldap_config.search_password}}</search-password>
- 
+
             <bind-user>{sAMAccountName}@{{galaxy_docker_ldap_config.server | regex_replace('(ldap:\/\/)([a-zA-Z0-9.\/]*)(:?[0-9]*)','\\2')}}</bind-user>
             <bind-password>{password}</bind-password>
             <auto-register-username>{sAMAccountName}</auto-register-username>
