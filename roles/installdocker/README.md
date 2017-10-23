@@ -30,11 +30,20 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-This file is part of galaxy-docker-ansible.
-A dual licensing mode is applied.
-The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
-For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+<start license>
+Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+Contact us at: sasc@lumc.nl
 
+This file is part of galaxy-docker-ansible.
+
+galaxy-docker-ansible is free software: you can redistribute it
+and/or modify it under the terms of the MIT License (Expat) as
+published by the Open Source initiative.
+
+You should have received a copy of the MIT License (Expat)
+along with galaxy-docker-ansible. If not, see
+<https://opensource.org/licenses/MIT>.
+<end license>
 
 Author Information
 ------------------

@@ -19,7 +19,7 @@ galaxy_info:
   description: A role to install bgruening/galaxy-docker-stable on a host
   company: Leiden University Medical Center
 
-  license: APGLv3 for non-commercial use.
+  license: MIT License (expat)
 
   min_ansible_version: 2.4
 

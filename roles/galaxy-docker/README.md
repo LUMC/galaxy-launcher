@@ -5,25 +5,6 @@ This role sets up an ubuntu server to host [bgruening's galaxy-stable image](htt
 
 This readme will go into the technical details of the role. If you want to use the role for deployment of  [bgruening's galaxy-stable image](https://github.com/bgruening/docker-galaxy-stable), please go to  [galaxy-docker-ansible](https://github.com/LUMC/galaxy-docker-ansible).
 
-Structure
-------------------
-This role consists of several task files each of which can be included by setting the specific task to True. Example: `ansible-playbook main.yml -e "addldap=true"` will run the addldap task within the role.
-
-### Tasks
-Click on the task to get more information
-
-- [Install docker](docs/installdocker.md). (installdocker=true)
-- [Import an existing database](docs/galaxy_docker_import_database.md). (galaxy_docker_import_database=true)
-- [Set galaxy's welcome page](docs/galaxy_docker_template_welcome.md). (galaxy_docker_template_welcome=true)
-- [Set the required nginx settings](docs/galay_docker_nginx_settings.md). (galay_docker_nginx_settings=true)
-- Run jdpauphant.nginx role when (ansible_role_nginx=true)
-- [Start up a galaxy instance](docs/rundockergalaxy.md). (rundockergalaxy=true)
-- [Add ldap authentication](docs/addldap.md). (addldap=true)
-- [create automated backup on the server](docs/galaxy_docker_backup_cron). (galaxy_docker_backup_cron=true)
-- [Install tools from the toolshed](docs/galaxy_docker_provision_tools.md). (galaxy_docker_provision_tools=true)
-- [Extract the database from the current instance](docs/galaxy_docker_backup_extract_database.md). (galaxy_docker_backup_extract_database=true)
-- [Delete the galaxy instance](docs/deletegalaxy.md). (deletegalaxy=true)
-
 Requirements
 ------------
 
@@ -149,14 +130,20 @@ Example Playbook
 License
 -------
 
-Copyright 2017 Sequence Analysis Support Core - Leiden University Medical Center
+<start license>
+Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+Contact us at: sasc@lumc.nl
 
 This file is part of galaxy-docker-ansible.
-A dual licensing mode is applied.
-The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
-For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
 
-You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+galaxy-docker-ansible is free software: you can redistribute it
+and/or modify it under the terms of the MIT License (Expat) as
+published by the Open Source initiative.
+
+You should have received a copy of the MIT License (Expat)
+along with galaxy-docker-ansible. If not, see
+<https://opensource.org/licenses/MIT>.
+<end license>
 
 Author Information
 ------------------

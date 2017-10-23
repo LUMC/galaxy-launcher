@@ -31,6 +31,13 @@
         before: BOF
         start: !unsafe '{# ----- #}'
         end: !unsafe '{# ..... #}'
+      - regexp: "README.md"
+        prefix: ""
+        suffix: ""
+        after: 'License\n-------'
+        start: <start license>
+        end: <end license>
+        dir: roles
   tasks:
     - name: Run license changer on test files
       include_role:
