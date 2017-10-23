@@ -9,7 +9,7 @@ git clone \
 https://github.com/rhpvorderman/ansible-role-license-changer.git \
 $project_root/roles/license-changer
 
-pip install -e ansible-role-license-changer/ansible
+pip install -e $project_root/roles/license-changer/ansible
 ansible --version
 
 echo "check if licenses are "
