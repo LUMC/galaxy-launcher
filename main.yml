@@ -19,7 +19,7 @@
   pre_tasks:
     - name: Include run variables
       include_vars:
-        file: "run/{{item}}"
+        file: "run/{{item}}.yml"
       with_items:
         - "{{run | default('[]')}}"
 
