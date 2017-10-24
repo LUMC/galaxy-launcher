@@ -66,6 +66,19 @@ ansible-playbook main.yml -e "host=HOSTNAME run=delete_upgrade_test"
 There is a setting galaxy_docker_upgrade_overwrite_config_files in migrate_settings.yml. Default is False.
 If set to True this will overwrite all your config files with the .distribution_config files.
 
+## The latest galaxy security patches
+Make sure you are subscribed to the [galaxy public server mailing list](https://galaxyproject.org/public-galaxy-servers/)
+to receive information on the latest security patches.
+
+When you received a notice on a security patch take the following steps to patch your galaxy instance:
+1. Check the [galaxy branches page](https://github.com/galaxyproject/galaxy/branches)
+to see if the version of galaxy you are using has been updated with the patch.
+2. Check the [build page](https://hub.docker.com/r/bgruening/galaxy-stable/builds/)
+of the galaxy docker image to check if your version has been built after the latest patch.
+3.
+  * run `ansible-playbook main.yml -e "host=HOSTNAME run=patch_image"` to patch.
+  * run `ansible-playbook main.yml -e "host=HOSTNAME run=patch_custom_image"` if you are running a custom image. If you change the UUIDs as well you can skip step 2 since you are building the image yourself.
+
 ## Backing up the database
 
 This extracts the database of the running instance to `files/HOSTNAME/backupdb`.
