@@ -55,5 +55,6 @@
     name: "{{galaxy_docker_docker_image_changed_uids}}"
     path: "{{galaxy_docker_docker_build_dir}}/change_uid/galaxy"
     pull: True
+    nocache: "{{galaxy_docker_security_patch}}"
     force: yes
     state: present

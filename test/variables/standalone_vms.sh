@@ -25,6 +25,7 @@ install_galaxy \
 ['install_tools','install_genomes'] \
 enable_ldap \
 cron_database_backup \
+patch_image \
 extract_database \
 import_database \
 upgrade_test \
