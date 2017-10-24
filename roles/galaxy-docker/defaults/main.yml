@@ -188,3 +188,4 @@ galaxy_docker_backup_extract_database: False
 galaxy_docker_provision_genomes: False
 galaxy_docker_template_sge: False
 galaxy_docker_custom_image: False
+galaxy_docker_security_patch: False

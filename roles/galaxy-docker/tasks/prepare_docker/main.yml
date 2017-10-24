@@ -14,11 +14,21 @@
 # <https://opensource.org/licenses/MIT>.
 # .....
 
+- name: Delete old docker image
+  docker_image:
+    name: "{{galaxy_docker_docker_image}}"
+    state: absent
+  when: galaxy_docker_security_patch
+
 - import_tasks: change_uids.yml
   when: galaxy_docker_change_uids
 
 - import_tasks: customimage.yml
   when: (galaxy_docker_custom_image or galaxy_docker_change_uids)
+
+- name: Download image when not present
+    name: "{{galaxy_docker_docker_image}}"
+    state: present
 
 - import_tasks: create_export_folder.yml
   become: "{{galaxy_docker_become}}"

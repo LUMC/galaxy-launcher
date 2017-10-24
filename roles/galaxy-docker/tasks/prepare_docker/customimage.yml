@@ -39,6 +39,7 @@
     path: "{{galaxy_docker_docker_build_dir}}/custom_image"
     force: yes
     state: present
+    nocache: "{{galaxy_docker_security_patch}}"
     pull: "{{ (not galaxy_docker_change_uids) | bool}}"
 
 - name: remove docker build directory
