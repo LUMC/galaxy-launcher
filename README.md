@@ -32,6 +32,6 @@ and start the galaxy instance with just one command.
 Issues can be reported to our [github issue tracker](https://github.com/LUMC/galaxy-docker-ansible/issues).
 Please check our known issues page first.
 
-## Sharing
+## License
 Galaxy-docker-ansible is free software available under the MIT License (Expat License).
 Check the license chapter in our documentation for more details.
