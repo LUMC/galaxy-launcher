@@ -17,3 +17,4 @@
 galaxy_docker_security_patch: True
 galaxy_docker_change_uids: True
 galaxy_docker_custom_image: True
+galaxy_docker_run: True
