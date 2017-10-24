@@ -1,0 +1,1 @@
+standalone_vms.sh

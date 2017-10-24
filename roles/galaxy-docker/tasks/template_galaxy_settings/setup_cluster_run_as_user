@@ -1,0 +1,10 @@
+#- name: Copy sudoers file to export location
+#  copy:
+#    src: galaxy_sudoers
+#    dest: "{{ galaxy_docker_export_location }}/galaxy_sudoers"
+#    mode: 0440
+
+#- name: copy sudo
+#  command: "docker exec {{galaxy_docker_container_name}} {{command}}"
+#  vars:
+#    command: "cp -p /export/galaxy_sudoers /etc/sudoers.d/galaxy"

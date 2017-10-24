@@ -1,0 +1,28 @@
+galaxy_docker_backup_rsync_remote_host: False
+
+galaxy_docker_backup_database_cron_jobs:
+  5minutely:
+    description: "lots of backups for testing"
+    timestamp: "-%Z%Y%m%dT%H%M%S"
+    filename: "galaxy-hourly-backup"
+    files_to_keep: 2
+    compression_level: 6
+    cron:
+      minute: "*/5"
+
+#Rsync settings
+galaxy_docker_backup_database_rsync_settings:
+  dest: /home/galaxy_docker/galaxy_remote_backups
+  host: 127.0.0.1
+  host_public_key: "ssh-rsa {{ansible_ssh_host_key_rsa_public}}"
+  user: galaxy_docker
+  delete: True
+  compression_level: 3
+  cron:
+    minute: "*/5"
+
+# Set compression level. This compresses the data before sending to save bandwith
+# This does not compress the files.
+# 0 = no compression
+# 1-3 uses a fast compression algorithm that uses less resources
+# 4-9 provide progressively better compression at increased system resource use

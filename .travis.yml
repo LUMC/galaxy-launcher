@@ -1,0 +1,53 @@
+language: python
+sudo: false
+services:
+  - docker
+python: 2.7
+git:
+  submodules: false
+matrix:
+  include:
+
+    - env:
+        Lint: True
+      install:
+        - pip install mkdocs yamllint ansible-lint
+      script:
+        - bash test/yamllinting.sh
+        - bash test/ansiblelinting.sh
+        - bash test/mkdocs.sh
+    - env:
+        Test_licenses: True
+      script:
+        - bash test/licensetest.sh
+
+    - env:
+        test_hostname: ubuntu-16.04
+        privileged: True
+      install:
+        - pip install ansible==2.4.0
+      script:
+        - ansible-galaxy install -r requirements.yml
+        - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
+
+    - env:
+        test_hostname: ubuntu-16.04
+        privileged: False
+      install:
+        - pip install ansible==2.4.0
+      script:
+        - ansible-galaxy install -r requirements.yml
+        - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
+
+    - env:
+        test_hostname: cluster-test
+        privileged: False
+      install:
+        - pip install ansible==2.4.0
+      script:
+        - ansible-galaxy install -r requirements.yml
+        - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
+
+# Keep inboxes nice and clean.
+notifications:
+  email: false
