@@ -14,5 +14,6 @@
 # <https://opensource.org/licenses/MIT>.
 # .....
 
+galaxy_docker_prepare_docker: True
 galaxy_docker_security_patch: True
 galaxy_docker_run: True

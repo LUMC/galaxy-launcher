@@ -14,6 +14,12 @@
 # <https://opensource.org/licenses/MIT>.
 # .....
 
+- name: Stop galaxy container before patching
+  docker_container:
+    name: "{{galaxy_docker_container_name}}"
+    state: absent
+  when: galaxy_docker_security_patch
+
 - name: Delete old docker image
   docker_image:
     name: "{{galaxy_docker_docker_image}}"
