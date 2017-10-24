@@ -7,8 +7,6 @@
 
 /hosts
 
-licenses/license_header
-
 deprecated/
 
 !host_vars/
@@ -28,7 +26,6 @@ files/*
 roles/jdauphant.nginx
 
 .venv
-.tox 
 
 site/
 .vagrant/

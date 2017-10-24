@@ -1,4 +1,19 @@
+{# ----- #}
+{# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center #}
+{# Contact us at: sasc@lumc.nl #}
+{#  #}
+{# This file is part of galaxy-docker-ansible. #}
+{#  #}
+{# galaxy-docker-ansible is free software: you can redistribute it #}
+{# and/or modify it under the terms of the MIT License (Expat) as #}
+{# published by the Open Source initiative. #}
+{#  #}
+{# You should have received a copy of the MIT License (Expat) #}
+{# along with galaxy-docker-ansible. If not, see #}
+{# <https://opensource.org/licenses/MIT>. #}
+{# ..... #}
 #!/bin/bash
+
 GALAXY_VIRTUAL_ENV={{galaxy_docker_cluster_virtualenv | default('/galaxy_venv')}}
 GALAXY_ROOT_DIR={{galaxy_docker_export_location}}/galaxy-central
 GALAXY_LIB={{galaxy_docker_export_location}}/galaxy-central/lib

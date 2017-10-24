@@ -1,0 +1,58 @@
+# Playbook uses https://github.com/rhpvorderman/ansible-role-license-changer
+- hosts: localhost
+  become: no
+  vars:
+    project_dir: "{{playbook_dir}}/.."
+    license_files:
+      - regexp: ".ya?ml$"
+        prefix: "# "
+        suffix: ""
+        after: "---"
+        start: "# -----"
+        end: "# ....."
+        dir: "main.yml"
+      - regexp: ".ya?ml$"
+        prefix: "# "
+        suffix: ""
+        after: "---"
+        start: "# -----"
+        end: "# ....."
+        dir: roles
+      - regexp: ".ya?ml$"
+        prefix: "# "
+        suffix: ""
+        after: "---"
+        start: "# -----"
+        end: "# ....."
+        dir: run
+      - regexp: ".j2$"
+        prefix: !unsafe '{# '
+        suffix: !unsafe ' #}'
+        before: BOF
+        start: !unsafe '{# ----- #}'
+        end: !unsafe '{# ..... #}'
+      - regexp: "README.md"
+        prefix: ""
+        suffix: ""
+        after: 'License\n-------'
+        start: <start license>
+        end: <end license>
+        dir: roles
+  tasks:
+    - name: Run license changer on test files
+      include_role:
+        name: license-changer
+      vars:
+        license_changer_project_dir: "{{project_dir}}/{{license_item.dir | default('')}}"
+        license_changer_project_file_regexp: "{{license_item.regexp}}"
+        license_changer_header_prefix: "{{license_item.prefix}}"
+        license_changer_header_suffix: "{{license_item.suffix}}"
+        license_changer_header_start: "{{license_item.start}}"
+        license_changer_header_end: "{{license_item.end}}"
+        license_changer_header_before: "{{license_item.before | default (omit)}}"
+        license_changer_header_after: "{{license_item.after | default(omit)}}"
+        license_changer_strip_whitespace: "{{license_item.whitespace_strip | default(True)}}"
+        license_changer_header_file: "{{project_dir}}/licenses/license_header.txt"
+      with_items: "{{license_files}}"
+      loop_control:
+        loop_var: license_item

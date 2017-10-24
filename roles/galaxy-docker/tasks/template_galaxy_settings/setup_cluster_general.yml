@@ -1,3 +1,19 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-docker-ansible.
+#
+# galaxy-docker-ansible is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-docker-ansible. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
 - name: Create cluster filesystem folders
   file:
     path: "{{item}}"
@@ -52,12 +68,14 @@
     dest: "{{galaxy_docker_export_location}}/galaxy-central/config/job_conf.xml"
     src: "job_conf.xml.j2"
     force: yes
+    trim_blocks: False
 
 - name: Create tool_destinations.yml
   template:
     dest: "{{galaxy_docker_export_location}}/galaxy-central/config/tool_destinations.yml"
     src: "tool_destinations.yml.j2"
     force: yes
+    trim_blocks: False
 
 - name: Edit shed_tool_conf.xml to contain the right tool shed location
   lineinfile:
