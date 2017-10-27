@@ -1,9 +1,9 @@
 galaxy_docker
 =========
 
-This role sets up an ubuntu server to host [bgruening's galaxy-stable image](https://github.com/bgruening/docker-galaxy-stable). This role is created as part of [galaxy-docker-ansible](https://github.com/LUMC/galaxy-docker-ansible). More information on the configuration and use of the role, including example files, can be found [over there](https://github.com/LUMC/galaxy-docker-ansible).
+This role sets up an ubuntu server to host [bgruening's galaxy-stable image](https://github.com/bgruening/docker-galaxy-stable). This role is created as part of [galaxy-launcher](https://github.com/LUMC/galaxy-launcher). More information on the configuration and use of the role, including example files, can be found [over there](https://github.com/LUMC/galaxy-launcher).
 
-This readme will go into the technical details of the role. If you want to use the role for deployment of  [bgruening's galaxy-stable image](https://github.com/bgruening/docker-galaxy-stable), please go to  [galaxy-docker-ansible](https://github.com/LUMC/galaxy-docker-ansible).
+This readme will go into the technical details of the role. If you want to use the role for deployment of  [bgruening's galaxy-stable image](https://github.com/bgruening/docker-galaxy-stable), please go to  [galaxy-launcher](https://github.com/LUMC/galaxy-launcher).
 
 Requirements
 ------------
@@ -134,14 +134,14 @@ License
 Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
 Contact us at: sasc@lumc.nl
 
-This file is part of galaxy-docker-ansible.
+This file is part of galaxy-launcher.
 
-galaxy-docker-ansible is free software: you can redistribute it
+galaxy-launcher is free software: you can redistribute it
 and/or modify it under the terms of the MIT License (Expat) as
 published by the Open Source initiative.
 
 You should have received a copy of the MIT License (Expat)
-along with galaxy-docker-ansible. If not, see
+along with galaxy-launcher. If not, see
 <https://opensource.org/licenses/MIT>.
 <end license>
 

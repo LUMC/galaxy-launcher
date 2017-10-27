@@ -1,15 +1,15 @@
 # Developer documentation
 
-## Galaxy-docker-ansible structure
-Galaxy-docker-ansible consists of multiple files and directories. Each with
+## galaxy-launcher structure
+galaxy-launcher consists of multiple files and directories. Each with
 their own function.
 
 * A `docs/` folder which contains the documentation. The documentation is automatically created using mkdocs. The structure is defined in `mkdocs.yml`.
-* A `main.yml` that is the main playbook for running galaxy-docker-ansible.
+* A `main.yml` that is the main playbook for running galaxy-launcher.
 * A `files/` folder that contains the files to customize the galaxy instances
 * A `host_vars/` and a `group_vars` folder to contain the variables for each galaxy instance.
 * A `licenses/` folder that contains the project's licenses
-* A `run/` folder that contains the yaml files needed for running galaxy-docker-ansible
+* A `run/` folder that contains the yaml files needed for running galaxy-launcher
 * A `test/` folder containing the tests.
 * A `roles/` folder containing the roles where the action happens.
 

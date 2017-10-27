@@ -12,10 +12,10 @@ Also, the job is submitted with the name and uid of the main galaxy user. Your c
 
 In `host_vars/cluster_example_host/cluster_settings.yml` there is a section on how to set UIDs and names to already existing users on your cluster. In this way you can use service accounts on your cluster to run galaxy.
 
-In order to do this galaxy-docker-ansible has to build a custom image with the right UIDs. You can set the base version of this image by using the `bgruening_galaxy_stable_version` variable.
+In order to do this galaxy-launcher has to build a custom image with the right UIDs. You can set the base version of this image by using the `bgruening_galaxy_stable_version` variable.
 
 ## Setting up ssh key pairs for galaxy users
-Galaxy-docker-ansible uses three users to run the playbook
+galaxy-launcher uses three users to run the playbook
 * `galaxy_docker_docker_user` which runs the docker container.
 * `galaxy_docker_web_user` which runs the web application and submits jobs to the cluster
 * `galaxy_docker_database_user` which manipulates the database

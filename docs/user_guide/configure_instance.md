@@ -3,7 +3,7 @@
 On this page you can find all information on configuring the galaxy instance.
 
 ## Setting up the galaxy host
-1. Set up a (virtual) server running one of the supported distributions. Galaxy-docker-ansible is tested on the following distributions:
+1. Set up a (virtual) server running one of the supported distributions. galaxy-launcher is tested on the following distributions:
   * Ubuntu 16.04 LTS
   * CentOS 7.2
 2. Set up a passwordless sudo user on the remote host and set up an ssh key pair.

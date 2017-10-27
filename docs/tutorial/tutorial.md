@@ -8,10 +8,10 @@
 * Set up the prerequisites as described in the [installation chapter](../user_guide/installation.md).
 
 ## Create a host to test on
-1. go to the galaxy-docker-ansible repository
+1. go to the galaxy-launcher repository
 2. go to `test/vagrant/ubuntu-16.04`
 3. Type `vagrant up`
-4. go to the galaxy-docker-ansible repository
+4. go to the galaxy-launcher repository
 5. copy the `hosts.sample` file to host
 
 Exercise: Set up your own hosts file. Use `test/hosts` as an example.
