@@ -1,6 +1,6 @@
 # galaxy-launcher
 
-Please read our documentation at: http://galaxy-launcher.readthedocs.io/
+Please read our documentation at: http://galaxy-docker-ansible.readthedocs.io/
 
 ## What is galaxy-launcher?
 galaxy-launcher is an ansible playbook directory containing all the roles to install the
