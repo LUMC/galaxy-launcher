@@ -11,7 +11,7 @@ statement which points to the task yaml.
 ## Determining which tasks are run
 Each task has  a `when:` statement. This `when:`
 statement is used to run certain tasks. By default all tasks are not run. The
-`run/` directory in galaxy-docker-ansible's root contains yaml files that
+`run/` directory in galaxy-launcher's root contains yaml files that
 specify which tasks should be run for a certain 'command.'
 
 ## Selecting the user that runs a task
@@ -32,7 +32,7 @@ way of determining the user. But that has to do with user privileges.
 ### User privileges
 By default the playbook is run by a user that has root access. A simple
 `become_user:` statement should be sufficient to run a task as a user.
-However, galaxy-docker-ansible can be run in two modes:
+However, galaxy-launcher can be run in two modes:
 * Privileged mode (default). Connecting user is a sudo user and can do everything.
 * Non-privileged mode. For each task ansible connects as a different user. Each user has only the privileges needed to execute the tasks it does.
 
@@ -41,7 +41,7 @@ There are three users in non-privileged mode.
 * A database user, that runs the database in the container, and therefore also creates files in the export folder.
 * A web user, that runs the galaxy instance, and is also the user to submit jobs on the cluster).
 
-Non-privileged mode was required for operating galaxy-docker-ansible on our
+Non-privileged mode was required for operating galaxy-launcher on our
 cluster. Our Galaxy VM had our cluster filesystem mounted and was integrated
 with the cluster LDAP. This meant that a root user on the VM could potentially
 destroy the cluster filesystem when a typo was made. Therefore ssh key pairs
@@ -49,7 +49,7 @@ where set up for each of the three users so the playbook could be run without
 connecting as a sudo user.
 
 NOTE: The prerequisites is always run as root even in non-privileged mode.
-If all prerequisites are already present, the rest of galaxy-docker-ansible
+If all prerequisites are already present, the rest of galaxy-launcher
 can be run without root privileges.
 
 NOTE2: All non-prerequisites are run as non-privileged users. Even in
