@@ -1,6 +1,6 @@
 # Adapts bgruening/galaxy-stable for use on a ogs-cluster
 
-from bgruening/galaxy-stable:17.05
+from bgruening/galaxy-stable:17.09
 
 Maintainer test@example.com
 

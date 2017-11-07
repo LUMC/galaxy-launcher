@@ -23,7 +23,7 @@ Exercise: Set up your own hosts file. Use `test/hosts` as an example.
 2. copy `host_vars/example_host` to `host_vars/HOSTNAME`
 3. Uncomment the commented out variables in `host_vars/HOSTNAME/galaxy_settings.yml` and change them to your preferred settings.
 4. Use the guide on [Björn Grünings page](https://github.com/bgruening/docker-galaxy-stable#Galaxys-config-settings) to add some settings to your galaxy that you like in `galaxy_docker_optional_environment_settings`.
-5. Change the version of the docker image to 17.05 or whatever version you like in `host_vars/HOSTNAME/docker_settings.yml`
+5. Change the version of the docker image to 17.09 or whatever version you like in `host_vars/HOSTNAME/docker_settings.yml`
 6. Install the prerequisites on your test vm by running `ansible-playbook main.yml -e "host=HOSTNAME run=install_prerequisites"`.
 7. Install galaxy on your test VM by running `ansible-playbook main.yml -e "host=HOSTNAME run=install_galaxy"`.
 8. Galaxy should now be accessible on [localhost:8081](http://localhost:8081)
