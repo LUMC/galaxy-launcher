@@ -46,3 +46,5 @@ galaxy_docker_cluster_user_destinations:
 
 galaxy_docker_custom_image_lines:
   - run sed -i '3iecho "192.168.99.100 ogs-head" >> /etc/hosts' /usr/bin/startup
+
+bgruening_galaxy_stable_version: 17.09

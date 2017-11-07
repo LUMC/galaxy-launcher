@@ -49,6 +49,7 @@ galaxy_docker_cluster_sge_parallel_environment: batch
 galaxy_docker_gridengine_master_host: $CLUSTER_NAME
 galaxy_docker_custom_image_lines:
   - run sed -i '3iecho \"$CLUSTER_IP $CLUSTER_NAME\" >> /etc/hosts' /usr/bin/startup
+bgruening_galaxy_stable_version: 17.09
 "
 ansible_playbook_run_commands="\
 install_galaxy_cluster \
