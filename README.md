@@ -16,7 +16,7 @@ Doing this from the command line is cumbersome, and using a script is not scalab
 
 galaxy-launcher uses the power of ansible to set up a galaxy instance using
 the docker-galaxy-stable image. It allows you to set all the necessary variables
-and start the galaxy instance with just one command.
+and start the galaxy instance with just two commands.
 
 ## Features
 * Complete deployment of a galaxy instance with just two commands.
