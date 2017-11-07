@@ -48,14 +48,14 @@
   pip:
     requirements: "{{galaxy_docker_export_location}}/galaxy-central/lib/galaxy/dependencies/pinned-requirements.txt"
     virtualenv: "{{galaxy_docker_cluster_virtualenv}}"
-    extra_args: --only-binary all
+    extra_args: --index-url --only-binary all
   when: galaxy_docker_cluster_virtualenv is defined
 
 - name: Add some conditional-requirements.
   pip:
     name: "{{item}}"
     virtualenv: "{{galaxy_docker_cluster_virtualenv}}"
-    extra_args: --only-binary all
+    extra_args: --index-url --only-binary all
   with_items:
     - "psycopg2==2.6.1"
     - "drmaa"
