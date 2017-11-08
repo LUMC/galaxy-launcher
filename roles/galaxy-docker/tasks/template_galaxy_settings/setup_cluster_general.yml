@@ -46,7 +46,7 @@
 
 - name: Install pinned-requirements
   pip:
-    requirements: "{{galaxy_docker_export_location}}/galaxy-central/lib/galaxy/dependencies/pinned-requirements.txt"
+    requirements: "{{galaxy_docker_export_location}}/galaxy-central/lib/galaxy/dependencies/requirements.txt"
     virtualenv: "{{galaxy_docker_cluster_virtualenv}}"
     extra_args: --index-url https://wheels.galaxyproject.org/simple --only-binary all
   when: galaxy_docker_cluster_virtualenv is defined
