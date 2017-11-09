@@ -59,6 +59,6 @@ cron_database_backup \
 patch_custom_image \
 extract_database \
 import_database \
-upgrade \
+upgrade_custom_image \
 delete_galaxy_complete \
 "
