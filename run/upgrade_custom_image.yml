@@ -17,3 +17,5 @@
 galaxy_docker_upgrade: True
 galaxy_docker_run: True
 galaxy_docker_prepare_docker: True
+galaxy_docker_change_uids: True
+galaxy_docker_custom_image: True

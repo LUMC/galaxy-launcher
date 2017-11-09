@@ -63,6 +63,8 @@ ansible-playbook main.yml -e "host=HOSTNAME run=delete_upgrade_test"
 2. Update the version tag of galaxy_docker_docker_image in `host_vars\HOSTNAME\docker_settings.yml`
 3. run `ansible-playbook main.yml -e "host=HOSTNAME run=upgrade"`
 
+If you are running a custom image you should run `upgrade_custom_image.`
+
 There is a setting galaxy_docker_upgrade_overwrite_config_files in migrate_settings.yml. Default is False.
 If set to True this will overwrite all your config files with the .distribution_config files.
 
