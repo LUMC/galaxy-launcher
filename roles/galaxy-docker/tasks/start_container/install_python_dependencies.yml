@@ -18,6 +18,7 @@
   command: "docker inspect -f {{inspect}} {{galaxy_docker_container_name}}"
   vars:
     inspect: !unsafe '{{.State.Running}}'
+  changed_when: false
   register: docker_running
 
 - name: Show docker inspection results
@@ -32,13 +33,16 @@
   when: not docker_running.stdout | bool
 
 - name: install python_ldap in docker container
-  command: "docker exec {{name}} {{command}}"
+  command: "docker exec -u {{user}} {{name}} {{command}}"
   vars:
+    user: "{{galaxy_docker_web_user}}"
     name: "{{galaxy_docker_container_name}}"
     command: /galaxy_venv/bin/pip install python-ldap -i https://wheels.galaxyproject.org
   register: ldap_python_install
+  changed_when: '"Successfully installed python-ldap" in ldap_python_install.stdout'
   notify: restart galaxy in container
 
 - name: show installationresults
   debug:
     var: ldap_python_install.stdout
+    verbosity: 1
