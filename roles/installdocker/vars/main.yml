@@ -25,6 +25,8 @@ installdocker_python_packages:
 installdocker_pip_packages:
   - docker-py
 installdocker_gpg_key: "https://download.docker.com/linux/{{ansible_distribution | lower}}/gpg"
-installdocker_apt_repository: "deb https://download.docker.com/linux/{{ansible_distribution | lower}} {{ansible_distribution_release}} stable"
+installdocker_apt_repository: >
+  deb https://download.docker.com/linux/{{ansible_distribution | lower}}
+  {{ansible_distribution_release}} stable"
 installdocker_packages:
   - docker-ce

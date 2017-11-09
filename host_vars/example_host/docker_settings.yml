@@ -11,5 +11,8 @@ galaxy_docker_container_hostname: "galaxy-docker"
 #galaxy_docker_extra_ports:
 # - "2222:2222"
 
+# Add extra volumes
+# Use docker CLI-style syntax: /host:/container[:mode].
+# You can specify a read mode for the mount with either ro or rw.
 #galaxy_docker_extra_volumes:
-# - /tmp/:/tmp/:rw  # Use docker CLI-style syntax: /host:/container[:mode]. You can specify a read mode for the mount with either ro or rw.
+# - /tmp/:/tmp/:rw

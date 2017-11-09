@@ -21,7 +21,8 @@ galaxy_docker_optional_environment_settings:
   GALAXY_CONFIG_RETRY_JOB_OUTPUT_COLLECTION: 5
 
   # Set directories to cluster file system
-  # The default as shown here works very well as long as galaxy_docker_export_location is a subdirectory of galaxy_docker_shared_cluster_directory
+  # The default as shown here works very well as long as galaxy_docker_export_location
+  # is a subdirectory of galaxy_docker_shared_cluster_directory
   GALAXY_CONFIG_CLUSTER_FILES_DIRECTORY: "{{galaxy_docker_shared_cluster_directory}}/job_scripts"
   GALAXY_CONFIG_NEW_FILE_PATH: "{{galaxy_docker_shared_cluster_directory}}/tmp"
   GALAXY_CONFIG_TOOL_DEPENDENCY_DIR: "{{galaxy_docker_export_location}}/tool_deps"

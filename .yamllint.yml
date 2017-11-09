@@ -51,7 +51,7 @@ rules:
   key-duplicates: false
   # Max line-length 100.
   line-length:
-    max: 150
+    max: 100
     allow-non-breakable-words: true
     allow-non-breakable-inline-mappings: true
   new-line-at-end-of-file: enable
