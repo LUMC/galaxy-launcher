@@ -50,7 +50,7 @@ galaxy_docker_provision_container_name: galaxy-provision
 galaxy_docker_container_hostname: galaxy-docker
 galaxy_docker_extra_volumes: ""
 galaxy_docker_docker_build_dir: "{{galaxy_docker_docker_user_home}}/docker_build/"
-bgruening_galaxy_stable_version: dev
+bgruening_galaxy_stable_version: master
 galaxy_docker_docker_image_changed_uids: "galaxy_stable_changed_uids:{{bgruening_galaxy_stable_version}}"
 # firewall, nginx and ports
 galaxy_docker_ufw_profile: galaxy
