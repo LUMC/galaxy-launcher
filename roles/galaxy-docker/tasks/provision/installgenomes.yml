@@ -62,12 +62,12 @@
     - "{{dbkeys.files}}"
 
 - name: Use ephemeris run-data-managers to run data managers
-  command: "\
+  command: >-
     {{galaxy_docker_docker_user_virtualenv}}/bin/run-data-managers
     -g localhost:{{galaxy_docker_provision_port}}
     -a {{galaxy_admin_api_key}}
     --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}
-    -v"
+    -v
   with_items: "{{dbkeys.files}}"
   ignore_errors: yes  #Do not crash on one incorrect yaml.
   register: result

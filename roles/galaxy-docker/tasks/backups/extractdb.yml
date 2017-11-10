@@ -62,7 +62,7 @@
   shell: "docker exec -u {{user}} {{name}} {{command}} >> {{file}}"
   vars:
     name: "{{galaxy_docker_container_name}}"
-    command: "\
+    command: >-
       pg_dump {{galaxy_docker_container_database_name}}
       --format={{galaxy_docker_db_format}}
       -Z {{galaxy_docker_db_compression_level}}"
