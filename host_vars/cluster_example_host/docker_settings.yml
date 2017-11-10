@@ -6,7 +6,8 @@ galaxy_docker_container_hostname: "galaxy-docker"
 
 # Connect extra volumes to which your container needs acces to
 #galaxy_docker_extra_volumes:
-# - /tmp/:/tmp/:rw # Use docker CLI-style syntax: /host:/container[:mode]. You can specify a read mode for the mount with either ro or rw.
+# - /tmp/:/tmp/:rw # Use docker CLI-style syntax: /host:/container[:mode].
+# You can specify a read mode for the mount with either ro or rw.
 # For example: mount a cluster genomes folder as read-only
 # - /exports/genomes:/exports/genomes:ro
 # Extra ports could be needed to connect to an external cluster.

@@ -15,7 +15,8 @@
 # .....
 
 # tasks file for galay_docker_nginx_settings
-# This sets a nginx settings file. Currently only one galaxy instance and one test upgrade instance is supported.
+# This sets a nginx settings file. Currently only one galaxy instance and
+# one test upgrade instance is supported.
 # To install multiple galaxies in the same vm this needs to be changed.
 
 - name: set nginx settings
@@ -47,7 +48,9 @@
       - "gzip_comp_level 6"
       - "gzip_buffers 16 8k"
       - "gzip_http_version 1.1"
-      - "gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript"
+      - >
+          gzip_types text/plain text/css application/json application/x-javascript
+          text/xml application/xml application/xml+rss text/javascript
       - "uwsgi_read_timeout 300"
 
 - name: Add test upgrade profile.
@@ -61,7 +64,9 @@
     nginx_configs_test_upgrade:
       upstream:
         - "{{nginx_configs.upstream[0]}}"
-        - "upstream test_upgrade_galaxy { server localhost:{{galaxy_docker_upgrade_test_settings.galaxy_docker_web_port}}; }"
+        - >-
+            upstream test_upgrade_galaxy
+            { server localhost:{{galaxy_docker_upgrade_test_settings.galaxy_docker_web_port}}; }
   when: galaxy_docker_test_upgrade
 
 - name: combine test upgrade profile with regular galaxy profile

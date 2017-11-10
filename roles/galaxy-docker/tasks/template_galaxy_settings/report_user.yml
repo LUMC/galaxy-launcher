@@ -23,7 +23,9 @@
 - name: Add report_htpasswd file for Report Webapp
   htpasswd:
     create: yes
-    crypt_scheme: sha512_crypt  #Other secure choices: https://passlib.readthedocs.io/en/stable/narr/quickstart.html#recommended-hashes
+    # Other secure choices:
+    # https://passlib.readthedocs.io/en/stable/narr/quickstart.html#recommended-hashes
+    crypt_scheme: sha512_crypt
     name: "{{galaxy_report_user}}"
     password: "{{galaxy_report_password}}"
     path: "{{galaxy_docker_export_location}}/reports_htpasswd"

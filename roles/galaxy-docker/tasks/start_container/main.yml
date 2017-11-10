@@ -20,4 +20,7 @@
 - import_tasks: install_python_dependencies.yml
   when:
     - galaxy_docker_template_ldap
-    - not galaxy_docker_optional_environment_settings.LOAD_GALAXY_CONDITIONAL_DEPENDENCIES | default(False) == True
+    - >
+        not
+        galaxy_docker_optional_environment_settings.LOAD_GALAXY_CONDITIONAL_DEPENDENCIES
+        | default(False) == True

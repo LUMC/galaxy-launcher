@@ -17,7 +17,8 @@
 # This task decides wich sub-tasks should be run based on the boolean variables.
 # The order should represent the order in which tasks are ideally done.
 
-# This sets the connection for al sections of the role to the default connecting passwordless sudo user.
+# This sets the connection for al sections of the role to the default
+# connecting passwordless sudo user.
 # unpriviledged users are run via sudo
 - name: Run as passwordless sudo user
   set_fact:

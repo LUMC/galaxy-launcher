@@ -62,12 +62,14 @@
     - "{{dbkeys.files}}"
 
 - name: Use ephemeris run-data-managers to run data managers
-  command: "{{galaxy_docker_docker_user_virtualenv}}/bin/run-data-managers -g {{galaxy}} -a {{galaxy_admin_api_key}} --config {{config}} -v"
-  vars:
-    galaxy: "localhost:{{galaxy_docker_provision_port}}"
-    config: "{{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
+  command: >-
+    {{galaxy_docker_docker_user_virtualenv}}/bin/run-data-managers
+    -g localhost:{{galaxy_docker_provision_port}}
+    -a {{galaxy_admin_api_key}}
+    --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}
+    -v
   with_items: "{{dbkeys.files}}"
-  ignore_errors: yes  # If databases fail galaxy is still restarted so the ones that did not fail are available
+  ignore_errors: yes  #Do not crash on one incorrect yaml.
   register: result
   tags:
     - skip_ansible_lint  # does not create files.
