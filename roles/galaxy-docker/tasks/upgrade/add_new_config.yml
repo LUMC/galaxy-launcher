@@ -1,0 +1,28 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Overwrite old config files?
+  set_fact:
+    no_overwrite: ""
+  when: galaxy_docker_upgrade_overwrite_config_files
+
+- name: Add new config files
+  command: "rsync -p -r {{no_overwrite | default('--ignore-existing')}} {{src}} {{dest}}"
+  vars:
+    src: "{{galaxy_docker_export_location}}/.distribution_config/"
+    dest: "{{galaxy_docker_export_location}}/galaxy-central/config"
+  tags:
+    - skip_ansible_lint  # Synchronize module does not support copying on the same host.

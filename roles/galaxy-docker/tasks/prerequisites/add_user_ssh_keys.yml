@@ -1,0 +1,92 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Create key directory
+  file:
+    path: "{{galaxy_docker_remote_key_dir}}"
+    state: directory
+    mode: 0600
+
+- name: Create ssh keys
+  command: "ssh-keygen -N '' -t rsa -f {{galaxy_docker_remote_key_dir}}/{{item}}"
+  args:
+    creates: "{{galaxy_docker_remote_key_dir}}/{{item}}"
+  with_items:
+    - "{{galaxy_docker_docker_user}}"
+    - "{{galaxy_docker_web_user}}"
+    - "{{galaxy_docker_database_user}}"
+
+# Weird ansible limtitation initiated shannanigans:
+# - Can not read variable from file on the remote server.
+# - Can not specify a public key file in authorized_key
+- name: Get docker user public key
+  command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_docker_user}}.pub
+  register: galaxy_docker_docker_user_public_key
+  changed_when: false
+
+- name: Get web user public key
+  command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_web_user}}.pub
+  register: galaxy_docker_web_user_public_key
+  changed_when: false
+
+- name: Get database user public key
+  command: cat {{galaxy_docker_remote_key_dir}}/{{galaxy_docker_database_user}}.pub
+  register: galaxy_docker_database_user_public_key
+  changed_when: false
+
+- name: Add keys to authorized key files
+  authorized_key:
+    key: "{{galaxy_docker_docker_user_public_key.stdout}}"
+    user: "{{galaxy_docker_docker_user}}"
+
+- name: Add keys to authorized key files
+  authorized_key:
+    key: "{{galaxy_docker_web_user_public_key.stdout}}"
+    user: "{{galaxy_docker_web_user}}"
+
+- name: Add keys to authorized key files
+  authorized_key:
+    key: "{{galaxy_docker_database_user_public_key.stdout}}"
+    user: "{{galaxy_docker_database_user}}"
+
+# The proper way! But does not work.
+#- name: Add keys to authorized key files
+#  authorized_key:
+#    key: "file://{{galaxy_docker_remote_key_dir}}/{{item}}.pub"
+#    user: "{{item}}"
+#  with_items:
+#    - "{{galaxy_docker_docker_user}}"
+#    - "{{galaxy_docker_web_user}}"
+#    - "{{galaxy_docker_database_user}}"
+
+- name: Copy key to ansible host
+  synchronize:
+    mode: pull
+    dest: "{{galaxy_docker_ssh_dir}}/"
+    src: "{{galaxy_docker_remote_key_dir}}/{{item}}"
+    perms: yes
+  vars:
+    ansible_ssh_pipelining: False
+  with_items:
+    - "{{galaxy_docker_docker_user}}"
+    - "{{galaxy_docker_web_user}}"
+    - "{{galaxy_docker_database_user}}"
+
+
+- name: Remove key directory
+  file:
+    path: "{{galaxy_docker_remote_key_dir}}"
+    state: absent

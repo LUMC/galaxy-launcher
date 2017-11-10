@@ -1,0 +1,42 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- import_tasks: installephemeris.yml
+
+- import_tasks: container_running_check.yml
+
+- import_tasks: installtools.yml
+  when: galaxy_docker_provision_tools
+
+- name: register whether the docker provision container is running
+  command: "docker ps -q -f name={{galaxy_docker_provision_container_name}}$"
+  register: provision_container_running
+  changed_when: false
+
+- import_tasks: installgenomes.yml
+  when: galaxy_docker_provision_genomes
+
+- name: register whether the docker provision container is running
+  command: "docker ps -q -f name={{galaxy_docker_provision_container_name}}$"
+  register: provision_container_running
+  changed_when: false
+
+- name: Remove the docker provision container
+  docker_container:
+    name: "{{galaxy_docker_provision_container_name}}"
+    state: absent
+  when:
+    - provision_container_running.stdout !=''

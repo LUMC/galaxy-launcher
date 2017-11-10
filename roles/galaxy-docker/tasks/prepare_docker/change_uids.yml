@@ -1,0 +1,63 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Create docker build_dir
+  file:
+    path: "{{galaxy_docker_docker_build_dir}}"
+    state: directory
+    mode: 0700
+
+- name: Clone bgruening/galaxy-stable
+  git:
+    force: yes
+    dest: "{{galaxy_docker_docker_build_dir}}/change_uid"
+    recursive: yes
+    repo: https://github.com/bgruening/docker-galaxy-stable.git
+    version: "{{bgruening_galaxy_stable_version}}"
+
+- name: Change_uids
+  lineinfile:
+    backrefs: yes
+    backup: yes
+    state: present
+    regexp: "{{item.regexp}}"
+    line: "{{item.line}}"
+    path: "{{galaxy_docker_docker_build_dir}}/change_uid/galaxy/Dockerfile"
+  with_items:
+    - regexp: '(GALAXY_USER=)([a-zA-Z]*)( \\)'
+      line: '\1"{{galaxy_docker_web_user}}"\3'
+    - regexp: '(GALAXY_UID=)([0-9]*)( \\)'
+      line: '\1"{{galaxy_docker_web_user_id}}"\3'
+    - regexp: '(GALAXY_GID=)([0-9]*)( \\)'
+      line: '\1"{{galaxy_docker_web_group_id}}"\3'
+    - regexp: '(GALAXY_POSTGRES_UID=)([0-9]*)( \\)'
+      line: '\1"{{galaxy_docker_database_user_id}}"\3'
+    - regexp: '(GALAXY_POSTGRES_GID=)([0-9]*)( \\)'
+      line: '\1"{{galaxy_docker_database_group_id}}"\3'
+    # This has been submitted upstream as a fix.
+    # https://github.com/bgruening/docker-galaxy-stable/pull/373
+    # Is fixed from version 17.09
+    - regexp: '^(USER )(galaxy)'
+      line: '\1$GALAXY_USER'
+
+- name: Build docker image with changed_uids
+  docker_image:
+    name: "{{galaxy_docker_docker_image_changed_uids}}"
+    path: "{{galaxy_docker_docker_build_dir}}/change_uid/galaxy"
+    pull: True
+    nocache: "{{galaxy_docker_security_patch}}"
+    force: yes
+    state: present

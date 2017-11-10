@@ -1,0 +1,21 @@
+installdocker_default_location: "/data/docker"
+galaxy_docker_docker_image: "cluster-galaxy-stable:17.09"
+galaxy_docker_export_location: "{{galaxy_docker_shared_cluster_directory}}/galaxy_storage"
+galaxy_docker_container_name: "galaxy"
+galaxy_docker_container_hostname: "galaxy-docker"
+
+# Connect extra volumes to which your container needs acces to
+#galaxy_docker_extra_volumes:
+# - /tmp/:/tmp/:rw # Use docker CLI-style syntax: /host:/container[:mode].
+# You can specify a read mode for the mount with either ro or rw.
+# For example: mount a cluster genomes folder as read-only
+# - /exports/genomes:/exports/genomes:ro
+# Extra ports could be needed to connect to an external cluster.
+# Below example is for SGE
+#galaxy_docker_extra_ports:
+#  - "6444:6444"
+#  - "6445:6445"
+
+bgruening_galaxy_stable_version: 17.09
+galaxy_docker_custom_image_lines:
+  - RUN sed -i '3iecho "10.0.0.1 head-node" >> /etc/hosts' /usr/bin/startup

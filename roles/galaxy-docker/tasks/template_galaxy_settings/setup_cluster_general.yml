@@ -1,0 +1,93 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Create cluster filesystem folders
+  file:
+    path: "{{item}}"
+    state: directory
+  with_items:
+    - "{{galaxy_docker_optional_environment_settings.GALAXY_CONFIG_JOB_WORKING_DIRECTORY}}"
+    - "{{galaxy_docker_optional_environment_settings.GALAXY_CONFIG_FILE_PATH}}"
+  when:
+    - galaxy_docker_optional_environment_settings.GALAXY_CONFIG_JOB_WORKING_DIRECTORY is defined
+    - galaxy_docker_optional_environment_settings.GALAXY_CONFIG_FILE_PATH is defined
+
+- name: Create cluster filesystem new file path
+  file:
+    path: "{{galaxy_docker_optional_environment_settings.GALAXY_CONFIG_NEW_FILE_PATH}}"
+    state: directory
+    mode: 01770
+
+- name: make sure galaxy_venv directory exists
+  file:
+    path: "{{galaxy_docker_cluster_virtualenv}}"
+    state: directory
+    mode: "{{galaxy_docker_export_location_mode}}"
+  when: galaxy_docker_cluster_virtualenv is defined
+
+- name: Create virtualenv
+  pip:
+    name: "pip>=8.1"
+    virtualenv: "{{galaxy_docker_cluster_virtualenv}}"
+  when: galaxy_docker_cluster_virtualenv is defined
+
+- name: Install pinned-requirements
+  pip:
+    requirements: "{{galaxy_docker_export_location}}/galaxy-central/lib/galaxy/dependencies/requirements.txt"
+    virtualenv: "{{galaxy_docker_cluster_virtualenv}}"
+    extra_args: --index-url https://wheels.galaxyproject.org/simple --only-binary all
+  when: galaxy_docker_cluster_virtualenv is defined
+
+- name: Add some conditional-requirements.
+  pip:
+    name: "{{item}}"
+    virtualenv: "{{galaxy_docker_cluster_virtualenv}}"
+    extra_args: --index-url https://wheels.galaxyproject.org/simple --only-binary all
+  with_items:
+    - "psycopg2==2.6.1"
+    - "drmaa"
+    - "uWSGI"
+    - "watchdog"
+  when: galaxy_docker_cluster_virtualenv is defined
+
+- name: Create job_conf.xml
+  template:
+    dest: "{{galaxy_docker_export_location}}/galaxy-central/config/job_conf.xml"
+    src: "job_conf.xml.j2"
+    force: yes
+    trim_blocks: False
+
+- name: Create tool_destinations.yml
+  template:
+    dest: "{{galaxy_docker_export_location}}/galaxy-central/config/tool_destinations.yml"
+    src: "tool_destinations.yml.j2"
+    force: yes
+    trim_blocks: False
+
+- name: Edit shed_tool_conf.xml to contain the right tool shed location
+  lineinfile:
+    backrefs: yes
+    backup: yes
+    state: present
+    regexp: '(<toolbox tool_path=")(.*)(">)'
+    line: '\1{{galaxy_docker_export_location}}/shed_tools\3'
+    path: "{{galaxy_docker_export_location}}/galaxy-central/config/shed_tool_conf.xml"
+
+- name: Create environment setup file
+  template:
+    dest: "{{galaxy_docker_export_location}}/environment_setup_file.sh"
+    src: "environment_setup_file.sh.j2"
+    force: yes

@@ -1,0 +1,36 @@
+{# ----- #}
+{# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center #}
+{# Contact us at: sasc@lumc.nl #}
+{#  #}
+{# This file is part of galaxy-launcher. #}
+{#  #}
+{# galaxy-launcher is free software: you can redistribute it #}
+{# and/or modify it under the terms of the MIT License (Expat) as #}
+{# published by the Open Source initiative. #}
+{#  #}
+{# You should have received a copy of the MIT License (Expat) #}
+{# along with galaxy-launcher. If not, see #}
+{# <https://opensource.org/licenses/MIT>. #}
+{# ..... #}
+{# #}
+# Galaxy docker environment file. WARNING: NEWLINES NOT ALLOWED
+# This is due to a dysfunctional python parser
+# Create newlines using hashes
+#
+#####
+### Obligatory section. 
+### No defaults used. Specifiy in galaxysettings.config
+#####
+#
+GALAXY_CONFIG_ADMIN_USERS={{galaxy_admin_user}}
+GALAXY_CONFIG_MASTER_API_KEY={{galaxy_master_api_key}}
+GALAXY_CONFIG_BRAND={{galaxy_brand}}
+#
+#####
+###Optional Section.
+#####
+{%if galaxy_docker_optional_environment_settings is defined %}
+{% for env_var, env_setting in galaxy_docker_optional_environment_settings.iteritems() %}
+{{env_var}}={{env_setting}}
+{% endfor %}
+{% endif %}

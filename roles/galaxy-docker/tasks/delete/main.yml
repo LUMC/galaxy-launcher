@@ -1,0 +1,49 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# This deletes the galaxy container and all remnants.
+
+- import_tasks: delete_system_files.yml
+  when:
+    - galaxy_docker_delete_system_files
+    - galaxy_docker_run_privileged
+  become: yes
+  become_user: root
+
+- name: Set parameters for deleting the test upgrade container
+  set_fact:
+    "{{item.key}}": "{{item.value}}"
+  with_dict: "{{galaxy_docker_upgrade_test_settings}}"
+  when: galaxy_docker_delete_test_upgrade
+
+- name: Remove docker container
+  docker_container:
+    name: "{{galaxy_docker_container_name}}"
+    state: absent
+
+- import_tasks: delete_export_folder.yml
+  when: galaxy_docker_delete_files
+
+- import_tasks: delete_cron_jobs.yml
+  when:
+    - galaxy_docker_delete_cron_jobs
+    - not galaxy_docker_delete_test_upgrade
+
+- name: delete backup files
+  file:
+    path: "{{galaxy_docker_backup_location}}"
+    state: absent
+  when: galaxy_docker_delete_backup_files

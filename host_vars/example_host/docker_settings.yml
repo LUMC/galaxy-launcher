@@ -1,0 +1,18 @@
+installdocker_default_location: "/data/docker"  #Where the docker images are stored
+galaxy_docker_docker_image: "bgruening/galaxy-stable:17.09"
+galaxy_docker_export_location: "/data/galaxy/galaxy_storage"
+galaxy_docker_container_name: "galaxy"
+galaxy_docker_container_hostname: "galaxy-docker"
+
+# For specifying extra ports
+# Use docker CLI syntax: 8000, 9000:8000, or 0.0.0.0:9000:8000
+# where 8000 is a container port, 9000 is a host port, and 0.0.0.0 is a host interface
+
+#galaxy_docker_extra_ports:
+# - "2222:2222"
+
+# Add extra volumes
+# Use docker CLI-style syntax: /host:/container[:mode].
+# You can specify a read mode for the mount with either ro or rw.
+#galaxy_docker_extra_volumes:
+# - /tmp/:/tmp/:rw

@@ -1,0 +1,147 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# tasks file for galay_docker_nginx_settings
+# This sets a nginx settings file. Currently only one galaxy instance and
+# one test upgrade instance is supported.
+# To install multiple galaxies in the same vm this needs to be changed.
+
+- name: set nginx settings
+  set_fact:
+    nginx_sites:
+      galaxy:
+        - "listen {{ galaxy_docker_web_port_public }}"
+        - "server_name {{ galaxy_docker_web_urls | join(' ') }}"
+        - "location / { proxy_pass http://galaxy; }"
+        - "client_max_body_size {{max_upload_size}}"
+    nginx_configs:
+      upstream:
+        - "upstream galaxy { server localhost:{{galaxy_docker_web_port}}; }"
+      proxy:
+        - "proxy_set_header X-Real-IP $remote_addr"
+        - "proxy_set_header X-Forwarded-Host $host"
+        - "proxy_set_header X-Forwarded-Server $host"
+        - "proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for"
+        - "proxy_set_header Host $http_host"
+    nginx_http_params:
+      #- "include       mime.types"
+      #- "default_type  application/octet-stream"
+      - "sendfile      on"
+      - "keepalive_timeout 12"
+      - "types_hash_max_size 2048"
+      - "gzip on"
+      - "gzip_vary on"
+      - "gzip_proxied any"
+      - "gzip_comp_level 6"
+      - "gzip_buffers 16 8k"
+      - "gzip_http_version 1.1"
+      - >
+          gzip_types text/plain text/css application/json application/x-javascript
+          text/xml application/xml application/xml+rss text/javascript
+      - "uwsgi_read_timeout 300"
+
+- name: Add test upgrade profile.
+  set_fact:
+    nginx_sites_test_upgrade:
+      test_upgrade_galaxy:
+        - "listen {{galaxy_docker_upgrade_test_settings.galaxy_docker_web_port_public }}"
+        - "server_name {{ galaxy_docker_web_urls | join(' ') }}"
+        - "location / { proxy_pass http://test_upgrade_galaxy; }"
+        - "client_max_body_size {{max_upload_size}}"
+    nginx_configs_test_upgrade:
+      upstream:
+        - "{{nginx_configs.upstream[0]}}"
+        - >-
+            upstream test_upgrade_galaxy
+            { server localhost:{{galaxy_docker_upgrade_test_settings.galaxy_docker_web_port}}; }
+  when: galaxy_docker_test_upgrade
+
+- name: combine test upgrade profile with regular galaxy profile
+  set_fact:
+    nginx_sites: "{{ nginx_sites | combine(nginx_sites_test_upgrade)}}"
+    nginx_configs: "{{ nginx_configs | combine(nginx_configs_test_upgrade) }}"
+  when: galaxy_docker_test_upgrade
+
+- name: show variables
+  debug:
+    var: "{{item}}"
+    verbosity: 1
+  with_items:
+    - nginx_sites
+    - nginx_configs
+    - nginx_http_params
+
+- name: check whether SE_linux is disabled
+  set_fact:
+    ansible_selinux: False
+  when:
+    - ansible_selinux != False | bool
+    - ansible_selinux.status == 'disabled'
+
+- name: show se linux
+  debug:
+    var: ansible_selinux != False | bool
+    verbosity: 1
+
+- name: install prerequisites for SElinux RedHat families
+  yum:
+    pkg: "{{item}}"
+    state: present
+  with_items:
+    - libselinux-python
+    - libsemanage-python
+  when:
+    - ansible_selinux != False | bool
+    - ansible_os_family == 'RedHat'
+
+- name: install prerequisites for SElinux Debian families
+  apt:
+    pkg: "{{item}}"
+    state: present
+  with_items:
+    - python-selinux
+    - libsemanage-common
+    - python-semanage
+  when:
+    - ansible_selinux != False | bool
+    - ansible_os_family == 'Debian'
+
+- name: Set SE boolean so nginx will work.
+  when: ansible_selinux != False | bool
+  seboolean:
+    name: httpd_can_network_connect
+    persistent: yes
+    state: yes
+
+- name: Add public web port to se_linux
+  when: ansible_selinux != False | bool
+  seport:
+    ports: "{{galaxy_docker_web_port_public}}"
+    setype: http_port_t
+    proto: tcp
+    state: present
+    reload: True
+
+- name: Add public test upgrade web port to se_linux
+  when:
+    - ansible_selinux != False | bool
+    - galaxy_docker_test_upgrade
+  seport:
+    ports: "{{galaxy_docker_upgrade_test_settings.galaxy_docker_web_port_public}}"
+    setype: http_port_t
+    proto: tcp
+    state: present
+    reload: True

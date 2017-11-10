@@ -1,0 +1,35 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# this task installs ephemeris. It is used for installing tools and genomes.
+
+- name: Create genomes directory in export folder
+  file:
+    path: "{{galaxy_docker_export_location}}/genomes"
+    state: directory
+
+- name: Move genomes to the server using rsync
+  synchronize:
+    compress: yes  #Necessary for big fasta files
+    # You don't have to duplicate the file in the playbook directory but can symlink instead
+    copy_links: "{{galaxy_docker_genome_copy_links}}"
+    delete: no  # do not delete genomes already there
+    dest: "{{galaxy_docker_export_location}}/genomes"
+    src: "{{galaxy_docker_genomes_dir}}"
+    archive: no  #owner and chmod information should not be copied
+    recursive: yes
+    #when archive is no. Checksum should be yes, otherwise the files are always copied.
+    checksum: yes

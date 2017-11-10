@@ -1,0 +1,84 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Remove docker container before migrating
+  docker_container:
+    name: "{{galaxy_docker_container_name}}"
+    state: absent
+    keep_volumes: True
+
+- name: moving to another export folder for testing
+  import_tasks: test.yml
+  when: galaxy_docker_test_upgrade
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
+
+- name: delete .distribution_config folder
+  docker_container:
+    volumes: "{{galaxy_docker_export_location}}:/export/"
+    image: "{{galaxy_docker_docker_image}}"
+    name: "{{galaxy_docker_container_name}}"
+    state: started
+    command: bash -c "rm -rf /export/.distribution_config"
+  when: not galaxy_docker_test_upgrade
+
+- name: Start docker container
+  docker_container:
+    volumes: "{{galaxy_docker_export_location}}:/export/"
+    image: "{{galaxy_docker_docker_image}}"
+    name: "{{galaxy_docker_container_name}}"
+    state: started
+    command: "/usr/bin/startup"
+    detach: True
+
+- name: Check if postgres is online
+  command: "docker exec {{galaxy_docker_container_name}} service postgresql status"
+  register: result
+  until: '"online" in result.stdout'
+  retries: 20
+  changed_when: false
+
+- name: upgrade the database on the export location
+  command: "docker exec {{name}} {{command}}"
+  vars:
+    volumes: "{{galaxy_docker_export_location}}:/export/"
+    image: "{{galaxy_docker_docker_image}}"
+    name: "{{galaxy_docker_container_name}}"
+    state: started
+    command: "bash -c 'bash $GALAXY_ROOT/manage_db.sh upgrade'"
+  register: migration_result
+  tags:
+    - skip_ansible_lint  # Does not create files
+
+- name: show migration results
+  debug:
+    var: migration_result.stdout
+    verbosity: 0
+
+- name: Stop docker container
+  docker_container:
+    name: "{{galaxy_docker_container_name}}"
+    state: stopped
+
+- import_tasks: add_new_config.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"

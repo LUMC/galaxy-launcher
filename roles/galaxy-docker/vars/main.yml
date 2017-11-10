@@ -1,0 +1,33 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# vars file for galaxy-docker
+
+# vars for ldap
+galaxy_docker_ldap_config:
+  "{{ galaxy_docker_ldap_defaults | combine(galaxy_docker_ldap_settings) }}"
+
+# vars for galaxy_docker_backup_cron
+galaxy_docker_backup_database_rsync_configuration: >-
+  {{ galaxy_docker_backup_rsync_settings_default |
+  combine(galaxy_docker_backup_database_rsync_settings) }}
+
+# vars for galaxy_docker_provision_tools:
+galaxy_docker_ephemeris_package: ephemeris
+galaxy_docker_ephemeris_version: 0.7.0
+
+# vars for rundockergalaxy
+galaxy_docker_published_ports: ""

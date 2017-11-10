@@ -1,0 +1,51 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# this task installs ephemeris. It is used for installing tools and genomes.
+
+- name: Install required ephemeris package
+  pip:
+    name: "{{ galaxy_docker_ephemeris_package }}"
+    state: present
+    version: "{{ galaxy_docker_ephemeris_version }}"
+    virtualenv: "{{galaxy_docker_docker_user_virtualenv}}"
+  when: not galaxy_docker_ephemeris_from_git
+
+- name: Clean ephemeris git folder
+  file:
+    path: "{{galaxy_docker_ephemeris_dir}}"
+    state: absent
+  when: galaxy_docker_ephemeris_from_git
+
+- name: Install ephemeris repo
+  git:
+    repo: "{{galaxy_docker_ephemeris_repo}}"
+    dest: "{{galaxy_docker_ephemeris_dir}}"
+    version: "{{galaxy_docker_ephemeris_branch}}"
+  when: galaxy_docker_ephemeris_from_git
+
+- name: Install ephemeris requirements
+  pip:
+    requirements: "{{galaxy_docker_ephemeris_dir}}/requirements.txt"
+    state: present
+    virtualenv: "{{galaxy_docker_docker_user_virtualenv}}"
+  when: galaxy_docker_ephemeris_from_git
+
+- name: Install ephemeris from git repo
+  command: "{{galaxy_docker_docker_user_virtualenv}}/bin/python setup.py install"
+  args:
+    chdir: "{{galaxy_docker_ephemeris_dir}}"
+  when: galaxy_docker_ephemeris_from_git

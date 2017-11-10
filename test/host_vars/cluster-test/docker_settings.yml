@@ -1,0 +1,10 @@
+installdocker_default_location: "/data/docker"
+galaxy_docker_docker_image: "cluster-galaxy-stable:17.09"
+docker_user: "galaxy"
+galaxy_docker_export_location: "{{galaxy_docker_shared_cluster_directory}}/galaxy_storage"
+galaxy_docker_container_name: "galaxy"
+galaxy_docker_container_hostname: "galaxy-docker"
+
+bgruening_galaxy_stable_version: 17.09
+galaxy_docker_custom_image_lines:
+  - RUN sed -i '3iecho "192.168.99.100 ogs-head" >> /etc/hosts' /usr/bin/startup

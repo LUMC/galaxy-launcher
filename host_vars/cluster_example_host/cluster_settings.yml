@@ -1,0 +1,93 @@
+galaxy_docker_cluster_type: sge
+galaxy_docker_gridengine_master_host: "ogs-head"
+galaxy_docker_cluster_virtualenv: "{{galaxy_docker_shared_cluster_directory}}/galaxy_venv"
+#galaxy_docker_cluster_embed_metadata_in_job: False
+galaxy_docker_cluster_environment_variables:
+  LC_ALL: "en_US.UTF-8"
+galaxy_docker_shared_cluster_directory: "/exports/galaxy"
+
+# Set the number of concurrent jobs for registered and unregistered users.
+galaxy_docker_cluster_registered_user_concurrent_jobs: 2
+galaxy_docker_cluster_anonymous_user_concurrent_jobs: 1
+
+# Set up your cluster destinations. By default galaxy will request only
+# one core and 4 GB memory on the cluster.
+# Here you can set which options are available to galaxy
+galaxy_docker_cluster_destinations:
+  cluster_low:
+    cpu_count: 1
+    memory: 4G
+    extra_options: ""
+  cluster_low_high_mem:
+    cpu_count: 1
+    memory: 16G
+    extra_options: ""
+
+# Set the default destination. All tools will run with this destination.
+galaxy_docker_cluster_default_destination: cluster_low
+
+# Simple tool configuration. You can specify a list of tools for each destination.
+# Galaxy will default to that destination for specified tools.
+#galaxy_docker_cluster_tool_destinations:
+#  cluster_low:
+#    - Filter1
+#    - ucsc_table_direct1
+#  cluster_low_high_mem:
+#    - ChangeCase
+
+# Advanced tool configuration for the dynamic job runner.
+# This will be pasted in the tools section of tool_destinations.yml
+# It may conflict with the simple configuration if you specify the same tools here.
+# This option is introduced to allow for more fine-grained control.
+# https://github.com/galaxyproject/galaxy/blob/dev/config/tool_destinations.yml.sample
+#galaxy_docker_cluster_tool_destination_configuration:
+#  trimmer:
+#    rules:
+#      - rule_type: file_size
+#        nice_value: 0
+#        lower_bound: 0
+#        upper_bound: 512 KB
+#        destination: local
+#      - rule_type: file_size
+#        nice_value: 0
+#        lower_bound: 4 MB
+#        upper_bound: infinity
+#        destination: cluster_low_high_mem
+
+
+#SGE specific settings
+
+galaxy_docker_cluster_sge_parallel_environment: make
+
+# Extra options that will be passed to qsub
+galaxy_docker_cluster_sge_extra_options: ""
+
+# You can give users priorities This will be pasted in the user section of tool_destinations.yml
+# https://github.com/galaxyproject/galaxy/blob/dev/config/tool_destinations.yml.sample
+
+#galaxy_docker_cluster_user_destinations:
+#  admin@galaxy.org:
+#    priority: med
+
+# User settings
+
+## User that runs the docker container
+galaxy_docker_docker_user: galaxy_docker
+galaxy_docker_docker_user_private_key: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_docker_user}}"
+galaxy_docker_docker_user_virtualenv: "{{galaxy_docker_docker_user_home}}/virtualenv"
+galaxy_docker_docker_user_home: "/home/{{galaxy_docker_docker_user}}"
+
+## User that manages the database inside the docker container.
+galaxy_docker_database_user: postgres
+galaxy_docker_database_user_id: 1550
+galaxy_docker_database_group_id: 1550
+galaxy_docker_database_user_private_key: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_database_user}}"
+galaxy_docker_database_user_home: "/home/{{galaxy_docker_database_user}}"
+
+## The user that runs the web interfaces and submits the jobs to the cluster
+galaxy_docker_web_user: galaxy
+galaxy_docker_web_user_id: 1450
+galaxy_docker_web_group_id: 1450
+galaxy_docker_web_user_private_key: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_web_user}}"
+galaxy_docker_web_user_virtualenv: "{{galaxy_docker_web_user_home}}/virtualenv"
+galaxy_docker_web_user_home: "/home/{{galaxy_docker_web_user}}"

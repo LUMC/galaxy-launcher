@@ -1,0 +1,16 @@
+#Required settings
+# Please uncomment and specify these values yourself
+
+galaxy_admin_user: "admin@galaxy.org"
+galaxy_master_api_key: "insecure_test_key9s98d8dy98i212ybkknb"
+galaxy_brand: "test"
+galaxy_report_user: admin
+galaxy_report_password: admin
+
+galaxy_admin_api_key: "admin"
+
+# optional settings
+galaxy_docker_optional_environment_settings:
+  GALAXY_CONFIG_CONDA_AUTO_INSTALL: True
+  GALAXY_CONFIG_CONDA_AUTO_INIT: True
+  GALAXY_CONFIG_USE_CACHED_DEPENDENCY_MANAGER: True

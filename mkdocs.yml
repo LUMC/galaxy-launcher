@@ -1,0 +1,20 @@
+site_name: galaxy-launcher
+theme: readthedocs
+pages:
+  - Home: index.md
+  - Known issues: known_issues.md
+  - User guide:
+      - Installing galaxy-launcher: user_guide/installation.md
+      - Configuring a galaxy instance for a vm: user_guide/configure_instance.md
+      - Configure a galaxy instance for running on a cluster: user_guide/configure_cluster_instance.md
+      - Installing and administrating a galaxy instance: user_guide/install_administrate.md
+      - Installing and administrating a galaxy instance on a cluster: user_guide/install_administrate_cluster.md
+  - Tutorial: tutorial/tutorial.md
+  - Developer documentation:
+      - Introduction: developer_docs/introduction.md
+      - The galaxy-docker role: developer_docs/galaxy-docker.md
+      - The installdocker role: developer_docs/installdocker.md
+  - About:
+      - Contributing: about/contributing.md
+      - Author: about/author.md
+      - License: about/license.md

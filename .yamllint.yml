@@ -1,0 +1,60 @@
+---
+
+# http://yamllint.readthedocs.io/en/latest/rules.html
+
+rules:
+  # "{{var}}" for variables. "{}" for empty dictionaries.
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 0
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
+  # Lists as [ 1, 2, 3, 4, 5 ] empty lists as []
+  brackets:
+    min-spaces-inside: 1
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
+  # Set variables to be always one space after colon
+  colons:
+    max-spaces-before: 0
+    max-spaces-after: 1
+  # Clean and clear comma placement (same as default).
+  commas:
+    max-spaces-before: 0
+    min-spaces-after: 1
+    max-spaces-after: 1
+  # Starting space not enforced (useful for commented out variables and code)
+  comments:
+    require-starting-space: false
+    min-spaces-from-content: 2
+  # Force proper indentation of comments
+  comments-indentation: {}
+  # Do not force document start and end markers
+  document-end: disable
+  document-start: disable
+  # Default
+  empty-lines:
+    max: 2
+    max-start: 0
+    max-end: 0
+  # Clean list formatting (Default)
+  hyphens:
+    max-spaces-after: 1
+  # Set spaces to 2 and force multi-line-strings to be indented.
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: true
+  # No key-duplicates allowed. Ansible will always choose last defined value.
+  # Ambiguity is not desirable.
+  key-duplicates: false
+  # Max line-length 100.
+  line-length:
+    max: 100
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
+  new-line-at-end-of-file: enable
+  new-lines:
+    type: unix
+  trailing-spaces: {}

@@ -1,0 +1,35 @@
+#Required settings
+# Please uncomment and specify these values yourself
+
+# galaxy_admin_user: "example@example.nl"
+# galaxy_master_api_key: "8374uhiuy893749872302" #replace with your own key!!
+# galaxy_brand: "Instance of Galaxy"
+# galaxy_report_user: admin
+# galaxy_report_password: admin
+
+# optional settings
+galaxy_docker_optional_environment_settings:
+  GALAXY_CONFIG_CONDA_AUTO_INSTALL: True
+  GALAXY_CONFIG_CONDA_AUTO_INIT: True
+  GALAXY_CONFIG_USE_CACHED_DEPENDENCY_MANAGER: True
+  GALAXY_CONFIG_SANITIZE_ALL_HTML: True
+  GALAXY_LOGGING: full
+  NONUSE: proftp,condor,slurm,slurmctld
+  SGE_ROOT: /var/lib/gridengine
+  DRMAA_LIBRARY_PATH: /usr/lib/gridengine-drmaa/lib/libdrmaa.so.1.0
+  GALAXY_CONFIG_OUTPUTS_TO_WORKING_DIRECTORY: True
+  GALAXY_CONFIG_RETRY_JOB_OUTPUT_COLLECTION: 5
+
+  # Set directories to cluster file system
+  # The default as shown here works very well as long as galaxy_docker_export_location
+  # is a subdirectory of galaxy_docker_shared_cluster_directory
+  GALAXY_CONFIG_CLUSTER_FILES_DIRECTORY: "{{galaxy_docker_shared_cluster_directory}}/job_scripts"
+  GALAXY_CONFIG_NEW_FILE_PATH: "{{galaxy_docker_shared_cluster_directory}}/tmp"
+  GALAXY_CONFIG_TOOL_DEPENDENCY_DIR: "{{galaxy_docker_export_location}}/tool_deps"
+  GALAXY_CONFIG_CONDA_PREFIX: "{{galaxy_docker_shared_cluster_directory}}/_conda"
+  GALAXY_CONFIG_TOOL_DEPENDENCY_CACHE_DIR: "{{galaxy_docker_export_location}}/tool_deps/_cache"
+  GALAXY_CONFIG_JOB_WORKING_DIRECTORY: "{{galaxy_docker_export_location}}/galaxy-central/database/job_working_directory"
+  GALAXY_CONFIG_FILE_PATH: "{{galaxy_docker_export_location}}/galaxy-central/database/files"
+  GALAXY_CONFIG_TOOL_PATH: "{{galaxy_docker_export_location}}/galaxy-central/tools"
+  GALAXY_CONFIG_TOOL_DATA_PATH: "{{galaxy_docker_export_location}}/galaxy-central/tool-data"
+  GALAXY_CONFIG_SHED_TOOL_DATA_PATH: "{{galaxy_docker_export_location}}/galaxy-central/tool-data"

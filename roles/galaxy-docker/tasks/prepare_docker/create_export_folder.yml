@@ -1,0 +1,24 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# This task decides wich sub-tasks should be run based on the boolean variables.
+# The order should represent the order in which tasks are ideally done.
+
+- name: Check if export folder is created with right permissions
+  file:
+    path: "{{galaxy_docker_export_location}}"
+    state: directory
+    mode: "{{galaxy_docker_export_location_mode}}"

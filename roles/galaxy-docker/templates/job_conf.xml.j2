@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- {{ ansible_managed }} -->
+{# ----- #}
+{# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center #}
+{# Contact us at: sasc@lumc.nl #}
+{#  #}
+{# This file is part of galaxy-launcher. #}
+{#  #}
+{# galaxy-launcher is free software: you can redistribute it #}
+{# and/or modify it under the terms of the MIT License (Expat) as #}
+{# published by the Open Source initiative. #}
+{#  #}
+{# You should have received a copy of the MIT License (Expat) #}
+{# along with galaxy-launcher. If not, see #}
+{# <https://opensource.org/licenses/MIT>. #}
+{# ..... #}
+<job_conf>
+ <plugins workers="{{galaxy_job_workers | default("2")}}">
+   <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner"/>
+   {% if galaxy_docker_cluster_type == 'sge' %}
+   <plugin id="{{galaxy_docker_cluster_type}}" type="runner" load="galaxy.jobs.runners.drmaa:DRMAAJobRunner">
+     <param id="drmaa_library_path">/usr/lib/gridengine-drmaa/lib/libdrmaa.so.1.0</param>
+   </plugin>
+   {% endif %}
+ </plugins>
+ <handlers default_from_environ="GALAXY_HANDLERS_DEFAULT" default="handlers">
+   <handler id="handler0" tags="handlers"/>
+   <handler id="handler1" tags="handlers"/>
+ </handlers>
+ <destinations default="dtd_destination">
+   <!-- The dynamic runner is set as default -->
+   <destination id="dtd_destination" runner="dynamic">
+     <param id="type">dtd</param>
+   </destination>
+   <!-- add local runner for jobs that should not be run on the cluster -->
+   <destination id="local" runner="local">
+     <env file="/galaxy_venv/bin/activate"/>
+   </destination>
+   {% for destination, settings in galaxy_docker_cluster_destinations.iteritems() %}
+   <destination id="{{destination}}" runner="{{galaxy_docker_cluster_type}}">
+     <env file="{{galaxy_docker_cluster_virtualenv | default('/galaxy_venv')}}/bin/activate"/>
+     <env id="GALAXY_ROOT_DIR">{{galaxy_docker_export_location}}/galaxy-central</env>
+     <env id="GALAXY_LIB">{{galaxy_docker_export_location}}/galaxy-central/lib</env>
+     <env id="PYTHONPATH">{{galaxy_docker_export_location}}/galaxy-central/lib</env>
+     {%if galaxy_docker_cluster_environment_variables is defined %}
+     {% for env_var, env_setting in galaxy_docker_cluster_environment_variables.iteritems() %}
+     <env id="{{env_var}}">{{env_setting}}</env>
+     {% endfor %}
+     {% endif %}
+     <param id="embed_metadata_in_job">{{galaxy_docker_cluster_embed_metadata_in_job | default ('True')}}</param>
+     {% if galaxy_docker_cluster_type == 'sge' %}
+     <param id="nativeSpecification">-l h_vmem={{settings.memory}} -pe {{galaxy_docker_cluster_sge_parallel_environment}} {{settings.cpu_count}} {{settings.extra_options}}</param>
+     {% endif %}
+   </destination>
+   {% endfor %}
+ </destinations>
+ <!-- This should be managed in tool_destinations.yml.j2
+ <tools>
+   <tool id="upload1" destination="local"/>
+ </tools>
+ -->
+ <limits>
+   <limit type="registered_user_concurrent_jobs">{{galaxy_docker_cluster_registered_user_concurrent_jobs | default("2")}}</limit>
+   <limit type="anonymous_user_concurrent_jobs">{{galaxy_docker_cluster_anonymous_user_concurrent_jobs | default ("1")}}</limit>
+ </limits>
+</job_conf>

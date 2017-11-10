@@ -1,0 +1,197 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# defaults file for galaxy_docker
+galaxy_docker_remote_key_dir: /tmp/keys
+#users
+galaxy_docker_docker_user: galaxy_docker
+galaxy_docker_docker_user_private_key: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_docker_user}}"
+galaxy_docker_docker_user_virtualenv: "{{galaxy_docker_docker_user_home}}/virtualenv"
+galaxy_docker_docker_user_home: "/home/{{galaxy_docker_docker_user}}"
+
+galaxy_docker_database_user: postgres
+galaxy_docker_database_user_id: 1550
+galaxy_docker_database_group_id: 1550
+galaxy_docker_database_user_private_key: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_database_user}}"
+galaxy_docker_database_user_home: "/home/{{galaxy_docker_database_user}}"
+
+galaxy_docker_web_user: galaxy
+galaxy_docker_web_user_id: 1450
+galaxy_docker_web_group_id: 1450
+galaxy_docker_web_user_private_key: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_web_user}}"
+galaxy_docker_web_user_virtualenv: "{{galaxy_docker_web_user_home}}/virtualenv"
+galaxy_docker_web_user_home: "/home/{{galaxy_docker_web_user}}"
+
+galaxy_docker_provision_user: admin@galaxy.org
+galaxy_docker_provision_key: admin
+
+# docker defaults
+galaxy_docker_docker_user_groups: docker
+galaxy_docker_docker_image: bgruening/galaxy-stable
+galaxy_docker_environment_file_location: "{{galaxy_docker_docker_user_home}}/galaxydocker.env"
+galaxy_docker_export_location: "/data/galaxy/galaxy_storage"
+# If not accessible for all users (--x) then postgres does not work.
+galaxy_docker_export_location_mode: "0755"
+galaxy_docker_container_name: galaxy
+galaxy_docker_provision_container_name: galaxy-provision
+galaxy_docker_container_hostname: galaxy-docker
+galaxy_docker_extra_volumes: ""
+galaxy_docker_docker_build_dir: "{{galaxy_docker_docker_user_home}}/docker_build/"
+bgruening_galaxy_stable_version: master
+galaxy_docker_docker_image_changed_uids: "galaxy_stable_changed_uids:{{bgruening_galaxy_stable_version}}"
+# firewall, nginx and ports
+galaxy_docker_ufw_profile: galaxy
+galaxy_docker_test_ufw_profile: testgalaxy
+galaxy_docker_web_port_public: 80
+galaxy_docker_web_port: 8080
+galaxy_docker_provision_port: 8008
+galaxy_docker_ftp_port_expose: False
+galaxy_docker_sftp_port_expose: False
+# Bgruening container defaults
+galaxy_docker_container_database_name: galaxy
+galaxy_docker_container_database_username: "galaxy"
+
+# File locations:
+galaxy_docker_welcome_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/welcome/"
+galaxy_docker_import_db_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/database_import/"
+galaxy_docker_tool_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/tools/"
+galaxy_docker_dbkeys_list_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/dbkeys/"
+galaxy_docker_genomes_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/genomes/"
+galaxy_docker_extract_database_dir: "files/{{inventory_hostname}}/database_extract/"
+galaxy_docker_custom_image_dir: "files/{{inventory_hostname}}/docker_custom_image/"
+
+galaxy_docker_ansible_generated_vars_dir: "/tmp/ansible_generated_vars/{{ansible_hostname}}/"
+galaxy_docker_ssh_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/ssh"
+
+# defaults for addldap
+galaxy_docker_ldap_defaults:
+  login_use_username: True
+  allow_password_change: False
+  allow_register: False
+  auto_register: True
+  continue_on_failure: False
+  email_suffix: ""
+#  options: ""
+
+# defaults for galaxy_docker_backup_cron
+galaxy_docker_backup_cron_log_timestamp: "TZ='UTC' date +'%Z %F %T >'"
+galaxy_docker_backup_rsync_ssh_key_file: ".ssh/id_rsa"
+galaxy_docker_backup_rsync_settings_default:
+  delete: True
+  compression_level: 0
+  cron:
+    special_time: "hourly"
+
+galaxy_docker_backup_database_rsync_settings: {}
+galaxy_docker_backup_rsync_remote_host: False
+
+# defaults for deletegalaxy
+galaxy_docker_delete_files: False
+galaxy_docker_delete_test_upgrade: False
+galaxy_docker_delete_backup_files: False
+
+# Cluster defaults
+galaxy_docker_cluster_type: sge
+galaxy_docker_cluster_registered_user_concurrent_jobs: 2
+galaxy_docker_cluster_anonymous_user_concurrent_jobs: 1
+galaxy_docker_cluster_embed_metadata_in_job: True
+galaxy_docker_cluster_environment_variables: {}
+galaxy_docker_cluster_default_destination: cluster
+galaxy_docker_cluster_sge_parallel_environment: make
+galaxy_docker_cluster_sge_extra_options: ""
+galaxy_docker_cluster_destinations:
+  cluster:
+    cpu_count: 1
+    memory: 4G
+    extra_options: ""
+galaxy_docker_cluster_tool_destinations: {}
+galaxy_docker_cluster_tool_destination_configuration: {}
+galaxy_docker_cluster_user_destinations: {}
+# defaults for databases
+
+## Defaults are to use custom format. Which is compressed and uses pg_restore to recover.
+## If format is set to plain, it is by default not compressed and psql is used to recover.
+galaxy_docker_db_format: "custom"  # other options 'plain' and 'tar'
+galaxy_docker_db_compression_level:
+  "{{(galaxy_docker_db_format=='custom') | ternary('6','0')}}"
+galaxy_docker_db_restore_command:
+  "{{(galaxy_docker_db_format=='plain') | ternary('psql','pg_restore -v')}}"
+galaxy_docker_db_input_file_flag:
+  "{{(galaxy_docker_db_format=='plain') | ternary('-f','')}}"
+
+galaxy_docker_extracted_db_filename: "galaxy_database.{{ansible_date_time.iso8601}}.dump"
+galaxy_docker_extracted_db_location: "{{galaxy_docker_docker_user_home}}/database_extract"
+
+galaxy_docker_imported_db_location: "{{galaxy_docker_web_user_home}}/database/"
+galaxy_docker_empty_database_script: "{{galaxy_docker_database_user_home}}/new_empty_db"
+
+galaxy_docker_backup_location: "{{galaxy_docker_docker_user_home}}/backups"
+
+# defaults for galaxy_docker_provision_tools
+galaxy_docker_tool_dir: "/tmp/galaxy_tool_lists"
+
+# defaults for galaxy_docker_provision_genomes
+galaxy_docker_dbkeys_dir: "/tmp/galaxy_dkeys_lists"
+galaxy_docker_genome_copy_links: yes
+galaxy_docker_genomes_dest: "{{galaxy_docker_export_location}}/genomes"
+
+# Ephemeris can be installed from git if extra functionality
+# is needed which is not in the pypi package yet.
+galaxy_docker_ephemeris_repo: "https://github.com/galaxyproject/ephemeris.git"
+galaxy_docker_ephemeris_branch: "master"
+galaxy_docker_ephemeris_dir: "{{galaxy_docker_docker_user_home}}/ephemeris"
+galaxy_docker_ephemeris_from_git: False
+
+#defaults for upgrade
+galaxy_docker_test_upgrade: False
+
+#Overwrites old config files with new distribution_config files
+galaxy_docker_upgrade_overwrite_config_files: False
+
+galaxy_docker_run_privileged: True
+# Run
+galaxy_docker_prerequisites_startup_service: False
+galaxy_docker_prepare_docker: False
+galaxy_docker_prerequisites: False
+galaxy_docker_template: False
+galaxy_docker_upgrade: False
+galaxy_docker_provision: False
+galaxy_docker_run: False
+galaxy_docker_add_users: False
+galaxy_docker_create_user_ssh_keys: False
+galaxy_docker_install_packages: False
+galaxy_docker_create_export_folder: False
+galaxy_docker_backup: False
+galaxy_docker_transfer_genomes: False
+galaxy_docker_change_uids: False
+galaxy_docker_delete_system_files: False
+galaxy_docker_delete_cron_jobs: False
+galaxy_docker_delete: False
+galaxy_docker_cluster: False
+installdocker: False
+galaxy_docker_import_database: False
+galaxy_docker_template_welcome: False
+galaxy_docker_template_ldap: False
+galay_docker_nginx_settings: False
+ansible_role_nginx: False
+galaxy_docker_firewall: False
+galaxy_docker_backup_cron: False
+galaxy_docker_provision_tools: False
+galaxy_docker_backup_extract_database: False
+galaxy_docker_provision_genomes: False
+galaxy_docker_template_sge: False
+galaxy_docker_custom_image: False
+galaxy_docker_security_patch: False

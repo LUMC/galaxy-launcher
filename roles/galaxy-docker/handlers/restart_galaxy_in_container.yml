@@ -1,0 +1,27 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: restart galaxy in container
+  command: "docker exec {{galaxy_docker_container_name}} {{command}}"
+  vars:
+    command: "supervisorctl restart {{supervisorctl_galaxy | default('galaxy')}}:*"
+  notify: check if galaxy has started
+
+- name: restart provision galaxy in container
+  command: "docker exec {{galaxy_docker_provision_container_name}} {{command}}"
+  vars:
+    command: "supervisorctl restart {{supervisorctl_galaxy | default('galaxy')}}:*"
+  notify: check if provision galaxy has started

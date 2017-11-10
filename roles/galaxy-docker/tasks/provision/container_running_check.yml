@@ -1,0 +1,74 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# this task installs ephemeris. It is used for installing tools and genomes.
+
+- name: register whether the production container is running
+  command: "docker ps -q -f name={{galaxy_docker_container_name}}$"
+  register: production_container_running
+  changed_when: false
+
+- name: register whether the docker provision container is running
+  command: "docker ps -q -f name={{galaxy_docker_provision_container_name}}$"
+  register: provision_container_running
+  changed_when: false
+
+- name: Show docker inspection results
+  debug:
+    var: production_container_running
+    verbosity: 1
+  when: production_container_running
+
+- name: Show docker inspection results
+  debug:
+    var: provision_container_running
+    verbosity: 1
+  when: provision_container_running
+
+- import_tasks: start_provision_container.yml
+  when:
+    - production_container_running is defined
+    - provision_container_running is defined
+    - production_container_running.stdout == ''
+    - provision_container_running.stdout == ''
+
+- name: Set provision key when starting provision container
+  set_fact:
+    galaxy_admin_api_key: "{{galaxy_docker_provision_key}}"
+  when:
+    - production_container_running is defined
+    - not production_container_running.stdout !=''
+
+- name: Use public web port for provisioning when running production container
+  set_fact:
+    galaxy_docker_provision_port: "{{galaxy_docker_web_port}}"
+  when:
+    - production_container_running is defined
+    - production_container_running.stdout !=''
+
+- name: Activate handler to check if provision galaxy has started
+  command: echo this always reports as changed
+  notify: check if provision galaxy has started
+  when:
+    - not production_container_running.stdout !=''
+
+- name: Activate handler to check if production galaxy has a working galaxy
+  command: echo this always reports as changed
+  notify: check if galaxy has started
+  when:
+    - production_container_running.stdout !=''
+
+- meta: flush_handlers

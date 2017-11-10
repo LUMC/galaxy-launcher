@@ -1,0 +1,46 @@
+{# ----- #}
+{# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center #}
+{# Contact us at: sasc@lumc.nl #}
+{#  #}
+{# This file is part of galaxy-launcher. #}
+{#  #}
+{# galaxy-launcher is free software: you can redistribute it #}
+{# and/or modify it under the terms of the MIT License (Expat) as #}
+{# published by the Open Source initiative. #}
+{#  #}
+{# You should have received a copy of the MIT License (Expat) #}
+{# along with galaxy-launcher. If not, see #}
+{# <https://opensource.org/licenses/MIT>. #}
+{# ..... #}
+#!/bin/bash
+set -eu -o pipefail
+
+timestamp(){
+{{galaxy_docker_backup_cron_log_timestamp}}
+}
+
+echo "$(timestamp) === START RSYNCING BACKUP DATA ==="
+
+src={{src}}
+host={{host_address}}
+user={{user | default("")}}
+dest={{dest}}
+dest_string={{user | default("")}}{{ '@' if user != '' else '' }}{{host_address}}:{{dest}}
+flags="-v -a --compress-level={{compression_level | default('0')}} {{ '--delete' if delete else ''}} --delete-after"
+command="rsync $flags $src $dest_string"
+
+echo "$(timestamp) Source       = $src"
+echo "$(timestamp) Remote host  = $host"
+echo "$(timestamp) Destination  = $dest"
+{% if user != '' %}
+echo "$(timestamp) Remote_user  = $user"
+{% endif %}
+echo "$(timestamp) flags        = $flags"
+echo "$(timestamp) command      = $command"
+echo "$(timestamp) --- START SYNCING ---"
+stdbuf -oL -eL $command |
+while IFS= read -r line
+  do echo "$(timestamp) $line"
+done
+echo "$(timestamp) ---     DONE      ---"
+echo "$(timestamp) === RSYNC TO BACKUP SERVER SUCCESSFULL ==="

@@ -1,0 +1,78 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# A list of tasks that sets up the backup user to rsync the backups to a remote host
+
+- name: create rsync script
+  template:
+    src: "rsyncscript.sh.j2"
+    dest: "{{galaxy_docker_backup_location}}/scripts/rsyncscript.sh"
+    mode: 0700
+  vars:
+    src: "{{galaxy_docker_backup_location}}"
+    host_address: "{{item.host}}"
+    dest: "{{item.dest}}"
+    user: "{{item.user |default('')}}"
+    compression_level: "{{item.compression_level}}"
+    delete: "{{item.delete}}"
+  with_items:
+    - "{{galaxy_docker_backup_database_rsync_configuration}}"
+
+- name: generate_ssh_key
+  user:
+    name: "{{galaxy_docker_docker_user}}"
+    generate_ssh_key: yes
+
+- name: copy public key of backup user to ansible host
+  fetch:
+    dest: "{{galaxy_docker_ssh_dir}}/{{galaxy_docker_docker_user}}_public-key/id_rsa.pub"
+    flat: yes
+    src: "/home/{{galaxy_docker_docker_user}}/{{galaxy_docker_backup_rsync_ssh_key_file}}.pub"
+    validate_checksum: yes
+
+- name: Add remote backup server to the known_hosts file
+  known_hosts:
+    name: "{{galaxy_docker_backup_database_rsync_configuration.host}}"
+    state: present
+    key: >-
+      {{galaxy_docker_backup_database_rsync_configuration.host}}
+      {{galaxy_docker_backup_database_rsync_configuration.host_public_key}}
+#    hash_host: True
+
+- name: Hash known_hosts file.
+  command: "ssh-keygen -Hf {{known_hosts}}"
+  vars:
+    known_hosts: "~/.ssh/known_hosts"
+  register: known_hosts_hashed
+  changed_when: '"~/.ssh/known_hosts updated" in known_hosts_hashed.stdout'
+
+- name: Set job in cron to rsync backups to a remote location
+  cron:
+    job: >-
+      bash {{galaxy_docker_backup_location}}/scripts/rsyncscript.sh
+      >> {{galaxy_docker_backup_location}}/logs/rsync.log 2>&1
+    state: present
+    user: "{{galaxy_docker_docker_user}}"
+    backup: yes
+    name: "Rsync to the backup host"
+    month: "{{item.cron.month | default(omit) }}"
+    day: "{{item.cron.day | default(omit) }}"
+    weekday: "{{item.cron.weekday | default(omit)}}"
+    hour: "{{item.cron.hour | default(omit)}}"
+    minute: "{{item.cron.minute | default(omit)}}"
+    special_time: "{{item.cron.special_time | default(omit)}}"
+  with_items:
+    - "{{galaxy_docker_backup_database_rsync_configuration}}"

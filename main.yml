@@ -1,31 +1,32 @@
 ---
+# -----
 # Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
 # Contact us at: sasc@lumc.nl
 #
-# This file is part of galaxy-docker-ansible.
-# A dual licensing mode is applied.
-# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
-# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+# This file is part of galaxy-launcher.
 #
-# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
 
 # Playbook that contains all roles.
 
-- hosts: "{{ hosts }}"
-  become: yes
+- hosts: "{{ host }}"
+  become: "{{ galaxy_docker_run_privileged }}"
   become_method: sudo
+  become_user: root
   gather_facts: yes
   pre_tasks:
-  - include_vars:
-      file: "run/{{item}}"
-    with_items:
-      - "{{run | default('[]')}}"
+    - name: Include run variables
+      include_vars:
+        file: "run/{{item}}.yml"
+      with_items:
+        - "{{run | default('[]')}}"
 
   roles:
-    - { role: installdocker, when: "{{ installdocker | default('False')}}" }
-    - { role: upgrade, when: "{{ upgrade | default('False')}}" }
-    - { role: galaxyfirewall, when: "{{ galaxyfirewall | default('False')}}" }
-    - { role: rundockergalaxy, when: "{{ rundockergalaxy | default('False')}}" }
-    - { role: installtools, when: "{{ installtools | default('False')}}" }
-    - { role: backupgalaxy, when: "{{ backupgalaxy | default('False')}}" }
-    - { role: deletegalaxy, when: "{{ deletegalaxy | default('False')}}" }
+    - role: galaxy-docker

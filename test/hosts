@@ -1,0 +1,9 @@
+cluster-test ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=2205 ansible_ssh_private_key_file="test/vagrant/cluster-test/.vagrant/machines/default/virtualbox/private_key"
+
+[test]
+ubuntu-16.04 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=2201 ansible_ssh_private_key_file="test/vagrant/ubuntu-16.04/.vagrant/machines/default/virtualbox/private_key"
+centos-7 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=2202 ansible_ssh_private_key_file="test/vagrant/centos-7/.vagrant/machines/default/virtualbox/private_key"
+
+[all:vars]
+ansible_ssh_pipelining=yes
+ansible_ssh_extra_args="-o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"

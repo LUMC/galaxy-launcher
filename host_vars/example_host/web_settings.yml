@@ -1,0 +1,18 @@
+max_upload_size: "50g"
+
+galaxy_docker_web_urls:
+  - example_host.org
+  - galaxy.example_host.org
+  - www.example_galaxy.org
+
+# remote listening ports
+galaxy_docker_web_port_public: 80
+
+# Local listening ports
+galaxy_docker_web_port: 8080
+#galaxy_docker_ftp_port: 8021
+#galaxy_docker_sftp_port: 8022
+# By default ftp and sftp ports are only exposed to localhost.
+# Set below values to True to expose them to the internet.
+galaxy_docker_ftp_port_expose: False
+galaxy_docker_sftp_port_expose: False

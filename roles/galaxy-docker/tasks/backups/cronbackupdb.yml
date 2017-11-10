@@ -1,0 +1,73 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# tasks file for galaxy_docker_backup_cron
+# This installs backup scripts in the backup folder and sets cron jobs to run those scripts
+
+- name: create backup folder with logs and scripts subfolders
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: 0700
+  with_items:
+    - "{{galaxy_docker_backup_location}}"
+    - "{{galaxy_docker_backup_location}}/logs"
+    - "{{galaxy_docker_backup_location}}/scripts"
+
+- name: create folder for each job within the backup folder
+  file:
+    path: "{{galaxy_docker_backup_location}}/{{item.key}}"
+    state: directory
+    mode: 0700
+  with_dict: "{{ galaxy_docker_backup_database_cron_jobs }}"
+
+- name: Create backup scripts for each job
+  template:
+    src: "backupscript.sh.j2"
+    dest: "{{galaxy_docker_backup_location}}/scripts/{{item.key}}-backupscript.sh"
+    mode: 0700
+  vars:
+    backup_archive: "{{item.value.filename}}$(TZ='UTC' date +'{{item.value.timestamp}}').gz"
+    backup_db_location: "{{galaxy_docker_backup_location}}/{{item.key}}"
+    backup_db_dump_file: "galaxy-{{item.key}}-backup$(TZ='UTC' date +'%s.%N')"
+    files_to_keep: "{{item.value.files_to_keep}}"
+    compression_level:
+      "{{item.value.compression_level | default(galaxy_docker_db_compression_level)}}"
+    name: "{{item.key}}"
+  with_dict: "{{ galaxy_docker_backup_database_cron_jobs }}"
+
+- name: set backup jobs in cron
+  cron:
+    job: >-
+      bash {{galaxy_docker_backup_location}}/scripts/{{item.key}}-backupscript.sh
+      >> {{log_file}} 2>&1
+    state: present
+    user: "{{galaxy_docker_docker_user}}"
+    backup: yes
+    name: "{{item.value.description}}"
+    month: "{{item.value.cron.month | default(omit)}}"
+    day: "{{item.value.cron.day | default(omit)}}"
+    weekday: "{{item.value.cron.weekday | default(omit)}}"
+    hour: "{{item.value.cron.hour | default(omit)}}"
+    minute: "{{item.value.cron.minute | default(omit)}}"
+    special_time: "{{item.value.cron.special_time | default(omit)}}"
+  vars:
+    log_file: "{{galaxy_docker_backup_location}}/logs/{{item.key}}.log"
+  with_dict: "{{ galaxy_docker_backup_database_cron_jobs }}"
+
+# Sets up a rsync script to automatically synchronize the backups to a remote host.
+- import_tasks: rsync.yml
+  when: galaxy_docker_backup_rsync_remote_host

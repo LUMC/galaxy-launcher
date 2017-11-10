@@ -1,0 +1,58 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# This task creates a  firewall profile and enables it.
+# A profile was chosen because a profile can be cleanly disabled and deleted.
+# The alternative of programming ports directly in this yaml would be more messy when cleaning.
+
+- name: Install ufw firewall.
+  package:
+    name: ufw
+    state: present
+
+- name: Copy profile to ufw firewall
+  template:
+    dest: "/etc/ufw/applications.d/{{galaxy_docker_ufw_profile}}"
+    force: yes
+    src: ufwgalaxyprofile.j2
+
+- name: Copy test_upgrade_galaxy profile to ufw firewall
+  template:
+    dest: "/etc/ufw/applications.d/{{galaxy_docker_test_ufw_profile}}"
+    force: yes
+    src: ufwtestgalaxyprofile.j2
+  when: galaxy_docker_test_upgrade
+# Apparently sshrules are removed if OpenSSH rule is not enabled on Ubuntu
+# The remote machine will become unmanagable because ssh port will be closed
+# This rule prevents this behaviour.
+- name: set the firewall open for ssh
+  ufw:
+    rule: allow
+    name: OpenSSH
+  when: ansible_distribution == 'Ubuntu'
+
+- name: set the firewall open for Galaxy
+  ufw:
+    name: "{{galaxy_docker_ufw_profile}}"
+    rule: allow
+    state: enabled
+
+- name: set the firewall open for testgalaxy
+  ufw:
+    name: "{{galaxy_docker_test_ufw_profile}}"
+    rule: allow
+    state: enabled
+  when: galaxy_docker_test_upgrade

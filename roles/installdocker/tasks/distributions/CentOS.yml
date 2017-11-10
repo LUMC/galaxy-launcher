@@ -1,0 +1,62 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Install Docker prerequisites
+  yum:
+    update_cache: yes
+    pkg: "{{ item }}"
+    state: present
+  with_items:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+    - epel-release
+
+# No ansible module available
+- name: Enable extras repository
+  command: yum-config-manager --enable extras
+  tags:
+    - skip_ansible_lint  # Does not create a file?
+
+# An attempt was made to install the repository using yum_repository but this failed.
+- name: install repository using yum-config-manager
+  command: "yum-config-manager --add-repo {{repo_url}}"
+  args:
+    creates: "/etc/yum.repos.d/{{repo_url | basename}}"
+  vars:
+    repo_url: https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: Install gpg key
+  rpm_key:
+    key: "{{ installdocker_gpg_key}}"
+    state: present
+
+
+#- name: Install Docker repository
+#  yum_repository:
+#    name: docker
+#    baseurl: "https://download.docker.com/linux/centos/docker-ce.repo"
+#    state: present
+#    description: Docker Community Edition Repository
+#    enabled: no
+#    gpgkey: "{{docker_gpg_key}}"
+
+- name: Install Docker packages
+  yum:
+    pkg: "{{ installdocker_packages }}"
+    state: present
+    update_cache: yes
+  notify: test docker service

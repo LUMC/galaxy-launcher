@@ -1,0 +1,23 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# Add SGE settings to galaxy docker instance
+
+
+- name: create act_qmaster file
+  template:
+    dest: "{{galaxy_docker_export_location}}/act_qmaster"
+    src: "act_qmaster.j2"

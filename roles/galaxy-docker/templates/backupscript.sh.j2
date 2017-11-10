@@ -1,0 +1,58 @@
+{# ----- #}
+{# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center #}
+{# Contact us at: sasc@lumc.nl #}
+{#  #}
+{# This file is part of galaxy-launcher. #}
+{#  #}
+{# galaxy-launcher is free software: you can redistribute it #}
+{# and/or modify it under the terms of the MIT License (Expat) as #}
+{# published by the Open Source initiative. #}
+{#  #}
+{# You should have received a copy of the MIT License (Expat) #}
+{# along with galaxy-launcher. If not, see #}
+{# <https://opensource.org/licenses/MIT>. #}
+{# ..... #}
+{# #}
+#!/bin/bash
+set -eu -o pipefail
+
+timestamp(){
+{{galaxy_docker_backup_cron_log_timestamp}}
+}
+
+echo "$(timestamp) === START {{name.upper()}} BACKUP OF GALAXY ==="
+
+galaxy_docker_database_user="{{galaxy_docker_database_user}}"
+galaxy_docker_container_name="{{galaxy_docker_container_name}}"
+galaxy_docker_container_database_name="{{galaxy_docker_container_database_name}}"
+backup_db_location="{{backup_db_location}}"
+backup_db_dump_file="{{backup_db_dump_file}}"
+files_to_keep="{{files_to_keep}}"
+compression_level="{{compression_level}}"
+db_format="{{galaxy_docker_db_format}}"
+echo -n "$(timestamp) Dump the databse to $backup_db_location/$backup_db_dump_file ... "
+touch $backup_db_location/$backup_db_dump_file
+chmod 0600 $backup_db_location/$backup_db_dump_file
+docker exec -u $galaxy_docker_database_user $galaxy_docker_container_name \
+  bash -c "pg_dump $galaxy_docker_container_database_name --format=$db_format -Z $compression_level" >> $backup_db_location/$backup_db_dump_file
+echo "done"
+
+echo "$(timestamp) A maximum of $files_to_keep files will be kept in $backup_db_location. Looking for redundant files."
+
+old_files="$(ls -Atp $backup_db_location | grep -v '/$' | tail -n +$(($files_to_keep + 1)) )"
+number_of_files="$(ls -Atp $backup_db_location | grep -v '/$' | wc -l )"
+
+if [ "$(($number_of_files - $files_to_keep))" -gt "0" ]
+  then
+    echo "$(timestamp) More than $files_to_keep files found. Oldest files will be removed."
+    for file in $old_files
+      do
+        echo -n "$(timestamp) Removing $file ... "
+        rm -f "$backup_db_location/$file"
+        echo "done"
+      done
+  else
+    echo "$(timestamp) Not more than $files_to_keep files found. Skip cleanup."
+fi
+
+echo "$(timestamp) === BACKUP COMPLETED SUCCESSFULLY ==="

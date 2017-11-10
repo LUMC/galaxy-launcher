@@ -1,0 +1,88 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# tasks file for galaxy_docker_backup_extract_database
+# This creates a database dump on the server and copies it to your
+# ansible control host
+
+- name: register whether the container is running
+  command: "docker ps -a -f name={{galaxy_docker_container_name}}$"
+  register: docker_running
+  changed_when: false
+
+- name: Show docker inspection results
+  debug:
+    var: docker_running
+    verbosity: 1
+
+- name: Make sure the docker container is started
+  docker_container:
+    name: "{{galaxy_docker_container_name}}"
+    volumes: "{{galaxy_docker_export_location}}:/export/"
+    image: "{{galaxy_docker_docker_image}}"
+    state: started
+  when: not docker_running.stdout
+
+- name: Create folder to save database
+  file:
+    path: "{{galaxy_docker_extracted_db_location}}"
+    state: directory
+    mode: 0700
+
+- name: Create empty dump file on server
+  file:
+    path: "{{galaxy_docker_extracted_db_location}}/{{galaxy_docker_extracted_db_filename}}"
+    mode: 0600
+    state: "{{item}}"
+  with_items:
+    - absent
+    - touch
+
+- name: Check if postgres is online
+  command: "docker exec {{galaxy_docker_container_name}} service postgresql status"
+  register: result
+  until: '"online" in result.stdout'
+  retries: 20
+  changed_when: false
+
+- name: Dump database in export folder
+  shell: "docker exec -u {{user}} {{name}} {{command}} >> {{file}}"
+  vars:
+    name: "{{galaxy_docker_container_name}}"
+    command: >-
+      pg_dump {{galaxy_docker_container_database_name}}
+      --format={{galaxy_docker_db_format}}
+      -Z {{galaxy_docker_db_compression_level}}
+    user: "{{galaxy_docker_database_user}}"
+    file: "{{galaxy_docker_extracted_db_location}}/{{galaxy_docker_extracted_db_filename}}"
+  ignore_errors: true
+  tags:
+    - skip_ansible_lint  # does not create a file. File already created.
+
+- name: rsync exported db to ansible host
+  synchronize:
+    perms: yes  #file should not be world readable
+    compress: yes
+    dest: "{{galaxy_docker_extract_database_dir}}"
+    src: "{{galaxy_docker_extracted_db_location}}/{{galaxy_docker_extracted_db_filename}}"
+    mode: pull
+  vars:
+    ansible_ssh_pipelining: False  # Rscync does not work with ssh pipelining
+
+- name: Delete dump file on server
+  file:
+    path: "{{galaxy_docker_extracted_db_location}}/{{galaxy_docker_extracted_db_filename}}"
+    state: absent

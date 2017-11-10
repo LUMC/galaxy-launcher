@@ -1,0 +1,44 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: remove firewall port exception
+  ufw:
+    name: "{{galaxy_docker_ufw_profile}}"
+    rule: allow
+    delete: yes
+    state: reloaded
+
+- name: remove firewall profile
+  file:
+    path: "/etc/ufw/applications.d/{{galaxy_docker_ufw_profile}}"
+    state: absent
+  when: not galaxy_docker_delete_test_upgrade
+
+- name: remove firewall profile
+  file:
+    path: "/etc/ufw/applications.d/{{galaxy_docker_test_ufw_profile}}"
+    state: absent
+  when: galaxy_docker_delete_test_upgrade
+
+- import_tasks: ../prerequisites/nginxsettings.yml
+  when: not galaxy_docker_delete_test_upgrade
+
+- name: remove nginx profiles
+  file:
+    path: "/etc/nginx/sites-available/{{item.key}}.conf"
+    state: absent
+  with_dict: "{{nginx_sites}}"
+  when: not galaxy_docker_delete_test_upgrade

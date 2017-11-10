@@ -1,0 +1,68 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Create directory for ansible_generated vars
+  file:
+    path: "{{galaxy_docker_ansible_generated_vars_dir}}"
+    state: directory
+  become: no
+  delegate_to: 127.0.0.1
+
+- name: Create file with port and volume settings
+  template:
+    dest: "{{galaxy_docker_ansible_generated_vars_dir}}/docker_ports_and_volumes.yml"
+    src: "docker_ports_and_volumes.yml.j2"
+    force: yes
+    trim_blocks: False
+  become: no
+  delegate_to: 127.0.0.1
+
+- name: Include port and volume settings
+  include_vars: "{{galaxy_docker_ansible_generated_vars_dir}}/docker_ports_and_volumes.yml"
+
+- name: Show docker published ports
+  debug:
+    var: galaxy_docker_published_ports
+    verbosity: 1
+
+- name: Show volumes
+  debug:
+    var: docker_mounted_volumes
+    verbosity: 1
+
+- name: Update docker environment file
+  template:
+    src: docker_environment_dict.j2
+    dest: "{{galaxy_docker_environment_file_location}}"
+    mode: 0600
+
+- name: Restart the docker container
+  docker_container:
+    env_file: "{{galaxy_docker_environment_file_location}}"
+    volumes: "{{docker_mounted_volumes}}"
+    image: "{{galaxy_docker_docker_image}}"
+    name: "{{galaxy_docker_container_name}}"
+    hostname: "{{galaxy_docker_container_hostname}}"
+    published_ports: "{{galaxy_docker_published_ports}}"
+    state: started
+    restart: yes
+    recreate: yes
+  notify: check if galaxy has started
+
+- name: remove docker environment file
+  file:
+    state: absent
+    path: "{{galaxy_docker_environment_file_location}}"

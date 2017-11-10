@@ -1,0 +1,42 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Add systemd unit file.
+  template:
+    dest: /etc/systemd/system/galaxy.service
+    src: galaxy.service.j2
+    force: yes
+
+- name: register if a galaxy container exists
+  command: "docker ps -aq -f name={{galaxy_docker_container_name}}$"
+  register: galaxy_container_exists
+  changed_when: false
+
+- name: Start a dummy container
+  docker_container:
+    name: "{{galaxy_docker_container_name}}"
+    image: hello-world
+  when:
+    - galaxy_container_exists is defined
+    - galaxy_container_exists.stdout ==''
+
+- name: Galaxy should be started on reboot.
+  systemd:
+    enabled: yes
+    name: galaxy.service
+    state: started
+    masked: no
+    daemon_reload: yes

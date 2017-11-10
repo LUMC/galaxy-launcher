@@ -1,0 +1,46 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Start docker installation
+  include_role:
+    name: installdocker
+  when: installdocker
+
+- import_tasks: install_packages.yml
+  when: galaxy_docker_install_packages
+
+- import_tasks: add_users.yml
+  when: galaxy_docker_add_users
+
+- import_tasks: add_user_ssh_keys.yml
+  when: galaxy_docker_create_user_ssh_keys
+
+- import_tasks: galaxy_startup_service.yml
+  when: galaxy_docker_prerequisites_startup_service
+
+- import_tasks: create_export_folder.yml
+  when: galaxy_docker_create_export_folder
+
+- import_tasks: nginxsettings.yml
+  when: galay_docker_nginx_settings
+
+- name: Start nginx installation
+  include_role:
+    name: jdauphant.nginx
+  when: ansible_role_nginx
+
+- import_tasks: galaxyfirewall.yml
+  when: galaxy_docker_firewall

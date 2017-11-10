@@ -1,0 +1,26 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- import_tasks: run.yml
+  when: galaxy_docker_run
+
+- import_tasks: install_python_dependencies.yml
+  when:
+    - galaxy_docker_template_ldap
+    - >
+        not
+        galaxy_docker_optional_environment_settings.LOAD_GALAXY_CONDITIONAL_DEPENDENCIES
+        | default(False) == True

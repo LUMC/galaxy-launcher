@@ -1,0 +1,31 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# tasks file for galaxy_docker_template_ldap
+# This task writes an auth.conf.xml file to the galaxy settings directory
+# and installs the python ldap module in the container's virtual environment.
+- name: Show ldap variables
+  debug:
+    var: galaxy_docker_ldap_config
+    verbosity: 1
+
+- name: Create auth_conf.xml file in config folder
+  template:
+    dest: "{{galaxy_docker_export_location}}/galaxy-central/config/auth_conf.xml"
+    force: yes
+    src: auth_conf.xml.j2
+    mode: 0700
+    trim_blocks: False

@@ -1,0 +1,56 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Create docker build directory
+  file:
+    path: "{{galaxy_docker_docker_build_dir}}/custom_image"
+    state: directory
+    mode: 0700
+
+- name: Check if docker_custom_image directory exists
+  stat:
+    path: "{{galaxy_docker_custom_image_dir}}"
+  register: custom_image_dir
+  delegate_to: 127.0.0.1
+  become: no
+
+- name: Copy files to docker build directory
+  copy:
+    src: "{{galaxy_docker_custom_image_dir}}"
+    dest: "{{galaxy_docker_docker_build_dir}}/custom_image"
+    mode: 0700
+  when: custom_image_dir.stat.exists
+
+- name: Template the Dockerfile
+  template:
+    dest: "{{galaxy_docker_docker_build_dir}}/custom_image/Dockerfile"
+    src: Dockerfile.j2
+    mode: 0600
+    force: yes
+
+- name: Build custom docker image
+  docker_image:
+    name: "{{galaxy_docker_docker_image}}"
+    path: "{{galaxy_docker_docker_build_dir}}/custom_image"
+    force: yes
+    state: present
+    nocache: "{{galaxy_docker_security_patch}}"
+    pull: "{{ (not galaxy_docker_change_uids) | bool}}"
+
+- name: remove docker build directory
+  file:
+    path: "{{galaxy_docker_docker_build_dir}}/custom_image"
+    state: absent

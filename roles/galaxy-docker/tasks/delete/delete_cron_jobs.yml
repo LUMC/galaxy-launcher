@@ -1,0 +1,29 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: remove cron jobs for backup scripts
+  cron:
+    state: absent
+    name: "{{item.value.description}}"
+    user: "{{galaxy_docker_docker_user}}"
+  with_dict: "{{ galaxy_docker_backup_database_cron_jobs }}"
+
+- name: remove cron jobs for rsync script
+  cron:
+    state: absent
+    name: "Rsync to the backup host"
+    user: "{{galaxy_docker_docker_user}}"
+  when: galaxy_docker_backup_rsync_remote_host

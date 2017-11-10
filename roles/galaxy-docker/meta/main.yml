@@ -1,0 +1,39 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+galaxy_info:
+  author: Sequencing Analysis Support Core
+  description: A role to install bgruening/galaxy-docker-stable on a host
+  company: Leiden University Medical Center
+
+  license: MIT License (expat)
+
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - 16.04
+
+  galaxy_tags:
+    - galaxy
+    - docker
+    - bgruening
+    - galaxyproject
+    - lumc
+
+#dependencies:
+#  - { role: jdauphant.nginx, nginx_sites: "{{nginx_sites}}" }

@@ -1,0 +1,43 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# Installs packages that are later needed by unpriviledged users
+- name: Install rsync
+  package:
+    name: rsync
+    state: present
+
+- name: install git
+  package:
+    name: git
+    state: present
+
+- name: install virtualenv
+  pip:
+    name: virtualenv
+    state: present
+
+- name: install required passlib module
+  pip:
+    name: "passlib"
+    state: latest
+  tags:
+    - skip_ansible_lint  # This is a security library. This using latest is warranted.
+
+- name: install access control lists to allow user switching during playbook.
+  package:
+    name: acl
+    state: present

@@ -1,0 +1,48 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: register whether the container is running
+  command: "docker inspect -f {{inspect}} {{galaxy_docker_container_name}}"
+  vars:
+    inspect: !unsafe '{{.State.Running}}'
+  changed_when: false
+  register: docker_running
+
+- name: Show docker inspection results
+  debug:
+    var: docker_running
+    verbosity: 1
+
+- name: Make sure the docker container is started
+  docker_container:
+    name: "{{galaxy_docker_container_name}}"
+    state: started
+  when: not docker_running.stdout | bool
+
+- name: install python_ldap in docker container
+  command: "docker exec -u {{user}} {{name}} {{command}}"
+  vars:
+    user: "{{galaxy_docker_web_user}}"
+    name: "{{galaxy_docker_container_name}}"
+    command: /galaxy_venv/bin/pip install python-ldap -i https://wheels.galaxyproject.org
+  register: ldap_python_install
+  changed_when: '"Successfully installed python-ldap" in ldap_python_install.stdout'
+  notify: restart galaxy in container
+
+- name: show installationresults
+  debug:
+    var: ldap_python_install.stdout
+    verbosity: 1

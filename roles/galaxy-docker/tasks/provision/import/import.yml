@@ -1,0 +1,109 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- import_tasks: transfer_database.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
+
+- import_tasks: create_empty_db_script.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_database_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_database_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_database_user_private_key}}"
+
+- name: Make sure the docker container is started
+  docker_container:
+    name: "{{galaxy_docker_container_name}}"
+    volumes:
+      - "{{galaxy_docker_export_location}}:/export/"
+      - "{{galaxy_docker_empty_database_script}}:/database_scripts/new_empty_db"
+      - "{{galaxy_docker_imported_db_location}}:/database"
+    image: "{{galaxy_docker_docker_image}}"
+    state: started
+    command: /usr/bin/startup
+
+- name: Check if postgres is online
+  command: "docker exec {{galaxy_docker_container_name}} service postgresql status"
+  register: result
+  until: '"online" in result.stdout'
+  retries: 20
+  changed_when: false
+
+- name: stop galaxy service in container
+  command: "docker exec {{name}} {{command}}"
+  vars:
+    name: "{{galaxy_docker_container_name}}"
+    command: "supervisorctl stop galaxy:*"
+  tags:
+    - skip_ansible_lint  # Does not create files
+
+- name: Delete old database and create new_empty one
+  command: "docker exec -u {{user}} {{name}} {{command}}"
+  vars:
+    name: "{{galaxy_docker_container_name}}"
+    command: "psql -f /database_scripts/new_empty_db"
+    user: "{{galaxy_docker_database_user}}"
+  register: database_created
+  changed_when: '"DROP DATABASE/nCREATE DATABASE" in database_created.stdout'
+
+- name: Database deletion and creation results
+  debug:
+    var: database_created.stdout
+
+- name: Import new database in galaxy container
+  command: "docker exec -u {{user}} {{name}} {{galaxy_docker_db_restore_command}} {{flags}}"
+  vars:
+    name: "{{galaxy_docker_container_name}}"
+    flags: >-
+      -d {{galaxy_docker_container_database_name}}
+      {{galaxy_docker_db_input_file_flag}}
+      /database/{{galaxy_docker_imported_db}}
+    user: "{{galaxy_docker_web_user}}"
+  tags:
+    - skip_ansible_lint  # Does not create files
+
+- name: stop container
+  docker_container:
+    name: "{{galaxy_docker_container_name}}"
+    state: stopped
+
+- import_tasks: delete_database_file.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
+
+- import_tasks: delete_empty_db_script.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_database_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_database_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_database_user_private_key}}"
+
+- name: MSG make sure to upgrade the database
+  debug:
+    msg: Make sure to upgrade the database before running the container
+
+- name: Set upgrade database to true.
+  set_fact:
+    galaxy_docker_upgrade: True
+- name: Include upgrade procedure
+  import_tasks: ../../upgrade/main.yml

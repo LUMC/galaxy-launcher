@@ -1,0 +1,42 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Remove docker export volumes
+  docker_container:
+    volumes: "{{galaxy_docker_export_location}}:/export/"
+    image: "{{galaxy_docker_docker_image}}"
+    name: "delete_galaxy_{{ansible_date_time.epoch}}"
+    state: started
+    command: bash -c 'rm -rfv /export/* /export/.distribution_config'
+  register: docker_container
+
+- name: Save delete container name
+  set_fact:
+    galaxy_docker_delete_container: '{{docker_container.Name.replace("/","")}}'
+
+- name: register whether the delete export container has finished
+  command: "docker inspect -f {{inspect}} {{galaxy_docker_delete_container}}"
+  vars:
+    inspect: !unsafe '{{.State.Running}}'
+  register: folder_container_running
+  until: 'not folder_container_running.stdout | bool'
+  retries: 10
+  delay: 10
+
+- name: Remove delete container
+  docker_container:
+    name: "{{galaxy_docker_delete_container}}"
+    state: absent

@@ -1,0 +1,49 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Create config folder
+  docker_container:
+    volumes: "{{galaxy_docker_export_location}}:/export/"
+    image: "{{galaxy_docker_docker_image}}"
+    name: "export_folder_creator_{{ansible_date_time.epoch}}"
+    state: started
+    user: "{{galaxy_docker_web_user_id}}"
+    command: "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
+  register: docker_container
+
+- name: Show docker_container variable
+  debug:
+    var: docker_container
+    verbosity: 1
+
+- name: Save config folder creator container name
+  set_fact:
+    config_folder_creator_name: '{{docker_container.Name.replace("/","")}}'
+
+- name: register whether the folder creator container has finished
+  command: "docker inspect -f {{inspect}} {{config_folder_creator_name}}"
+  vars:
+    inspect: !unsafe '{{.State.Running}}'
+  register: folder_container_running
+  until: 'not folder_container_running.stdout | bool'
+  retries: 10
+  delay: 10
+
+- name: Remove config folder creator container
+  docker_container:
+    name: "{{config_folder_creator_name}}"
+    state: absent
+    keep_volumes: True

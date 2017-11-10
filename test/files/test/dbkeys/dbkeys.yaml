@@ -1,0 +1,15 @@
+# configuration for fetch and index genomes
+
+data_managers:
+  - id: data_manager_fetch_genome_all_fasta_dbkey
+    params:
+      - 'dbkey_source|dbkey_source_selector': 'new'
+      - 'dbkey_source|dbkey': 'RhinoVirusA'
+      - 'dbkey_source|dbkey_name': 'RhinoVirus A (NC_001617.1)'
+      - 'sequence_name': 'RhinoVirus A (NC_001617.1)'
+      - 'sequence_id': 'RhinoVirusA'
+      - 'reference_source|reference_source_selector': 'ncbi'
+      - 'reference_source|requested_identifier': 'NC_001617.1'
+    data_table_reload:
+      - all_fasta
+      - __dbkeys__

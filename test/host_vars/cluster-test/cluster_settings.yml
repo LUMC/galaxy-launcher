@@ -1,0 +1,50 @@
+galaxy_docker_cluster_type: sge
+galaxy_docker_gridengine_master_host: "ogs-head"
+galaxy_docker_cluster_virtualenv: "{{galaxy_docker_shared_cluster_directory}}/galaxy_venv"
+#galaxy_docker_cluster_embed_metadata_in_job: False
+galaxy_docker_cluster_environment_variables:
+  LC_ALL: "en_US.UTF-8"
+galaxy_docker_shared_cluster_directory: "/exports/galaxy"
+
+galaxy_docker_cluster_registered_user_concurrent_jobs: 2
+galaxy_docker_cluster_anonymous_user_concurrent_jobs: 1
+galaxy_docker_cluster_embed_metadata_in_job: True
+galaxy_docker_cluster_default_destination: cluster_low
+galaxy_docker_cluster_sge_parallel_environment: make
+galaxy_docker_cluster_sge_extra_options: ""
+galaxy_docker_cluster_destinations:
+  cluster_low:
+    cpu_count: 1
+    memory: 4G
+    extra_options: ""
+  cluster_low_high_mem:
+    cpu_count: 1
+    memory: 16G
+    extra_options: ""
+galaxy_docker_cluster_tool_destinations:
+  cluster_low:
+    - Filter1
+    - ucsc_table_direct1
+  cluster_low_high_mem:
+    - ChangeCase
+galaxy_docker_cluster_tool_destination_configuration:
+  trimmer:
+    rules:
+      - rule_type: file_size
+        nice_value: 0
+        lower_bound: 0
+        upper_bound: 512 KB
+        destination: local
+      - rule_type: file_size
+        nice_value: 0
+        lower_bound: 4 MB
+        upper_bound: infinity
+        destination: cluster_low_high_mem
+galaxy_docker_cluster_user_destinations:
+  admin@galaxy.org:
+    priority: med
+
+galaxy_docker_custom_image_lines:
+  - run sed -i '3iecho "192.168.99.100 ogs-head" >> /etc/hosts' /usr/bin/startup
+
+bgruening_galaxy_stable_version: 17.09

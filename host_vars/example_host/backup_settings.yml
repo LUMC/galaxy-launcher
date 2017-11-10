@@ -1,0 +1,35 @@
+galaxy_docker_backup_rsync_remote_host: False
+
+galaxy_docker_backup_database_cron_jobs:
+  hourly:
+    description: "Hourly backup of the galaxy database"
+    timestamp: "-%Z%Y%m%dT%H%M%S"
+    filename: "galaxy-hourly-backup"
+    files_to_keep: 24
+    compression_level: 6
+    cron:
+      special_time: "hourly"
+  daily:
+    description: "Daily backup of the galaxy database"
+    timestamp: "-%Z%Y%m%dT%H%M"
+    filename: "galaxy-daily-backup"
+    files_to_keep: 7
+    compression_level: 6
+    cron:
+      special_time: daily
+
+#Rsync settings
+galaxy_docker_backup_database_rsync_settings:
+  dest: /big_volume/galaxy_remote_backups
+  host: example.backups.org
+  user: remotebackupuser
+  delete: True
+  compression_level: 0
+  cron:
+    special_time: "hourly"
+
+# Set compression level. This compresses the data before sending to save bandwith
+# This does not compress the files.
+# 0 = no compression
+# 1-3 uses a fast compression algorithm that uses less resources
+# 4-9 provide progressively better compression at increased system resource use

@@ -1,0 +1,45 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# tasks file for galaxy_docker_import_database
+# This imports a  database in galaxy.
+# This does overwrite the existing database.
+
+- name: Register the files that are copied
+  find:
+    paths: "{{galaxy_docker_import_db_dir}}"
+    patterns: "*"
+  register: dump_file_list
+  delegate_to: 127.0.0.1
+  become: no
+
+- name: show dump_file_list
+  debug:
+    var: dump_file_list
+    verbosity: 1
+
+- name: Fail when multiple files are found
+  fail:
+    msg: "Multiple files in {{galaxy_docker_import_db_dir}}"
+  when: "dump_file_list.matched > 1"
+
+- name: Display when no files are found
+  debug:
+    msg: "No files in {{galaxy_docker_import_db_dir}}. Skipping galaxy_docker_import_database role"
+  when: "dump_file_list.matched < 1"
+
+- import_tasks: import.yml
+  when: "dump_file_list.matched == 1"

@@ -1,0 +1,41 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+- name: Install Docker prerequisites on Ubuntu
+  apt:
+    update_cache: yes
+    pkg: "{{ item }}"
+    state: present
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+
+
+- name: Install Docker key on Ubuntu
+  apt_key:
+    url: "{{ installdocker_gpg_key }}"
+
+- name: Install Docker repository on Ubuntu
+  apt_repository:
+    repo: "{{ installdocker_apt_repository }}"
+
+- name: Install Docker packages on Ubuntu
+  apt:
+    pkg: "{{ installdocker_packages }}"
+    state: present
+    update_cache: yes
+  notify: test docker service

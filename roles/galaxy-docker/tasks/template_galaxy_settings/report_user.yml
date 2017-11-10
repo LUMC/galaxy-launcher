@@ -1,0 +1,31 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Fail when report user and password are not defined
+  fail:
+    msg: "galaxy_report_user and galaxy_report_password should be defined!"
+  when: (galaxy_report_password is not defined) or (galaxy_report_user is not defined)
+
+
+- name: Add report_htpasswd file for Report Webapp
+  htpasswd:
+    create: yes
+    # Other secure choices:
+    # https://passlib.readthedocs.io/en/stable/narr/quickstart.html#recommended-hashes
+    crypt_scheme: sha512_crypt
+    name: "{{galaxy_report_user}}"
+    password: "{{galaxy_report_password}}"
+    path: "{{galaxy_docker_export_location}}/reports_htpasswd"

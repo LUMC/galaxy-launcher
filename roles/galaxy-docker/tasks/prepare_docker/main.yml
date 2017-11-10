@@ -1,0 +1,47 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Stop galaxy container before patching
+  docker_container:
+    name: "{{galaxy_docker_container_name}}"
+    state: absent
+  when: galaxy_docker_security_patch
+
+- name: Delete old docker image
+  docker_image:
+    name: "{{galaxy_docker_docker_image}}"
+    state: absent
+  when: galaxy_docker_security_patch
+
+- import_tasks: change_uids.yml
+  when: galaxy_docker_change_uids
+
+- import_tasks: customimage.yml
+  when: (galaxy_docker_custom_image or galaxy_docker_change_uids)
+
+- name: Download image when not present
+  docker_image:
+    name: "{{galaxy_docker_docker_image}}"
+    state: present
+
+- import_tasks: create_export_folder.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
+
+- import_tasks: create_export_directory_folders.yml

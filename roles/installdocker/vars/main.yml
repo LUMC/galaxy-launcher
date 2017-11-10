@@ -1,28 +1,32 @@
 ---
+# -----
 # Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
 # Contact us at: sasc@lumc.nl
 #
-# This file is part of galaxy-docker-ansible.
-# A dual licensing mode is applied.
-# The source code within this project is freely available for non-commercial use under the GNU Affero General Public license.
-# For commercial users or users who do not want to follow the AGPL, please contact us to obtain a separate license.
+# This file is part of galaxy-launcher.
 #
-# You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
 
-prerequisites:
+# vars file for installdocker
+installdocker_prerequisites:
   - linux-image-extra-virtual
   - "linux-image-extra-{{ansible_kernel}}"
-  - apt-transport-https
-  - ca-certificates
-  - curl
-  - software-properties-common
-  - python-pip
-  - python-pkg-resources
-  - python-setuptools
-pip_packages:
-  - docker-py
-key: "https://apt.dockerproject.org/gpg"
-repo: "deb https://apt.dockerproject.org/repo/ {{ansible_distribution | lower}}-{{ansible_distribution_release}} main"
-packages:
-  - docker-engine
 
+installdocker_python_packages:
+  - python-pip
+  - python-setuptools
+installdocker_pip_packages:
+  - docker-py
+installdocker_gpg_key: "https://download.docker.com/linux/{{ansible_distribution | lower}}/gpg"
+installdocker_apt_repository: >-
+  deb https://download.docker.com/linux/{{ansible_distribution | lower}}
+  {{ansible_distribution_release}} stable
+installdocker_packages:
+  - docker-ce

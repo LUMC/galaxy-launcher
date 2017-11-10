@@ -1,0 +1,30 @@
+{# ----- #}
+{# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center #}
+{# Contact us at: sasc@lumc.nl #}
+{#  #}
+{# This file is part of galaxy-launcher. #}
+{#  #}
+{# galaxy-launcher is free software: you can redistribute it #}
+{# and/or modify it under the terms of the MIT License (Expat) as #}
+{# published by the Open Source initiative. #}
+{#  #}
+{# You should have received a copy of the MIT License (Expat) #}
+{# along with galaxy-launcher. If not, see #}
+{# <https://opensource.org/licenses/MIT>. #}
+{# ..... #}
+
+{% if galaxy_docker_change_uids | bool %}
+from {{galaxy_docker_docker_image_changed_uids}}
+{% else %}
+from bgruening/galaxy-stable:{{bgruening_galaxy_stable_version}}
+{% endif %}
+
+Maintainer ansible-generated
+
+{% if galaxy_docker_custom_image_lines is defined %}
+{% for line in galaxy_docker_custom_image_lines %}
+{{line}}
+{% endfor %}
+{% endif %}
+
+CMD ["/usr/bin/startup"]

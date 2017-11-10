@@ -1,0 +1,78 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Make sure tool directory exists
+  file:
+    path: "{{galaxy_docker_tool_dir}}"
+    state: directory
+
+- name: Find yml files in tool list directory
+  find:
+    paths: "{{galaxy_docker_tool_list_dir}}"
+    patterns:
+      - "*.yml"
+      - "*.yaml"
+  register: tools
+  delegate_to: 127.0.0.1
+  become: no
+
+- name: Show which yamls will be transferred
+  debug:
+    var: tools
+    verbosity: 1
+
+- name: Move tools to galaxy server
+  copy:
+    dest: "{{galaxy_docker_tool_dir}}/{{item.path | basename}}"
+    src: "{{item.path}}"
+    force: yes
+    mode: 0600
+  with_items:
+    - "{{tools.files}}"
+
+- name: delete api key from files
+  lineinfile:
+    destfile: "{{galaxy_docker_tool_dir}}/{{item.path | basename}}"
+    regexp: "api_key:.*"
+    state: absent
+  with_items:
+    - "{{tools.files}}"
+
+- name: delete galaxy_instance from files
+  lineinfile:
+    destfile: "{{galaxy_docker_tool_dir}}/{{item.path | basename}}"
+    regexp: "galaxy_instance:.*"
+    state: absent
+  with_items:
+    - "{{tools.files}}"
+
+- name: Use ephemeris shed install to install tools
+  command: >-
+    {{galaxy_docker_docker_user_virtualenv}}/bin/shed-install
+    -g localhost:{{galaxy_docker_provision_port}}
+    -a {{galaxy_admin_api_key | default(galaxy_master_api_key)}}
+    -t {{galaxy_docker_tool_dir}}/{{item.path | basename}}
+  with_items: "{{tools.files}}"
+  ignore_errors: yes
+  tags:
+    - skip_ansible_lint  # does not create files.
+
+- name: remove added files
+  file:
+    path: "{{galaxy_docker_tool_dir}}/{{item.path | basename}}"
+    state: absent
+  with_items:
+    - "{{tools.files}}"

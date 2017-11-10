@@ -3,17 +3,16 @@
 *.config
 *.swp
 *.pyc
+*.log
 
-config/hosts
-hosts
-
-licenses/license_header
+/hosts
 
 deprecated/
 
 !host_vars/
 host_vars/*
 !host_vars/example_host
+!host_vars/cluster_example_host
 
 !group_vars/
 group_vars/*
@@ -22,3 +21,17 @@ group_vars/*
 !files/
 files/*
 !files/example_host
+!files/cluster_example_host
+
+roles/jdauphant.nginx
+
+.venv
+
+site/
+.vagrant/
+
+test/files/*/ssh/*
+test/files/*/database_extract/*
+test/files/*/database_import/*
+test/ci_hosts
+test/CI/files

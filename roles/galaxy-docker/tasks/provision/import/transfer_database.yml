@@ -1,0 +1,47 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: register dump_file
+  set_fact:
+    galaxy_docker_imported_db: "{{dump_file_list.files[0].path | basename }}"
+
+- name: show database name
+  debug:
+    var: galaxy_docker_imported_db
+    verbosity: 1
+
+- name: Create folder to import database into
+  file:
+    path: "{{galaxy_docker_imported_db_location}}"
+    state: directory
+    mode: 0700
+
+- name: copy database file using rsync
+  synchronize:
+    mode: push
+    dest: "{{galaxy_docker_imported_db_location}}/{{galaxy_docker_imported_db}}"
+    src: "{{galaxy_docker_import_db_dir}}/{{galaxy_docker_imported_db}}"
+    perms: yes
+    compress: yes
+
+# Not necessary when connected as the galaxy user. Which is the default in non-privileged mode.
+- name: set ownership rights correctly
+  file:
+    path: "{{galaxy_docker_imported_db_location}}/{{galaxy_docker_imported_db}}"
+    owner: "{{galaxy_docker_web_user}}"
+  become: yes
+  become_user: root
+  when: galaxy_docker_run_privileged

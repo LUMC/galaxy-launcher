@@ -1,0 +1,40 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Register whether config folder is already created
+  stat:
+    path: "{{galaxy_docker_export_location}}/galaxy-central/config"
+  register: default_config_folder
+  until: default_config_folder.stat.exists
+  retries: 10
+  delay: 15
+
+- import_tasks: template_ldap.yml
+  when: galaxy_docker_template_ldap
+
+- import_tasks: galaxywelcome.yml
+  when: galaxy_docker_template_welcome
+
+- import_tasks: setup_cluster_general.yml
+  when: galaxy_docker_cluster
+
+- import_tasks: setupsge.yml
+  when:
+    - galaxy_docker_cluster
+    - galaxy_docker_cluster_type == 'sge'
+
+
+- import_tasks: report_user.yml

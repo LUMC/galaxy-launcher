@@ -1,0 +1,111 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# This task decides wich sub-tasks should be run based on the boolean variables.
+# The order should represent the order in which tasks are ideally done.
+
+# This sets the connection for al sections of the role to the default
+# connecting passwordless sudo user.
+# unpriviledged users are run via sudo
+- name: Run as passwordless sudo user
+  set_fact:
+    galaxy_docker_become: yes
+    galaxy_docker_docker_ssh_user: "{{ansible_user | default(omit)}}"
+    galaxy_docker_web_ssh_user: "{{ansible_user | default(omit)}}"
+    galaxy_docker_database_ssh_user: "{{ansible_user | default(omit)}}"
+    galaxy_docker_database_user_private_key: "{{ansible_ssh_private_key_file | default(omit)}}"
+    galaxy_docker_docker_user_private_key: "{{ansible_ssh_private_key_file | default(omit)}}"
+    galaxy_docker_web_user_private_key: "{{ansible_ssh_private_key_file | default(omit)}}"
+  when: galaxy_docker_run_privileged | bool
+
+# Starts a new ssh connection as an unpriviledged user for each section of the role
+- name: Run as several users over ssh
+  set_fact:
+    galaxy_docker_become: no
+    galaxy_docker_docker_ssh_user: "{{galaxy_docker_docker_user}}"
+    galaxy_docker_web_ssh_user: "{{galaxy_docker_web_user}}"
+    galaxy_docker_database_ssh_user: "{{galaxy_docker_database_user}}"
+  when: not galaxy_docker_run_privileged | bool
+
+- name: Start installing prerequisites
+  import_tasks: prerequisites/main.yml
+  when: galaxy_docker_prerequisites
+  become: yes
+  become_user: root
+
+- name: Prepare docker images and export folder
+  import_tasks: prepare_docker/main.yml
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
+  when: galaxy_docker_prepare_docker
+
+- name: Start upgrading galaxy
+  import_tasks: upgrade/main.yml
+  when: galaxy_docker_upgrade
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
+
+- name: Start templating galaxy's settings
+  import_tasks: template_galaxy_settings/main.yml
+  when: galaxy_docker_template
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_web_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_web_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
+
+
+- name: Start provisioning tasks
+  import_tasks: provision/main.yml
+  when: galaxy_docker_provision
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
+
+- name: Start running container
+  import_tasks: start_container/main.yml
+  when: galaxy_docker_run
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
+
+- name: Start running backup scripts
+  import_tasks: backups/main.yml
+  when: galaxy_docker_backup
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
+
+- name: Start deleting galaxy
+  import_tasks: delete/main.yml
+  when: galaxy_docker_delete
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"

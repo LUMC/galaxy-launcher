@@ -1,0 +1,87 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Create empty work directory
+  file:
+    path: "{{galaxy_docker_dbkeys_dir}}"
+    state: directory
+
+- name: Find yml files in tool list directory
+  find:
+    paths: "{{galaxy_docker_dbkeys_list_dir}}"
+    patterns:
+      - "*.yml"
+      - "*.yaml"
+  register: dbkeys
+  delegate_to: 127.0.0.1
+  become: no
+
+- name: Show which yamls will be transferred
+  debug:
+    var: dbkeys
+    verbosity: 1
+
+- name: Move dbkeys to galaxy server
+  copy:
+    dest: "{{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
+    src: "{{item.path}}"
+    force: yes
+    mode: 0600
+  with_items:
+    - "{{dbkeys.files}}"
+
+# This should be fed from the command line.
+- name: delete api key from files
+  lineinfile:
+    destfile: "{{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
+    regexp: "api_key:.*"
+    state: absent
+  with_items:
+    - "{{dbkeys.files}}"
+
+# It should be this instance. So no room for interpretation in the the yamls.
+- name: delete galaxy_instance from files
+  lineinfile:
+    destfile: "{{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
+    regexp: "galaxy_instance:.*"
+    state: absent
+  with_items:
+    - "{{dbkeys.files}}"
+
+- name: Use ephemeris run-data-managers to run data managers
+  command: >-
+    {{galaxy_docker_docker_user_virtualenv}}/bin/run-data-managers
+    -g localhost:{{galaxy_docker_provision_port}}
+    -a {{galaxy_admin_api_key}}
+    --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}
+    -v
+  with_items: "{{dbkeys.files}}"
+  ignore_errors: yes  #Do not crash on one incorrect yaml.
+  register: result
+  tags:
+    - skip_ansible_lint  # does not create files.
+
+- name: Debug ephemeris output
+  debug:
+    var: result.stderr
+    verbosity: 1
+
+- name: remove added files
+  file:
+    path: "{{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}"
+    state: absent
+  with_items:
+    - "{{dbkeys.files}}"

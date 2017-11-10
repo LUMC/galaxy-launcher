@@ -1,0 +1,66 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+# tasks file for galaxy_docker_template_welcome
+# This task:
+# - Deletes all existing welcome files from the export folder
+# - copies all new welcome html files to the export folder
+
+
+- name: Search old "welcome" files in the export folder
+  find:
+    paths: "{{galaxy_docker_export_location}}"
+    patterns: "(?i)welcome.*"
+    use_regex: True
+    hidden: True
+    recurse: no
+  register: old_welcome_files
+
+- name: Show which welcome files will be deleted.
+  debug:
+    var: old_welcome_files
+    verbosity: 1
+
+- name: Delete old "welcome" files in the export folder
+  file:
+    path: "{{item.path}}"
+    state: absent
+  with_items:
+    - "{{old_welcome_files.files}}"
+
+- name: Search new "welcome" files in the welcome folder
+  find:
+    paths: "{{galaxy_docker_welcome_dir}}"
+    patterns: "(?i)welcome.*"
+    use_regex: True
+    hidden: True
+    recurse: yes
+  delegate_to: 127.0.0.1
+  become: no
+  register: new_welcome_files
+
+- name: Show which welcome files will be copied
+  debug:
+    var: new_welcome_files
+    verbosity: 1
+
+- name: Copy welcome files
+  copy:
+    mode: 0644
+    dest: "{{galaxy_docker_export_location}}/{{item.path | basename | lower}}"
+    src: "{{item.path}}"
+  with_items:
+    - "{{new_welcome_files.files}}"

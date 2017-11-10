@@ -1,0 +1,23 @@
+---
+# -----
+# Copyright 2017 Sequencing Analysis Support Core - Leiden University Medical Center
+# Contact us at: sasc@lumc.nl
+#
+# This file is part of galaxy-launcher.
+#
+# galaxy-launcher is free software: you can redistribute it
+# and/or modify it under the terms of the MIT License (Expat) as
+# published by the Open Source initiative.
+#
+# You should have received a copy of the MIT License (Expat)
+# along with galaxy-launcher. If not, see
+# <https://opensource.org/licenses/MIT>.
+# .....
+
+- name: Make sure export location exists
+  file:
+    path: "{{galaxy_docker_export_location}}"
+    state: directory
+    group: "{{galaxy_docker_web_group_id}}"
+    owner: "{{galaxy_docker_web_user}}"
+    mode: "{{galaxy_docker_export_location_mode}}"
