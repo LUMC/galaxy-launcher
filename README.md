@@ -1,4 +1,4 @@
-# galaxy-launcher ![Galaxy-launcher logo](logo/galaxy-launcher-transparant-small.png "Launch your Galaxy!")
+# ![Galaxy-launcher logo](logo/galaxy-launcher-transparant-small.png "Launch your Galaxy!")galaxy-launcher
 
 Please read our documentation at: http://galaxy-launcher.readthedocs.io/
 
