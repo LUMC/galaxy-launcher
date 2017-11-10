@@ -53,7 +53,7 @@
   cron:
     job: >-
       bash {{galaxy_docker_backup_location}}/scripts/{{item.key}}-backupscript.sh
-      >> {{log_file}} 2>&1"
+      >> {{log_file}} 2>&1
     state: present
     user: "{{galaxy_docker_docker_user}}"
     backup: yes
