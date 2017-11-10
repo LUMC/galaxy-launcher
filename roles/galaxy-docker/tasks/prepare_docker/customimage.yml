@@ -20,11 +20,19 @@
     state: directory
     mode: 0700
 
+- name: Check if docker_custom_image directory exists
+  stat:
+    path: "{{galaxy_docker_custom_image_dir}}"
+  register: custom_image_dir
+  delegate_to: 127.0.0.1
+  become: no
+
 - name: Copy files to docker build directory
   copy:
     src: "{{galaxy_docker_custom_image_dir}}"
     dest: "{{galaxy_docker_docker_build_dir}}/custom_image"
     mode: 0700
+  when: custom_image_dir.stat.exists
 
 - name: Template the Dockerfile
   template:
