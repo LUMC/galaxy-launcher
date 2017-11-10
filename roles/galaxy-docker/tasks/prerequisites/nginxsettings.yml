@@ -64,7 +64,7 @@
     nginx_configs_test_upgrade:
       upstream:
         - "{{nginx_configs.upstream[0]}}"
-        - >
+        - >-
             upstream test_upgrade_galaxy
             { server localhost:{{galaxy_docker_upgrade_test_settings.galaxy_docker_web_port}}; }
   when: galaxy_docker_test_upgrade

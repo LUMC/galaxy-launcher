@@ -47,9 +47,9 @@
   known_hosts:
     name: "{{galaxy_docker_backup_database_rsync_configuration.host}}"
     state: present
-    key: >
+    key: "\
       {{galaxy_docker_backup_database_rsync_configuration.host}}
-      {{galaxy_docker_backup_database_rsync_configuration.host_public_key}}
+      {{galaxy_docker_backup_database_rsync_configuration.host_public_key}}"
 #    hash_host: True
 
 - name: Hash known_hosts file.
@@ -61,9 +61,8 @@
 
 - name: Set job in cron to rsync backups to a remote location
   cron:
-    job: >
-      bash {{galaxy_docker_backup_location}}/scripts/rsyncscript.sh
-      >> {{galaxy_docker_backup_location}}/logs/rsync.log 2>&1
+    job: "bash {{galaxy_docker_backup_location}}/scripts/rsyncscript.sh
+      >> {{galaxy_docker_backup_location}}/logs/rsync.log 2>&1"
     state: present
     user: "{{galaxy_docker_docker_user}}"
     backup: yes
