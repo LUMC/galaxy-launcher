@@ -79,7 +79,7 @@ galaxy_docker_ssh_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/ssh"
 # defaults for addldap
 galaxy_docker_ldap_defaults:
   login_use_username: True
-  allow_password_change: False
+  allow_password_change: True
   allow_register: False
   auto_register: True
   continue_on_failure: False
