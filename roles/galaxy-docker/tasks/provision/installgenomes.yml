@@ -70,14 +70,16 @@
     -v
   with_items: "{{dbkeys.files}}"
   ignore_errors: "{{galaxy_docker_ephemeris_ignore_errors}}"
-  register: result
+  register: galaxy_docker_ephemeris_run_data_managers
   tags:
     - skip_ansible_lint  # does not create files.
 
-- name: Debug ephemeris output
-  debug:
-    var: result.stderr
-    verbosity: 1
+- name: Fail when run-data-managers did not succeed
+  fail:
+    msg: run-data-managers did not have exit code 0
+  when:
+    - not galaxy_docker_ephemeris_ignore_errors
+    - galaxy_docker_ephemeris_run_data_managers.get("failed", False)
 
 - name: remove added files
   file:

@@ -59,9 +59,9 @@
   with_items:
     - "{{tools.files}}"
 
-- name: Use ephemeris shed install to install tools
+- name: Use ephemeris shed-tools install to install tools
   command: >-
-    {{galaxy_docker_docker_user_virtualenv}}/bin/shed_tools
+    {{galaxy_docker_docker_user_virtualenv}}/bin/shed-tools
     install
     -g http://localhost:{{galaxy_docker_provision_port}}
     -a {{galaxy_admin_api_key | default(galaxy_master_api_key)}}
@@ -70,6 +70,14 @@
   ignore_errors: "{{galaxy_docker_ephemeris_ignore_errors}}"
   tags:
     - skip_ansible_lint  # does not create files.
+  register: galaxy_docker_ephemeris_shed_tools
+
+- name: Fail when shed-tools did not succeed
+  fail:
+    msg: shed-tools did not have exit code 0
+  when:
+    - not galaxy_docker_ephemeris_ignore_errors
+    - galaxy_docker_ephemeris_shed_tools.get("failed", False)
 
 - name: remove added files
   file:
