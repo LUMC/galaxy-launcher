@@ -64,7 +64,7 @@
 - name: Use ephemeris run-data-managers to run data managers
   command: >-
     {{galaxy_docker_docker_user_virtualenv}}/bin/run-data-managers
-    -g localhost:{{galaxy_docker_provision_port}}
+    -g http://localhost:{{galaxy_docker_provision_port}}
     -a {{galaxy_admin_api_key}}
     --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}
     -v
