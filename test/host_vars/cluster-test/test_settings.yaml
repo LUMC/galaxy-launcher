@@ -1,1 +1,1 @@
-galaxy_docker_ignore_ephemeris_errors: False
+galaxy_docker_ephemeris_ignore_errors: False
