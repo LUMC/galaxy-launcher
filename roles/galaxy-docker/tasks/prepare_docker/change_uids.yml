@@ -61,3 +61,14 @@
     nocache: "{{galaxy_docker_security_patch}}"
     force: yes
     state: present
+  async: 1800
+  register: galaxy_docker_build_result
+  poll: 0
+
+- name: Wait for building docker image to finish
+  async_status:
+    jid: "{{galaxy_docker_build_result.ansible_job_id}}"
+  register: galaxy_docker_wait_result
+  until: galaxy_docker_wait_result.finished
+  delay: 30
+  retries: 60
