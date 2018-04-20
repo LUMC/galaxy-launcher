@@ -2,6 +2,7 @@
 <this file should be updated with newest changes on top>
 
 ## Current development branch
+* Ephemeris default version upgraded to 0.8
 * Allow_password_change is enabled by default on ldap-authenticated galaxies. This only affects the
 ability to login to the sftp server.
 * Updated default bgruening/galaxy-stable image to 18.01
