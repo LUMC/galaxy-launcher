@@ -1,5 +1,5 @@
 installdocker_default_location: "/data/docker"  #Where the docker images are stored
-galaxy_docker_docker_image: "bgruening/galaxy-stable:17.09"
+galaxy_docker_docker_image: "bgruening/galaxy-stable:18.01"
 galaxy_docker_export_location: "/data/galaxy/galaxy_storage"
 galaxy_docker_container_name: "galaxy"
 galaxy_docker_container_hostname: "galaxy-docker"

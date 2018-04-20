@@ -39,7 +39,7 @@
     inspect: !unsafe '{{.State.Running}}'
   register: folder_container_running
   until: 'not folder_container_running.stdout | bool'
-  retries: 10
+  retries: 20
   delay: 10
 
 - name: Remove config folder creator container

@@ -49,7 +49,7 @@
       line: '\1"{{galaxy_docker_database_group_id}}"\3'
     # This has been submitted upstream as a fix.
     # https://github.com/bgruening/docker-galaxy-stable/pull/373
-    # Is fixed from version 17.09
+    # Is fixed from version 18.01
     - regexp: '^(USER )(galaxy)'
       line: '\1$GALAXY_USER'
 
@@ -61,3 +61,14 @@
     nocache: "{{galaxy_docker_security_patch}}"
     force: yes
     state: present
+  async: 2400
+  register: galaxy_docker_build_result
+  poll: 0
+
+- name: Wait for building docker image to finish. This might take a while.
+  async_status:
+    jid: "{{galaxy_docker_build_result.ansible_job_id}}"
+  register: galaxy_docker_wait_result
+  until: galaxy_docker_wait_result.finished
+  delay: 30
+  retries: 80
