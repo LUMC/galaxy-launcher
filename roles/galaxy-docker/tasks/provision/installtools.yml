@@ -61,7 +61,8 @@
 
 - name: Use ephemeris shed install to install tools
   command: >-
-    {{galaxy_docker_docker_user_virtualenv}}/bin/shed-install
+    {{galaxy_docker_docker_user_virtualenv}}/bin/shed_tools
+    install
     -g localhost:{{galaxy_docker_provision_port}}
     -a {{galaxy_admin_api_key | default(galaxy_master_api_key)}}
     -t {{galaxy_docker_tool_dir}}/{{item.path | basename}}
