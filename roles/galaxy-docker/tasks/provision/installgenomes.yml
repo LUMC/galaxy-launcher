@@ -69,7 +69,7 @@
     --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}
     -v
   with_items: "{{dbkeys.files}}"
-  ignore_errors: "{{galaxy_docker_ignore_ephemeris_errors}}"
+  ignore_errors: "{{galaxy_docker_ephemeris_ignore_errors}}"
   register: result
   tags:
     - skip_ansible_lint  # does not create files.
