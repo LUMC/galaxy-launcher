@@ -2,7 +2,9 @@
 <this file should be updated with newest changes on top>
 
 ## Develop
-- Updated default bgruening/galaxy-stable image to 18.01
+* Update virtual environment when using a cluster virtual environment and upgrading to 
+a new version of galaxy. 
+* Updated default bgruening/galaxy-stable image to 18.01
 
 ## Release 1.0.0
 The first release of galaxy-launcher. Features include:
