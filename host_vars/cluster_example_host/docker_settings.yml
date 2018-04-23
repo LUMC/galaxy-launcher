@@ -1,3 +1,4 @@
+---
 installdocker_default_location: "/data/docker"
 galaxy_docker_docker_image: "cluster-galaxy-stable:18.01"
 galaxy_docker_export_location: "{{galaxy_docker_shared_cluster_directory}}/galaxy_storage"
