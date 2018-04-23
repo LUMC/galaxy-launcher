@@ -55,15 +55,6 @@
     ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
   when: galaxy_docker_prepare_docker
 
-- name: Start upgrading galaxy
-  import_tasks: upgrade/main.yml
-  when: galaxy_docker_upgrade
-  become: "{{galaxy_docker_become}}"
-  become_user: "{{galaxy_docker_docker_user}}"
-  vars:
-    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
-    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
-
 - name: Start templating galaxy's settings
   import_tasks: template_galaxy_settings/main.yml
   when: galaxy_docker_template
@@ -73,6 +64,14 @@
     ansible_user: "{{galaxy_docker_web_ssh_user}}"
     ansible_ssh_private_key_file: "{{galaxy_docker_web_user_private_key}}"
 
+- name: Start upgrading galaxy
+  import_tasks: upgrade/main.yml
+  when: galaxy_docker_upgrade
+  become: "{{galaxy_docker_become}}"
+  become_user: "{{galaxy_docker_docker_user}}"
+  vars:
+    ansible_user: "{{galaxy_docker_docker_ssh_user}}"
+    ansible_ssh_private_key_file: "{{galaxy_docker_docker_user_private_key}}"
 
 - name: Start provisioning tasks
   import_tasks: provision/main.yml
