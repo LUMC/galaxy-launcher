@@ -1,3 +1,4 @@
+---
 # Playbook uses https://github.com/rhpvorderman/ansible-role-license-changer
 - hosts: localhost
   become: no

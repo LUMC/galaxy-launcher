@@ -1,3 +1,4 @@
+---
 max_upload_size: "50g"
 
 galaxy_docker_web_urls:

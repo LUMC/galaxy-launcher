@@ -2,9 +2,11 @@
 <this file should be updated with newest changes on top>
 
 ## Current development branch
+* Update virtual environment when using a cluster virtual environment and upgrading to 
+a new version of galaxy. 
 * Allow_password_change is enabled by default on ldap-authenticated galaxies. This only affects the
 ability to login to the sftp server.
-- Updated default bgruening/galaxy-stable image to 18.01
+* Updated default bgruening/galaxy-stable image to 18.01
 
 ## Release 1.0.0
 The first release of galaxy-launcher. Features include:
