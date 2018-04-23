@@ -1,8 +1,11 @@
 # Changelog
 <this file should be updated with newest changes on top>
 
-## Develop
-- Updated default bgruening/galaxy-stable image to 18.01
+## Current development branch
+* Ephemeris default version upgraded to 0.8
+* Allow_password_change is enabled by default on ldap-authenticated galaxies. This only affects the
+ability to login to the sftp server.
+* Updated default bgruening/galaxy-stable image to 18.01
 
 ## Release 1.0.0
 The first release of galaxy-launcher. Features include:
@@ -22,3 +25,4 @@ Important changes during development up to first release:
 * Restructured galaxy-docker-role to concentrate all tasks requiring
 root in one part of the role.
 * Enabled the use of galaxy-docker-ansible for a VM connected to a cluster.
+

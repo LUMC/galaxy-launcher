@@ -79,7 +79,7 @@ galaxy_docker_ssh_dir: "{{playbook_dir}}/files/{{ inventory_hostname }}/ssh"
 # defaults for addldap
 galaxy_docker_ldap_defaults:
   login_use_username: True
-  allow_password_change: False
+  allow_password_change: True
   allow_register: False
   auto_register: True
   continue_on_failure: False
@@ -155,6 +155,8 @@ galaxy_docker_ephemeris_branch: "master"
 galaxy_docker_ephemeris_dir: "{{galaxy_docker_docker_user_home}}/ephemeris"
 galaxy_docker_ephemeris_from_git: False
 
+# Ignore ephemeris errors which can be annoying if setting up a new node.
+galaxy_docker_ephemeris_ignore_errors: True
 #defaults for upgrade
 galaxy_docker_test_upgrade: False
 

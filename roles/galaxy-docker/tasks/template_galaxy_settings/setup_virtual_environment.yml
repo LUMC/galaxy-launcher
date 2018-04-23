@@ -1,0 +1,35 @@
+- name: make sure galaxy_venv directory exists
+  file:
+    path: "{{galaxy_docker_cluster_virtualenv}}"
+    state: directory
+    mode: "{{galaxy_docker_export_location_mode}}"
+  when: galaxy_docker_cluster_virtualenv is defined
+
+- name: Create virtualenv
+  pip:
+    name: "pip>=8.1"
+    virtualenv: "{{galaxy_docker_cluster_virtualenv}}"
+  when: galaxy_docker_cluster_virtualenv is defined
+
+- name: Install pinned-requirements
+  pip:
+    requirements: "{{galaxy_docker_export_location}}/galaxy-central/lib/galaxy/dependencies/requirements.txt"
+    virtualenv: "{{galaxy_docker_cluster_virtualenv}}"
+    extra_args: >
+      --index-url https://wheels.galaxyproject.org/simple
+      --extra-index-url https://pypi.org/simple/
+  when: galaxy_docker_cluster_virtualenv is defined
+
+- name: Add some conditional-requirements.
+  pip:
+    name: "{{item}}"
+    virtualenv: "{{galaxy_docker_cluster_virtualenv}}"
+    extra_args: >
+      --index-url https://wheels.galaxyproject.org/simple
+      --extra-index-url https://pypi.org/simple/
+  with_items:
+    - "psycopg2==2.6.1"
+    - "drmaa"
+    - "uWSGI"
+    - "watchdog"
+  when: galaxy_docker_cluster_virtualenv is defined
