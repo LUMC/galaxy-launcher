@@ -1,3 +1,4 @@
+---
 galaxy_docker_cluster_type: sge
 galaxy_docker_gridengine_master_host: "ogs-head"
 galaxy_docker_cluster_virtualenv: "{{galaxy_docker_shared_cluster_directory}}/galaxy_venv"

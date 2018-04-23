@@ -31,6 +31,9 @@
 - import_tasks: setup_cluster_general.yml
   when: galaxy_docker_cluster
 
+- import_tasks: setup_virtual_environment.yml
+  when: galaxy_docker_cluster_virtualenv is defined
+
 - import_tasks: setupsge.yml
   when:
     - galaxy_docker_cluster

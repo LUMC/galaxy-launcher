@@ -32,7 +32,8 @@ rules:
   comments-indentation: {}
   # Do not force document start and end markers
   document-end: disable
-  document-start: disable
+  document-start:
+    present: true
   # Default
   empty-lines:
     max: 2
