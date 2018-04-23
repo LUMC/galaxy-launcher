@@ -1,3 +1,4 @@
+---
 # A file to ansible-lint any skipped files.
 
 - host: test

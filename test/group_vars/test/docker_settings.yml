@@ -1,3 +1,4 @@
+---
 installdocker_default_location: "/data/docker"
 galaxy_docker_docker_image: "bgruening/galaxy-stable:18.01"
 docker_user: "galaxy"
