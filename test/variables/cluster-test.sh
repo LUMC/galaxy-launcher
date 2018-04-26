@@ -18,7 +18,7 @@ chmod 775  $script_dir/setup.sh
 echo "start cluster container"
 cluster_image_name=cluster
 docker build -t $cluster_image_name $project_root/test/docker/gridengine-cluster
-CLUSTER_ID=`docker run -d -v ${script_dir}:/scripts -v $export_folder:$export_folder $cluster_image_name`
+CLUSTER_ID=`docker run -d -v ${script_dir}:/scripts --volumes-from $CONTAINER_NAME $cluster_image_name`
 CLUSTER_IP=`docker inspect -f {{.NetworkSettings.IPAddress}} $CLUSTER_ID`
 CLUSTER_NAME=`docker exec $CLUSTER_ID cat /etc/hostname`
 sleep 15
