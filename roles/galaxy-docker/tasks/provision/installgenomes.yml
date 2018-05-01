@@ -64,20 +64,22 @@
 - name: Use ephemeris run-data-managers to run data managers
   command: >-
     {{galaxy_docker_docker_user_virtualenv}}/bin/run-data-managers
-    -g localhost:{{galaxy_docker_provision_port}}
+    -g http://localhost:{{galaxy_docker_provision_port}}
     -a {{galaxy_admin_api_key}}
     --config {{galaxy_docker_dbkeys_dir}}/{{item.path | basename}}
     -v
   with_items: "{{dbkeys.files}}"
-  ignore_errors: yes  #Do not crash on one incorrect yaml.
-  register: result
+  ignore_errors: "{{galaxy_docker_ephemeris_ignore_errors}}"
+  register: galaxy_docker_ephemeris_run_data_managers
   tags:
     - skip_ansible_lint  # does not create files.
 
-- name: Debug ephemeris output
-  debug:
-    var: result.stderr
-    verbosity: 1
+- name: Fail when run-data-managers did not succeed
+  fail:
+    msg: run-data-managers did not have exit code 0
+  when:
+    - not galaxy_docker_ephemeris_ignore_errors
+    - galaxy_docker_ephemeris_run_data_managers.get("failed", False)
 
 - name: remove added files
   file:

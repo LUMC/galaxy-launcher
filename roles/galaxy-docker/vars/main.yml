@@ -27,7 +27,7 @@ galaxy_docker_backup_database_rsync_configuration: >-
 
 # vars for galaxy_docker_provision_tools:
 galaxy_docker_ephemeris_package: ephemeris
-galaxy_docker_ephemeris_version: 0.7.0
+galaxy_docker_ephemeris_version: 0.8.0
 
 # vars for rundockergalaxy
 galaxy_docker_published_ports: ""

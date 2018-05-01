@@ -13,8 +13,6 @@ export_volume="$project_root/test/CI/files/$hostname"
 export_folder="$export_volume/export"
 vars_file=$export_volume/vars_file.yml
 
-source $project_root/test/variables/${hostname}.sh
-
 echo "Build docker image with ssh access"
 docker build -t $image_name $project_root/test/docker/$hostname
 
@@ -30,21 +28,22 @@ echo "create database operations folder."
 mkdir ${export_volume}/import_db
 
 echo "start docker container"
-CONTAINER_NAME=`docker run -d \
+export CONTAINER_NAME=$(docker run -d \
 --cap-add=NET_ADMIN \
 --network=host \
 -v /var/run/docker.sock:/var/run/docker.sock \
--v ${export_volume}:${export_volume} $image_name`
-#CONTAINER_IP=`docker inspect -f {{.NetworkSettings.IPAddress}} $CONTAINER_NAME`
-CONTAINER_IP=127.0.0.1
+-v ${export_volume}:${export_volume} $image_name)
+export CONTAINER_IP=$(docker inspect -f {{.NetworkSettings.IPAddress}} $CONTAINER_NAME)
 sleep 15
 echo "Make sure private key has right permissions"
 chmod 600 $project_root/test/docker/$hostname/files/$ssh_user
 
+source $project_root/test/variables/${hostname}.sh
+
 echo "Create ansible hosts file"
 echo "[test]" > $hosts_file
 echo "$hostname \
-ansible_host=$CONTAINER_IP \
+ansible_host=127.0.0.1 \
 ansible_user=$ssh_user \
 ansible_port=8822 \
 ansible_ssh_private_key_file=$project_root/test/docker/$hostname/files/$ssh_user" >> $hosts_file

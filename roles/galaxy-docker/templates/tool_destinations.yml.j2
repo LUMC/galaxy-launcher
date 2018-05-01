@@ -17,7 +17,7 @@ default_destination: {{galaxy_docker_cluster_default_destination}}
 tools:
   upload1:
     default_destination: local
-  {% for destination, tool_list in galaxy_docker_cluster_tool_destinations.iteritems() %}
+  {% for destination, tool_list in galaxy_docker_cluster_tool_destinations.items() %}
   {% for tool in tool_list %}
   {{tool}}:
     default_destination: {{destination}}
