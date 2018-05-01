@@ -59,7 +59,7 @@
   vars:
     name: "{{galaxy_docker_container_name}}"
     command: "psql -f /database_scripts/new_empty_db"
-    user: "{{galaxy_docker_database_user}}"
+    user: "{{galaxy_docker_database_user_id}}"
   register: database_created
   changed_when: '"DROP DATABASE/nCREATE DATABASE" in database_created.stdout'
 
