@@ -56,7 +56,7 @@
 - name: fix error in 18.01 build
   when: bgruening_galaxy_stable_version == 18.01
   replace:
-    path: {{galaxy_docker_docker_build_dir}}/change_uid/galaxy/roles/galaxyprojectdotorg.galaxyextras/tasks/nginx.yml
+    path: "{{galaxy_docker_docker_build_dir}}/change_uid/galaxy/roles/galaxyprojectdotorg.galaxyextras/tasks/nginx.yml"
     regexp: '\'galaxy\''
     replace: '{{ galaxy_user_name }}'
 
