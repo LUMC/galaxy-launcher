@@ -22,14 +22,14 @@ galaxy_docker_upgrade_test_settings:
 "
 ansible_playbook_run_commands="\
 install_galaxy \
-['install_tools','install_genomes'] \
 enable_ldap \
-cron_database_backup \
-patch_image \
 extract_database \
 import_database \
 upgrade_test \
 delete_upgrade_test \
 upgrade \
+cron_database_backup \
+['install_tools','install_genomes'] \
+patch_image \
 delete_galaxy_complete \
 "
