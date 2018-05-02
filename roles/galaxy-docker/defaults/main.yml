@@ -62,7 +62,8 @@ galaxy_docker_ftp_port_expose: False
 galaxy_docker_sftp_port_expose: False
 # Bgruening container defaults
 galaxy_docker_container_database_name: galaxy
-galaxy_docker_container_database_username: "galaxy"
+galaxy_docker_container_database_username: galaxy
+galaxy_docker_container_database_password: galaxy
 
 # File locations:
 galaxy_docker_welcome_dir: "{{playbook_dir}}/files/{{inventory_hostname}}/welcome/"
