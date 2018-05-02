@@ -53,12 +53,12 @@ bgruening_galaxy_stable_version: 18.01
 "
 ansible_playbook_run_commands="\
 install_galaxy_cluster \
-['install_tools','install_genomes'] \
 enable_ldap \
 cron_database_backup \
-patch_custom_image \
 extract_database \
 import_database \
 upgrade_cluster \
+['install_tools','install_genomes'] \
+patch_custom_image \
 delete_galaxy_complete \
 "

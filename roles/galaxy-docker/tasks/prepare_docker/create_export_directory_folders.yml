@@ -20,8 +20,7 @@
     image: "{{galaxy_docker_docker_image}}"
     name: "export_folder_creator_{{ansible_date_time.epoch}}"
     state: started
-    user: "{{galaxy_docker_web_user_id}}"
-    command: "python /usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
+    command: "/usr/local/bin/export_user_files.py $PG_DATA_DIR_DEFAULT"
   register: docker_container
 
 - name: Show docker_container variable
@@ -39,7 +38,7 @@
     inspect: !unsafe '{{.State.Running}}'
   register: folder_container_running
   until: 'not folder_container_running.stdout | bool'
-  retries: 20
+  retries: 30
   delay: 10
 
 - name: Remove config folder creator container

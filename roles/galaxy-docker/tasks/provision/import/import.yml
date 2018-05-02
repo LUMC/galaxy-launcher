@@ -47,19 +47,19 @@
   changed_when: false
 
 - name: stop galaxy service in container
-  command: "docker exec {{name}} {{command}}"
-  vars:
-    name: "{{galaxy_docker_container_name}}"
-    command: "supervisorctl stop galaxy:*"
+  command: >-
+    docker exec
+    {{galaxy_docker_container_name}}
+    supervisorctl stop galaxy:*
   tags:
     - skip_ansible_lint  # Does not create files
 
 - name: Delete old database and create new_empty one
-  command: "docker exec -u {{user}} {{name}} {{command}}"
-  vars:
-    name: "{{galaxy_docker_container_name}}"
-    command: "psql -f /database_scripts/new_empty_db"
-    user: "{{galaxy_docker_database_user}}"
+  command: >-
+    docker exec
+    -u {{galaxy_docker_database_user_id}}
+    {{galaxy_docker_container_name}}
+    psql -f /database_scripts/new_empty_db
   register: database_created
   changed_when: '"DROP DATABASE/nCREATE DATABASE" in database_created.stdout'
 
@@ -68,16 +68,27 @@
     var: database_created.stdout
 
 - name: Import new database in galaxy container
-  command: "docker exec -u {{user}} {{name}} {{galaxy_docker_db_restore_command}} {{flags}}"
-  vars:
-    name: "{{galaxy_docker_container_name}}"
-    flags: >-
-      -d {{galaxy_docker_container_database_name}}
-      {{galaxy_docker_db_input_file_flag}}
-      /database/{{galaxy_docker_imported_db}}
-    user: "{{galaxy_docker_web_user}}"
-  tags:
-    - skip_ansible_lint  # Does not create files
+  command: >-
+    docker exec
+    -e PGPASSWORD={{galaxy_docker_container_database_password}}
+    -u {{galaxy_docker_web_user_id}}
+    {{galaxy_docker_container_name}}
+    {{galaxy_docker_db_restore_command}}
+    --exit-on-error
+    -h localhost
+    -d {{galaxy_docker_container_database_name}}
+    -U {{galaxy_docker_container_database_username}}
+    {{galaxy_docker_db_input_file_flag}}
+    /database/{{galaxy_docker_imported_db}}
+  register: database_import_result
+  changed_when: >-
+    "pg_restore: creating ACL SCHEMA public"
+    in
+    database_import_result.stderr_lines
+
+- debug:
+    var: database_import_result
+    verbosity: 1
 
 - name: stop container
   docker_container:

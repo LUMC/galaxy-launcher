@@ -66,7 +66,7 @@
       pg_dump {{galaxy_docker_container_database_name}}
       --format={{galaxy_docker_db_format}}
       -Z {{galaxy_docker_db_compression_level}}
-    user: "{{galaxy_docker_database_user}}"
+    user: "{{galaxy_docker_database_user_id}}"
     file: "{{galaxy_docker_extracted_db_location}}/{{galaxy_docker_extracted_db_filename}}"
   ignore_errors: true
   tags:
