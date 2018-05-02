@@ -70,12 +70,13 @@
 - name: Import new database in galaxy container
   command: "docker exec -u {{user}} {{name}} {{galaxy_docker_db_restore_command}} {{flags}}"
   vars:
+    user: "{{galaxy_docker_database_user_id}}"
     name: "{{galaxy_docker_container_name}}"
     flags: >-
       -d {{galaxy_docker_container_database_name}}
+      -U {{galaxy_docker_container_database_username}}
       {{galaxy_docker_db_input_file_flag}}
       /database/{{galaxy_docker_imported_db}}
-    user: "{{galaxy_docker_web_user}}"
   tags:
     - skip_ansible_lint  # Does not create files
 
