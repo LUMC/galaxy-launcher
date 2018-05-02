@@ -58,8 +58,8 @@
   command: >-
     docker exec
     -u {{galaxy_docker_database_user_id}}
-     {{galaxy_docker_container_name}}
-     psql -f /database_scripts/new_empty_db
+    {{galaxy_docker_container_name}}
+    psql -f /database_scripts/new_empty_db
   register: database_created
   changed_when: '"DROP DATABASE/nCREATE DATABASE" in database_created.stdout'
 
@@ -74,13 +74,23 @@
     -u {{galaxy_docker_web_user_id}}
     {{galaxy_docker_container_name}}
     {{galaxy_docker_db_restore_command}}
+    --exit-on-error
     -h localhost
     -d {{galaxy_docker_container_database_name}}
     -U {{galaxy_docker_container_database_username}}
     {{galaxy_docker_db_input_file_flag}}
     /database/{{galaxy_docker_imported_db}}
-  tags:
-    - skip_ansible_lint  # Does not create files
+  register: database_import_result
+  changed_when: >-
+    "pg_restore: creating ACL SCHEMA public"
+    in
+    database_import_result.stderr_lines
+#  tags:
+#    - skip_ansible_lint  # Does not create files
+
+- debug:
+    var: database_import_result
+    verbosity: 1
 
 - name: stop container
   docker_container:
