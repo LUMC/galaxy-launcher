@@ -56,9 +56,9 @@ install_galaxy_cluster \
 ['install_tools','install_genomes'] \
 enable_ldap \
 cron_database_backup \
-patch_custom_image \
 extract_database \
 import_database \
 upgrade_cluster \
+patch_custom_image \
 delete_galaxy_complete \
 "
