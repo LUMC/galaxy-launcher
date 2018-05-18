@@ -42,7 +42,7 @@
   vars:
     backup_archive: "{{item.value.filename}}$(TZ='UTC' date +'{{item.value.timestamp}}').gz"
     backup_db_location: "{{galaxy_docker_backup_location}}/{{item.key}}"
-    backup_db_dump_file: "galaxy-{{item.key}}-backup$(TZ='UTC' date +'%s.%N')"
+    backup_db_dump_file: "galaxy-{{item.key}}-backup$(date --utc +'%Z%FT%H:%M')"
     files_to_keep: "{{item.value.files_to_keep}}"
     compression_level:
       "{{item.value.compression_level | default(galaxy_docker_db_compression_level)}}"
