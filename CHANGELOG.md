@@ -2,9 +2,11 @@
 <this file should be updated with newest changes on top>
 
 ## Current development branch
+* Fixed bug in the cron backup scripts.
+Now the userID is used to identify the backup user in the container.
 * Ephemeris default version upgraded to 0.8
-* Update virtual environment when using a cluster virtual environment and upgrading to 
-a new version of galaxy. 
+* Update virtual environment when using a cluster virtual environment and upgrading to
+a new version of galaxy.
 * Allow_password_change is enabled by default on ldap-authenticated galaxies. This only affects the
 ability to login to the sftp server.
 * Updated default bgruening/galaxy-stable image to 18.01
@@ -27,4 +29,3 @@ Important changes during development up to first release:
 * Restructured galaxy-docker-role to concentrate all tasks requiring
 root in one part of the role.
 * Enabled the use of galaxy-docker-ansible for a VM connected to a cluster.
-
