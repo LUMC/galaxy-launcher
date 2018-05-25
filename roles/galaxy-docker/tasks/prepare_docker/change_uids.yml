@@ -53,8 +53,8 @@
     - regexp: '^(USER )(galaxy)'
       line: '\1$GALAXY_USER'
 
-- name: fix error in 18.05 build
-  when: bgruening_galaxy_stable_version == 18.05
+- name: fix error in 18.01 build
+  when: bgruening_galaxy_stable_version == 18.01
   replace:
     path: "{{galaxy_docker_docker_build_dir}}/change_uid/galaxy/roles/galaxyprojectdotorg.galaxyextras/tasks/nginx.yml"
     regexp: "'galaxy'"
