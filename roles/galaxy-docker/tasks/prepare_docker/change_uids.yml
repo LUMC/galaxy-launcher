@@ -49,12 +49,12 @@
       line: '\1"{{galaxy_docker_database_group_id}}"\3'
     # This has been submitted upstream as a fix.
     # https://github.com/bgruening/docker-galaxy-stable/pull/373
-    # Is fixed from version 18.01
+    # Is fixed from version 18.05
     - regexp: '^(USER )(galaxy)'
       line: '\1$GALAXY_USER'
 
-- name: fix error in 18.01 build
-  when: bgruening_galaxy_stable_version == 18.01
+- name: fix error in 18.05 build
+  when: bgruening_galaxy_stable_version == 18.05
   replace:
     path: "{{galaxy_docker_docker_build_dir}}/change_uid/galaxy/roles/galaxyprojectdotorg.galaxyextras/tasks/nginx.yml"
     regexp: "'galaxy'"

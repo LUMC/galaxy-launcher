@@ -10,16 +10,13 @@ matrix:
   include:
 
     - env:
-        Lint: True
+        Lint_and_license_test: True
       install:
         - pip install mkdocs yamllint ansible-lint
       script:
         - bash test/yamllinting.sh
         - bash test/ansiblelinting.sh
         - bash test/mkdocs.sh
-    - env:
-        Test_licenses: True
-      script:
         - bash test/licensetest.sh
 
     - env:
@@ -49,6 +46,14 @@ matrix:
         - ansible-galaxy install -r requirements.yml
         - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
 
+    - env:
+        test_hostname: cluster-test2
+        privileged: False
+      install:
+        - pip install ansible==2.4.0
+      script:
+        - ansible-galaxy install -r requirements.yml
+        - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
 # Keep inboxes nice and clean.
 notifications:
   email: false
