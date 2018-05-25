@@ -10,16 +10,13 @@ matrix:
   include:
 
     - env:
-        Lint: True
+        Lint_and_license_test: True
       install:
         - pip install mkdocs yamllint ansible-lint
       script:
         - bash test/yamllinting.sh
         - bash test/ansiblelinting.sh
         - bash test/mkdocs.sh
-    - env:
-        Test_licenses: True
-      script:
         - bash test/licensetest.sh
 
     - env:
