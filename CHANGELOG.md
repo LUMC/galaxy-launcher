@@ -2,6 +2,7 @@
 <this file should be updated with newest changes on top>
 
 ## Current development branch
+* Fixed bug where galaxy_ext library could not be found when using SGE cluster
 * Fixed bug in the cron backup scripts.
 Now the userID is used to identify the backup user in the container.
 * Ephemeris default version upgraded to 0.8
