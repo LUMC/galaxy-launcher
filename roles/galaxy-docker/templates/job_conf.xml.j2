@@ -41,13 +41,12 @@
      <env file="{{galaxy_docker_cluster_virtualenv | default('/galaxy_venv')}}/bin/activate"/>
      <env id="GALAXY_ROOT_DIR">{{galaxy_docker_export_location}}/galaxy-central</env>
      <env id="GALAXY_LIB">{{galaxy_docker_export_location}}/galaxy-central/lib</env>
-     <env id="PYTHONPATH">{{galaxy_docker_export_location}}/galaxy-central/lib</env>
      {%if galaxy_docker_cluster_environment_variables is defined %}
      {% for env_var, env_setting in galaxy_docker_cluster_environment_variables.items() %}
      <env id="{{env_var}}">{{env_setting}}</env>
      {% endfor %}
      {% endif %}
-     <param id="embed_metadata_in_job">{{galaxy_docker_cluster_embed_metadata_in_job | default ('True')}}</param>
+     <param id="embed_metadata_in_job">{{galaxy_docker_cluster_embed_metadata_in_job | default ('False')}}</param>
      {% if galaxy_docker_cluster_type == 'sge' %}
      <param id="nativeSpecification">-l h_vmem={{settings.memory}} -pe {{galaxy_docker_cluster_sge_parallel_environment}} {{settings.cpu_count}} {{settings.extra_options}}</param>
      {% endif %}
