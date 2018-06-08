@@ -38,7 +38,7 @@
    </destination>
    {% for destination, settings in galaxy_docker_cluster_destinations.items() %}
    <destination id="{{destination}}" runner="{{galaxy_docker_cluster_type}}">
-     <env file="{{galaxy_docker_cluster_virtualenv | default('/galaxy_venv')}}/bin/activate"/>
+     <env id="GALAXY_VIRTUAL_ENV">"{{galaxy_docker_cluster_virtualenv | default('/galaxy_venv')}}"</env>
      <env id="GALAXY_ROOT_DIR">{{galaxy_docker_export_location}}/galaxy-central</env>
      <env id="GALAXY_LIB">{{galaxy_docker_export_location}}/galaxy-central/lib</env>
      {%if galaxy_docker_cluster_environment_variables is defined %}
