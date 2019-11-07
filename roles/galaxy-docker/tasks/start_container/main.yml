@@ -23,4 +23,4 @@
     - >
         not
         galaxy_docker_optional_environment_settings.LOAD_GALAXY_CONDITIONAL_DEPENDENCIES
-        | default(False) == True
+        | default(False)
