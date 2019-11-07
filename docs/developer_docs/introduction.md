@@ -20,4 +20,3 @@ It contains some other files such as:
 * `.travis.yml` and `tox.ini` for the tests.
 * `ansible.cfg` configuration for ansible.
 * `hosts.sample` example hosts file.
-* `requirements.yml` with ansible role dependencies.
