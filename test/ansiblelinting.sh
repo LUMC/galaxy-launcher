@@ -17,5 +17,5 @@ excluded_files="
 echo "Check for ansible best practices using ansible-lint"
 for lint_files in $project_root/roles/galaxy-docker $project_root/roles/installdocker $project_root/main.yml $project_root/test/dynamic_includes.yml
 do
-  ansible-lint -p $excluded_files $lint_files
+  ansible-lint -p $excluded_files -x '206,602' $lint_files
 done

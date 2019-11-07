@@ -25,7 +25,6 @@ matrix:
       install:
         - pip install ansible==2.4.0
       script:
-        - ansible-galaxy install -r requirements.yml
         - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
 
     - env:
@@ -34,7 +33,6 @@ matrix:
       install:
         - pip install ansible==2.4.0
       script:
-        - ansible-galaxy install -r requirements.yml
         - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
 
     - env:
@@ -43,7 +41,6 @@ matrix:
       install:
         - pip install ansible==2.4.0
       script:
-        - ansible-galaxy install -r requirements.yml
         - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
 
     - env:
@@ -52,7 +49,6 @@ matrix:
       install:
         - pip install ansible==2.4.0
       script:
-        - ansible-galaxy install -r requirements.yml
         - bash -c 'source test/test_playbook.sh $test_hostname $privileged'
 # Keep inboxes nice and clean.
 notifications:

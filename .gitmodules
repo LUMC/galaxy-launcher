@@ -1,3 +1,6 @@
 [submodule "test/vagrant/virtual-clusters"]
 	path = test/vagrant/virtual-clusters
 	url = https://github.com/rhpvorderman/virtual-clusters.git
+[submodule "roles/jdauphant.nginx"]
+	path = roles/jdauphant.nginx
+	url = https://github.com/jdauphant/ansible-role-nginx.git

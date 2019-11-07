@@ -23,8 +23,6 @@ files/*
 !files/example_host
 !files/cluster_example_host
 
-roles/jdauphant.nginx
-
 .venv
 
 site/
