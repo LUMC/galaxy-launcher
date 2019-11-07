@@ -8,5 +8,5 @@
 
 ## Setting up galaxy-launcher
 1. Clone the git repository. `git clone --recursive https://github.com/LUMC/galaxy-launcher.git`
-2. Checkout the version of galaxy-launcher you want to use. For example `git checkout v1.0.0`.
+2. Checkout the version of galaxy-launcher you want to use. For example `git checkout v1.0.0` or `git checkout develop`.
 3. Make sure all submodules are up to date with `git submodule update --init --recursive`
