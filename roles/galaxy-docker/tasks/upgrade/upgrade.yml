@@ -51,7 +51,7 @@
   command: "docker exec {{galaxy_docker_container_name}} service postgresql status"
   register: result
   until: '"online" in result.stdout'
-  retries: 20
+  retries: 60
   changed_when: false
 
 - name: upgrade the database on the export location
